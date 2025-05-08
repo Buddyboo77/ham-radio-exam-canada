@@ -13,7 +13,6 @@ import {
   DialogDescription,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
 } from "@/components/ui/dialog";
 import { useToast } from "@/hooks/use-toast";
 
@@ -47,7 +46,7 @@ const FrequencyItem: React.FC<FrequencyItemProps> = ({ frequency }) => {
           : `${frequency.frequency.toFixed(3)} MHz removed from monitoring`,
       });
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast({
         title: "Error",
         description: `Failed to update monitoring status: ${error.message}`,
@@ -85,6 +84,7 @@ const FrequencyItem: React.FC<FrequencyItemProps> = ({ frequency }) => {
                 size="sm" 
                 className="p-1 ml-1"
                 onClick={() => setIsInfoOpen(true)}
+                type="button"
               >
                 <Info className="h-4 w-4 text-gray-500" />
               </Button>
@@ -97,7 +97,11 @@ const FrequencyItem: React.FC<FrequencyItemProps> = ({ frequency }) => {
             <div className="flex items-center">
               <Switch
                 checked={isMonitored}
-                onCheckedChange={handleMonitorToggle}
+                onCheckedChange={(value) => {
+                  if (typeof value === 'boolean') {
+                    handleMonitorToggle(value);
+                  }
+                }}
                 disabled={isPending}
                 className="mr-2"
               />
@@ -146,9 +150,16 @@ const FrequencyItem: React.FC<FrequencyItemProps> = ({ frequency }) => {
           )}
           
           <div className="flex justify-end mt-4">
-            <Button variant="outline" onClick={() => setIsInfoOpen(false)}>Close</Button>
             <Button 
-              className="ml-2" 
+              variant="outline" 
+              onClick={() => setIsInfoOpen(false)}
+              type="button"
+            >
+              Close
+            </Button>
+            <Button 
+              className="ml-2"
+              type="button"
               onClick={() => {
                 handleMonitorToggle(!isMonitored);
                 setIsInfoOpen(false);
