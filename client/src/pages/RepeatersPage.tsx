@@ -1,11 +1,13 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useQuery, useMutation } from "@tanstack/react-query";
 import { Repeater } from "@shared/schema";
 import RepeaterItem from "@/components/repeaters/RepeaterItem";
+import RepeaterMap from "@/components/repeaters/RepeaterMap";
 import { Input } from "@/components/ui/input";
 import { Search, List, MapPin } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Skeleton } from "@/components/ui/skeleton";
+import { apiRequest, queryClient } from "@/lib/queryClient";
 import { POWELL_RIVER_LOCATION } from "@/lib/constants";
 
 const RepeatersPage = () => {
@@ -113,50 +115,38 @@ const RepeatersPage = () => {
           <TabsContent value="map">
             <div className="bg-white rounded-lg shadow p-4 mb-4">
               <h2 className="font-bold text-lg mb-4">Repeater Map</h2>
-              {/* Simple map placeholder - in a real app, this would use a mapping library */}
-              <div className="relative bg-gray-100 h-96 rounded-lg overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <p className="text-gray-500">
-                    Map view showing Powell River repeaters at coordinates<br />
-                    {POWELL_RIVER_LOCATION.lat}, {POWELL_RIVER_LOCATION.lng}
-                  </p>
-                </div>
-                {/* Map markers for repeaters */}
-                {sortedRepeaters.map(repeater => (
-                  repeater.latitude && repeater.longitude ? (
-                    <div 
-                      key={repeater.id}
-                      className="absolute"
-                      style={{ 
-                        left: '50%', 
-                        top: '50%', 
-                        transform: 'translate(-50%, -50%)'
-                      }}
-                      title={`${repeater.name} - ${repeater.frequency.toFixed(3)} MHz`}
-                    >
-                      <div className={`w-3 h-3 rounded-full ${
-                        repeater.status?.toLowerCase() === 'operational' ? 'bg-success' : 
-                        repeater.status?.toLowerCase() === 'limited' ? 'bg-warning' : 'bg-gray-400'
-                      }`} />
-                    </div>
-                  ) : null
-                ))}
-              </div>
-              <p className="text-sm text-gray-500 mt-2">
-                Note: This is a simplified map view. In a complete implementation, 
-                this would display an interactive map with the exact repeater locations.
-              </p>
+              {isLoading ? (
+                <Skeleton className="h-[500px] w-full rounded-lg" />
+              ) : (
+                <RepeaterMap 
+                  repeaters={sortedRepeaters} 
+                  onAddToScanner={handleAddToScanner} 
+                />
+              )}
             </div>
             
             {/* List repeaters below the map as well */}
             <div className="space-y-4">
-              {sortedRepeaters.map(repeater => (
-                <RepeaterItem 
-                  key={repeater.id} 
-                  repeater={repeater} 
-                  onAddToScanner={handleAddToScanner}
-                />
-              ))}
+              {isLoading ? (
+                Array(2).fill(0).map((_, i) => (
+                  <Skeleton key={i} className="h-32 w-full rounded-lg" />
+                ))
+              ) : sortedRepeaters.length === 0 ? (
+                <div className="text-center py-8 bg-white rounded-lg shadow">
+                  <h3 className="font-medium text-gray-900">No repeaters found</h3>
+                  <p className="mt-1 text-gray-500">
+                    {searchQuery ? "Try a different search term" : "No repeaters available in the database"}
+                  </p>
+                </div>
+              ) : (
+                sortedRepeaters.map(repeater => (
+                  <RepeaterItem 
+                    key={repeater.id} 
+                    repeater={repeater} 
+                    onAddToScanner={handleAddToScanner}
+                  />
+                ))
+              )}
             </div>
           </TabsContent>
         </Tabs>

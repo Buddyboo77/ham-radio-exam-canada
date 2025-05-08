@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import { Button } from '@/components/ui/button';
@@ -70,7 +70,7 @@ interface RepeaterMapProps {
 const RepeaterMap: React.FC<RepeaterMapProps> = ({ repeaters, onAddToScanner }) => {
   const [center, setCenter] = useState<[number, number]>([POWELL_RIVER_LOCATION.lat, POWELL_RIVER_LOCATION.lng]);
   const [zoom, setZoom] = useState(11);
-  const [map, setMap] = useState<L.Map | null>(null);
+  const mapRef = React.useRef<L.Map | null>(null);
 
   // Function to get status badge
   const getStatusBadge = (status?: string | null) => {
@@ -93,21 +93,26 @@ const RepeaterMap: React.FC<RepeaterMapProps> = ({ repeaters, onAddToScanner }) 
     setZoom(11);
   };
 
+  // Map initialization ref
+  const whenCreated = useCallback((map: L.Map) => {
+    mapRef.current = map;
+  }, []);
+
   // Calculate bounds to fit all markers
   useEffect(() => {
-    if (map && repeaters.length > 0) {
+    if (mapRef.current && repeaters.length > 0) {
       const repeatersWithCoords = repeaters.filter(r => r.latitude && r.longitude);
       
       if (repeatersWithCoords.length > 1) {
         const bounds = L.latLngBounds(repeatersWithCoords.map(r => [r.latitude || 0, r.longitude || 0]));
-        map.fitBounds(bounds, { padding: [50, 50] });
+        mapRef.current.fitBounds(bounds, { padding: [50, 50] });
       } else if (repeatersWithCoords.length === 1) {
         const r = repeatersWithCoords[0];
         setCenter([r.latitude || 0, r.longitude || 0]);
         setZoom(13);
       }
     }
-  }, [repeaters, map]);
+  }, [repeaters]);
 
   return (
     <div className="relative">
@@ -117,7 +122,7 @@ const RepeaterMap: React.FC<RepeaterMapProps> = ({ repeaters, onAddToScanner }) 
           zoom={zoom} 
           scrollWheelZoom={true}
           style={{ height: '100%', width: '100%' }}
-          whenCreated={setMap}
+          ref={whenCreated}
         >
           <TileLayer
             attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
