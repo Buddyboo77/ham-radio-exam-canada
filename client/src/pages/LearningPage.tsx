@@ -62,7 +62,7 @@ const FLASHCARDS = [
   }
 ];
 
-// Practice quiz questions (simplified for demo)
+// Practice quiz questions - realistic exam questions for Canadian amateur radio license
 const QUIZ_QUESTIONS = [
   {
     question: "Which of the following is NOT a valid band for amateur radio operators in Canada?",
@@ -72,17 +72,19 @@ const QUIZ_QUESTIONS = [
       "5 meters (60-64 MHz)",
       "6 meters (50-54 MHz)"
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
+    explanation: "The 5 meter band (60-64 MHz) is not allocated to amateur radio in Canada. The valid bands are 6 meters (50-54 MHz), 2 meters (144-148 MHz), and 70 centimeters (430-450 MHz)."
   },
   {
     question: "What is the maximum transmitting power allowed for Basic qualification holders with Honours in Canada?",
     options: [
       "100 watts",
       "250 watts",
-      "500 watts",
+      "560 watts",
       "1000 watts"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    explanation: "Basic with Honours operators are limited to 250 watts PEP (peak envelope power) output."
   },
   {
     question: "When identifying your station, how often must you send your call sign?",
@@ -92,7 +94,8 @@ const QUIZ_QUESTIONS = [
       "At least every 30 minutes during a contact and at the end",
       "Only at the end of a contact"
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
+    explanation: "Canadian regulations require station identification at least every 30 minutes during a contact and at the end of the communication."
   },
   {
     question: "Which of the following frequency bands has the longest range during nighttime hours?",
@@ -102,7 +105,8 @@ const QUIZ_QUESTIONS = [
       "80 meters",
       "2 meters"
     ],
-    correctAnswer: 2
+    correctAnswer: 2,
+    explanation: "The 80-meter band typically has the longest range during nighttime hours due to improved ionospheric reflection at lower frequencies."
   },
   {
     question: "What is the relationship between frequency and wavelength?",
@@ -112,7 +116,118 @@ const QUIZ_QUESTIONS = [
       "They are independent of each other",
       "They increase together logarithmically"
     ],
-    correctAnswer: 1
+    correctAnswer: 1,
+    explanation: "Frequency and wavelength are inversely proportional. As frequency increases, wavelength decreases, and vice versa."
+  },
+  {
+    question: "What power level is recommended for a hand-held radio with a rubber duck antenna to access a local VHF repeater 15 km away?",
+    options: [
+      "The highest power setting to ensure signal clarity",
+      "The lowest power setting that maintains reliable communication",
+      "Always set at 50 watts to ensure you're heard",
+      "Exactly 10 watts to minimize interference"
+    ],
+    correctAnswer: 1,
+    explanation: "You should always use the minimum power necessary for reliable communications. This conserves power and reduces the possibility of interference to other stations."
+  },
+  {
+    question: "What does SWR stand for and why is it important?",
+    options: [
+      "Signal Wattage Rating - important for calculating transmitter power",
+      "Standing Wave Ratio - important for antenna system efficiency",
+      "Single Wire Resonance - important for wire antenna construction",
+      "Standard Waveform Regulation - important for frequency stability"
+    ],
+    correctAnswer: 1,
+    explanation: "SWR stands for Standing Wave Ratio, which is a measure of how efficiently RF power is transmitted from the radio to the antenna. High SWR can damage transmitters and reduce signal effectiveness."
+  },
+  {
+    question: "Which of the following would reduce RF energy in your station?",
+    options: [
+      "Using a rubber duck antenna instead of a beam antenna",
+      "Increasing your transmitter power",
+      "Adjusting the microphone gain",
+      "Using a dummy load when testing"
+    ],
+    correctAnswer: 3,
+    explanation: "A dummy load absorbs RF energy instead of radiating it, making it useful for testing transmitters without causing interference."
+  },
+  {
+    question: "What are the three main components of a complete antenna system?",
+    options: [
+      "Transmitter, lightning arrestor, ground rod",
+      "Feed line, tuner, ground rod",
+      "Antenna, feed line, transmitter",
+      "Antenna, feed line, antenna tuner"
+    ],
+    correctAnswer: 3,
+    explanation: "A complete antenna system consists of the antenna itself, the feed line (coaxial cable or ladder line), and often an antenna tuner to match impedances."
+  },
+  {
+    question: "What type of modulation is used for most voice communications on the VHF and UHF bands?",
+    options: [
+      "SSB (Single Sideband)",
+      "FM (Frequency Modulation)",
+      "AM (Amplitude Modulation)",
+      "CW (Continuous Wave)"
+    ],
+    correctAnswer: 1,
+    explanation: "FM (Frequency Modulation) is the most common modulation used for voice communications on VHF and UHF bands due to its noise resistance and audio clarity."
+  },
+  {
+    question: "What is the phonetic alphabet word for the letter 'C'?",
+    options: [
+      "Cobra",
+      "Canada",
+      "Charlie",
+      "Cottage"
+    ],
+    correctAnswer: 2,
+    explanation: "In the NATO phonetic alphabet used in ham radio, the letter 'C' is represented by 'Charlie'."
+  },
+  {
+    question: "What does the Q-code 'QTH' mean?",
+    options: [
+      "What time is it?",
+      "What is your location?",
+      "Can you hear me?",
+      "Are you busy?"
+    ],
+    correctAnswer: 1,
+    explanation: "The Q-code 'QTH' means 'What is your location?' or when stating 'My QTH is...' it means 'My location is...'"
+  },
+  {
+    question: "How long is the term of a Canadian Amateur Radio Operator Certificate?",
+    options: [
+      "One year, renewable",
+      "Five years, renewable",
+      "Ten years, renewable",
+      "Life (no renewal required)"
+    ],
+    correctAnswer: 3,
+    explanation: "The Canadian Amateur Radio Operator Certificate is valid for life and does not require renewal."
+  },
+  {
+    question: "What is required to operate an amateur radio station in Canada?",
+    options: [
+      "A valid Amateur Radio Operator Certificate and a station license",
+      "Only a valid Amateur Radio Operator Certificate",
+      "Only a valid station license",
+      "A commercial radio operator's license"
+    ],
+    correctAnswer: 1,
+    explanation: "To operate an amateur radio station in Canada, you need both a valid Amateur Radio Operator Certificate and a station license issued by Innovation, Science and Economic Development Canada."
+  },
+  {
+    question: "What is the proper way to call another station on a repeater?",
+    options: [
+      "Say 'Breaker, breaker' followed by the other station's call sign",
+      "Say the other station's call sign, followed by 'this is' and your call sign",
+      "Say your call sign followed by the other station's call sign",
+      "Whistle into the microphone to get attention, then say both call signs"
+    ],
+    correctAnswer: 1,
+    explanation: "The proper procedure is to say the call sign of the station you are calling, followed by 'this is' and your own call sign."
   }
 ];
 
@@ -310,35 +425,62 @@ function Quiz({ questions }: QuizProps) {
   }
 
   return (
-    <div className="p-6 bg-white rounded-lg border shadow-sm">
+    <div className="p-6 bg-gradient-to-b from-gray-50 to-white rounded-lg border shadow-md">
       <div className="flex justify-between items-center mb-4">
-        <span className="text-sm text-muted-foreground">Question {currentQuestion + 1} of {questions.length}</span>
-        <Badge variant="outline">{Math.round(((currentQuestion + 1) / questions.length) * 100)}% complete</Badge>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 bg-green-500 rounded-full animate-pulse"></div>
+          <span className="text-sm font-mono">Question {currentQuestion + 1} of {questions.length}</span>
+        </div>
+        <Badge variant="outline" className="bg-blue-50">
+          <div className="font-mono">{Math.round(((currentQuestion + 1) / questions.length) * 100)}% complete</div>
+        </Badge>
       </div>
       
-      <Progress value={((currentQuestion + 1) / questions.length) * 100} className="mb-6" />
+      <Progress value={((currentQuestion + 1) / questions.length) * 100} className="mb-6 h-2 bg-gray-200" 
+        style={{
+          background: 'repeating-linear-gradient(45deg, #f0f0f0, #f0f0f0 10px, #e5e5e5 10px, #e5e5e5 20px)'
+        }} />
       
-      <h3 className="text-xl font-bold mb-4">{questions[currentQuestion].question}</h3>
+      <div className="border-l-4 border-blue-600 pl-4 mb-6">
+        <h3 className="text-xl font-bold mb-2 text-blue-900">{questions[currentQuestion].question}</h3>
+        <div className="text-xs text-gray-500 font-mono">SELECT BEST ANSWER</div>
+      </div>
       
       <div className="space-y-3">
-        {questions[currentQuestion].options.map((option, index) => (
-          <button
-            key={index}
-            onClick={() => handleAnswer(index)}
-            disabled={showExplanation}
-            className={`w-full text-left p-3 rounded-md transition-colors ${
-              showExplanation
-                ? index === questions[currentQuestion].correctAnswer
-                  ? 'bg-green-100 border-green-300 border'
-                  : selectedOption === index
-                  ? 'bg-red-100 border-red-300 border'
-                  : 'bg-gray-100 border border-gray-200'
-                : 'border border-gray-200 hover:bg-gray-100'
-            }`}
-          >
-            {option}
-          </button>
-        ))}
+        {questions[currentQuestion].options.map((option, index) => {
+          const optionLetters = ['A', 'B', 'C', 'D'];
+          return (
+            <button
+              key={index}
+              onClick={() => handleAnswer(index)}
+              disabled={showExplanation}
+              className={`w-full text-left p-4 rounded-md transition-all relative ${
+                showExplanation
+                  ? index === questions[currentQuestion].correctAnswer
+                    ? 'bg-green-50 border-green-300 border-2 shadow-inner'
+                    : selectedOption === index
+                    ? 'bg-red-50 border-red-300 border-2 shadow-inner'
+                    : 'bg-gray-50 border border-gray-200'
+                  : 'border border-blue-200 hover:bg-blue-50 hover:border-blue-300 hover:shadow-md'
+              }`}
+            >
+              <div className="flex items-center">
+                <div className={`h-7 w-7 rounded-full mr-3 text-sm flex items-center justify-center font-bold ${
+                  showExplanation
+                    ? index === questions[currentQuestion].correctAnswer
+                      ? 'bg-green-600 text-white'
+                      : selectedOption === index
+                      ? 'bg-red-600 text-white'
+                      : 'bg-blue-100 text-blue-800'
+                    : 'bg-blue-100 text-blue-800'
+                }`}>
+                  {optionLetters[index]}
+                </div>
+                <span>{option}</span>
+              </div>
+            </button>
+          );
+        })}
       </div>
       
       {showExplanation && (
@@ -359,13 +501,26 @@ function Quiz({ questions }: QuizProps) {
                 }`
             }
           </p>
+          
+          {/* Display explanation */}
+          <div className="mt-2 pt-2 border-t border-gray-200">
+            <p className="text-sm text-gray-700">
+              <span className="font-medium">Explanation: </span>
+              {questions[currentQuestion].explanation}
+            </p>
+          </div>
         </div>
       )}
       
       {showExplanation && (
-        <Button onClick={handleNext} className="mt-4">
-          {currentQuestion < questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
-        </Button>
+        <div className="flex justify-end mt-4">
+          <Button 
+            onClick={handleNext} 
+            size="sm"
+            className="px-3 py-1 h-8 text-xs font-medium">
+            {currentQuestion < questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
+          </Button>
+        </div>
       )}
     </div>
   );
@@ -396,8 +551,28 @@ export default function LearningPage() {
 
   return (
     <div className="container mx-auto py-6 px-4">
-      <h1 className="text-3xl font-bold mb-2">Ham Radio Learning Center</h1>
-      <p className="text-muted-foreground mb-6">Interactive resources to help you learn and pass your ham radio license exam</p>
+      <div className="mb-8 text-center bg-gradient-to-r from-blue-900 via-blue-700 to-blue-900 p-6 rounded-lg shadow-md">
+        <h1 className="text-3xl md:text-4xl font-bold mb-2 text-white">
+          <span className="inline-block transform -rotate-2 text-yellow-300">Ham Radio</span> Learning Center
+        </h1>
+        <p className="text-blue-100 text-lg max-w-2xl mx-auto">
+          Interactive resources to help you learn, practice, and pass your ham radio license exam
+        </p>
+        <div className="mt-4 grid grid-cols-3 max-w-lg mx-auto gap-4">
+          <div className="bg-blue-800 rounded-lg p-2 text-center">
+            <div className="text-xl font-mono text-yellow-300">CQ</div>
+            <div className="text-xs text-blue-200">Calling All</div>
+          </div>
+          <div className="bg-blue-800 rounded-lg p-2 text-center">
+            <div className="text-xl font-mono text-yellow-300">73</div>
+            <div className="text-xs text-blue-200">Best Wishes</div>
+          </div>
+          <div className="bg-blue-800 rounded-lg p-2 text-center">
+            <div className="text-xl font-mono text-yellow-300">DX</div>
+            <div className="text-xs text-blue-200">Distance</div>
+          </div>
+        </div>
+      </div>
       
       {!showMorseGame && !showQuiz && !showFlashcard && (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -604,20 +779,38 @@ export default function LearningPage() {
 
       {/* Quiz Game */}
       {showQuiz && (
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between pb-2">
-            <div>
-              <CardTitle>Practice Quiz</CardTitle>
-              <CardDescription>Test your knowledge with exam-style questions</CardDescription>
+        <div>
+          <div className="bg-blue-900 text-white rounded-lg p-4 mb-6 shadow-lg relative overflow-hidden">
+            <div className="flex justify-between items-center z-10 relative">
+              <div>
+                <h2 className="text-2xl font-bold flex items-center gap-2">
+                  <Award className="h-6 w-6" /> 
+                  Canadian Amateur Radio Exam Prep
+                </h2>
+                <p className="text-blue-200 mt-1">
+                  Practice with realistic exam-style questions to prepare for certification
+                </p>
+              </div>
+              <Button variant="outline" size="sm" 
+                className="text-white border-white hover:bg-blue-800 bg-transparent" 
+                onClick={() => setShowQuiz(false)}>
+                Back to Learning Center
+              </Button>
             </div>
-            <Button variant="outline" size="sm" onClick={() => setShowQuiz(false)}>
-              Back to Learning Center
-            </Button>
-          </CardHeader>
-          <CardContent>
-            <Quiz questions={QUIZ_QUESTIONS} />
-          </CardContent>
-        </Card>
+            <div className="absolute right-0 top-0 opacity-10">
+              <svg width="150" height="150" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-3-5.5l8-8 1.5 1.5-8 8z" fill="white"/>
+              </svg>
+            </div>
+            <div className="font-mono text-xs text-blue-300 mt-4 relative z-10">
+              <div className="flex justify-between items-center">
+                <div>VERSION 2.0 / RAC APPROVED</div>
+                <div>BASIC QUALIFICATION (BQ)</div>
+              </div>
+            </div>
+          </div>
+          <Quiz questions={QUIZ_QUESTIONS} />
+        </div>
       )}
 
       {/* Flashcards */}
