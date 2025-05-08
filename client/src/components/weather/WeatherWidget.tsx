@@ -1,6 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import { Skeleton } from "@/components/ui/skeleton";
 import { format } from "date-fns";
+import { 
+  Cloud, 
+  CloudRain, 
+  CloudLightning, 
+  Sun, 
+  CloudSnow, 
+  CloudFog,
+  Wind, 
+  CloudOff, 
+  HelpCircle 
+} from "lucide-react";
 
 interface WeatherWidgetProps {
   location?: string;
@@ -24,22 +35,26 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ location = "Powell River,
   });
 
   const formattedDate = weather?.lastUpdated 
-    ? format(new Date(weather.lastUpdated), "MMM d, h:mm a")
-    : "Loading...";
+    ? format(new Date(weather.lastUpdated), "HH:mm")
+    : "--:--";
 
   if (isLoading) {
     return (
-      <div className="bg-white rounded-lg shadow mb-4 p-4">
-        <div className="flex justify-between items-center mb-2">
-          <Skeleton className="h-6 w-40" />
-          <Skeleton className="h-4 w-36" />
-        </div>
-        <div className="flex items-center">
-          <Skeleton className="h-16 w-16 rounded-full mr-3" />
-          <div>
-            <Skeleton className="h-8 w-20 mb-2" />
-            <Skeleton className="h-4 w-48" />
+      <div className="rounded-md">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-2">
+            <div className="text-blue-100 flex items-center h-6">
+              <Skeleton className="h-3 w-16 bg-gray-700" />
+            </div>
           </div>
+          <Skeleton className="h-3 w-10 bg-gray-700" />
+        </div>
+        <div className="flex items-center justify-between mt-1">
+          <div className="flex items-center">
+            <Skeleton className="h-8 w-8 rounded-md mr-2 bg-gray-700" />
+            <Skeleton className="h-5 w-12 bg-gray-700" />
+          </div>
+          <Skeleton className="h-4 w-24 bg-gray-700" />
         </div>
       </div>
     );
@@ -47,14 +62,17 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ location = "Powell River,
 
   if (error) {
     return (
-      <div className="bg-white rounded-lg shadow mb-4 p-4">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="font-bold">Powell River Weather</h2>
-          <span className="text-xs text-gray-500">Unable to load</span>
+      <div className="rounded-md text-gray-300">
+        <div className="flex justify-between items-center">
+          <h3 className="text-xs font-mono tracking-wide text-blue-300">WEATHER CONDITIONS</h3>
+          <span className="text-xs font-mono text-red-400">ERROR</span>
         </div>
-        <div className="flex items-center text-gray-500">
-          <span className="material-icons text-4xl mr-3">cloud_off</span>
-          <p>Weather information unavailable</p>
+        <div className="flex items-center justify-between mt-1">
+          <div className="flex items-center">
+            <CloudOff className="h-5 w-5 mr-2 text-gray-400" />
+            <span className="text-xs">No data available</span>
+          </div>
+          <span className="text-[10px] font-mono text-gray-500">--:--</span>
         </div>
       </div>
     );
@@ -62,48 +80,65 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ location = "Powell River,
 
   if (!weather) {
     return (
-      <div className="bg-white rounded-lg shadow mb-4 p-4">
-        <div className="flex justify-between items-center mb-2">
-          <h2 className="font-bold">Powell River Weather</h2>
-          <span className="text-xs text-gray-500">No data</span>
+      <div className="rounded-md text-gray-300">
+        <div className="flex justify-between items-center">
+          <h3 className="text-xs font-mono tracking-wide text-blue-300">WEATHER CONDITIONS</h3>
+          <span className="text-xs font-mono text-yellow-400">NO DATA</span>
         </div>
-        <div className="flex items-center text-gray-500">
-          <span className="material-icons text-4xl mr-3">help_outline</span>
-          <p>Weather data not found</p>
+        <div className="flex items-center justify-between mt-1">
+          <div className="flex items-center">
+            <HelpCircle className="h-5 w-5 mr-2 text-gray-400" />
+            <span className="text-xs">Weather data not found</span>
+          </div>
+          <span className="text-[10px] font-mono text-gray-500">--:--</span>
         </div>
       </div>
     );
   }
 
-  // Map weather condition to material icon
+  // Map weather condition to Lucide icon
   const getWeatherIcon = (condition: string) => {
     const conditionLower = condition.toLowerCase();
     
-    if (conditionLower.includes("rain")) return "rainy";
-    if (conditionLower.includes("cloud")) return "cloud";
-    if (conditionLower.includes("sun") || conditionLower.includes("clear")) return "wb_sunny";
-    if (conditionLower.includes("thunder")) return "thunderstorm";
-    if (conditionLower.includes("snow")) return "ac_unit";
-    if (conditionLower.includes("fog") || conditionLower.includes("mist")) return "foggy";
+    if (conditionLower.includes("rain")) 
+      return <CloudRain className="h-5 w-5 text-blue-400" />;
+    if (conditionLower.includes("cloud")) 
+      return <Cloud className="h-5 w-5 text-gray-400" />;
+    if (conditionLower.includes("sun") || conditionLower.includes("clear")) 
+      return <Sun className="h-5 w-5 text-yellow-400" />;
+    if (conditionLower.includes("thunder")) 
+      return <CloudLightning className="h-5 w-5 text-yellow-500" />;
+    if (conditionLower.includes("snow")) 
+      return <CloudSnow className="h-5 w-5 text-blue-100" />;
+    if (conditionLower.includes("fog") || conditionLower.includes("mist")) 
+      return <CloudFog className="h-5 w-5 text-gray-400" />;
     
-    return "cloud"; // default icon
+    return <Cloud className="h-5 w-5 text-gray-400" />; // default icon
   };
 
   return (
-    <div className="bg-white rounded-lg shadow mb-4 p-4">
-      <div className="flex justify-between items-center mb-2">
-        <h2 className="font-bold">Powell River Weather</h2>
-        <span className="text-xs text-gray-500">Last updated: {formattedDate}</span>
+    <div className="rounded-md text-gray-300">
+      <div className="flex justify-between items-center">
+        <h3 className="text-xs font-mono tracking-wide text-blue-300">WEATHER CONDITIONS</h3>
+        <span className="text-[10px] font-mono text-green-400">ACTIVE</span>
       </div>
-      <div className="flex items-center">
-        <span className="material-icons text-4xl text-accent mr-3">
+      <div className="flex items-center justify-between mt-1">
+        <div className="flex items-center">
           {getWeatherIcon(weather.condition)}
-        </span>
-        <div>
-          <p className="text-2xl font-bold">{weather.temperature}°C</p>
-          <p className="text-sm">
-            {weather.condition}, Wind: {weather.windSpeed}km/h {weather.windDirection}
-          </p>
+          <div className="ml-2">
+            <div className="flex items-baseline">
+              <span className="text-md font-mono font-bold text-gray-100">{weather.temperature}</span>
+              <span className="text-xs ml-0.5 text-gray-400">°C</span>
+            </div>
+            <div className="flex items-center text-[10px] mt-0.5 text-gray-400">
+              <Wind className="h-3 w-3 mr-1" />
+              <span>{weather.windSpeed}km/h {weather.windDirection}</span>
+            </div>
+          </div>
+        </div>
+        <div className="flex flex-col items-end">
+          <span className="text-[10px] font-mono text-gray-500">{formattedDate}</span>
+          <span className="text-[10px] font-mono text-gray-400 mt-0.5">{weather.condition}</span>
         </div>
       </div>
     </div>

@@ -3,28 +3,29 @@
 @tailwind utilities;
 
 :root {
-  --background: 0 0% 98%;
-  --foreground: 220 33% 10%;
-  --muted: 60 4.8% 95.9%;
-  --muted-foreground: 25 5.3% 44.7%;
-  --popover: 0 0% 100%;
-  --popover-foreground: 20 14.3% 4.1%;
-  --card: 0 0% 100%;
-  --card-foreground: 20 14.3% 4.1%;
-  --border: 20 5.9% 90%;
-  --input: 20 5.9% 90%;
+  /* Radio dark theme colors */
+  --background: 216 14% 14%;
+  --foreground: 0 0% 95%;
+  --muted: 217 21% 25%;
+  --muted-foreground: 215 20.2% 75.1%;
+  --popover: 217 33% 17%;
+  --popover-foreground: 210 40% 98%;
+  --card: 215 28% 17%;
+  --card-foreground: 20 14.3% 98%;
+  --border: 220 13% 30%;
+  --input: 213 16% 25%;
   
-  /* Primary - dark blue for Powell River ham radio */
-  --primary: 210 80% 28%;
+  /* Primary - blue for radio display */
+  --primary: 221 83% 53%;
   --primary-foreground: 210 40% 98%;
   
   /* Secondary - red for emergency elements */
   --secondary: 353 84% 56%;
   --secondary-foreground: 0 0% 100%;
   
-  /* Accent - medium blue */
-  --accent: 204 46% 44%;
-  --accent-foreground: 0 0% 100%;
+  /* Accent - yellow for buttons */
+  --accent: 33 100% 50%;
+  --accent-foreground: 210 12% 10%;
   
   /* Success, warning, and additional colors */
   --success: 167 71% 39%;
@@ -32,42 +33,8 @@
   
   --destructive: 0 84.2% 60.2%;
   --destructive-foreground: 60 9.1% 97.8%;
-  --ring: 20 14.3% 4.1%;
-  --radius: 0.5rem;
-}
-
-.dark {
-  --background: 240 10% 3.9%;
-  --foreground: 0 0% 98%;
-  --muted: 240 3.7% 15.9%;
-  --muted-foreground: 240 5% 64.9%;
-  --popover: 240 10% 3.9%;
-  --popover-foreground: 0 0% 98%;
-  --card: 240 10% 3.9%;
-  --card-foreground: 0 0% 98%;
-  --border: 240 3.7% 15.9%;
-  --input: 240 3.7% 15.9%;
-  
-  /* Primary - dark blue for Powell River ham radio */
-  --primary: 210 80% 40%;
-  --primary-foreground: 210 40% 98%;
-  
-  /* Secondary - red for emergency elements */
-  --secondary: 353 84% 56%;
-  --secondary-foreground: 0 0% 100%;
-  
-  /* Accent - medium blue */
-  --accent: 204 46% 44%;
-  --accent-foreground: 0 0% 100%;
-  
-  /* Success, warning, and additional colors */
-  --success: 167 71% 39%;
-  --warning: 14 80% 61%;
-  
-  --destructive: 0 62.8% 30.6%;
-  --destructive-foreground: 0 0% 98%;
-  --ring: 240 4.9% 83.9%;
-  --radius: 0.5rem;
+  --ring: 221 83% 53%;
+  --radius: 0.75rem;
 }
 
 @layer base {
@@ -77,6 +44,9 @@
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    background-image: radial-gradient(rgba(0, 0, 0, 0.2) 1px, transparent 0);
+    background-size: 20px 20px;
+    background-position: -10px -10px;
   }
 }
 
@@ -88,4 +58,186 @@
   0% { opacity: 0.6; }
   50% { opacity: 1; }
   100% { opacity: 0.6; }
+}
+
+@layer components {
+  /* Radio device styling */
+  .radio-body {
+    @apply bg-gradient-to-b from-gray-800 to-gray-900 rounded-[2rem] p-3 shadow-lg border-t border-gray-700 border-b-2 border-b-black overflow-hidden;
+    box-shadow: 
+      0 10px 15px -3px rgba(0, 0, 0, 0.4),
+      0 4px 6px -4px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  /* Radio screen styling */
+  .radio-screen {
+    @apply bg-black bg-opacity-90 rounded-xl p-4 mx-auto my-2 shadow-inner overflow-hidden;
+    box-shadow: 
+      inset 0 2px 4px 0 rgba(0, 0, 0, 0.9),
+      inset 0 -1px 0 0 rgba(255, 255, 255, 0.1),
+      0 0 5px rgba(0, 150, 255, 0.5);
+    border: 1px solid #222;
+  }
+  
+  /* Radio control buttons */
+  .radio-button {
+    @apply relative cursor-pointer transition-all duration-100 select-none text-center;
+  }
+  
+  .radio-button-large {
+    @apply w-16 h-16 rounded-full bg-gradient-to-b from-gray-700 to-gray-800 flex items-center justify-center shadow-md border border-gray-700;
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0 2px 4px -2px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  .radio-button-large:active {
+    @apply from-gray-800 to-gray-900;
+    transform: translateY(2px);
+    box-shadow: 
+      0 2px 4px -1px rgba(0, 0, 0, 0.3),
+      inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  }
+  
+  .radio-button-small {
+    @apply w-10 h-10 rounded-full bg-gradient-to-b from-gray-700 to-gray-800 flex items-center justify-center shadow-md border border-gray-700;
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.3),
+      0 2px 4px -2px rgba(0, 0, 0, 0.3),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  .radio-button-small:active {
+    @apply from-gray-800 to-gray-900;
+    transform: translateY(1px);
+    box-shadow: 
+      0 2px 4px -1px rgba(0, 0, 0, 0.3),
+      inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  }
+  
+  .radio-channel {
+    @apply px-3 py-2 rounded-md cursor-pointer border border-blue-900 transition-all duration-150 
+    bg-gradient-to-r from-blue-900 to-blue-800 text-blue-100 text-sm font-medium relative;
+    box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  .radio-channel:hover {
+    @apply bg-blue-800 border-blue-700;
+  }
+  
+  .radio-channel.active {
+    @apply from-blue-600 to-blue-700 border-blue-500;
+    box-shadow: 
+      0 0 0 1px rgba(59, 130, 246, 0.4),
+      0 0 10px rgba(59, 130, 246, 0.3),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  }
+  
+  .radio-channel.active::after {
+    content: '';
+    @apply absolute top-1 right-1 w-2 h-2 rounded-full bg-green-400;
+    box-shadow: 0 0 5px rgba(74, 222, 128, 0.6);
+    animation: pulse 1.5s infinite;
+  }
+  
+  /* Radio LED */
+  .radio-led {
+    @apply w-3 h-3 rounded-full;
+    box-shadow: 0 0 10px currentColor;
+  }
+  
+  .radio-led.green {
+    @apply bg-green-500 text-green-400;
+  }
+  
+  .radio-led.red {
+    @apply bg-red-500 text-red-400;
+  }
+  
+  .radio-led.yellow {
+    @apply bg-yellow-400 text-yellow-300;
+  }
+  
+  /* Keypad buttons for numeric input */
+  .radio-keypad-button {
+    @apply w-14 h-14 rounded-lg bg-gradient-to-b from-gray-700 to-gray-800 flex items-center justify-center 
+    font-mono text-xl font-bold shadow-md border border-gray-700 text-gray-200 relative;
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  .radio-keypad-button:active {
+    @apply from-gray-800 to-gray-900;
+    transform: translateY(1px);
+    box-shadow: 
+      0 2px 4px -1px rgba(0, 0, 0, 0.3),
+      inset 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+  }
+  
+  /* Frequency display */
+  .radio-frequency-display {
+    @apply bg-black p-2 rounded-md font-mono text-base text-center text-green-500 my-2;
+    box-shadow: 
+      inset 0 2px 4px 0 rgba(0, 0, 0, 0.7),
+      0 0 5px rgba(74, 222, 128, 0.3);
+    text-shadow: 0 0 5px rgba(74, 222, 128, 0.7);
+  }
+  
+  /* Signal strength meter */
+  .signal-bar {
+    @apply h-4 w-1 bg-gray-700 rounded-sm mx-0.5 transition-all duration-300;
+  }
+  
+  .signal-bar.active {
+    @apply bg-green-500;
+    box-shadow: 0 0 5px rgba(74, 222, 128, 0.6);
+  }
+  
+  /* Antenna icon */
+  .antenna {
+    @apply absolute top-[-23px] w-1 h-24 bg-gray-700 rounded-t-sm left-1/2 transform -translate-x-1/2;
+    box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.4);
+  }
+  
+  .antenna::before {
+    content: '';
+    @apply absolute w-5 h-5 rounded-full bg-gray-800 top-[-5px] left-1/2 transform -translate-x-1/2;
+    box-shadow: 0 0 3px rgba(0, 0, 0, 0.4);
+  }
+  
+  .antenna::after {
+    content: '';
+    @apply absolute w-3 h-3 rounded-full bg-gray-700 top-[-7px] left-1/2 transform -translate-x-1/2;
+  }
+  
+  /* Navigation tabs as radio buttons */
+  .radio-nav-button {
+    @apply relative px-4 py-2 rounded-md cursor-pointer border border-gray-700 transition-all duration-150
+    bg-gradient-to-b from-gray-700 to-gray-800 text-gray-300 text-sm font-medium flex items-center justify-center gap-2;
+    box-shadow: 
+      0 4px 6px -1px rgba(0, 0, 0, 0.2),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.1);
+  }
+  
+  .radio-nav-button:hover {
+    @apply from-gray-600 to-gray-700 border-gray-600 text-white;
+  }
+  
+  .radio-nav-button.active {
+    @apply from-blue-600 to-blue-700 border-blue-500 text-white;
+    box-shadow: 
+      0 0 0 1px rgba(59, 130, 246, 0.4),
+      0 0 10px rgba(59, 130, 246, 0.3),
+      inset 0 1px 0 0 rgba(255, 255, 255, 0.2);
+  }
+  
+  .radio-nav-button.active::before {
+    content: '';
+    @apply absolute top-1 right-1 w-2 h-2 rounded-full bg-green-400;
+    box-shadow: 0 0 5px rgba(74, 222, 128, 0.6);
+    animation: pulse 1.5s infinite;
+  }
 }
