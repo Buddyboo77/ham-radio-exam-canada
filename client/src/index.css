@@ -145,6 +145,13 @@
     box-shadow: 0 0 10px rgba(147, 51, 234, 0.4);
   }
   
+  /* Blue glow for prominent buttons */
+  .shadow-glow-blue {
+    box-shadow: 
+      0 0 15px rgba(59, 130, 246, 0.5),
+      0 0 5px rgba(59, 130, 246, 0.3);
+  }
+  
   .radio-channel {
     @apply px-3 py-2 rounded-md cursor-pointer border border-blue-900 transition-all duration-150 
     bg-gradient-to-r from-blue-900 to-blue-800 text-blue-100 text-sm font-medium relative;

@@ -162,28 +162,28 @@ function Router() {
             ))}
           </div>
           
+          {/* VERY PROMINENT LEARNING BUTTON */}
+          <div className="flex justify-center mt-2 mb-2">
+            <Link href="/learning" className="w-full">
+              <button className="w-full py-2 bg-blue-600 hover:bg-blue-500 rounded-md flex items-center justify-center gap-2 border border-blue-400 shadow-glow-blue">
+                <BookOpenCheck size={20} className="text-blue-100" />
+                <span className="text-white font-medium">LEARNING CENTER</span>
+                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+              </button>
+            </Link>
+          </div>
+          
           {/* Quick access buttons */}
-          <div className={`flex justify-between items-center gap-2 mt-4 transition-all duration-300 ${!isMenuOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none absolute'}`}>
+          <div className={`flex justify-between items-center gap-2 mt-2 transition-all duration-300 ${!isMenuOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none absolute'}`}>
             <div className="radio-frequency-display flex-1">
               Powell River Amateur Radio <Radio className="inline-block ml-1 mr-1" size={14} /> VA7HAM
             </div>
             
-            <div className="flex gap-2">
+            <div className="flex items-center">
               {/* Quick local info button */}
-              <Link href="/local-info" className="flex flex-col items-center">
-                <button className="radio-button-medium bg-purple-700 hover:bg-purple-600 flex-shrink-0 border-purple-500">
-                  <RadioTower size={18} className="text-purple-100" />
-                </button>
-                <span className="text-[9px] text-purple-300 mt-1">Local Info</span>
-              </Link>
-              
-              {/* Quick learning button - make it more prominent */}
-              <Link href="/learning" className="flex flex-col items-center">
-                <button className="radio-button-medium bg-blue-600 hover:bg-blue-500 flex-shrink-0 relative">
-                  <BookOpenCheck size={20} className="text-blue-100" />
-                  <div className="absolute top-0 right-0 w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-glow-green"></div>
-                </button>
-                <span className="text-[9px] text-blue-300 mt-1">Learning</span>
+              <Link href="/local-info" className="flex items-center gap-2 bg-purple-800 hover:bg-purple-700 px-2 py-1 rounded-md border border-purple-600">
+                <RadioTower size={16} className="text-purple-100" />
+                <span className="text-xs text-white">Powell River</span>
               </Link>
             </div>
           </div>
