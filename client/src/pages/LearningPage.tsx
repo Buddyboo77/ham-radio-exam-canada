@@ -1,4 +1,6 @@
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
@@ -135,6 +137,44 @@ const QUIZ_QUESTIONS = [
     correctAnswer: 1,
     explanation: "CW (Morse code) is the most effective mode for long-distance communication during poor conditions because it has the narrowest bandwidth and can be copied at lower signal-to-noise ratios.",
     category: "Technical"
+  }
+];
+
+// External resources for Canadian Amateur Radio exams
+const EXAM_RESOURCES = [
+  {
+    title: "Industry Canada Study Guide (IC-2828)",
+    url: "https://www.ic.gc.ca/eic/site/025.nsf/eng/h_00004.html"
+  },
+  {
+    title: "Radio Amateurs of Canada (RAC) Resources",
+    url: "https://www.rac.ca/beginners/"
+  },
+  {
+    title: "Coax Publications - Canadian Amateur Radio Basic Qualification",
+    url: "https://www.coaxpublications.ca/"
+  },
+  {
+    title: "Ham Study Online Practice Tests",
+    url: "https://hamstudy.org/canadaBasic"
+  },
+  {
+    title: "Powell River Amateur Radio Club Resources",
+    url: "#"
+  }
+];
+
+// Local exam sessions
+const LOCAL_EXAMS = [
+  {
+    title: "Powell River Amateur Radio Club Exam Session",
+    schedule: "Second Wednesday monthly, 7:00pm",
+    location: "Powell River Recreation Complex, Room 3"
+  },
+  {
+    title: "Vancouver Island Amateur Radio Society",
+    schedule: "First Saturday bimonthly, 1:00pm",
+    location: "Nanaimo, BC (120km south of Powell River, via ferry)"
   }
 ];
 
@@ -366,7 +406,6 @@ function Quiz({ questions }: QuizProps) {
   );
 }
 
-// Main Learning Page Component
 export default function LearningPage() {
   const [showMorseGame, setShowMorseGame] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
