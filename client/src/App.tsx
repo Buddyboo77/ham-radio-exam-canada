@@ -170,17 +170,20 @@ function Router() {
             
             <div className="flex gap-2">
               {/* Quick local info button */}
-              <Link href="/local-info">
-                <button className="radio-button-small bg-purple-800 hover:bg-purple-700 flex-shrink-0">
-                  <RadioTower size={16} className="text-purple-100" />
+              <Link href="/local-info" className="flex flex-col items-center">
+                <button className="radio-button-medium bg-purple-700 hover:bg-purple-600 flex-shrink-0 border-purple-500">
+                  <RadioTower size={18} className="text-purple-100" />
                 </button>
+                <span className="text-[9px] text-purple-300 mt-1">Local Info</span>
               </Link>
               
-              {/* Quick learning button */}
-              <Link href="/learning">
-                <button className="radio-button-small bg-blue-800 hover:bg-blue-700 flex-shrink-0">
-                  <BookOpenCheck size={16} className="text-blue-100" />
+              {/* Quick learning button - make it more prominent */}
+              <Link href="/learning" className="flex flex-col items-center">
+                <button className="radio-button-medium bg-blue-600 hover:bg-blue-500 flex-shrink-0 relative">
+                  <BookOpenCheck size={20} className="text-blue-100" />
+                  <div className="absolute top-0 right-0 w-3 h-3 bg-green-500 rounded-full animate-pulse shadow-glow-green"></div>
                 </button>
+                <span className="text-[9px] text-blue-300 mt-1">Learning</span>
               </Link>
             </div>
           </div>
