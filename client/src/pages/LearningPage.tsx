@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { AlertCircle, Award, BookOpen, ExternalLink, FlaskConical, Lightbulb, Radio, RotateCw, GamepadIcon } from "lucide-react";
@@ -372,12 +372,26 @@ function Quiz({ questions }: QuizProps) {
 }
 
 export default function LearningPage() {
-  const [activeTab, setActiveTab] = useState("flashcards");
+  const [showMorseGame, setShowMorseGame] = useState(false);
+  const [showQuiz, setShowQuiz] = useState(false);
+  const [showFlashcard, setShowFlashcard] = useState(false);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [studyStarted, setStudyStarted] = useState(false);
 
   const handleNextCard = () => {
     setCurrentCardIndex((prevIndex) => (prevIndex + 1) % FLASHCARDS.length);
+  };
+
+  // Reset all views
+  const resetViews = () => {
+    setShowMorseGame(false);
+    setShowQuiz(false);
+    setShowFlashcard(false);
+  };
+
+  // Toggle a specific view
+  const toggleView = (viewSetter: React.Dispatch<React.SetStateAction<boolean>>) => {
+    resetViews();
+    viewSetter(prev => !prev);
   };
 
   return (
@@ -385,146 +399,247 @@ export default function LearningPage() {
       <h1 className="text-3xl font-bold mb-2">Ham Radio Learning Center</h1>
       <p className="text-muted-foreground mb-6">Interactive resources to help you learn and pass your ham radio license exam</p>
       
-      <div className="bg-white shadow-sm rounded-lg p-4 mb-6 border">
-        <h2 className="text-lg font-semibold mb-3 text-center">Choose Learning Activity</h2>
-        
-        <Tabs value={activeTab} onValueChange={setActiveTab}>
-          <TabsList className="w-full grid grid-cols-1 md:grid-cols-5 gap-2">
-            <TabsTrigger value="flashcards" className="flex items-center justify-center py-3">
-              <BookOpen className="mr-2 h-5 w-5 text-blue-600" />
-              <span>Flashcards</span>
-            </TabsTrigger>
-            <TabsTrigger value="practice" className="flex items-center justify-center py-3">
-              <FlaskConical className="mr-2 h-5 w-5 text-green-600" />
-              <span>Practice Quiz</span>
-            </TabsTrigger>
-            <TabsTrigger value="games" className="flex items-center justify-center py-3">
-              <GamepadIcon className="mr-2 h-5 w-5 text-purple-600" />
-              <span>Morse Code</span>
-            </TabsTrigger>
-            <TabsTrigger value="exams" className="flex items-center justify-center py-3">
-              <Award className="mr-2 h-5 w-5 text-amber-600" />
-              <span>Exam Resources</span>
-            </TabsTrigger>
-            <TabsTrigger value="local" className="flex items-center justify-center py-3">
-              <Radio className="mr-2 h-5 w-5 text-red-600" />
-              <span>Local Exams</span>
-            </TabsTrigger>
-          </TabsList>
-        
-          <TabsContent value="flashcards" className="mt-6">
-            {!studyStarted ? (
-              <Card>
-                <CardHeader>
-                  <CardTitle>Ham Radio Flashcard Study</CardTitle>
-                  <CardDescription>Test your knowledge with these flashcards covering technical concepts, operating procedures, and digital modes</CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <div className="flex items-center justify-center p-6">
-                    <Lightbulb className="w-16 h-16 text-yellow-500 mb-4" />
+      {!showMorseGame && !showQuiz && !showFlashcard && (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {/* Morse Code Game Card */}
+          <Card className="bg-gradient-to-br from-purple-50 to-white border overflow-hidden hover:shadow-md transition-all">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <GamepadIcon className="mr-2 h-5 w-5 text-purple-600" />
+                Morse Code Practice
+              </CardTitle>
+              <CardDescription>
+                Learn Morse code through this interactive game - an essential skill for ham radio operators
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2 text-center">
+              <div className="w-20 h-20 bg-purple-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Radio className="h-10 w-10 text-purple-600" />
+              </div>
+              <p className="text-sm mb-4">
+                Test your knowledge of Morse code with different difficulty levels. Learn the skill that's been used by operators for over a century.
+              </p>
+            </CardContent>
+            <CardFooter className="flex justify-center pt-0">
+              <Button onClick={() => toggleView(setShowMorseGame)} className="bg-purple-600 hover:bg-purple-700">
+                Start Practice
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* Practice Quiz Card */}
+          <Card className="bg-gradient-to-br from-green-50 to-white border overflow-hidden hover:shadow-md transition-all">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <FlaskConical className="mr-2 h-5 w-5 text-green-600" />
+                Practice Quiz
+              </CardTitle>
+              <CardDescription>
+                Test your knowledge with questions similar to those on the Canadian Amateur Radio Operator exam
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2 text-center">
+              <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Award className="h-10 w-10 text-green-600" />
+              </div>
+              <p className="text-sm mb-4">
+                Perfect your exam readiness with multiple-choice questions that mimic the actual Amateur Radio exam format.
+              </p>
+            </CardContent>
+            <CardFooter className="flex justify-center pt-0">
+              <Button onClick={() => toggleView(setShowQuiz)} className="bg-green-600 hover:bg-green-700">
+                Take Quiz
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* Flashcards Card */}
+          <Card className="bg-gradient-to-br from-blue-50 to-white border overflow-hidden hover:shadow-md transition-all">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <BookOpen className="mr-2 h-5 w-5 text-blue-600" />
+                Flashcards
+              </CardTitle>
+              <CardDescription>
+                Test your knowledge with flashcards covering technical concepts and operating procedures
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2 text-center">
+              <div className="w-20 h-20 bg-blue-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                <Lightbulb className="h-10 w-10 text-blue-600" />
+              </div>
+              <p className="text-sm mb-4">
+                Review key concepts with interactive flashcards covering technical terms, operating procedures, and regulations.
+              </p>
+            </CardContent>
+            <CardFooter className="flex justify-center pt-0">
+              <Button onClick={() => toggleView(setShowFlashcard)} className="bg-blue-600 hover:bg-blue-700">
+                Study Cards
+              </Button>
+            </CardFooter>
+          </Card>
+
+          {/* External Resources */}
+          <Card className="bg-gradient-to-br from-amber-50 to-white border overflow-hidden hover:shadow-md transition-all">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <ExternalLink className="mr-2 h-5 w-5 text-amber-600" />
+                Exam Resources
+              </CardTitle>
+              <CardDescription>
+                Official exam preparation materials and study guides
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2">
+              <div className="grid grid-cols-1 gap-2">
+                {EXAM_RESOURCES.slice(0, 3).map((resource, index) => (
+                  <a 
+                    key={index}
+                    href={resource.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="p-2 text-sm border rounded-md hover:bg-amber-50 transition-colors flex items-center"
+                  >
+                    <ExternalLink className="h-4 w-4 mr-2 text-amber-600" />
+                    {resource.title}
+                  </a>
+                ))}
+                <a 
+                  href="#"
+                  onClick={(e) => {
+                    e.preventDefault();
+                    // Show all resources as an alert or modal
+                    alert("View all resources on the Exam Resources tab");
+                  }}
+                  className="p-2 text-sm text-center text-amber-800 hover:underline"
+                >
+                  View all resources...
+                </a>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Local Exam Sessions */}
+          <Card className="bg-gradient-to-br from-red-50 to-white border overflow-hidden hover:shadow-md transition-all">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <Radio className="mr-2 h-5 w-5 text-red-600" />
+                Local Exam Sessions
+              </CardTitle>
+              <CardDescription>
+                Find amateur radio license exams near Powell River, BC
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2">
+              <div className="space-y-2">
+                {LOCAL_EXAMS.slice(0, 1).map((exam, index) => (
+                  <div key={index} className="p-2 border rounded-md">
+                    <h3 className="font-semibold text-sm text-red-800">{exam.title}</h3>
+                    <p className="text-xs text-muted-foreground">Next: {exam.schedule}</p>
+                    <p className="text-xs font-medium mt-1">{exam.location}</p>
                   </div>
-                  <div className="text-center mb-4">
-                    <h3 className="text-lg font-medium">Ready to study?</h3>
-                    <p className="text-sm text-muted-foreground">Click through the flashcards to test your knowledge</p>
-                  </div>
-                </CardContent>
-                <CardFooter className="flex justify-center">
-                  <Button onClick={() => setStudyStarted(true)} size="lg">Start Studying</Button>
-                </CardFooter>
-              </Card>
-            ) : (
-              <Flashcard 
-                card={FLASHCARDS[currentCardIndex]} 
-                onNext={handleNextCard} 
-              />
-            )}
-          </TabsContent>
-          
-          <TabsContent value="practice" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Practice Quiz</CardTitle>
-                <CardDescription>Test your knowledge with questions similar to those on the Canadian Amateur Radio Operator exam</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <Quiz questions={QUIZ_QUESTIONS} />
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="games" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Morse Code Practice</CardTitle>
-                <CardDescription>Learn Morse code through this interactive game - an essential skill for ham radio operators</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <MorseCodeGame />
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="exams" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Exam Resources</CardTitle>
-                <CardDescription>Links to official exam materials and study resources</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="grid gap-4 sm:grid-cols-2">
-                  {EXAM_RESOURCES.map((resource, index) => (
-                    <a 
-                      key={index}
-                      href={resource.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="p-4 border rounded-lg hover:bg-gray-50 transition-colors flex flex-col"
-                    >
-                      <h3 className="font-semibold mb-1 flex items-center">
-                        {resource.title}
-                        <ExternalLink className="ml-2 h-4 w-4 text-gray-400" />
-                      </h3>
-                      <p className="text-sm text-muted-foreground">{resource.description}</p>
-                    </a>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-          
-          <TabsContent value="local" className="mt-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Local Exam Sessions</CardTitle>
-                <CardDescription>Find amateur radio license exams near Powell River, BC</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {LOCAL_EXAMS.map((exam, index) => (
-                    <div key={index} className="p-4 border rounded-lg">
-                      <h3 className="font-semibold text-lg mb-1">{exam.title}</h3>
-                      <p className="mb-1"><strong>Location:</strong> {exam.location}</p>
-                      <p className="mb-1"><strong>Schedule:</strong> {exam.schedule}</p>
-                      <p className="mb-1"><strong>Contact:</strong> {exam.contact}</p>
-                      <p className="text-sm text-muted-foreground">{exam.notes}</p>
-                    </div>
-                  ))}
-                </div>
-                
-                <Alert className="mt-6">
-                  <AlertCircle className="h-4 w-4" />
-                  <AlertTitle>Exam Preparation Tip</AlertTitle>
-                  <AlertDescription>
-                    In Canada, you need a score of 70% to pass the Basic Qualification exam. 
-                    With a score of 80% or higher, you will receive "Basic with Honours" which 
-                    grants additional HF privileges.
+                ))}
+                <Alert className="py-2 px-3 mt-2 bg-red-50 text-xs">
+                  <AlertTitle className="text-red-800 text-sm">Tip:</AlertTitle>
+                  <AlertDescription className="text-red-700 text-xs">
+                    Basic with Honours (80%+) grants HF privileges
                   </AlertDescription>
                 </Alert>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Study Tips Card */}
+          <Card className="bg-gradient-to-br from-cyan-50 to-white border overflow-hidden hover:shadow-md transition-all">
+            <CardHeader className="pb-2">
+              <CardTitle className="flex items-center">
+                <Lightbulb className="mr-2 h-5 w-5 text-cyan-600" />
+                Study Tips
+              </CardTitle>
+              <CardDescription>
+                Strategies to help you pass your ham radio license exam
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="pb-2">
+              <ul className="space-y-2 text-sm px-2">
+                <li className="flex items-start">
+                  <span className="inline-block w-5 h-5 bg-cyan-100 rounded-full text-cyan-700 flex items-center justify-center mr-2 mt-0.5">1</span>
+                  <span>Practice Morse code for 15 minutes daily</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="inline-block w-5 h-5 bg-cyan-100 rounded-full text-cyan-700 flex items-center justify-center mr-2 mt-0.5">2</span>
+                  <span>Study Q-codes and common abbreviations</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="inline-block w-5 h-5 bg-cyan-100 rounded-full text-cyan-700 flex items-center justify-center mr-2 mt-0.5">3</span>
+                  <span>Review frequency bands and their characteristics</span>
+                </li>
+                <li className="flex items-start">
+                  <span className="inline-block w-5 h-5 bg-cyan-100 rounded-full text-cyan-700 flex items-center justify-center mr-2 mt-0.5">4</span>
+                  <span>Take practice exams until you score consistently above 80%</span>
+                </li>
+              </ul>
+            </CardContent>
+          </Card>
+        </div>
+      )}
+
+      {/* Morse Code Game */}
+      {showMorseGame && (
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <div>
+              <CardTitle>Morse Code Practice</CardTitle>
+              <CardDescription>Learn Morse code through this interactive game</CardDescription>
+            </div>
+            <Button variant="outline" size="sm" onClick={() => setShowMorseGame(false)}>
+              Back to Learning Center
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <MorseCodeGame />
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Quiz Game */}
+      {showQuiz && (
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <div>
+              <CardTitle>Practice Quiz</CardTitle>
+              <CardDescription>Test your knowledge with exam-style questions</CardDescription>
+            </div>
+            <Button variant="outline" size="sm" onClick={() => setShowQuiz(false)}>
+              Back to Learning Center
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <Quiz questions={QUIZ_QUESTIONS} />
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Flashcards */}
+      {showFlashcard && (
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between pb-2">
+            <div>
+              <CardTitle>Ham Radio Flashcards</CardTitle>
+              <CardDescription>Test your knowledge with these flashcards</CardDescription>
+            </div>
+            <Button variant="outline" size="sm" onClick={() => setShowFlashcard(false)}>
+              Back to Learning Center
+            </Button>
+          </CardHeader>
+          <CardContent>
+            <Flashcard 
+              card={FLASHCARDS[currentCardIndex]} 
+              onNext={handleNextCard} 
+            />
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }
