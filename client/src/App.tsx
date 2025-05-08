@@ -74,6 +74,17 @@ function Router() {
   
   return (
     <div className="flex flex-col h-screen mx-auto pb-4 max-w-md relative pt-4">
+      {/* FIXED SUPER PROMINENT LEARNING BUTTON AT THE VERY TOP */}
+      <div className="sticky top-0 z-50 mb-2 mx-2 p-1 bg-black bg-opacity-70 rounded-md">
+        <Link href="/learning">
+          <button className="w-full py-3 bg-blue-600 hover:bg-blue-500 rounded-md flex items-center justify-center gap-3 border-2 border-blue-400 shadow-glow-blue animate-pulse">
+            <BookOpenCheck size={24} className="text-blue-100" />
+            <span className="text-white font-bold text-lg">LEARNING CENTER</span>
+            <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+          </button>
+        </Link>
+      </div>
+      
       <div className="radio-body relative overflow-hidden">
         {/* Antenna */}
         <div className="antenna"></div>
@@ -162,15 +173,11 @@ function Router() {
             ))}
           </div>
           
-          {/* VERY PROMINENT LEARNING BUTTON */}
-          <div className="flex justify-center mt-2 mb-2">
-            <Link href="/learning" className="w-full">
-              <button className="w-full py-2 bg-blue-600 hover:bg-blue-500 rounded-md flex items-center justify-center gap-2 border border-blue-400 shadow-glow-blue">
-                <BookOpenCheck size={20} className="text-blue-100" />
-                <span className="text-white font-medium">LEARNING CENTER</span>
-                <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-              </button>
-            </Link>
+          {/* Radio title message */}
+          <div className="flex justify-center mt-2 mb-2 text-center">
+            <div className="text-xs text-blue-300 font-mono px-2 py-1 bg-black rounded-sm">
+              Press the blue LEARNING CENTER button at top ⬆️
+            </div>
           </div>
           
           {/* Quick access buttons */}
