@@ -121,17 +121,36 @@ const ReferencePage = () => {
             <h2 className="text-xl font-bold mb-6 border-b pb-2 text-primary">Powell River Amateur Radio Club</h2>
             <ClubInfoCard />
             
-            <div className="mt-6 p-4 bg-blue-50 rounded-lg">
-              <h3 className="text-lg font-medium text-blue-700 mb-2">Why Join The Club?</h3>
-              <p className="text-sm text-gray-600 mb-3">
-                The Powell River Amateur Radio Club is a vibrant community of radio enthusiasts who share knowledge, 
-                participate in events, and support each other in the exciting world of amateur radio. 
-                Whether you're a beginner or an experienced operator, you'll find valuable resources and 
-                friendly faces at our meetings and activities.
-              </p>
-              <p className="text-sm font-medium text-gray-700">
-                New members are always welcome! Join us at our next meeting or coffee meetup.
-              </p>
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="p-4 bg-blue-50 rounded-lg">
+                <h3 className="text-lg font-medium text-blue-700 mb-2">Why Join The Club?</h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  The Powell River Amateur Radio Club is a vibrant community of radio enthusiasts who share knowledge, 
+                  participate in events, and support each other in the exciting world of amateur radio. 
+                  Whether you're a beginner or an experienced operator, you'll find valuable resources and 
+                  friendly faces at our meetings and activities.
+                </p>
+                <p className="text-sm font-medium text-gray-700">
+                  New members are always welcome! Join us at our next meeting or coffee meetup.
+                </p>
+              </div>
+              
+              <div className="p-4 bg-amber-50 rounded-lg">
+                <h3 className="text-lg font-medium text-amber-700 mb-2">Stay Connected</h3>
+                <p className="text-sm text-gray-600 mb-3">
+                  If you're a fan of amateur radio or looking to get involved in the Powell River area, 
+                  you'll be happy to know that the Powell River Amateur Radio Club is buzzing with activity. 
+                  From community events to educational programs, there's always something happening in and 
+                  around the club.
+                </p>
+                <div className="mt-3 p-3 bg-white rounded-md">
+                  <h4 className="font-medium text-amber-600 mb-1">Social Gatherings</h4>
+                  <p className="text-sm text-gray-700">
+                    Join us for coffee on Saturday mornings at 10am at the local A&W. 
+                    It's a great chance to relax, have fun, and strengthen bonds outside of the radio shack.
+                  </p>
+                </div>
+              </div>
             </div>
           </div>
         </TabsContent>

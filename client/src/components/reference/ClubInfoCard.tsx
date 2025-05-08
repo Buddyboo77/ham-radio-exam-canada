@@ -64,20 +64,25 @@ const ClubInfoCard = () => {
           <div className="bg-blue-50 p-4 rounded-lg">
             <h3 className="font-semibold flex items-center text-blue-700 mb-2">
               <Users className="h-5 w-5 mr-2" />
-              Community Activities
+              Community Events
             </h3>
+            <p className="text-sm text-gray-700 mb-3">
+              The Powell River Amateur Radio Club is known for its active involvement in the local community. 
+              Members regularly participate in events to showcase equipment and educate the community about 
+              amateur radio's importance, especially in emergency situations.
+            </p>
             <ul className="space-y-2 text-sm text-gray-700">
               <li className="flex gap-2">
                 <span className="text-blue-500">•</span>
-                <span>Emergency Preparedness Expo participation</span>
+                <span>Annual Emergency Preparedness Expo participation</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-blue-500">•</span>
-                <span>Regular field days for radio setup practice</span>
+                <span>Regular field days for radio setup practice and socializing</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-blue-500">•</span>
-                <span>Public demonstrations and awareness events</span>
+                <span>Public demonstrations and community awareness events</span>
               </li>
             </ul>
           </div>
@@ -87,18 +92,22 @@ const ClubInfoCard = () => {
               <BookOpen className="h-5 w-5 mr-2" />
               Educational Programs
             </h3>
+            <p className="text-sm text-gray-700 mb-3">
+              The club is committed to fostering learning and growth within the amateur radio community. 
+              They regularly organize workshops and training sessions for both beginners and experienced operators.
+            </p>
             <ul className="space-y-2 text-sm text-gray-700">
               <li className="flex gap-2">
                 <span className="text-green-500">•</span>
-                <span>Workshops for beginners and experienced operators</span>
+                <span>Digital mode workshops covering FT8, PSK31, and RTTY</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-green-500">•</span>
-                <span>Training on digital modes like FT8, PSK31, and RTTY</span>
+                <span>Antenna design and construction workshops</span>
               </li>
               <li className="flex gap-2">
                 <span className="text-green-500">•</span>
-                <span>Antenna design and emergency communication protocols</span>
+                <span>Emergency communication protocol training</span>
               </li>
             </ul>
           </div>
