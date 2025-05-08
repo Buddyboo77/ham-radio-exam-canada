@@ -6,6 +6,31 @@ import { insertFrequencySchema, insertLogEntrySchema, insertRepeaterSchema } fro
 import axios from "axios";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Get frequency by value
+  app.get('/api/frequencies/byValue/:value', async (req, res) => {
+    try {
+      const value = parseFloat(req.params.value);
+      if (isNaN(value)) {
+        return res.status(400).json({ error: 'Invalid frequency value' });
+      }
+
+      // Look for a frequency within 0.001 MHz of the requested value
+      const frequencies = await storage.getAllFrequencies();
+      const frequency = frequencies.find(f => 
+        Math.abs(f.frequency - value) < 0.001
+      );
+
+      if (!frequency) {
+        return res.status(404).json({ error: 'Frequency not found' });
+      }
+
+      res.json(frequency);
+    } catch (error) {
+      res.status(500).json({ error: 'An error occurred while fetching frequency' });
+    }
+  });
+
+
   // Initialize the database with sample data
   try {
     await storage.initializeData();

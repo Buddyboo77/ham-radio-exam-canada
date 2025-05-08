@@ -39,18 +39,52 @@ const RepeatersPage = () => {
     return a.frequency - b.frequency;
   });
 
+  // Mutation to add a frequency to the scanner by marking it as monitored
+  const addToScannerMutation = useMutation({
+    mutationFn: async (frequency: number) => {
+      try {
+        // Find the matching frequency in the database
+        const response = await apiRequest<Frequency>(`/api/frequencies/byValue/${frequency}`);
+        
+        // If found, update it to be monitored
+        if (response && response.id) {
+          return apiRequest(`/api/frequencies/${response.id}/monitor`, {
+            method: 'PATCH',
+            body: JSON.stringify({ isMonitored: true })
+          });
+        }
+      } catch (error) {
+        // If not found (404), we'll create a new one
+        console.log('Frequency not found in database, creating new entry');
+      }
+      
+      // If not found or error occurred, create a new monitored frequency
+      // This is important for repeaters whose frequency might not be in the frequency table yet
+      return apiRequest('/api/frequencies', {
+        method: 'POST',
+        body: JSON.stringify({
+          frequency: frequency,
+          name: `Repeater ${frequency.toFixed(3)}`,
+          description: 'Added from repeater map',
+          category: 'VHF',
+          isMonitored: true
+        })
+      });
+    },
+    onSuccess: () => {
+      // Invalidate relevant queries to refresh the data
+      queryClient.invalidateQueries({ queryKey: ['/api/frequencies'] });
+    }
+  });
+
   // Helper function to add repeater to scanner
   const handleAddToScanner = (frequency: number) => {
     // Find the repeater with this frequency
     const repeater = repeaters.find(r => r.frequency === frequency);
     if (!repeater) return;
-
-    // Implement the logic to add to scanner
-    // This might trigger a mutation to update the frequency's monitored status
-    console.log(`Adding ${repeater.name} (${frequency} MHz) to scanner`);
     
-    // In a real implementation, you would use a mutation here
-    // For now, we just log it
+    // Call the mutation to update the frequency in the database
+    addToScannerMutation.mutate(frequency);
   };
 
   return (
