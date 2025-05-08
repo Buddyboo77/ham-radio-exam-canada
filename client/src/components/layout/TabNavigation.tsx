@@ -29,7 +29,8 @@ const TabNavigation: React.FC<TabNavigationProps> = ({ activeTab, setActiveTab }
     { id: "scanner", icon: "tune", label: "Scanner" },
     { id: "repeaters", icon: "cell_tower", label: "Repeaters" },
     { id: "logbook", icon: "book", label: "Logbook" },
-    { id: "reference", icon: "help", label: "Reference" }
+    { id: "reference", icon: "help", label: "Reference" },
+    { id: "learning", icon: "school", label: "Learning" }
   ];
 
   return (

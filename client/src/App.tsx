@@ -9,6 +9,7 @@ import ScannerPage from "@/pages/ScannerPage";
 import RepeatersPage from "@/pages/RepeatersPage";
 import LogbookPage from "@/pages/LogbookPage";
 import ReferencePage from "@/pages/ReferencePage";
+import LearningPage from "@/pages/LearningPage";
 import Header from "@/components/layout/Header";
 import TabNavigation from "@/components/layout/TabNavigation";
 import { useState } from "react";
@@ -29,6 +30,7 @@ function Router() {
           <Route path="/repeaters" component={() => <RepeatersPage />} />
           <Route path="/logbook" component={() => <LogbookPage />} />
           <Route path="/reference" component={() => <ReferencePage />} />
+          <Route path="/learning" component={() => <LearningPage />} />
           <Route component={NotFound} />
         </Switch>
       </main>
