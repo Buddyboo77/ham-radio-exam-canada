@@ -17,8 +17,10 @@ import {
   GraduationCap,
   Zap,
   BookOpenCheck,
-  BarChart4
+  BarChart4,
+  Home as HomeIcon
 } from "lucide-react";
+import { Link, useLocation } from "wouter";
 import MorseCodeGame from "@/components/games/MorseCodeGame";
 import { useState } from "react";
 
@@ -868,6 +870,7 @@ function Quiz({ questions: allQuestions }: QuizProps) {
 }
 
 export default function LearningPage() {
+  const [location, setLocation] = useLocation();
   const [showMorseGame, setShowMorseGame] = useState(false);
   const [showQuiz, setShowQuiz] = useState(false);
   const [showFlashcard, setShowFlashcard] = useState(false);
@@ -898,6 +901,15 @@ export default function LearningPage() {
 
   return (
     <div className="p-2">
+      {/* Fixed Home Button at bottom */}
+      <div className="fixed bottom-4 right-4 z-50">
+        <Link href="/frequencies">
+          <button className="bg-green-600 hover:bg-green-500 p-3 rounded-full shadow-lg border-2 border-green-400 shadow-glow-green">
+            <HomeIcon size={24} className="text-white" />
+          </button>
+        </Link>
+      </div>
+      
       {/* Radio display header */}
       <div className="bg-gradient-to-r from-blue-900 to-blue-950 rounded-md p-2 mb-3 border border-blue-800">
         <div className="flex items-center justify-between">
@@ -907,14 +919,21 @@ export default function LearningPage() {
               Learning Module {learningMode !== 'main' ? `- ${learningMode.toUpperCase()}` : ''}
             </h2>
           </div>
-          {learningMode !== 'main' && (
-            <button 
-              className="text-xs text-blue-300 hover:text-blue-100 font-mono bg-blue-950 px-2 py-0.5 rounded border border-blue-800"
-              onClick={resetViews}
-            >
-              RETURN
-            </button>
-          )}
+          <div className="flex items-center gap-2">
+            {learningMode !== 'main' && (
+              <button 
+                className="text-xs text-blue-300 hover:text-blue-100 font-mono bg-blue-950 px-2 py-0.5 rounded border border-blue-800"
+                onClick={resetViews}
+              >
+                RETURN
+              </button>
+            )}
+            <Link href="/frequencies">
+              <button className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1">
+                <HomeIcon size={10} /> HOME
+              </button>
+            </Link>
+          </div>
         </div>
       </div>
       

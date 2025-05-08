@@ -137,7 +137,9 @@
   
   /* Glowing effects */
   .shadow-glow-green {
-    box-shadow: 0 0 10px rgba(74, 222, 128, 0.6);
+    box-shadow: 
+      0 0 15px rgba(74, 222, 128, 0.6),
+      0 0 5px rgba(74, 222, 128, 0.4);
   }
   
   /* Purple glow style */
