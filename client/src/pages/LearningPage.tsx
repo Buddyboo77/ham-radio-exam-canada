@@ -1032,7 +1032,7 @@ export default function LearningPage() {
             </div>
             
             {/* Exam Resources */}
-            <div className="bg-gray-800 rounded-md border border-gray-700 overflow-hidden">
+            <div className="bg-gray-800 rounded-md border border-gray-700 overflow-hidden hover:border-amber-600 transition-colors">
               <div className="bg-gradient-to-r from-amber-900 to-orange-900 px-3 py-1.5 border-b border-gray-700">
                 <h3 className="text-sm font-medium text-white flex items-center">
                   <ExternalLink className="h-3.5 w-3.5 mr-1.5 text-amber-300" />
@@ -1044,18 +1044,34 @@ export default function LearningPage() {
                   Official exam preparation materials
                 </p>
                 <div className="space-y-1">
-                  <div className="px-2 py-1 bg-gray-900 rounded-sm text-[10px] text-amber-300">
-                    Canadian Amateur Radio Basic Qualification
-                  </div>
-                  <div className="px-2 py-1 bg-gray-900 rounded-sm text-[10px] text-amber-300">
-                    Industry Canada Study Guide (IC-2828)
-                  </div>
+                  <a 
+                    href="https://www.ic.gc.ca/eic/site/025.nsf/eng/h_00004.html" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block px-2 py-1 bg-gray-900 rounded-sm text-[10px] text-amber-300 hover:bg-gray-800 hover:text-amber-200 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span>Canadian Amateur Radio Basic Qualification</span>
+                      <ExternalLink size={10} />
+                    </div>
+                  </a>
+                  <a 
+                    href="https://www.rac.ca/amateur-radio-courses/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block px-2 py-1 bg-gray-900 rounded-sm text-[10px] text-amber-300 hover:bg-gray-800 hover:text-amber-200 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span>Radio Amateurs of Canada Courses</span>
+                      <ExternalLink size={10} />
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
             
             {/* Study Tips */}
-            <div className="bg-gray-800 rounded-md border border-gray-700 overflow-hidden">
+            <div className="bg-gray-800 rounded-md border border-gray-700 overflow-hidden hover:border-cyan-600 transition-colors">
               <div className="bg-gradient-to-r from-cyan-900 to-blue-900 px-3 py-1.5 border-b border-gray-700">
                 <h3 className="text-sm font-medium text-white flex items-center">
                   <Lightbulb className="h-3.5 w-3.5 mr-1.5 text-cyan-300" />
@@ -1063,17 +1079,40 @@ export default function LearningPage() {
                 </h3>
               </div>
               <div className="p-2">
-                <ul className="space-y-1 text-[10px] text-gray-300 list-disc ml-3">
-                  <li>Practice Morse 15 minutes daily</li>
-                  <li>Study Q-codes and abbreviations</li>
-                  <li>Review frequency bands</li>
-                  <li>Take practice tests regularly</li>
-                </ul>
+                <div className="flex items-center justify-center mb-2">
+                  <button 
+                    onClick={() => toggleView('morse')} 
+                    className="px-3 py-1 bg-cyan-800 text-[10px] text-white rounded-full hover:bg-cyan-700 transition-colors flex items-center gap-1"
+                  >
+                    <GamepadIcon size={10} />
+                    Start Morse Practice
+                  </button>
+                </div>
+                <div className="bg-gray-900 rounded-sm p-2">
+                  <div className="text-[10px] font-medium text-cyan-300 mb-1">Quick Tips</div>
+                  <ul className="space-y-1 text-[10px] text-gray-300 list-disc ml-3">
+                    <li>Practice Morse 15 minutes daily</li>
+                    <li>Study Q-codes and abbreviations</li>
+                    <li>Review frequency bands</li>
+                    <li>Take practice tests regularly</li>
+                  </ul>
+                </div>
+                <div className="mt-2 bg-gray-900 rounded-sm p-2">
+                  <div className="text-[10px] font-medium text-cyan-300 mb-1">Keyboard Shortcuts</div>
+                  <div className="flex justify-between text-[9px] text-gray-400 mb-1">
+                    <span>Home:</span>
+                    <span className="font-mono px-1 bg-gray-800 rounded">H</span>
+                  </div>
+                  <div className="flex justify-between text-[9px] text-gray-400">
+                    <span>Learning Center:</span>
+                    <span className="font-mono px-1 bg-gray-800 rounded">L</span>
+                  </div>
+                </div>
               </div>
             </div>
             
             {/* Exam Session */}
-            <div className="bg-gray-800 rounded-md border border-gray-700 overflow-hidden">
+            <div className="bg-gray-800 rounded-md border border-gray-700 overflow-hidden hover:border-red-600 transition-colors">
               <div className="bg-gradient-to-r from-red-900 to-red-800 px-3 py-1.5 border-b border-gray-700">
                 <h3 className="text-sm font-medium text-white flex items-center">
                   <Radio className="h-3.5 w-3.5 mr-1.5 text-red-300" />
@@ -1082,10 +1121,28 @@ export default function LearningPage() {
               </div>
               <div className="p-2">
                 <div className="space-y-1">
-                  <div className="px-2 py-1 bg-gray-900 rounded-sm">
-                    <div className="text-[10px] font-medium text-red-300">Powell River Amateur Radio Club</div>
-                    <div className="text-[9px] text-gray-400">Next: Second Wednesday, 7:00pm</div>
-                  </div>
+                  <Link href="/local-info">
+                    <div className="px-2 py-1 bg-gray-900 rounded-sm hover:bg-gray-800 transition-colors cursor-pointer">
+                      <div className="flex items-center justify-between">
+                        <div>
+                          <div className="text-[10px] font-medium text-red-300">Powell River Amateur Radio Club</div>
+                          <div className="text-[9px] text-gray-400">Next: Second Wednesday, 7:00pm</div>
+                        </div>
+                        <div className="radio-led red h-2 w-2 animate-pulse"></div>
+                      </div>
+                    </div>
+                  </Link>
+                  <a 
+                    href="https://www.rac.ca/amateur-radio-courses/" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block px-2 py-1 bg-gray-900 rounded-sm text-[10px] text-red-300 hover:bg-gray-800 hover:text-red-200 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span>Find Exam Sessions Nationwide</span>
+                      <ExternalLink size={10} />
+                    </div>
+                  </a>
                 </div>
               </div>
             </div>
