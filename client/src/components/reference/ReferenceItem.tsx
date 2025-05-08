@@ -24,20 +24,28 @@ const ReferenceItem: React.FC<ReferenceItemProps> = ({
 
   return (
     <>
-      <Card className={`mb-4 ${isEmergency ? 'border-secondary border-2' : ''}`}>
-        <CardHeader className={`pb-2 ${isEmergency ? 'bg-secondary/10' : ''}`}>
+      <Card 
+        className={`mb-4 hover:shadow-md transition-shadow cursor-pointer ${
+          isEmergency ? 'border-amber-400 border-2' : 'border border-gray-200'
+        }`}
+        onClick={() => setIsDetailsOpen(true)}
+      >
+        <CardHeader className={`pb-2 ${isEmergency ? 'bg-amber-50' : ''}`}>
           <div className="flex items-start justify-between">
             <div className="flex-1">
-              <CardTitle className="flex items-center gap-1">
-                {isEmergency && <AlertTriangle className="h-5 w-5 text-secondary" />}
+              <CardTitle className="flex items-center gap-2 text-lg">
+                {isEmergency && <AlertTriangle className="h-5 w-5 text-amber-500" />}
                 {item.title}
               </CardTitle>
-              <CardDescription>{item.category}</CardDescription>
+              <CardDescription className="text-sm mt-1">{item.category}</CardDescription>
             </div>
             <Button 
               variant="ghost" 
               size="sm" 
-              onClick={() => setIsDetailsOpen(true)}
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsDetailsOpen(true);
+              }}
               type="button"
               className="p-0 h-8 w-8 rounded-full"
               aria-label="View details"
@@ -47,7 +55,7 @@ const ReferenceItem: React.FC<ReferenceItemProps> = ({
           </div>
         </CardHeader>
         
-        <CardContent className="pt-4">
+        <CardContent className="pt-3">
           <p className="text-sm text-gray-700 line-clamp-2">
             {item.description}
           </p>
@@ -55,38 +63,51 @@ const ReferenceItem: React.FC<ReferenceItemProps> = ({
       </Card>
 
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-        <DialogContent className="sm:max-w-md">
+        <DialogContent className="sm:max-w-lg max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="flex items-center gap-1">
-              {isEmergency && <AlertTriangle className="h-5 w-5 text-secondary" />}
+            <DialogTitle className="flex items-center gap-2 text-xl">
+              {isEmergency && <AlertTriangle className="h-6 w-6 text-amber-500" />}
               {item.title}
             </DialogTitle>
             <DialogDescription>
-              {item.category}
+              Category: {item.category}
             </DialogDescription>
           </DialogHeader>
           
           <div className="py-4 space-y-3">
-            <div className="bg-slate-50 p-4 rounded-md whitespace-pre-line text-sm">
+            <div className="bg-slate-50 p-5 rounded-md whitespace-pre-line text-base border border-slate-200">
               {item.description}
             </div>
           </div>
           
-          <div className="flex justify-end mt-4">
+          <div className="flex justify-between mt-4">
             <Button 
               variant="outline" 
               onClick={() => setIsDetailsOpen(false)}
               type="button"
+              className="mr-2"
             >
               Close
             </Button>
             <Button 
               variant="default"
-              className="ml-2"
-              onClick={() => navigator.clipboard.writeText(item.description)}
+              onClick={() => {
+                navigator.clipboard.writeText(item.description);
+                // Add a brief visual feedback
+                const activeElement = document.activeElement;
+                const originalText = activeElement?.textContent || '';
+                if (activeElement instanceof HTMLButtonElement) {
+                  activeElement.textContent = "Copied!";
+                  setTimeout(() => {
+                    if (activeElement && originalText) {
+                      activeElement.textContent = originalText;
+                    }
+                  }, 1500);
+                }
+              }}
               type="button"
             >
-              <BookOpen className="h-4 w-4 mr-1" />
+              <BookOpen className="h-4 w-4 mr-2" />
               Copy Reference
             </Button>
           </div>

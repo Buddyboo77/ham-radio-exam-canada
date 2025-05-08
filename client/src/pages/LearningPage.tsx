@@ -179,27 +179,55 @@ interface FlashcardProps {
 function Flashcard({ card, onNext }: FlashcardProps) {
   const [isFlipped, setIsFlipped] = useState(false);
 
+  const handleCardClick = () => {
+    setIsFlipped(!isFlipped);
+  };
+
+  const handleNextCard = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onNext();
+    setIsFlipped(false);
+  };
+
   return (
-    <div className="perspective-1000 w-full max-w-md mx-auto cursor-pointer" onClick={() => setIsFlipped(!isFlipped)}>
-      <div className={`relative transition-all duration-500 transform-style-3d ${isFlipped ? 'rotate-y-180' : ''}`} style={{ transformStyle: 'preserve-3d', minHeight: '200px' }}>
-        <div className="absolute w-full backface-hidden bg-white rounded-lg border p-6 shadow-md" style={{ backfaceVisibility: 'hidden' }}>
+    <div className="w-full max-w-md mx-auto">
+      <div className="relative h-64 mb-4">
+        {/* Front of card */}
+        <div 
+          className={`absolute inset-0 w-full h-full transition-all duration-500 ease-in-out bg-white rounded-lg border p-6 shadow-md ${
+            isFlipped ? 'opacity-0 pointer-events-none' : 'opacity-100'
+          }`}
+          onClick={handleCardClick}
+        >
           <Badge className="mb-2">{card.category}</Badge>
           <h3 className="text-xl font-bold mb-4">{card.question}</h3>
-          <p className="text-muted-foreground">Click to reveal answer</p>
+          <div className="flex items-center mt-4 text-blue-600">
+            <span>Click to see answer</span>
+          </div>
         </div>
-        <div className="absolute w-full backface-hidden bg-white rounded-lg border p-6 shadow-md rotate-y-180" style={{ backfaceVisibility: 'hidden', transform: 'rotateY(180deg)' }}>
+        
+        {/* Back of card */}
+        <div 
+          className={`absolute inset-0 w-full h-full transition-all duration-500 ease-in-out bg-white rounded-lg border p-6 shadow-md ${
+            isFlipped ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
+          onClick={handleCardClick}
+        >
           <Badge className="mb-2" variant="outline">{card.category}</Badge>
           <h3 className="text-xl font-bold mb-4">Answer:</h3>
-          <p className="text-primary">{card.answer}</p>
+          <p className="text-primary font-medium text-lg">{card.answer}</p>
+          <div className="flex items-center mt-4 text-blue-600">
+            <span>Click to see question</span>
+          </div>
         </div>
       </div>
-      <div className="mt-4 flex justify-end">
-        <Button variant="outline" size="sm" onClick={(e) => {
-          e.stopPropagation();
-          onNext();
-          setIsFlipped(false);
-        }}>
-          Next <RotateCw className="ml-2 h-4 w-4" />
+      
+      <div className="flex justify-between mt-4">
+        <Button variant="secondary" size="sm" onClick={handleCardClick}>
+          {isFlipped ? "Show Question" : "Show Answer"}
+        </Button>
+        <Button variant="outline" size="sm" onClick={handleNextCard}>
+          Next Card <RotateCw className="ml-2 h-4 w-4" />
         </Button>
       </div>
     </div>
