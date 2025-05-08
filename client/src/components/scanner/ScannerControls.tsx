@@ -12,8 +12,9 @@ const ScannerControls = () => {
   const [selectedFrequencies, setSelectedFrequencies] = useState<number[]>([]);
   const [currentScanningFrequency, setCurrentScanningFrequency] = useState<Frequency | null>(null);
   const [scanInterval, setScanInterval] = useState<NodeJS.Timeout | null>(null);
+  const [freqsToScan, setFreqsToScan] = useState<Frequency[]>([]);
 
-  const { data: frequencies, isLoading } = useQuery({
+  const { data: frequencies = [], isLoading } = useQuery<Frequency[]>({
     queryKey: ["/api/frequencies"],
   });
 
@@ -26,25 +27,41 @@ const ScannerControls = () => {
     };
   }, [scanInterval]);
 
+  // Initialize selected frequencies from monitored ones on load
+  useEffect(() => {
+    if (frequencies && frequencies.length > 0) {
+      const monitoredIds = frequencies
+        .filter(f => f.isMonitored)
+        .map(f => f.id);
+        
+      if (monitoredIds.length > 0) {
+        setSelectedFrequencies(monitoredIds);
+      }
+    }
+  }, [frequencies]);
+
   const handleStartScan = () => {
     if (selectedFrequencies.length === 0) return;
     
     setIsScanning(true);
     
     // Get the selected frequency objects
-    const freqsToScan = frequencies.filter((f: Frequency) => 
+    const selectedFreqs = frequencies.filter(f => 
       selectedFrequencies.includes(f.id)
     );
     
+    setFreqsToScan(selectedFreqs);
+    
     // Set initial frequency
-    setCurrentScanningFrequency(freqsToScan[0]);
+    setCurrentScanningFrequency(selectedFreqs[0]);
     
     // Set up the interval to cycle through frequencies
     const interval = setInterval(() => {
       setCurrentScanningFrequency(prev => {
-        const currentIndex = freqsToScan.findIndex((f: Frequency) => f.id === prev?.id);
-        const nextIndex = (currentIndex + 1) % freqsToScan.length;
-        return freqsToScan[nextIndex];
+        if (!prev || selectedFreqs.length === 0) return selectedFreqs[0];
+        const currentIndex = selectedFreqs.findIndex(f => f.id === prev.id);
+        const nextIndex = (currentIndex + 1) % selectedFreqs.length;
+        return selectedFreqs[nextIndex];
       });
     }, scanDelay * 1000);
     
@@ -132,7 +149,7 @@ const ScannerControls = () => {
         <div className="flex justify-between items-center mb-2">
           <h3 className="font-bold">Currently Scanning</h3>
           <span className="text-sm text-gray-500">
-            {isScanning ? `Scanning ${selectedFrequencies.length} frequencies` : "No active scan"}
+            {isScanning ? `Scanning ${freqsToScan.length} frequencies` : "No active scan"}
           </span>
         </div>
         <div className="bg-gray-100 rounded-lg p-3 h-32 flex items-center justify-center">
@@ -153,7 +170,7 @@ const ScannerControls = () => {
 
       <h3 className="font-bold mb-2">Frequencies to Scan</h3>
       <div className="space-y-2 max-h-64 overflow-y-auto">
-        {frequencies?.map((freq: Frequency) => (
+        {frequencies.map(freq => (
           <div key={freq.id} className="flex items-center border rounded-lg p-3">
             <Checkbox 
               id={`scan-freq-${freq.id}`} 

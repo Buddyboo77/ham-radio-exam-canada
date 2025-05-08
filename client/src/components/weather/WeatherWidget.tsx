@@ -6,8 +6,19 @@ interface WeatherWidgetProps {
   location?: string;
 }
 
+interface WeatherData {
+  id: number;
+  location: string;
+  temperature: number;
+  condition: string;
+  windSpeed: number;
+  windDirection: string;
+  lastUpdated: string;
+  rawData: string;
+}
+
 const WeatherWidget: React.FC<WeatherWidgetProps> = ({ location = "Powell River, BC" }) => {
-  const { data: weather, isLoading, error } = useQuery({
+  const { data: weather, isLoading, error } = useQuery<WeatherData>({
     queryKey: [`/api/weather/${encodeURIComponent(location)}`],
     refetchInterval: 1000 * 60 * 30, // Refetch every 30 minutes
   });
@@ -49,6 +60,35 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ location = "Powell River,
     );
   }
 
+  if (!weather) {
+    return (
+      <div className="bg-white rounded-lg shadow mb-4 p-4">
+        <div className="flex justify-between items-center mb-2">
+          <h2 className="font-bold">Powell River Weather</h2>
+          <span className="text-xs text-gray-500">No data</span>
+        </div>
+        <div className="flex items-center text-gray-500">
+          <span className="material-icons text-4xl mr-3">help_outline</span>
+          <p>Weather data not found</p>
+        </div>
+      </div>
+    );
+  }
+
+  // Map weather condition to material icon
+  const getWeatherIcon = (condition: string) => {
+    const conditionLower = condition.toLowerCase();
+    
+    if (conditionLower.includes("rain")) return "rainy";
+    if (conditionLower.includes("cloud")) return "cloud";
+    if (conditionLower.includes("sun") || conditionLower.includes("clear")) return "wb_sunny";
+    if (conditionLower.includes("thunder")) return "thunderstorm";
+    if (conditionLower.includes("snow")) return "ac_unit";
+    if (conditionLower.includes("fog") || conditionLower.includes("mist")) return "foggy";
+    
+    return "cloud"; // default icon
+  };
+
   return (
     <div className="bg-white rounded-lg shadow mb-4 p-4">
       <div className="flex justify-between items-center mb-2">
@@ -57,14 +97,12 @@ const WeatherWidget: React.FC<WeatherWidgetProps> = ({ location = "Powell River,
       </div>
       <div className="flex items-center">
         <span className="material-icons text-4xl text-accent mr-3">
-          {weather?.condition?.toLowerCase().includes("rain") ? "rainy" : 
-           weather?.condition?.toLowerCase().includes("cloud") ? "cloud" : 
-           weather?.condition?.toLowerCase().includes("sun") ? "wb_sunny" : "cloud"}
+          {getWeatherIcon(weather.condition)}
         </span>
         <div>
-          <p className="text-2xl font-bold">{weather?.temperature}°C</p>
+          <p className="text-2xl font-bold">{weather.temperature}°C</p>
           <p className="text-sm">
-            {weather?.condition}, Wind: {weather?.windSpeed}km/h {weather?.windDirection}
+            {weather.condition}, Wind: {weather.windSpeed}km/h {weather.windDirection}
           </p>
         </div>
       </div>
