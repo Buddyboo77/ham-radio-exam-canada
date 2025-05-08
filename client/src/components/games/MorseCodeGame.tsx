@@ -248,10 +248,11 @@ export default function MorseCodeGame() {
     }
   };
 
-  // Play morse code sound
+  // Play morse code sound with visualization
   const playMorseCode = () => {
     const audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-    const dotDuration = 100; // milliseconds
+    // Slow down the speed for beginners to make it easier to learn
+    const dotDuration = difficulty === 'easy' ? 180 : difficulty === 'medium' ? 140 : 100; // milliseconds
     const dashDuration = dotDuration * 3;
     const pauseBetweenElements = dotDuration;
     const pauseBetweenChars = dotDuration * 3;
@@ -259,21 +260,71 @@ export default function MorseCodeGame() {
     const morse = wordToMorse(currentWord);
     let currentTime = audioContext.currentTime;
     
+    // Visual feedback elements
+    const morseElement = document.getElementById('morse-playback');
+    if (morseElement) {
+      morseElement.innerHTML = '';
+      
+      // Create visual elements for each morse symbol
+      morse.split('').forEach((char, index) => {
+        setTimeout(() => {
+          if (char === '.') {
+            // Add dot with visual highlight
+            const dotSpan = document.createElement('span');
+            dotSpan.className = 'text-green-500 animate-pulse font-bold text-2xl';
+            dotSpan.textContent = '•';
+            morseElement.appendChild(dotSpan);
+          } else if (char === '-') {
+            // Add dash with visual highlight
+            const dashSpan = document.createElement('span');
+            dashSpan.className = 'text-blue-500 animate-pulse font-bold text-2xl';
+            dashSpan.textContent = '—';
+            morseElement.appendChild(dashSpan);
+          } else if (char === ' ') {
+            // Add space
+            const spaceSpan = document.createElement('span');
+            spaceSpan.textContent = ' ';
+            spaceSpan.className = 'mx-1';
+            morseElement.appendChild(spaceSpan);
+          }
+        }, index * dotDuration);
+      });
+    }
+    
+    // Audio playback
     morse.split('').forEach(char => {
       if (char === '.') {
         const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
         oscillator.type = 'sine';
         oscillator.frequency.value = 700;
-        oscillator.connect(audioContext.destination);
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Apply smoother attack and release
+        gainNode.gain.value = 0;
+        gainNode.gain.setValueAtTime(0, currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.7, currentTime + 0.01);
+        gainNode.gain.linearRampToValueAtTime(0, currentTime + (dotDuration / 1000) - 0.01);
         
         oscillator.start(currentTime);
         oscillator.stop(currentTime + dotDuration / 1000);
         currentTime += dotDuration / 1000;
       } else if (char === '-') {
         const oscillator = audioContext.createOscillator();
+        const gainNode = audioContext.createGain();
+        
         oscillator.type = 'sine';
         oscillator.frequency.value = 700;
-        oscillator.connect(audioContext.destination);
+        oscillator.connect(gainNode);
+        gainNode.connect(audioContext.destination);
+        
+        // Apply smoother attack and release
+        gainNode.gain.value = 0;
+        gainNode.gain.setValueAtTime(0, currentTime);
+        gainNode.gain.linearRampToValueAtTime(0.7, currentTime + 0.01);
+        gainNode.gain.linearRampToValueAtTime(0, currentTime + (dashDuration / 1000) - 0.01);
         
         oscillator.start(currentTime);
         oscillator.stop(currentTime + dashDuration / 1000);
@@ -486,9 +537,27 @@ export default function MorseCodeGame() {
                 </Button>
               </div>
               
-              <h3 className="text-2xl md:text-3xl font-mono mb-4 tracking-wider text-center">
+              <h3 className="text-2xl md:text-3xl font-mono mb-2 tracking-wider text-center">
                 {wordToMorse(currentWord)}
               </h3>
+              
+              {/* Visual morse code playback element */}
+              <div id="morse-playback" className="h-10 flex items-center justify-center my-2 font-mono"></div>
+              
+              <div className="flex justify-center space-x-4 mb-4">
+                <button 
+                  onClick={playMorseCode}
+                  className="flex items-center justify-center gap-1 bg-blue-600 hover:bg-blue-500 px-3 py-1 rounded-md text-sm text-white"
+                >
+                  <Volume2 className="h-4 w-4" /> Play Sound
+                </button>
+                <button 
+                  onClick={() => setShowHint(true)}
+                  className="flex items-center justify-center gap-1 bg-amber-600 hover:bg-amber-500 px-3 py-1 rounded-md text-sm text-white"
+                >
+                  <Lightbulb className="h-4 w-4" /> Show Hint
+                </button>
+              </div>
               
               {showHint && (
                 <div className="mt-4 p-2 bg-amber-50 rounded text-amber-800 text-sm">
