@@ -6,6 +6,14 @@ import { insertFrequencySchema, insertLogEntrySchema, insertRepeaterSchema } fro
 import axios from "axios";
 
 export async function registerRoutes(app: Express): Promise<Server> {
+  // Initialize the database with sample data
+  try {
+    await storage.initializeData();
+    console.log("Database initialized successfully");
+  } catch (error) {
+    console.error("Error initializing database:", error);
+  }
+  
   // prefix all routes with /api
   const apiRouter = app.get("/api/status", (req, res) => {
     res.json({ status: "online" });

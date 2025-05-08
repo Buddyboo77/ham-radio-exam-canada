@@ -1,25 +1,16 @@
 import { 
-  frequencies, 
-  type Frequency, 
-  type InsertFrequency,
-  repeaters,
-  type Repeater,
-  type InsertRepeater,
-  logEntries,
-  type LogEntry,
-  type InsertLogEntry,
-  referenceItems,
-  type ReferenceItem,
-  type InsertReferenceItem,
-  weatherCache,
-  type WeatherCache,
-  type InsertWeatherCache,
-  users, 
-  type User, 
-  type InsertUser 
+  users, frequencies, repeaters, logEntries, referenceItems, weatherCache,
+  type User, type InsertUser, 
+  type Frequency, type InsertFrequency,
+  type Repeater, type InsertRepeater,
+  type LogEntry, type InsertLogEntry,
+  type ReferenceItem, type InsertReferenceItem,
+  type WeatherCache, type InsertWeatherCache
 } from "@shared/schema";
+import { db } from "./db";
+import { eq, desc, and, asc } from "drizzle-orm";
+import { EMERGENCY_FREQUENCY } from "@/lib/constants";
 
-// Interface for storage operations
 export interface IStorage {
   // User operations
   getUser(id: number): Promise<User | undefined>;
@@ -59,210 +50,185 @@ export interface IStorage {
   updateWeatherCache(weatherData: InsertWeatherCache): Promise<WeatherCache>;
 }
 
-export class MemStorage implements IStorage {
-  private users: Map<number, User>;
-  private frequencies: Map<number, Frequency>;
-  private repeaters: Map<number, Repeater>;
-  private logEntries: Map<number, LogEntry>;
-  private referenceItems: Map<number, ReferenceItem>;
-  private weatherCache: Map<string, WeatherCache>;
-  
-  private userCurrentId: number;
-  private frequencyCurrentId: number;
-  private repeaterCurrentId: number;
-  private logEntryCurrentId: number;
-  private referenceItemCurrentId: number;
-  private weatherCacheCurrentId: number;
-
-  constructor() {
-    this.users = new Map();
-    this.frequencies = new Map();
-    this.repeaters = new Map();
-    this.logEntries = new Map();
-    this.referenceItems = new Map();
-    this.weatherCache = new Map();
-    
-    this.userCurrentId = 1;
-    this.frequencyCurrentId = 1;
-    this.repeaterCurrentId = 1;
-    this.logEntryCurrentId = 1;
-    this.referenceItemCurrentId = 1;
-    this.weatherCacheCurrentId = 1;
-    
-    // Initialize with Powell River ham radio data
-    this.initializeData();
-  }
-
+export class DatabaseStorage implements IStorage {
   // User operations
   async getUser(id: number): Promise<User | undefined> {
-    return this.users.get(id);
+    const results = await db.select().from(users).where(eq(users.id, id));
+    return results[0];
   }
 
   async getUserByUsername(username: string): Promise<User | undefined> {
-    return Array.from(this.users.values()).find(
-      (user) => user.username === username,
-    );
+    const results = await db.select().from(users).where(eq(users.username, username));
+    return results[0];
   }
 
   async createUser(insertUser: InsertUser): Promise<User> {
-    const id = this.userCurrentId++;
-    const user: User = { ...insertUser, id };
-    this.users.set(id, user);
-    return user;
+    const results = await db.insert(users).values(insertUser).returning();
+    return results[0];
   }
-  
+
   // Frequency operations
   async getAllFrequencies(): Promise<Frequency[]> {
-    return Array.from(this.frequencies.values());
+    return await db.select().from(frequencies).orderBy(asc(frequencies.frequency));
   }
-  
+
   async getFrequencyById(id: number): Promise<Frequency | undefined> {
-    return this.frequencies.get(id);
+    const results = await db.select().from(frequencies).where(eq(frequencies.id, id));
+    return results[0];
   }
-  
+
   async getFrequenciesByCategory(category: string): Promise<Frequency[]> {
-    return Array.from(this.frequencies.values()).filter(
-      frequency => frequency.category === category
-    );
+    return await db.select().from(frequencies)
+      .where(eq(frequencies.category, category))
+      .orderBy(asc(frequencies.frequency));
   }
-  
+
   async createFrequency(insertFrequency: InsertFrequency): Promise<Frequency> {
-    const id = this.frequencyCurrentId++;
-    const frequency: Frequency = { ...insertFrequency, id };
-    this.frequencies.set(id, frequency);
-    return frequency;
+    const results = await db.insert(frequencies).values(insertFrequency).returning();
+    return results[0];
   }
-  
+
   async updateFrequency(id: number, frequencyUpdate: Partial<InsertFrequency>): Promise<Frequency | undefined> {
-    const existingFrequency = this.frequencies.get(id);
-    if (!existingFrequency) return undefined;
-    
-    const updatedFrequency = { ...existingFrequency, ...frequencyUpdate };
-    this.frequencies.set(id, updatedFrequency);
-    return updatedFrequency;
+    const results = await db.update(frequencies)
+      .set(frequencyUpdate)
+      .where(eq(frequencies.id, id))
+      .returning();
+    return results[0];
   }
-  
+
   async updateFrequencyMonitored(id: number, isMonitored: boolean): Promise<Frequency | undefined> {
-    return this.updateFrequency(id, { isMonitored });
+    const results = await db.update(frequencies)
+      .set({ isMonitored })
+      .where(eq(frequencies.id, id))
+      .returning();
+    return results[0];
   }
-  
+
   async getMonitoredFrequencies(): Promise<Frequency[]> {
-    return Array.from(this.frequencies.values()).filter(
-      frequency => frequency.isMonitored
-    );
+    return await db.select().from(frequencies)
+      .where(eq(frequencies.isMonitored, true))
+      .orderBy(asc(frequencies.frequency));
   }
-  
+
   // Repeater operations
   async getAllRepeaters(): Promise<Repeater[]> {
-    return Array.from(this.repeaters.values());
+    return await db.select().from(repeaters).orderBy(asc(repeaters.frequency));
   }
-  
+
   async getRepeaterById(id: number): Promise<Repeater | undefined> {
-    return this.repeaters.get(id);
+    const results = await db.select().from(repeaters).where(eq(repeaters.id, id));
+    return results[0];
   }
-  
+
   async createRepeater(insertRepeater: InsertRepeater): Promise<Repeater> {
-    const id = this.repeaterCurrentId++;
-    const repeater: Repeater = { ...insertRepeater, id };
-    this.repeaters.set(id, repeater);
-    return repeater;
+    const results = await db.insert(repeaters).values(insertRepeater).returning();
+    return results[0];
   }
-  
+
   async updateRepeater(id: number, repeaterUpdate: Partial<InsertRepeater>): Promise<Repeater | undefined> {
-    const existingRepeater = this.repeaters.get(id);
-    if (!existingRepeater) return undefined;
-    
-    const updatedRepeater = { ...existingRepeater, ...repeaterUpdate };
-    this.repeaters.set(id, updatedRepeater);
-    return updatedRepeater;
+    const results = await db.update(repeaters)
+      .set(repeaterUpdate)
+      .where(eq(repeaters.id, id))
+      .returning();
+    return results[0];
   }
-  
+
   // Log entry operations
   async getAllLogEntries(): Promise<LogEntry[]> {
-    return Array.from(this.logEntries.values()).sort((a, b) => {
-      return new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime();
-    });
+    return await db.select().from(logEntries).orderBy(desc(logEntries.dateTime));
   }
-  
+
   async getLogEntryById(id: number): Promise<LogEntry | undefined> {
-    return this.logEntries.get(id);
+    const results = await db.select().from(logEntries).where(eq(logEntries.id, id));
+    return results[0];
   }
-  
+
   async createLogEntry(insertLogEntry: InsertLogEntry): Promise<LogEntry> {
-    const id = this.logEntryCurrentId++;
-    const logEntry: LogEntry = { ...insertLogEntry, id };
-    this.logEntries.set(id, logEntry);
-    return logEntry;
+    const results = await db.insert(logEntries).values(insertLogEntry).returning();
+    return results[0];
   }
-  
+
   async updateLogEntry(id: number, logEntryUpdate: Partial<InsertLogEntry>): Promise<LogEntry | undefined> {
-    const existingLogEntry = this.logEntries.get(id);
-    if (!existingLogEntry) return undefined;
-    
-    const updatedLogEntry = { ...existingLogEntry, ...logEntryUpdate };
-    this.logEntries.set(id, updatedLogEntry);
-    return updatedLogEntry;
+    const results = await db.update(logEntries)
+      .set(logEntryUpdate)
+      .where(eq(logEntries.id, id))
+      .returning();
+    return results[0];
   }
-  
+
   async deleteLogEntry(id: number): Promise<boolean> {
-    return this.logEntries.delete(id);
+    const results = await db.delete(logEntries).where(eq(logEntries.id, id)).returning();
+    return results.length > 0;
   }
-  
+
   // Reference item operations
   async getAllReferenceItems(): Promise<ReferenceItem[]> {
-    return Array.from(this.referenceItems.values()).sort((a, b) => {
-      if (a.category === b.category) {
-        return a.sortOrder - b.sortOrder;
-      }
-      return a.category.localeCompare(b.category);
-    });
+    return await db.select().from(referenceItems)
+      .orderBy(asc(referenceItems.category), asc(referenceItems.sortOrder));
   }
-  
+
   async getReferenceItemsByCategory(category: string): Promise<ReferenceItem[]> {
-    return Array.from(this.referenceItems.values())
-      .filter(item => item.category === category)
-      .sort((a, b) => a.sortOrder - b.sortOrder);
+    return await db.select().from(referenceItems)
+      .where(eq(referenceItems.category, category))
+      .orderBy(asc(referenceItems.sortOrder));
   }
-  
+
   async getReferenceItemById(id: number): Promise<ReferenceItem | undefined> {
-    return this.referenceItems.get(id);
+    const results = await db.select().from(referenceItems).where(eq(referenceItems.id, id));
+    return results[0];
   }
-  
+
   async createReferenceItem(insertReferenceItem: InsertReferenceItem): Promise<ReferenceItem> {
-    const id = this.referenceItemCurrentId++;
-    const referenceItem: ReferenceItem = { ...insertReferenceItem, id };
-    this.referenceItems.set(id, referenceItem);
-    return referenceItem;
+    const results = await db.insert(referenceItems).values(insertReferenceItem).returning();
+    return results[0];
   }
-  
+
   // Weather operations
   async getWeatherByLocation(location: string): Promise<WeatherCache | undefined> {
-    return this.weatherCache.get(location);
+    const results = await db.select().from(weatherCache).where(eq(weatherCache.location, location));
+    return results[0];
   }
-  
+
   async updateWeatherCache(insertWeatherCache: InsertWeatherCache): Promise<WeatherCache> {
-    const id = this.weatherCacheCurrentId++;
-    const weatherData: WeatherCache = { ...insertWeatherCache, id };
-    this.weatherCache.set(insertWeatherCache.location, weatherData);
-    return weatherData;
+    // First check if it exists
+    const existing = await this.getWeatherByLocation(insertWeatherCache.location);
+    
+    if (existing) {
+      // Update existing record
+      const results = await db.update(weatherCache)
+        .set(insertWeatherCache)
+        .where(eq(weatherCache.id, existing.id))
+        .returning();
+      return results[0];
+    } else {
+      // Create new record
+      const results = await db.insert(weatherCache).values(insertWeatherCache).returning();
+      return results[0];
+    }
   }
-  
-  // Initialize data with Powell River ham radio information
-  private initializeData() {
+
+  // Initialize the database with sample data if it's empty
+  async initializeData() {
+    // Check if we have any data already
+    const freqCount = await db.select({ count: frequencies.id }).from(frequencies);
+    if (freqCount.length && freqCount[0].count) {
+      return; // Database already has data
+    }
+
     // Add frequencies
-    this.createFrequency({
+    await this.createFrequency({
       frequency: 146.84,
       name: "Powell River Amateur Radio Club",
       tone: "103.5 Hz",
-      description: "Main repeater for Powell River area",
+      description: "Main repeater for Powell River",
       isEmergency: false,
       isActive: true,
       status: "active",
       category: "VHF",
-      isMonitored: false
+      isMonitored: true
     });
     
-    this.createFrequency({
+    await this.createFrequency({
       frequency: 147.2,
       name: "Texada Island Repeater",
       tone: "123.0 Hz",
@@ -274,8 +240,8 @@ export class MemStorage implements IStorage {
       isMonitored: false
     });
     
-    this.createFrequency({
-      frequency: 146.52,
+    await this.createFrequency({
+      frequency: EMERGENCY_FREQUENCY,
       name: "National Simplex Calling",
       tone: "No Tone",
       description: "National calling frequency",
@@ -286,7 +252,7 @@ export class MemStorage implements IStorage {
       isMonitored: false
     });
     
-    this.createFrequency({
+    await this.createFrequency({
       frequency: 443.125,
       name: "Powell River UHF Repeater",
       tone: "103.5 Hz",
@@ -299,7 +265,7 @@ export class MemStorage implements IStorage {
     });
     
     // Add repeaters
-    this.createRepeater({
+    await this.createRepeater({
       name: "Powell River Amateur Radio Club",
       frequency: 146.84,
       offset: -0.6,
@@ -312,21 +278,21 @@ export class MemStorage implements IStorage {
       notes: "Main repeater for the Powell River area"
     });
     
-    this.createRepeater({
+    await this.createRepeater({
       name: "Texada Island Repeater",
       frequency: 147.2,
       offset: 0.6,
       tone: "123.0 Hz",
       status: "operational",
-      location: "Mount Pocahontas, Texada Island",
-      latitude: 49.6942,
-      longitude: -124.4050,
-      coverage: "Texada Island, Powell River, parts of Vancouver Island",
-      notes: "Excellent coverage across the strait"
+      location: "Mt. Pocahontas, Texada Island",
+      latitude: 49.6952,
+      longitude: -124.4039,
+      coverage: "Texada Island, Powell River, Comox, Campbell River",
+      notes: "Good coverage of northern Strait of Georgia"
     });
     
-    this.createRepeater({
-      name: "Powell River UHF Repeater",
+    await this.createRepeater({
+      name: "Powell River UHF",
       frequency: 443.125,
       offset: 5.0,
       tone: "103.5 Hz",
@@ -334,157 +300,47 @@ export class MemStorage implements IStorage {
       location: "Powell River",
       latitude: 49.8352,
       longitude: -124.5247,
-      coverage: "Powell River city limits",
-      notes: "Experiencing occasional outages"
+      coverage: "Powell River city area",
+      notes: "Limited range, primarily for local communications"
     });
     
     // Add reference items
-    // Emergency Protocols
-    this.createReferenceItem({
+    await this.createReferenceItem({
       category: "Emergency Protocols",
-      title: "Emergency Frequencies",
-      description: "VHF: 146.520 MHz - National Calling Frequency\nPowell River Emergency: 146.840 MHz\nMarine Distress: 156.800 MHz (Channel 16)",
+      title: "Power Outage Procedure",
+      description: "1. Switch to battery backup\n2. Tune to 146.840 MHz (PRARC repeater)\n3. Check in with net control if active\n4. Reduce transmit power to conserve battery\n5. Report outages and critical situations\n6. Maintain communication every 30 minutes",
       sortOrder: 1
     });
     
-    this.createReferenceItem({
+    await this.createReferenceItem({
       category: "Emergency Protocols",
-      title: "Emergency Procedures",
-      description: "1. Clearly state \"MAYDAY, MAYDAY, MAYDAY\" for life-threatening emergencies\n2. Give your call sign\n3. State location as precisely as possible\n4. Describe the emergency situation\n5. Specify assistance needed\n6. Provide number of persons involved and condition",
+      title: "Earthquake Response",
+      description: "1. Ensure personal safety first\n2. Switch to battery power\n3. Tune to 146.520 MHz simplex\n4. Attempt contact with local operators\n5. Report to emergency net when established\n6. Relay emergency traffic only\n7. Document all communications",
       sortOrder: 2
     });
     
-    this.createReferenceItem({
-      category: "Emergency Protocols",
-      title: "Powell River Emergency Resources",
-      description: "Powell River Emergency Operations Center: 604-485-8600\nPowell River Amateur Radio Club Emergency Coordinator: VE7ABC\nPowell River Hospital: 604-485-3211",
-      sortOrder: 3
-    });
-    
-    // Q Codes
-    this.createReferenceItem({
+    await this.createReferenceItem({
       category: "Q Codes",
-      title: "QRM",
-      description: "I am being interfered with",
+      title: "Common Q Codes",
+      description: "QRM - Interference\nQRN - Static noise\nQRP - Low power operation\nQRT - Stop transmitting\nQRZ - Who is calling?\nQSB - Fading signal\nQSL - Confirmation\nQSO - Communication\nQSY - Change frequency\nQTH - Location",
       sortOrder: 1
     });
     
-    this.createReferenceItem({
-      category: "Q Codes",
-      title: "QRN",
-      description: "I am troubled by static",
-      sortOrder: 2
-    });
-    
-    this.createReferenceItem({
-      category: "Q Codes",
-      title: "QRO",
-      description: "Increase power",
-      sortOrder: 3
-    });
-    
-    this.createReferenceItem({
-      category: "Q Codes",
-      title: "QRP",
-      description: "Decrease power",
-      sortOrder: 4
-    });
-    
-    this.createReferenceItem({
-      category: "Q Codes",
-      title: "QRT",
-      description: "Stop sending",
-      sortOrder: 5
-    });
-    
-    this.createReferenceItem({
-      category: "Q Codes",
-      title: "QRZ",
-      description: "Who is calling me?",
-      sortOrder: 6
-    });
-    
-    this.createReferenceItem({
-      category: "Q Codes",
-      title: "QSL",
-      description: "I acknowledge receipt",
-      sortOrder: 7
-    });
-    
-    this.createReferenceItem({
-      category: "Q Codes",
-      title: "QSO",
-      description: "I can communicate with",
-      sortOrder: 8
-    });
-    
-    this.createReferenceItem({
-      category: "Q Codes",
-      title: "QSY",
-      description: "Change frequency",
-      sortOrder: 9
-    });
-    
-    this.createReferenceItem({
-      category: "Q Codes",
-      title: "QTH",
-      description: "My location is",
-      sortOrder: 10
-    });
-    
-    // Phonetic Alphabet
-    this.createReferenceItem({
+    await this.createReferenceItem({
       category: "Phonetic Alphabet",
-      title: "A-F",
-      description: "A - Alpha\nB - Bravo\nC - Charlie\nD - Delta\nE - Echo\nF - Foxtrot",
+      title: "NATO Phonetic Alphabet",
+      description: "A - Alpha\nB - Bravo\nC - Charlie\nD - Delta\nE - Echo\nF - Foxtrot\nG - Golf\nH - Hotel\nI - India\nJ - Juliet\nK - Kilo\nL - Lima\nM - Mike\nN - November\nO - Oscar\nP - Papa\nQ - Quebec\nR - Romeo\nS - Sierra\nT - Tango\nU - Uniform\nV - Victor\nW - Whiskey\nX - X-ray\nY - Yankee\nZ - Zulu",
       sortOrder: 1
     });
     
-    this.createReferenceItem({
-      category: "Phonetic Alphabet",
-      title: "G-L",
-      description: "G - Golf\nH - Hotel\nI - India\nJ - Juliet\nK - Kilo\nL - Lima",
-      sortOrder: 2
-    });
-    
-    this.createReferenceItem({
-      category: "Phonetic Alphabet",
-      title: "M-R",
-      description: "M - Mike\nN - November\nO - Oscar\nP - Papa\nQ - Quebec\nR - Romeo",
-      sortOrder: 3
-    });
-    
-    this.createReferenceItem({
-      category: "Phonetic Alphabet",
-      title: "S-Z",
-      description: "S - Sierra\nT - Tango\nU - Uniform\nV - Victor\nW - Whiskey\nX - X-ray\nY - Yankee\nZ - Zulu",
-      sortOrder: 4
-    });
-    
-    // Signal Reports
-    this.createReferenceItem({
-      category: "Signal Reports",
-      title: "RST System",
-      description: "R - Readability (1-5)\n1: Unreadable\n2: Barely readable\n3: Readable with difficulty\n4: Readable with almost no difficulty\n5: Perfectly readable\n\nS - Strength (1-9)\n1: Faint signals barely perceptible\n9: Extremely strong signals\n\nT - Tone (1-9, used in CW/Morse)\n1: Extremely rough note\n9: Perfect tone",
-      sortOrder: 1
-    });
-    
-    this.createReferenceItem({
-      category: "Signal Reports",
-      title: "Common Signal Reports",
-      description: "59 or 5-9: Excellent copy, very strong signal (ideal)\n57 or 5-7: Good copy, strong signal\n55 or 5-5: Fair copy, moderate signal\n53 or 5-3: Readable with difficulty\n51 or 5-1: Barely readable",
-      sortOrder: 2
-    });
-    
-    // Club Information
-    this.createReferenceItem({
+    await this.createReferenceItem({
       category: "Powell River Amateur Radio Club",
       title: "Club Information",
       description: "Meeting Location: Powell River Recreation Complex\nMeeting Time: First Tuesday of each month at 7:00 PM\nClub Callsign: VE7PRN\nWebsite: https://powellriverarc.ca\nMailing Address: P.O. Box 85, Powell River, BC V8A 4Z5",
       sortOrder: 1
     });
     
-    this.createReferenceItem({
+    await this.createReferenceItem({
       category: "Powell River Amateur Radio Club",
       title: "Club Nets",
       description: "Weekly Net: Thursday 7:00 PM on 146.840 MHz\nEmergency Net: First Sunday of each month at 1:00 PM on 146.840 MHz",
@@ -492,7 +348,7 @@ export class MemStorage implements IStorage {
     });
     
     // Add initial weather data
-    this.updateWeatherCache({
+    await this.updateWeatherCache({
       location: "Powell River, BC",
       temperature: 12,
       condition: "Partly Cloudy",
@@ -507,7 +363,7 @@ export class MemStorage implements IStorage {
     });
     
     // Sample log entry
-    this.createLogEntry({
+    await this.createLogEntry({
       dateTime: new Date("2023-05-15T10:25:00"),
       frequency: 146.84,
       callSign: "VE7ABC",
@@ -517,26 +373,16 @@ export class MemStorage implements IStorage {
       notes: "Clear conversation about upcoming field day event. Good signal strength throughout.",
     });
     
-    this.createLogEntry({
-      dateTime: new Date("2023-05-12T16:45:00"),
+    await this.createLogEntry({
+      dateTime: new Date("2023-05-12T15:40:00"),
       frequency: 147.2,
-      callSign: "VE7XYZ",
-      operatorName: "Mary Johnson",
-      location: "Vancouver Island",
+      callSign: "VA7XYZ",
+      operatorName: "Jane Doe",
+      location: "Savary Island",
       signalReport: "57",
-      notes: "Discussed local weather conditions and equipment setup.",
-    });
-    
-    this.createLogEntry({
-      dateTime: new Date("2023-05-10T19:15:00"),
-      frequency: 443.125,
-      callSign: "VA7DEF",
-      operatorName: "Robert Wilson",
-      location: "Powell River",
-      signalReport: "55",
-      notes: "Brief contact with occasional signal fading.",
+      notes: "Discussed marine conditions and ferry schedules. Some static interference.",
     });
   }
 }
 
-export const storage = new MemStorage();
+export const storage = new DatabaseStorage();
