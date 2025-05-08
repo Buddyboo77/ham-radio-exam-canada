@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { Progress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import { AlertCircle, Award, BookOpen, ExternalLink, FlaskConical, Lightbulb, Radio, RotateCw, GamepadIcon } from "lucide-react";
-import RadioTargetGame from "@/components/games/RadioTargetGame";
+import MorseCodeGame from "@/components/games/MorseCodeGame";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 // Flashcard data
@@ -389,7 +389,7 @@ export default function LearningPage() {
         <TabsList className="grid w-full grid-cols-5">
           <TabsTrigger value="flashcards" className="flex items-center"><BookOpen className="mr-2 h-4 w-4" />Flashcards</TabsTrigger>
           <TabsTrigger value="practice" className="flex items-center"><FlaskConical className="mr-2 h-4 w-4" />Practice Quiz</TabsTrigger>
-          <TabsTrigger value="games" className="flex items-center"><GamepadIcon className="mr-2 h-4 w-4" />Radio Game</TabsTrigger>
+          <TabsTrigger value="games" className="flex items-center"><GamepadIcon className="mr-2 h-4 w-4" />Morse Code</TabsTrigger>
           <TabsTrigger value="exams" className="flex items-center"><Award className="mr-2 h-4 w-4" />Exam Resources</TabsTrigger>
           <TabsTrigger value="local" className="flex items-center"><Radio className="mr-2 h-4 w-4" />Local Exams</TabsTrigger>
         </TabsList>
@@ -437,11 +437,11 @@ export default function LearningPage() {
         <TabsContent value="games" className="mt-6">
           <Card>
             <CardHeader>
-              <CardTitle>Radio Target Practice</CardTitle>
-              <CardDescription>Have fun while improving your reflexes with this radio-themed target shooting game</CardDescription>
+              <CardTitle>Morse Code Practice</CardTitle>
+              <CardDescription>Learn Morse code through this interactive game - an essential skill for ham radio operators</CardDescription>
             </CardHeader>
             <CardContent>
-              <RadioTargetGame />
+              <MorseCodeGame />
             </CardContent>
           </Card>
         </TabsContent>
