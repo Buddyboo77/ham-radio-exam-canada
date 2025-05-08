@@ -10,6 +10,7 @@ import RepeatersPage from "@/pages/RepeatersPage";
 import LogbookPage from "@/pages/LogbookPage";
 import ReferencePage from "@/pages/ReferencePage";
 import LearningPage from "@/pages/LearningPage";
+import LocalInfoPage from "@/pages/LocalInfoPage";
 import { useState, useEffect } from "react";
 import { 
   Radio, 
@@ -23,7 +24,9 @@ import {
   Battery,
   SignalHigh,
   Menu,
-  Power
+  Power,
+  Users,
+  RadioTower
 } from "lucide-react";
 import { useOnlineStatus } from "@/hooks/use-online-status";
 
@@ -57,6 +60,7 @@ function Router() {
     { path: "/logbook", label: "Logbook", icon: <FileText size={18} /> },
     { path: "/reference", label: "Reference", icon: <BookOpen size={18} /> },
     { path: "/learning", label: "Learning", icon: <BookOpenCheck size={18} /> },
+    { path: "/local-info", label: "Powell River", icon: <RadioTower size={18} /> },
   ];
   
   // If at root, redirect to frequencies
@@ -124,6 +128,7 @@ function Router() {
               <Route path="/logbook" component={() => <LogbookPage />} />
               <Route path="/reference" component={() => <ReferencePage />} />
               <Route path="/learning" component={() => <LearningPage />} />
+              <Route path="/local-info" component={() => <LocalInfoPage />} />
               <Route component={NotFound} />
             </Switch>
           </div>
