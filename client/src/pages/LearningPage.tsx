@@ -1704,11 +1704,11 @@ function Quiz({ questions }: QuizProps) {
       )}
       
       {showExplanation && (
-        <div className="flex justify-end mt-4">
+        <div className="flex justify-center mt-4">
           <Button 
             onClick={handleNext} 
             size="sm"
-            className="px-3 py-1 h-8 text-xs font-medium">
+            className="px-3 py-1 h-8 text-xs font-medium w-28">
             {currentQuestion < questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
           </Button>
         </div>

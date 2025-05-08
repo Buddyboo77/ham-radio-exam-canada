@@ -498,19 +498,20 @@ export default function MorseCodeGame() {
                 </div>
               )}
               
-              <div className="flex mt-6 w-full max-w-sm">
+              <div className="flex flex-col mt-6 w-full max-w-sm">
                 <input
                   type="text"
                   value={userInput}
                   onChange={(e) => setUserInput(e.target.value)}
                   placeholder="Your answer"
-                  className="flex-1 px-4 py-2 border border-gray-300 rounded-l-md focus:outline-none focus:ring-2 focus:ring-primary"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-primary"
                   onKeyDown={(e) => e.key === 'Enter' && handleSubmit()}
                 />
                 <Button 
                   onClick={handleSubmit} 
                   variant="default"
-                  className="rounded-l-none"
+                  size="sm"
+                  className="mt-2 px-3 w-24 mx-auto"
                 >
                   Submit
                 </Button>
