@@ -1,10 +1,12 @@
-import { useState } from "react";
-import { useForm } from "react-hook-form";
+import { useState, useEffect } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { useMutation } from "@tanstack/react-query";
-import { queryClient } from "@/lib/queryClient";
 import { apiRequest } from "@/lib/queryClient";
+import { queryClient } from "@/lib/queryClient";
+import { format } from "date-fns";
+import { SIGNAL_REPORT_OPTIONS } from "@/lib/constants";
 import { insertLogEntrySchema } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -12,6 +14,7 @@ import { Textarea } from "@/components/ui/textarea";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -24,7 +27,23 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { Calendar } from "@/components/ui/calendar";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { CalendarIcon, X } from "lucide-react";
 import { useToast } from "@/hooks/use-toast";
+
+// Extend the schema with additional validation
+const formSchema = insertLogEntrySchema.extend({
+  dateTime: z.union([z.string(), z.date()]),
+  callSign: z.string().min(3, "Call sign must be at least 3 characters"),
+  frequency: z.number().min(0.1, "Frequency must be greater than 0.1 MHz"),
+});
+
+type FormValues = z.infer<typeof formSchema>;
 
 interface LogEntryFormProps {
   onCancel: () => void;
@@ -34,139 +53,136 @@ interface LogEntryFormProps {
 
 const LogEntryForm: React.FC<LogEntryFormProps> = ({ 
   onCancel, 
-  initialData = null, 
+  initialData, 
   isEdit = false 
 }) => {
+  const [date, setDate] = useState<Date | undefined>(
+    initialData?.dateTime ? new Date(initialData.dateTime) : new Date()
+  );
   const { toast } = useToast();
-
-  // Extend the schema with validation
-  const formSchema = insertLogEntrySchema.extend({
-    dateTime: z.string().min(1, "Date and time are required"),
-    frequency: z.coerce.number().min(0.1, "Frequency must be positive"),
-    callSign: z.string().min(1, "Call sign is required"),
-    operatorName: z.string().optional(),
-    location: z.string().optional(),
-    signalReport: z.string().optional(),
-    notes: z.string().optional(),
-  });
-
-  type FormValues = z.infer<typeof formSchema>;
-
-  // Set default values
-  const defaultValues: Partial<FormValues> = {
-    dateTime: initialData?.dateTime 
-      ? new Date(initialData.dateTime).toISOString().slice(0, 16) 
-      : new Date().toISOString().slice(0, 16),
-    frequency: initialData?.frequency || "",
-    callSign: initialData?.callSign || "",
-    operatorName: initialData?.operatorName || "",
-    location: initialData?.location || "",
-    signalReport: initialData?.signalReport || "59",
-    notes: initialData?.notes || "",
-  };
 
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues,
+    defaultValues: {
+      callSign: initialData?.callSign || "",
+      frequency: initialData?.frequency || "",
+      operatorName: initialData?.operatorName || "",
+      location: initialData?.location || "",
+      signalReport: initialData?.signalReport || "",
+      notes: initialData?.notes || "",
+      dateTime: initialData?.dateTime ? new Date(initialData.dateTime) : new Date(),
+    },
   });
 
-  const { mutate: saveLogEntry, isPending } = useMutation({
+  const { mutate: createLogEntry, isPending: isCreating } = useMutation({
     mutationFn: async (values: FormValues) => {
-      const endpoint = isEdit 
-        ? `/api/logbook/${initialData.id}` 
-        : "/api/logbook";
-      
-      const method = isEdit ? "PATCH" : "POST";
-      
-      const dateTimeValue = values.dateTime 
-        ? new Date(values.dateTime).toISOString() 
-        : new Date().toISOString();
-      
-      const data = {
-        ...values,
-        dateTime: dateTimeValue,
-      };
-      
-      const response = await apiRequest(method, endpoint, data);
+      const response = await apiRequest(
+        "POST",
+        "/api/logbook",
+        values
+      );
       return response.json();
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/logbook"] });
       toast({
-        title: isEdit ? "Log entry updated" : "Log entry saved",
-        description: isEdit 
-          ? "Your log entry has been updated successfully." 
-          : "Your new log entry has been saved.",
+        title: "Log Entry Created",
+        description: "The log entry has been successfully created.",
       });
       onCancel();
     },
-    onError: (error) => {
+    onError: (error: any) => {
       toast({
         title: "Error",
-        description: `Failed to ${isEdit ? "update" : "save"} log entry: ${error.message}`,
+        description: `Failed to create log entry: ${error.message}`,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const { mutate: updateLogEntry, isPending: isUpdating } = useMutation({
+    mutationFn: async (values: FormValues) => {
+      const response = await apiRequest(
+        "PATCH",
+        `/api/logbook/${initialData.id}`,
+        values
+      );
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/logbook"] });
+      toast({
+        title: "Log Entry Updated",
+        description: "The log entry has been successfully updated.",
+      });
+      onCancel();
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: `Failed to update log entry: ${error.message}`,
         variant: "destructive",
       });
     },
   });
 
   const onSubmit = (values: FormValues) => {
-    saveLogEntry(values);
+    // Ensure dateTime is formatted correctly
+    const formattedValues = {
+      ...values,
+      dateTime: values.dateTime instanceof Date ? values.dateTime : new Date(values.dateTime),
+      frequency: Number(values.frequency),
+    };
+
+    if (isEdit && initialData?.id) {
+      updateLogEntry(formattedValues);
+    } else {
+      createLogEntry(formattedValues);
+    }
   };
 
+  useEffect(() => {
+    if (date) {
+      form.setValue("dateTime", date);
+    }
+  }, [date, form]);
+
+  const isPending = isCreating || isUpdating;
+
   return (
-    <div className="mb-4 bg-gray-50 p-4 rounded-lg border">
-      <h3 className="font-bold mb-2">{isEdit ? "Edit Contact" : "New Contact"}</h3>
-      
+    <div className="bg-white p-4 rounded-lg shadow">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-lg font-bold">
+          {isEdit ? "Edit Log Entry" : "Add New Log Entry"}
+        </h2>
+        <Button 
+          variant="ghost" 
+          size="icon" 
+          onClick={onCancel}
+          type="button"
+          aria-label="Close form"
+        >
+          <X className="h-5 w-5" />
+        </Button>
+      </div>
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField
               control={form.control}
-              name="dateTime"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Date & Time</FormLabel>
-                  <FormControl>
-                    <Input type="datetime-local" {...field} />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
-              name="frequency"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Frequency (MHz)</FormLabel>
-                  <FormControl>
-                    <Input 
-                      type="number" 
-                      step="0.001" 
-                      placeholder="146.840" 
-                      {...field} 
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            
-            <FormField
-              control={form.control}
               name="callSign"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Call Sign</FormLabel>
+                  <FormLabel>Call Sign*</FormLabel>
                   <FormControl>
-                    <Input placeholder="VE7XXX" {...field} />
+                    <Input {...field} placeholder="e.g. VE7ABC" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="operatorName"
@@ -174,27 +190,34 @@ const LogEntryForm: React.FC<LogEntryFormProps> = ({
                 <FormItem>
                   <FormLabel>Operator Name</FormLabel>
                   <FormControl>
-                    <Input placeholder="John Doe" {...field} />
+                    <Input {...field} placeholder="e.g. John Smith" />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
-              name="location"
+              name="frequency"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Location</FormLabel>
+                  <FormLabel>Frequency (MHz)*</FormLabel>
                   <FormControl>
-                    <Input placeholder="Powell River, BC" {...field} />
+                    <Input 
+                      {...field} 
+                      type="number" 
+                      step="0.001" 
+                      min="0.1" 
+                      placeholder="146.840"
+                      onChange={e => field.onChange(parseFloat(e.target.value))} 
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            
+
             <FormField
               control={form.control}
               name="signalReport"
@@ -211,23 +234,86 @@ const LogEntryForm: React.FC<LogEntryFormProps> = ({
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      <SelectItem value="59">5-9 (Excellent)</SelectItem>
-                      <SelectItem value="58">5-8 (Very Good)</SelectItem>
-                      <SelectItem value="57">5-7 (Good)</SelectItem>
-                      <SelectItem value="56">5-6 (Good with Noise)</SelectItem>
-                      <SelectItem value="55">5-5 (Fair)</SelectItem>
-                      <SelectItem value="54">5-4 (Fair with Noise)</SelectItem>
-                      <SelectItem value="53">5-3 (Readable with Difficulty)</SelectItem>
-                      <SelectItem value="52">5-2 (Barely Readable)</SelectItem>
-                      <SelectItem value="51">5-1 (Unreadable)</SelectItem>
+                      {SIGNAL_REPORT_OPTIONS.map(option => (
+                        <SelectItem key={option.value} value={option.value}>
+                          {option.label}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
+                  <FormDescription>
+                    Standard RST or RS format
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Location</FormLabel>
+                  <FormControl>
+                    <Input {...field} placeholder="e.g. Powell River" />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="dateTime"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Date & Time*</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <Button
+                          variant="outline"
+                          className="w-full pl-3 text-left font-normal"
+                        >
+                          {date ? (
+                            format(date, "PPP p")
+                          ) : (
+                            <span>Pick a date and time</span>
+                          )}
+                          <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                        </Button>
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-auto p-0" align="start">
+                      <Calendar
+                        mode="single"
+                        selected={date}
+                        onSelect={setDate}
+                        initialFocus
+                      />
+                      <div className="p-3 border-t border-border">
+                        <Input
+                          type="time"
+                          value={date ? format(date, "HH:mm") : ""}
+                          onChange={e => {
+                            if (date && e.target.value) {
+                              const [hours, minutes] = e.target.value.split(':').map(Number);
+                              const newDate = new Date(date);
+                              newDate.setHours(hours, minutes);
+                              setDate(newDate);
+                            }
+                          }}
+                        />
+                      </div>
+                    </PopoverContent>
+                  </Popover>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-          
+
           <FormField
             control={form.control}
             name="notes"
@@ -236,22 +322,33 @@ const LogEntryForm: React.FC<LogEntryFormProps> = ({
                 <FormLabel>Notes</FormLabel>
                 <FormControl>
                   <Textarea 
-                    rows={3} 
-                    placeholder="Enter any additional notes about the contact" 
                     {...field} 
+                    placeholder="Add any details about the contact" 
+                    className="min-h-[100px]"
                   />
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-          
-          <div className="flex space-x-2">
-            <Button type="submit" disabled={isPending}>
-              {isPending ? "Saving..." : "Save Entry"}
-            </Button>
-            <Button variant="outline" type="button" onClick={onCancel}>
+
+          <div className="flex justify-end gap-2 pt-2">
+            <Button 
+              type="button" 
+              variant="outline" 
+              onClick={onCancel}
+              disabled={isPending}
+            >
               Cancel
+            </Button>
+            <Button type="submit" disabled={isPending}>
+              {isPending ? (
+                <span>Saving...</span>
+              ) : isEdit ? (
+                "Update Entry"
+              ) : (
+                "Add Entry"
+              )}
             </Button>
           </div>
         </form>

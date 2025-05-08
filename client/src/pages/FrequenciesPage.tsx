@@ -1,109 +1,128 @@
 import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Frequency } from "@shared/schema";
+import { EMERGENCY_FREQUENCY } from "@/lib/constants";
 import FrequencyItem from "@/components/frequencies/FrequencyItem";
 import EmergencyAlert from "@/components/frequencies/EmergencyAlert";
 import WeatherWidget from "@/components/weather/WeatherWidget";
-import { Search, Filter } from "lucide-react";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Input } from "@/components/ui/input";
+import { Search, AlertTriangle } from "lucide-react";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const FrequenciesPage = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filterCategory, setFilterCategory] = useState<string | null>(null);
-  
-  const { data: frequencies, isLoading } = useQuery({
+  const [activeTab, setActiveTab] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const { data: frequencies = [], isLoading } = useQuery<Frequency[]>({
     queryKey: ["/api/frequencies"],
   });
 
-  const filterFrequencies = (frequencies: Frequency[] | undefined) => {
-    if (!frequencies) return [];
+  // Filter frequencies based on active tab and search query
+  const filteredFrequencies = frequencies.filter(freq => {
+    // First filter by tab
+    const tabMatch = 
+      activeTab === "all" || 
+      (activeTab === "monitored" && freq.isMonitored) ||
+      (activeTab === "emergency" && freq.isEmergency) ||
+      activeTab === freq.category;
     
-    return frequencies.filter((freq) => {
-      const matchesSearch = searchTerm === "" || 
-        freq.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        freq.frequency.toString().includes(searchTerm);
-      
-      const matchesCategory = !filterCategory || freq.category === filterCategory;
-      
-      return matchesSearch && matchesCategory;
-    });
-  };
+    // Then filter by search
+    const searchMatch = searchQuery === "" || 
+      freq.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+      freq.frequency.toString().includes(searchQuery.toLowerCase());
+    
+    return tabMatch && searchMatch;
+  });
 
-  const filteredFrequencies = filterFrequencies(frequencies);
-  
+  // Get unique categories for tab filters
+  const categories = Array.from(new Set(frequencies.map(freq => freq.category)));
+
   // Find emergency frequency
-  const emergencyFrequency = frequencies?.find(f => f.isEmergency);
+  const emergencyFreq = frequencies.find(
+    freq => freq.frequency === EMERGENCY_FREQUENCY
+  );
 
-  const renderSkeletons = () => {
-    return Array(4).fill(0).map((_, i) => (
-      <div key={i} className="bg-white rounded-lg shadow mb-3 p-4">
-        <div className="flex justify-between">
-          <div>
-            <Skeleton className="h-6 w-24 mb-2" />
-            <Skeleton className="h-4 w-40 mb-1" />
-            <Skeleton className="h-3 w-20" />
-          </div>
-          <div className="flex flex-col items-end justify-between">
-            <Skeleton className="h-5 w-16 rounded-full" />
-            <Skeleton className="h-6 w-24" />
-          </div>
-        </div>
-      </div>
-    ));
-  };
+  const emergencyFreqStatus = emergencyFreq ? emergencyFreq.status : 'inactive';
 
   return (
     <div className="p-4">
-      {/* Emergency Alert */}
-      {emergencyFrequency && (
-        <EmergencyAlert 
-          title="Emergency Frequency" 
-          description={`${emergencyFrequency.frequency.toFixed(3)} MHz - ${emergencyFrequency.name}`} 
+      <WeatherWidget location="Powell River, BC" />
+      
+      {emergencyFreq && (
+        <EmergencyAlert
+          title="National Calling Frequency"
+          description={`The national calling frequency (${EMERGENCY_FREQUENCY} MHz) is ${
+            emergencyFreqStatus === 'active' ? 'active and being monitored' : 
+            emergencyFreqStatus === 'intermittent' ? 'intermittently active' : 'not currently monitored'
+          } in Powell River. ${
+            emergencyFreqStatus !== 'active' ? 'Switch to this frequency for emergency communications.' : ''
+          }`}
         />
       )}
 
-      {/* Weather Information */}
-      <WeatherWidget location="Powell River, BC" />
-
-      {/* Search and Filter */}
-      <div className="bg-white rounded-lg shadow mb-4 p-4">
-        <div className="flex space-x-2">
-          <div className="relative flex-1">
-            <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
-            <Input
-              type="text"
-              placeholder="Search frequencies..."
-              className="w-full pl-9 pr-4"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </div>
-          <Button 
-            className="bg-accent text-white flex items-center"
-            onClick={() => setFilterCategory(filterCategory ? null : "VHF")}
-          >
-            <Filter className="h-4 w-4 mr-1" />
-            {filterCategory || "Filter"}
-          </Button>
+      <div className="mb-4">
+        <div className="relative mb-4">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+          <Input
+            type="text"
+            placeholder="Search frequencies..."
+            className="pl-8"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
         </div>
+        
+        <Tabs defaultValue="all" value={activeTab} onValueChange={setActiveTab}>
+          <TabsList className="grid grid-cols-4 mb-4">
+            <TabsTrigger value="all">All</TabsTrigger>
+            <TabsTrigger value="monitored">Monitored</TabsTrigger>
+            <TabsTrigger value="emergency">
+              <AlertTriangle className="h-3.5 w-3.5 mr-1" />
+              Emergency
+            </TabsTrigger>
+            <TabsTrigger value="favorite">Favorites</TabsTrigger>
+          </TabsList>
+
+          {/* Category tabs if needed */}
+          {categories.length > 0 && (
+            <div className="flex overflow-x-auto gap-2 mb-4 pb-2">
+              {categories.map(category => (
+                <button
+                  key={category}
+                  className={`px-3 py-1 rounded-full text-sm font-medium 
+                    ${activeTab === category ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                  onClick={() => setActiveTab(category)}
+                >
+                  {category}
+                </button>
+              ))}
+            </div>
+          )}
+          
+          <TabsContent value={activeTab} className="space-y-4">
+            {isLoading ? (
+              // Loading state
+              Array(4).fill(0).map((_, i) => (
+                <Skeleton key={i} className="h-28 w-full rounded-lg" />
+              ))
+            ) : filteredFrequencies.length === 0 ? (
+              // Empty state
+              <div className="text-center py-8 bg-white rounded-lg shadow">
+                <h3 className="font-medium text-gray-900">No frequencies found</h3>
+                <p className="mt-1 text-gray-500">
+                  {searchQuery ? "Try a different search term" : "No frequencies in this category"}
+                </p>
+              </div>
+            ) : (
+              // Frequencies list
+              filteredFrequencies.map(frequency => (
+                <FrequencyItem key={frequency.id} frequency={frequency} />
+              ))
+            )}
+          </TabsContent>
+        </Tabs>
       </div>
-
-      {/* Frequency List */}
-      <h2 className="font-bold text-lg mb-2">Local Frequencies</h2>
-      
-      {isLoading ? (
-        renderSkeletons()
-      ) : filteredFrequencies.length > 0 ? (
-        filteredFrequencies.map((frequency) => (
-          <FrequencyItem key={frequency.id} frequency={frequency} />
-        ))
-      ) : (
-        <div className="bg-white rounded-lg shadow p-4 text-center">
-          <p>No frequencies found matching your filters.</p>
-        </div>
-      )}
     </div>
   );
 };

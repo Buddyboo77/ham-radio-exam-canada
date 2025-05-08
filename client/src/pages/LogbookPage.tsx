@@ -1,115 +1,167 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Input } from "@/components/ui/input";
+import { useQuery, useMutation } from "@tanstack/react-query";
+import { apiRequest } from "@/lib/queryClient";
+import { queryClient } from "@/lib/queryClient";
+import { LogEntry as LogEntryType } from "@shared/schema";
 import { Button } from "@/components/ui/button";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Search, Filter, Plus } from "lucide-react";
 import LogEntry from "@/components/logbook/LogEntry";
 import LogEntryForm from "@/components/logbook/LogEntryForm";
-import { LogEntry as LogEntryType } from "@shared/schema";
+import { PlusCircle, Search } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { useToast } from "@/hooks/use-toast";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const LogbookPage = () => {
-  const [showNewEntryForm, setShowNewEntryForm] = useState(false);
-  const [searchTerm, setSearchTerm] = useState("");
+  const [isFormVisible, setIsFormVisible] = useState(false);
+  const [selectedEntry, setSelectedEntry] = useState<LogEntryType | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
+  const { toast } = useToast();
 
-  const { data: logEntries, isLoading } = useQuery({
+  const { data: logEntries = [], isLoading } = useQuery<LogEntryType[]>({
     queryKey: ["/api/logbook"],
   });
 
-  const filterLogEntries = (entries: LogEntryType[] | undefined) => {
-    if (!entries) return [];
-    
-    return entries.filter((entry) => {
-      return searchTerm === "" || 
-        entry.callSign.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        (entry.operatorName && entry.operatorName.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        entry.frequency.toString().includes(searchTerm) ||
-        (entry.location && entry.location.toLowerCase().includes(searchTerm.toLowerCase()));
-    });
+  const { mutate: deleteLogEntry } = useMutation({
+    mutationFn: async (id: number) => {
+      const response = await apiRequest("DELETE", `/api/logbook/${id}`);
+      return response.json();
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["/api/logbook"] });
+      toast({
+        title: "Log Entry Deleted",
+        description: "The log entry has been successfully deleted.",
+      });
+    },
+    onError: (error: any) => {
+      toast({
+        title: "Error",
+        description: `Failed to delete log entry: ${error.message}`,
+        variant: "destructive",
+      });
+    },
+  });
+
+  const handleAddEntry = () => {
+    setSelectedEntry(null);
+    setIsFormVisible(true);
   };
 
-  const filteredLogEntries = filterLogEntries(logEntries);
-
-  const handleNewEntryClick = () => {
-    setShowNewEntryForm(true);
+  const handleEditEntry = (entry: LogEntryType) => {
+    setSelectedEntry(entry);
+    setIsFormVisible(true);
   };
 
-  const handleCancelNewEntry = () => {
-    setShowNewEntryForm(false);
+  const handleDeleteEntry = (id: number) => {
+    deleteLogEntry(id);
   };
+
+  const handleCloseForm = () => {
+    setIsFormVisible(false);
+    setSelectedEntry(null);
+  };
+
+  // Filter entries based on search query
+  const filteredEntries = searchQuery.trim() === ""
+    ? logEntries
+    : logEntries.filter(entry => 
+        entry.callSign.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        entry.operatorName?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        entry.location?.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        entry.notes?.toLowerCase().includes(searchQuery.toLowerCase())
+      );
+
+  // Sort entries by date (newest first)
+  const sortedEntries = [...filteredEntries].sort((a, b) => 
+    new Date(b.dateTime).getTime() - new Date(a.dateTime).getTime()
+  );
 
   return (
-    <div className="p-4">
-      <div className="bg-white rounded-lg shadow mb-4 p-4">
-        <div className="flex justify-between items-center mb-4">
-          <h2 className="font-bold text-lg">Logbook</h2>
-          <Button 
-            className="bg-primary text-white" 
-            onClick={handleNewEntryClick}
-            disabled={showNewEntryForm}
-          >
-            <Plus className="h-4 w-4 mr-1" />
-            New Entry
-          </Button>
-        </div>
+    <div className="p-4 max-w-3xl mx-auto">
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold mb-2">QSO Logbook</h1>
+        <p className="text-gray-600">
+          Keep track of your radio contacts and communications
+        </p>
+      </div>
 
-        {/* Log Entry Form (Hidden by default) */}
-        {showNewEntryForm && (
-          <LogEntryForm onCancel={handleCancelNewEntry} />
+      <div className="mb-6 flex flex-col md:flex-row gap-2">
+        <div className="relative flex-1">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+          <Input
+            type="text"
+            placeholder="Search logbook by call sign, operator, or location..."
+            className="pl-8"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+        <Button
+          onClick={handleAddEntry}
+          disabled={isFormVisible}
+          className="whitespace-nowrap"
+        >
+          <PlusCircle className="h-4 w-4 mr-1" />
+          Add Entry
+        </Button>
+      </div>
+
+      {isFormVisible && (
+        <div className="mb-6">
+          <LogEntryForm
+            onCancel={handleCloseForm}
+            initialData={selectedEntry}
+            isEdit={!!selectedEntry}
+          />
+        </div>
+      )}
+
+      <div className="space-y-4">
+        {isLoading ? (
+          // Loading state
+          Array(3).fill(0).map((_, i) => (
+            <div key={i} className="mb-4">
+              <Skeleton className="h-32 w-full mb-2" />
+              <div className="flex justify-end">
+                <Skeleton className="h-8 w-16 mr-2" />
+                <Skeleton className="h-8 w-16" />
+              </div>
+            </div>
+          ))
+        ) : sortedEntries.length === 0 ? (
+          // Empty state
+          <div className="text-center py-12 bg-white rounded-lg shadow">
+            <h3 className="font-medium text-gray-900">No log entries found</h3>
+            {searchQuery ? (
+              <p className="mt-1 text-gray-500">
+                No entries match your search. Try a different query or clear your search.
+              </p>
+            ) : (
+              <p className="mt-1 text-gray-500">
+                Start by adding your first contact using the "Add Entry" button above.
+              </p>
+            )}
+            {searchQuery && (
+              <Button
+                variant="outline"
+                className="mt-4"
+                onClick={() => setSearchQuery("")}
+              >
+                Clear Search
+              </Button>
+            )}
+          </div>
+        ) : (
+          // Entries list
+          sortedEntries.map(entry => (
+            <LogEntry
+              key={entry.id}
+              logEntry={entry}
+              onEdit={handleEditEntry}
+              onDelete={handleDeleteEntry}
+            />
+          ))
         )}
-
-        {/* Log Entries List */}
-        <div>
-          <div className="flex space-x-2 mb-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
-              <Input 
-                type="text" 
-                placeholder="Search logbook..." 
-                className="w-full pl-9 pr-4"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-            <Button className="bg-accent text-white">
-              <Filter className="h-4 w-4 mr-1" />
-              Filter
-            </Button>
-          </div>
-
-          <div className="mb-2 px-2">
-            <p className="text-sm text-gray-500">
-              {isLoading 
-                ? "Loading log entries..." 
-                : `Showing ${filteredLogEntries.length} entries`}
-            </p>
-          </div>
-
-          {isLoading ? (
-            <div className="space-y-3">
-              {[1, 2, 3].map(i => (
-                <Skeleton key={i} className="h-20 w-full rounded-lg" />
-              ))}
-            </div>
-          ) : filteredLogEntries.length > 0 ? (
-            filteredLogEntries.map((entry) => (
-              <LogEntry key={entry.id} logEntry={entry} />
-            ))
-          ) : (
-            <div className="text-center py-6">
-              <p>No log entries found.</p>
-              {!showNewEntryForm && (
-                <Button 
-                  variant="outline" 
-                  className="mt-2"
-                  onClick={handleNewEntryClick}
-                >
-                  Add your first log entry
-                </Button>
-              )}
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );
