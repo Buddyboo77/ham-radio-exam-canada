@@ -5,23 +5,75 @@ import { Progress } from '@/components/ui/progress';
 import { Lightbulb, Radio, RefreshCw, Volume2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 
-// Morse code mapping
+// Complete Morse code mapping required for the Canadian Morse Code exam
 const MORSE_CODE: Record<string, string> = {
+  // Letters
   'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.',
   'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..',
   'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.',
   'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-',
   'Y': '-.--', 'Z': '--..',
+  
+  // Numbers
   '0': '-----', '1': '.----', '2': '..---', '3': '...--', '4': '....-',
-  '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.'
+  '5': '.....', '6': '-....', '7': '--...', '8': '---..', '9': '----.',
+  
+  // Punctuation and special characters
+  '.': '.-.-.-', // Period
+  ',': '--..--', // Comma
+  '?': '..--..', // Question mark
+  "'": '.----.', // Apostrophe
+  '!': '-.-.--', // Exclamation mark
+  '/': '-..-.', // Slash
+  '(': '-.--.', // Left parenthesis
+  ')': '-.--.-', // Right parenthesis
+  '&': '.-...', // Ampersand
+  ':': '---...', // Colon
+  ';': '-.-.-.', // Semicolon
+  '=': '-...-', // Equal sign
+  '+': '.-.-.', // Plus sign
+  '-': '-....-', // Hyphen/minus
+  '_': '..--.-', // Underscore
+  '"': '.-..-.', // Quotation mark
+  '$': '...-..-', // Dollar sign
+  '@': '.--.-.', // At sign
+  '¿': '..-.-', // Inverted question mark
+  '¡': '--...-', // Inverted exclamation mark
+  
+  // Procedural signals and prosigns (represented as multiple characters)
+  'AR': '.-.-.', // End of message
+  'SK': '...-.-', // End of contact
+  'BT': '-...-', // Break / new paragraph
+  'KN': '-.--.', // Go only named station
+  'CL': '-.-..-', // Going off the air (clear)
+  'SOS': '...---...', // Distress call
 };
 
-// Common ham radio call signs and terms
+// Common ham radio call signs, terms, and exam-relevant content
 const RADIO_WORDS = [
-  'CQ', 'QSL', 'QTH', 'QSO', '73', 'DX', 'HF', 'VHF', 'UHF',
-  'RADIO', 'MORSE', 'HAM', 'SIGNAL', 'ANTENNA', 'DIPOLE', 'YAGI',
-  'ARRL', 'CONTACT', 'QRM', 'QRN'
+  // Q-codes (required for exam)
+  'QRL', 'QRM', 'QRN', 'QRO', 'QRP', 'QRS', 'QRT', 'QRU', 'QRV', 'QRX',
+  'QRZ', 'QSB', 'QSL', 'QSO', 'QSY', 'QTH',
+  
+  // Common procedural terms
+  'CQ', 'DE', 'K', 'R', 'SK', 'AR', 'BT', 'KN', 'CL', 'SOS', '73', '88',
+  
+  // Call sign formats (for practice)
+  'VE7BC', 'VA3XYZ', 'VY1AAA', 'CQ DX', 'TEST',
+  
+  // Technical terms
+  'RADIO', 'MORSE', 'CODE', 'HAM', 'SIGNAL', 'ANTENNA', 'DIPOLE', 'YAGI',
+  'BEAM', 'COAX', 'FILTER', 'HF', 'VHF', 'UHF', 'DX', 'RIG', 'LINEAR',
+  
+  // Canadian specific
+  'RAC', 'ISED', 'BASIC', 'ADVANCED', 'CW', 'EXAM', 'HONOURS',
+  
+  // Common abbreviations
+  'ANT', 'PWR', 'RX', 'TX', 'FB', 'OM', 'YL', 'HPE', 'TNX', 'WX', 'LOG'
 ];
+
+// Define special categories for Canadian exam-focused practice
+type PracticeCategory = 'all' | 'letters' | 'numbers' | 'punctuation' | 'prosigns' | 'qcodes' | 'callsigns';
 
 export default function MorseCodeGame() {
   const [currentWord, setCurrentWord] = useState('');
@@ -35,6 +87,8 @@ export default function MorseCodeGame() {
   const [showHint, setShowHint] = useState(false);
   const [difficulty, setDifficulty] = useState<'easy' | 'medium' | 'hard'>('easy');
   const [highScore, setHighScore] = useState(0);
+  const [practiceCategory, setPracticeCategory] = useState<PracticeCategory>('all');
+  const [examModeActive, setExamModeActive] = useState(false);
 
   // Start new game
   const startGame = () => {
@@ -51,19 +105,83 @@ export default function MorseCodeGame() {
   // Generate a new word for the player to decode
   const generateNewWord = () => {
     let newWord = '';
+    let possibleChars: string[] = [];
     
-    // Different word generation based on difficulty
-    if (difficulty === 'easy') {
-      // Single letters or numbers
-      const possibleChars = Object.keys(MORSE_CODE);
+    // Filter characters based on practice category
+    if (examModeActive) {
+      switch (practiceCategory) {
+        case 'letters':
+          possibleChars = Object.keys(MORSE_CODE).filter(char => 
+            char.length === 1 && char >= 'A' && char <= 'Z'
+          );
+          break;
+        case 'numbers':
+          possibleChars = Object.keys(MORSE_CODE).filter(char => 
+            char.length === 1 && char >= '0' && char <= '9'
+          );
+          break;
+        case 'punctuation':
+          possibleChars = Object.keys(MORSE_CODE).filter(char => 
+            char.length === 1 && 
+            !(char >= 'A' && char <= 'Z') && 
+            !(char >= '0' && char <= '9')
+          );
+          break;
+        case 'prosigns':
+          possibleChars = Object.keys(MORSE_CODE).filter(char => 
+            char.length > 1 && char !== 'SOS' && !char.startsWith('Q')
+          );
+          break;
+        case 'qcodes':
+          // Get Q-codes from RADIO_WORDS
+          possibleChars = RADIO_WORDS.filter(word => word.startsWith('Q'));
+          break;
+        case 'callsigns':
+          // Get call signs from RADIO_WORDS
+          possibleChars = RADIO_WORDS.filter(word => 
+            (word.startsWith('V') && word.length > 2) || word === 'CQ DX'
+          );
+          break;
+        case 'all':
+        default:
+          // Use all characters according to difficulty level
+          if (difficulty === 'easy') {
+            possibleChars = Object.keys(MORSE_CODE);
+          } else if (difficulty === 'medium') {
+            possibleChars = [
+              ...Object.keys(MORSE_CODE).filter(char => char.length === 1),
+              ...RADIO_WORDS.filter(word => word.length <= 3)
+            ];
+          } else {
+            possibleChars = [
+              ...Object.keys(MORSE_CODE),
+              ...RADIO_WORDS
+            ];
+          }
+          break;
+      }
+      
+      // Make sure we have at least some options
+      if (possibleChars.length === 0) {
+        possibleChars = Object.keys(MORSE_CODE);
+      }
+      
+      // Pick a random item from the filtered list
       newWord = possibleChars[Math.floor(Math.random() * possibleChars.length)];
-    } else if (difficulty === 'medium') {
-      // Short radio words (2-3 letters)
-      const shortWords = RADIO_WORDS.filter(word => word.length <= 3);
-      newWord = shortWords[Math.floor(Math.random() * shortWords.length)];
     } else {
-      // Any radio word
-      newWord = RADIO_WORDS[Math.floor(Math.random() * RADIO_WORDS.length)];
+      // Regular game mode based on difficulty
+      if (difficulty === 'easy') {
+        // Single letters or numbers
+        possibleChars = Object.keys(MORSE_CODE);
+        newWord = possibleChars[Math.floor(Math.random() * possibleChars.length)];
+      } else if (difficulty === 'medium') {
+        // Short radio words (2-3 letters)
+        const shortWords = RADIO_WORDS.filter(word => word.length <= 3);
+        newWord = shortWords[Math.floor(Math.random() * shortWords.length)];
+      } else {
+        // Any radio word
+        newWord = RADIO_WORDS[Math.floor(Math.random() * RADIO_WORDS.length)];
+      }
     }
     
     setCurrentWord(newWord);
@@ -186,34 +304,132 @@ export default function MorseCodeGame() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row justify-between items-center gap-4">
         <div>
-          <h3 className="text-lg font-semibold">Morse Code Decoder</h3>
-          <p className="text-sm text-muted-foreground">Translate morse code into letters and words!</p>
+          <h3 className="text-lg font-semibold">Morse Code Decoder {examModeActive && "- Canadian Exam Practice"}</h3>
+          <p className="text-sm text-muted-foreground">
+            {examModeActive 
+              ? "Practice the actual characters needed for the Canadian Advanced Qualification" 
+              : "Translate morse code into letters and words!"
+            }
+          </p>
         </div>
         
-        <div className="flex space-x-2">
+        <div className="flex items-center gap-2">
           <Button 
-            variant={difficulty === 'easy' ? 'default' : 'outline'} 
+            variant={examModeActive ? "default" : "outline"}
             size="sm"
-            onClick={() => changeDifficulty('easy')}
+            className={examModeActive ? "bg-green-600 hover:bg-green-700" : ""}
+            onClick={() => {
+              if (gameActive) {
+                if (confirm('Switching modes will reset your current game. Continue?')) {
+                  setExamModeActive(!examModeActive);
+                  startGame();
+                }
+              } else {
+                setExamModeActive(!examModeActive);
+              }
+            }}
           >
-            Easy
+            {examModeActive ? "Exam Mode Active" : "Enable Exam Mode"}
           </Button>
-          <Button 
-            variant={difficulty === 'medium' ? 'default' : 'outline'} 
-            size="sm"
-            onClick={() => changeDifficulty('medium')}
-          >
-            Medium
-          </Button>
-          <Button 
-            variant={difficulty === 'hard' ? 'default' : 'outline'} 
-            size="sm"
-            onClick={() => changeDifficulty('hard')}
-          >
-            Hard
-          </Button>
+
+          {!examModeActive && (
+            <div className="flex space-x-1">
+              <Button 
+                variant={difficulty === 'easy' ? 'default' : 'outline'} 
+                size="sm"
+                onClick={() => changeDifficulty('easy')}
+              >
+                Easy
+              </Button>
+              <Button 
+                variant={difficulty === 'medium' ? 'default' : 'outline'} 
+                size="sm"
+                onClick={() => changeDifficulty('medium')}
+              >
+                Medium
+              </Button>
+              <Button 
+                variant={difficulty === 'hard' ? 'default' : 'outline'} 
+                size="sm"
+                onClick={() => changeDifficulty('hard')}
+              >
+                Hard
+              </Button>
+            </div>
+          )}
         </div>
       </div>
+      
+      {/* Exam Mode Category Selector */}
+      {examModeActive && (
+        <div className="bg-blue-50 p-4 rounded-lg mb-4">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+            <div>
+              <h4 className="text-sm font-medium text-blue-800 mb-1">Canadian Morse Code Exam Practice</h4>
+              <p className="text-xs text-blue-600">For the Advanced Qualification (5 WPM), focus on specific character groups</p>
+            </div>
+            
+            <div className="flex flex-wrap gap-1">
+              <Button 
+                variant={practiceCategory === 'all' ? 'default' : 'outline'} 
+                size="sm"
+                className={practiceCategory === 'all' ? 'bg-blue-700' : 'border-blue-300 text-blue-700'}
+                onClick={() => setPracticeCategory('all')}
+              >
+                All
+              </Button>
+              <Button 
+                variant={practiceCategory === 'letters' ? 'default' : 'outline'} 
+                size="sm"
+                className={practiceCategory === 'letters' ? 'bg-blue-700' : 'border-blue-300 text-blue-700'}
+                onClick={() => setPracticeCategory('letters')}
+              >
+                Letters
+              </Button>
+              <Button 
+                variant={practiceCategory === 'numbers' ? 'default' : 'outline'} 
+                size="sm"
+                className={practiceCategory === 'numbers' ? 'bg-blue-700' : 'border-blue-300 text-blue-700'}
+                onClick={() => setPracticeCategory('numbers')}
+              >
+                Numbers
+              </Button>
+              <Button 
+                variant={practiceCategory === 'punctuation' ? 'default' : 'outline'} 
+                size="sm"
+                className={practiceCategory === 'punctuation' ? 'bg-blue-700' : 'border-blue-300 text-blue-700'}
+                onClick={() => setPracticeCategory('punctuation')}
+              >
+                Punctuation
+              </Button>
+              <Button 
+                variant={practiceCategory === 'prosigns' ? 'default' : 'outline'} 
+                size="sm"
+                className={practiceCategory === 'prosigns' ? 'bg-blue-700' : 'border-blue-300 text-blue-700'}
+                onClick={() => setPracticeCategory('prosigns')}
+              >
+                Prosigns
+              </Button>
+              <Button 
+                variant={practiceCategory === 'qcodes' ? 'default' : 'outline'} 
+                size="sm"
+                className={practiceCategory === 'qcodes' ? 'bg-blue-700' : 'border-blue-300 text-blue-700'}
+                onClick={() => setPracticeCategory('qcodes')}
+              >
+                Q-Codes
+              </Button>
+              <Button 
+                variant={practiceCategory === 'callsigns' ? 'default' : 'outline'} 
+                size="sm"
+                className={practiceCategory === 'callsigns' ? 'bg-blue-700' : 'border-blue-300 text-blue-700'}
+                onClick={() => setPracticeCategory('callsigns')}
+              >
+                Call Signs
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
       
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
         {/* Game status */}
@@ -348,12 +564,23 @@ export default function MorseCodeGame() {
       </div>
       
       <div className="bg-blue-50 p-4 rounded-lg text-sm text-blue-800">
-        <h4 className="font-medium mb-1">Did you know?</h4>
-        <p>
-          Morse code is still used by many ham radio operators worldwide. The ability to copy Morse code 
-          (also called CW or Continuous Wave) used to be required for amateur radio licensing, and many operators 
-          find it's still one of the most reliable modes of communication during poor conditions.
+        <h4 className="font-medium mb-1">Canadian Morse Code Requirements</h4>
+        <p className="mb-2">
+          For the Advanced Qualification in Canada, operators must demonstrate the ability to send and receive 
+          Morse code at a minimum of 5 words per minute (WPM). The exam tests reception and transmission of:
         </p>
+        <ul className="list-disc pl-5 mb-2 text-blue-700 space-y-1">
+          <li>All 26 letters (A-Z)</li>
+          <li>Numbers 0-9</li>
+          <li>Period, comma, question mark, slash, and AR (end of message)</li>
+          <li>Basic Q-codes (QTH, QSO, QSL, QRM, QRN)</li>
+          <li>Prosigns like AR, SK, BT, and KN</li>
+        </ul>
+        <div className="p-2 bg-blue-100 rounded text-blue-900 text-xs">
+          <strong>Tip:</strong> 5 WPM corresponds to about 1 character per second. Although no longer mandatory for Basic Qualification, 
+          Morse code remains popular and opens up additional operating frequencies in the HF bands. 
+          Many operators find it's one of the most reliable modes of communication during poor conditions.
+        </div>
       </div>
     </div>
   );
