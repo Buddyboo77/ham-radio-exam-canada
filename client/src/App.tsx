@@ -162,10 +162,26 @@ function Router() {
             ))}
           </div>
           
-          {/* Volume and other controls */}
-          <div className={`flex justify-between items-center mt-4 transition-all duration-300 ${!isMenuOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none absolute'}`}>
-            <div className="radio-frequency-display w-full">
+          {/* Quick access buttons */}
+          <div className={`flex justify-between items-center gap-2 mt-4 transition-all duration-300 ${!isMenuOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none absolute'}`}>
+            <div className="radio-frequency-display flex-1">
               Powell River Amateur Radio <Radio className="inline-block ml-1 mr-1" size={14} /> VA7HAM
+            </div>
+            
+            <div className="flex gap-2">
+              {/* Quick local info button */}
+              <Link href="/local-info">
+                <button className="radio-button-small bg-purple-800 hover:bg-purple-700 flex-shrink-0">
+                  <RadioTower size={16} className="text-purple-100" />
+                </button>
+              </Link>
+              
+              {/* Quick learning button */}
+              <Link href="/learning">
+                <button className="radio-button-small bg-blue-800 hover:bg-blue-700 flex-shrink-0">
+                  <BookOpenCheck size={16} className="text-blue-100" />
+                </button>
+              </Link>
             </div>
           </div>
         </div>
