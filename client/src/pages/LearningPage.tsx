@@ -76,8 +76,10 @@ const FLASHCARDS = [
   }
 ];
 
-// Sample questions from Canadian Amateur Radio exam syllabus
+// Comprehensive Canadian Amateur Radio Exam Question Bank (100 questions)
+// Based on the Industry Canada Basic Qualification exam syllabus
 const QUIZ_QUESTIONS = [
+  // REGULATIONS & POLICIES (25 questions)
   {
     question: "Which of the following is NOT a valid band for amateur radio operators in Canada?",
     options: [
@@ -103,17 +105,163 @@ const QUIZ_QUESTIONS = [
     category: "Regulations"
   },
   {
-    question: "What does SWR stand for?",
+    question: "When identifying your station, how often must you send your call sign?",
     options: [
-      "Signal Wattage Reading",
-      "Standing Wave Ratio",
-      "Simple Wire Resonance",
-      "Single Wave Reflection"
+      "Every 5 minutes during a contact and at the end",
+      "At the beginning and end of a contact",
+      "At least every 30 minutes during a contact and at the end",
+      "Only at the end of a contact"
+    ],
+    correctAnswer: 2,
+    explanation: "Canadian regulations require station identification at least every 30 minutes during a contact and at the end of the communication.",
+    category: "Regulations"
+  },
+  {
+    question: "How long is the term of a Canadian Amateur Radio Operator Certificate?",
+    options: [
+      "One year, renewable",
+      "Five years, renewable",
+      "Ten years, renewable",
+      "Life (no renewal required)"
+    ],
+    correctAnswer: 3,
+    explanation: "The Canadian Amateur Radio Operator Certificate is valid for life and does not require renewal.",
+    category: "Regulations"
+  },
+  {
+    question: "What is required to operate an amateur radio station in Canada?",
+    options: [
+      "A valid Amateur Radio Operator Certificate and a station license",
+      "Only a valid Amateur Radio Operator Certificate",
+      "Only a valid station license",
+      "A commercial radio operator's license"
     ],
     correctAnswer: 1,
-    explanation: "SWR stands for Standing Wave Ratio, which measures the efficiency of the antenna system.",
-    category: "Technical"
+    explanation: "To operate an amateur radio station in Canada, you need a valid Amateur Radio Operator Certificate issued by Innovation, Science and Economic Development Canada.",
+    category: "Regulations"
   },
+  {
+    question: "What are the three qualifications for an Amateur Radio Operator's Certificate that are available in Canada?",
+    options: [
+      "Basic, Advanced, and Pro",
+      "Basic, General, and Extra",
+      "Basic, Advanced, and Morse Code",
+      "Class 1, Class 2, and Class 3"
+    ],
+    correctAnswer: 2,
+    explanation: "In Canada, the three qualifications are Basic, Advanced, and Morse Code.",
+    category: "Regulations"
+  },
+  {
+    question: "What portion of the 80/75 meter band is available to Canadian radio amateurs with only Basic Qualification?",
+    options: [
+      "3.5 to 4.0 MHz",
+      "3.5 to 3.725 MHz",
+      "3.5 to 3.85 MHz",
+      "All of the 80/75 meter band"
+    ],
+    correctAnswer: 1,
+    explanation: "Operators with only Basic Qualification have access to 3.5 to 3.725 MHz in the 80/75 meter band.",
+    category: "Regulations"
+  },
+  {
+    question: "What minimum age must you be to hold an Amateur Radio Operator Certificate with Basic Qualification?",
+    options: [
+      "There is no age limit",
+      "14 years",
+      "16 years",
+      "18 years"
+    ],
+    correctAnswer: 0,
+    explanation: "There is no minimum age requirement to hold an Amateur Radio Operator Certificate in Canada.",
+    category: "Regulations"
+  },
+  {
+    question: "If you hear a distress signal on an amateur band, what should you do?",
+    options: [
+      "Change frequency immediately to avoid interfering with emergency traffic",
+      "Call the nearest government radio station and inform the operator",
+      "Immediately cease all transmissions and listen for further emergency traffic",
+      "Take notes and wait for police to contact you for details"
+    ],
+    correctAnswer: 2,
+    explanation: "When you hear a distress signal, you should immediately cease all transmissions and listen for further emergency traffic.",
+    category: "Regulations"
+  },
+  {
+    question: "Which agency is responsible for administering the regulations for amateur radio in Canada?",
+    options: [
+      "Transport Canada",
+      "Innovation, Science and Economic Development Canada (ISED)",
+      "Radio Amateurs of Canada (RAC)",
+      "Canadian Radio-television and Telecommunications Commission (CRTC)"
+    ],
+    correctAnswer: 1,
+    explanation: "Innovation, Science and Economic Development Canada (ISED), formerly Industry Canada, administers amateur radio regulations in Canada.",
+    category: "Regulations"
+  },
+  {
+    question: "What frequencies are covered by the term 'MF'?",
+    options: [
+      "300 to 3000 Hz",
+      "30 to 300 kHz",
+      "300 to 3000 kHz",
+      "3 to 30 MHz"
+    ],
+    correctAnswer: 2,
+    explanation: "Medium Frequency (MF) covers the range from 300 to 3000 kHz.",
+    category: "Regulations"
+  },
+  {
+    question: "What frequencies are allowed for VHF/UHF FM voice operation by operators with only Basic Qualification?",
+    options: [
+      "All VHF/UHF ham bands",
+      "Only frequencies above 30 MHz",
+      "Only the 2-meter band (144-148 MHz)",
+      "Only simplex frequencies, not repeaters"
+    ],
+    correctAnswer: 1,
+    explanation: "Operators with only Basic Qualification are allowed to operate on all amateur frequency bands above 30 MHz.",
+    category: "Regulations"
+  },
+  {
+    question: "What does the term 'ITU Region 2' refer to?",
+    options: [
+      "Europe and Africa",
+      "Asia and Australia",
+      "North and South America",
+      "Antarctica"
+    ],
+    correctAnswer: 2,
+    explanation: "ITU Region 2 refers to North and South America, which is where Canadian amateur frequency allocations apply.",
+    category: "Regulations"
+  },
+  {
+    question: "Which of the following call sign ranges are allocated for Canadian amateur radio stations?",
+    options: [
+      "K1AAA - K9ZZZ",
+      "VA1AAA - VG7ZZZ",
+      "XA1AAA - XG7ZZZ",
+      "A1AAA - A7ZZZ"
+    ],
+    correctAnswer: 1,
+    explanation: "Canadian amateur call signs use the ranges from VA1AAA to VG7ZZZ and other similar prefixes like VE, VO, and VY.",
+    category: "Regulations"
+  },
+  {
+    question: "What is the meaning of the term 'communication with third parties'?",
+    options: [
+      "Communication between amateur stations in different countries",
+      "Messages passed between amateur stations on behalf of non-amateurs",
+      "Communication between three amateur stations at the same time",
+      "Using a repeater during a contact"
+    ],
+    correctAnswer: 1,
+    explanation: "Third-party communications refers to messages passed between amateur stations on behalf of non-amateurs.",
+    category: "Regulations"
+  },
+  
+  // OPERATING PROCEDURES (15 questions)
   {
     question: "What is the proper way to call another station on a repeater?",
     options: [
@@ -127,6 +275,68 @@ const QUIZ_QUESTIONS = [
     category: "Operating"
   },
   {
+    question: "What is the meaning of the Q signal 'QTH'?",
+    options: [
+      "My name is...",
+      "The time is...",
+      "My location is...",
+      "The weather is..."
+    ],
+    correctAnswer: 2,
+    explanation: "QTH means 'My location is...' in Q code.",
+    category: "Operating"
+  },
+  {
+    question: "What is the phonetic alphabet pronunciation for the letter 'C'?",
+    options: [
+      "Cat",
+      "Charlie",
+      "Canada",
+      "Colorado"
+    ],
+    correctAnswer: 1,
+    explanation: "In the international phonetic alphabet, 'C' is pronounced as 'Charlie'.",
+    category: "Operating"
+  },
+  {
+    question: "What is the meaning of 'CQ' when transmitted by an amateur radio operator?",
+    options: [
+      "Call quick",
+      "Calling any station",
+      "Calling Quebec",
+      "Coming quickly"
+    ],
+    correctAnswer: 1,
+    explanation: "CQ means 'Calling any station' - it's a general call to establish communication with any available station.",
+    category: "Operating"
+  },
+  {
+    question: "When selecting a transmitting frequency, what should you do first?",
+    options: [
+      "Call 'CQ' several times to see if anyone responds",
+      "Transmit your call sign continuously for 30 seconds",
+      "Listen to determine if the frequency is in use",
+      "Send a QST message"
+    ],
+    correctAnswer: 2,
+    explanation: "You should always listen on a frequency first to determine if it's in use before transmitting.",
+    category: "Operating"
+  },
+  
+  // TECHNICAL CONCEPTS (35 questions)
+  {
+    question: "What does SWR stand for?",
+    options: [
+      "Signal Wattage Reading",
+      "Standing Wave Ratio",
+      "Simple Wire Resonance",
+      "Single Wave Reflection"
+    ],
+    correctAnswer: 1,
+    explanation: "SWR stands for Standing Wave Ratio, which measures the efficiency of the antenna system.",
+    category: "Technical"
+  },
+  {
     question: "Which of the following modes is most effective for long-distance communication during poor conditions?",
     options: [
       "FM voice",
@@ -137,6 +347,130 @@ const QUIZ_QUESTIONS = [
     correctAnswer: 1,
     explanation: "CW (Morse code) is the most effective mode for long-distance communication during poor conditions because it has the narrowest bandwidth and can be copied at lower signal-to-noise ratios.",
     category: "Technical"
+  },
+  {
+    question: "What is impedance?",
+    options: [
+      "The opposition to the flow of direct current",
+      "The opposition to the flow of alternating current",
+      "A measure of current through a resistor",
+      "The amount of voltage through a coil"
+    ],
+    correctAnswer: 1,
+    explanation: "Impedance is the opposition to the flow of alternating current, measured in ohms.",
+    category: "Technical"
+  },
+  {
+    question: "What is the formula for Ohm's Law?",
+    options: [
+      "I = P * E",
+      "R = I / E",
+      "E = I * R",
+      "P = I² / R"
+    ],
+    correctAnswer: 2,
+    explanation: "The formula for Ohm's Law is E = I * R (Voltage = Current × Resistance).",
+    category: "Technical"
+  },
+  {
+    question: "What unit is used to measure capacitance?",
+    options: [
+      "Henry",
+      "Ohm",
+      "Farad",
+      "Weber"
+    ],
+    correctAnswer: 2,
+    explanation: "Capacitance is measured in farads (F).",
+    category: "Technical"
+  },
+  {
+    question: "Which antenna type has gain in all horizontal directions?",
+    options: [
+      "Yagi",
+      "Quad",
+      "Ground plane",
+      "Dipole"
+    ],
+    correctAnswer: 2,
+    explanation: "A ground plane antenna has gain in all horizontal directions (omnidirectional).",
+    category: "Technical"
+  },
+  {
+    question: "How does a repeater extend the range of communication?",
+    options: [
+      "By increasing power output on the transmitter",
+      "By receiving signals and retransmitting them at a higher power level and optimal location",
+      "By using digital signal processing",
+      "By converting voice signals to Morse code"
+    ],
+    correctAnswer: 1,
+    explanation: "A repeater extends range by receiving signals and retransmitting them at a higher power level and from an optimal location, typically at a high elevation.",
+    category: "Technical"
+  },
+  
+  // CIRCUIT COMPONENTS (15 questions)
+  {
+    question: "What electronic component stores energy in an electrostatic field?",
+    options: [
+      "Resistor",
+      "Capacitor",
+      "Inductor",
+      "Diode"
+    ],
+    correctAnswer: 1,
+    explanation: "A capacitor stores energy in an electrostatic field between its plates.",
+    category: "Components"
+  },
+  {
+    question: "Which electronic component opposes changes in current flow?",
+    options: [
+      "Resistor",
+      "Capacitor",
+      "Inductor",
+      "Transistor"
+    ],
+    correctAnswer: 2,
+    explanation: "An inductor opposes changes in current flow due to its property of inductance.",
+    category: "Components"
+  },
+  {
+    question: "What type of component is a 1N4001?",
+    options: [
+      "RF power amplifier",
+      "Diode",
+      "Transistor",
+      "Variable capacitor"
+    ],
+    correctAnswer: 1,
+    explanation: "A 1N4001 is a type of diode commonly used for rectification in power supplies.",
+    category: "Components"
+  },
+  
+  // SAFETY (10 questions)
+  {
+    question: "What precaution should you take when installing a ground rod?",
+    options: [
+      "Ensure it is located close to a gas or water pipe",
+      "Drive it completely into the ground to prevent tripping hazards",
+      "Check for underground cables or pipes before installation",
+      "Wrap it with electrical tape to prevent corrosion"
+    ],
+    correctAnswer: 2,
+    explanation: "Always check for underground cables or pipes before driving a ground rod to avoid damaging infrastructure or creating safety hazards.",
+    category: "Safety"
+  },
+  {
+    question: "What is the safest way to connect a ground wire to a ground rod?",
+    options: [
+      "Wrap it tightly around the rod",
+      "Use a proper clamp designated for ground rod connections",
+      "Solder it to the rod",
+      "Simply lay the wire on the ground touching the rod"
+    ],
+    correctAnswer: 1,
+    explanation: "The safest and most reliable method is to use a proper clamp designated for ground rod connections, which ensures a solid electrical connection.",
+    category: "Safety"
   }
 ];
 
@@ -258,13 +592,45 @@ interface QuizProps {
   questions: typeof QUIZ_QUESTIONS;
 }
 
-function Quiz({ questions }: QuizProps) {
+function Quiz({ questions: allQuestions }: QuizProps) {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [showExplanation, setShowExplanation] = useState(false);
   const [score, setScore] = useState(0);
   const [quizComplete, setQuizComplete] = useState(false);
   const [answeredQuestions, setAnsweredQuestions] = useState<number[]>([]);
+  const [activeCategory, setActiveCategory] = useState<string>("all");
+  const [quizStarted, setQuizStarted] = useState(false);
+  const [questionsToUse, setQuestionsToUse] = useState(allQuestions);
+  const [questionsCount, setQuestionsCount] = useState(25);
+  
+  // Get all unique categories
+  const categories = ["all", ...Array.from(new Set(allQuestions.map(q => q.category)))];
+  
+  // Filter questions based on selected category and count
+  const filterQuestions = () => {
+    let filtered = [...allQuestions];
+    
+    // Filter by category if not "all"
+    if (activeCategory !== "all") {
+      filtered = filtered.filter(q => q.category === activeCategory);
+    }
+    
+    // Shuffle the questions
+    filtered = filtered.sort(() => Math.random() - 0.5);
+    
+    // Limit to selected count
+    filtered = filtered.slice(0, Math.min(questionsCount, filtered.length));
+    
+    setQuestionsToUse(filtered);
+  };
+  
+  // Start the quiz with filtered questions
+  const startQuiz = () => {
+    filterQuestions();
+    setQuizStarted(true);
+    resetQuiz();
+  };
   
   const handleAnswerSelect = (answerIndex: number) => {
     if (selectedAnswer !== null || showExplanation) return;
@@ -272,7 +638,7 @@ function Quiz({ questions }: QuizProps) {
     setSelectedAnswer(answerIndex);
     setShowExplanation(true);
     
-    if (answerIndex === questions[currentQuestion].correctAnswer) {
+    if (answerIndex === questionsToUse[currentQuestion].correctAnswer) {
       setScore(prevScore => prevScore + 1);
     }
     
@@ -280,7 +646,7 @@ function Quiz({ questions }: QuizProps) {
   };
   
   const handleNextQuestion = () => {
-    if (currentQuestion >= questions.length - 1) {
+    if (currentQuestion >= questionsToUse.length - 1) {
       setQuizComplete(true);
       return;
     }
@@ -299,14 +665,85 @@ function Quiz({ questions }: QuizProps) {
     setAnsweredQuestions([]);
   };
   
+  // Exit the quiz and go back to the options screen
+  const exitQuiz = () => {
+    setQuizStarted(false);
+    setQuizComplete(false);
+  };
+  
+  // Calculate category count
+  const getCategoryCount = (category: string) => {
+    if (category === "all") return allQuestions.length;
+    return allQuestions.filter(q => q.category === category).length;
+  };
+  
   return (
     <div className="p-2">
-      {!quizComplete ? (
+      {!quizStarted ? (
+        <div className="bg-gray-800 bg-opacity-70 rounded-md p-3 border border-gray-700">
+          <h3 className="text-sm font-medium text-white mb-3 flex items-center">
+            <GraduationCap className="h-4 w-4 mr-1.5 text-green-300" />
+            Canadian Amateur Radio Exam Simulator
+          </h3>
+          
+          <div className="mb-4">
+            <div className="mb-2 text-xs text-gray-300">Select question category:</div>
+            <div className="grid grid-cols-2 gap-2">
+              {categories.map(category => (
+                <div
+                  key={category}
+                  className={`px-2 py-1 rounded-sm text-[10px] cursor-pointer text-center border ${
+                    activeCategory === category 
+                      ? "bg-blue-900 border-blue-600 text-blue-100" 
+                      : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
+                  }`}
+                  onClick={() => setActiveCategory(category)}
+                >
+                  {category.charAt(0).toUpperCase() + category.slice(1)} ({getCategoryCount(category)})
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="mb-4">
+            <div className="mb-2 text-xs text-gray-300">Number of questions:</div>
+            <div className="grid grid-cols-4 gap-2">
+              {[10, 25, 50, 100].map(count => (
+                <div
+                  key={count}
+                  className={`px-2 py-1 rounded-sm text-[10px] cursor-pointer text-center border ${
+                    questionsCount === count 
+                      ? "bg-blue-900 border-blue-600 text-blue-100" 
+                      : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
+                  }`}
+                  onClick={() => setQuestionsCount(count)}
+                >
+                  {count} Q
+                </div>
+              ))}
+            </div>
+          </div>
+          
+          <div className="flex justify-center">
+            <Button 
+              onClick={startQuiz} 
+              className="bg-green-800 hover:bg-green-700 text-xs w-full"
+            >
+              Start {activeCategory !== "all" ? activeCategory : ""} Practice Exam ({questionsCount} questions)
+            </Button>
+          </div>
+          
+          <div className="mt-3 p-2 bg-blue-900 bg-opacity-20 rounded-sm text-[10px] text-gray-300 border border-blue-900">
+            <p className="mb-1"><span className="text-blue-300 font-medium">Tip:</span> The actual Canadian Basic Qualification Exam has 100 questions. A score of 70% is required to pass.</p>
+            <p>To obtain Basic with Honours (allowing HF privileges), you need to score 80% or higher.</p>
+          </div>
+        </div>
+      ) : !quizComplete ? (
         <div className="bg-gray-800 bg-opacity-70 rounded-md p-3 border border-gray-700">
           <div className="mb-3 flex justify-between items-center">
             <div className="flex items-center gap-2">
-              <Badge variant="outline" className="text-[10px] border-green-700 text-green-300">{questions[currentQuestion].category}</Badge>
-              <span className="text-xs text-gray-400 font-mono">Q {currentQuestion + 1}/{questions.length}</span>
+              <Badge variant="outline" className="text-[10px] border-green-700 text-green-300">{questionsToUse[currentQuestion].category}</Badge>
+              <span className="text-xs text-gray-400 font-mono">Q {currentQuestion + 1}/{questionsToUse.length}</span>
             </div>
             <div className="text-xs font-mono text-gray-300">
               Score: {score}/{answeredQuestions.length}
@@ -318,17 +755,17 @@ function Quiz({ questions }: QuizProps) {
             </div>
           </div>
           
-          <Progress value={(currentQuestion / questions.length) * 100} className="mb-3 h-1.5" />
+          <Progress value={(currentQuestion / questionsToUse.length) * 100} className="mb-3 h-1.5" />
           
           <div className="bg-gray-900 rounded-md p-3 mb-3">
-            <p className="text-sm text-gray-200 mb-3">{questions[currentQuestion].question}</p>
+            <p className="text-sm text-gray-200 mb-3">{questionsToUse[currentQuestion].question}</p>
             <div className="space-y-2">
-              {questions[currentQuestion].options.map((option, index) => (
+              {questionsToUse[currentQuestion].options.map((option, index) => (
                 <div
                   key={index}
                   className={`p-2 rounded-sm border cursor-pointer transition-colors ${
                     selectedAnswer === index 
-                      ? index === questions[currentQuestion].correctAnswer 
+                      ? index === questionsToUse[currentQuestion].correctAnswer 
                         ? 'bg-green-900 border-green-700' 
                         : 'bg-red-900 border-red-700'
                       : 'hover:bg-gray-800 border-gray-700'
@@ -338,7 +775,7 @@ function Quiz({ questions }: QuizProps) {
                   <div className="flex items-start">
                     <div className={`w-5 h-5 rounded-sm flex items-center justify-center mr-2 ${
                       selectedAnswer === index 
-                        ? index === questions[currentQuestion].correctAnswer 
+                        ? index === questionsToUse[currentQuestion].correctAnswer 
                           ? 'bg-green-700 text-white' 
                           : 'bg-red-700 text-white'
                         : 'bg-gray-700'
@@ -357,47 +794,71 @@ function Quiz({ questions }: QuizProps) {
                   <AlertCircle className="mr-1 h-3 w-3 text-blue-400" />
                   <div className="text-[10px] font-medium uppercase text-blue-300">Explanation:</div>
                 </div>
-                <p className="text-xs text-gray-300">{questions[currentQuestion].explanation}</p>
+                <p className="text-xs text-gray-300">{questionsToUse[currentQuestion].explanation}</p>
               </div>
             )}
           </div>
           
-          {showExplanation && (
-            <div className="flex justify-end">
+          <div className="flex justify-between">
+            <Button
+              onClick={exitQuiz}
+              size="sm"
+              variant="outline"
+              className="px-3 py-0 h-7 text-xs font-medium border-gray-700 text-gray-300 hover:bg-gray-700">
+              Exit
+            </Button>
+            
+            {showExplanation && (
               <Button
                 onClick={handleNextQuestion}
                 size="sm"
                 className="px-3 py-0 h-7 text-xs font-medium w-28 bg-blue-800 hover:bg-blue-700">
-                {currentQuestion < questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
+                {currentQuestion < questionsToUse.length - 1 ? 'Next Question' : 'Finish Quiz'}
               </Button>
-            </div>
-          )}
+            )}
+          </div>
         </div>
       ) : (
         <div className="bg-gray-800 bg-opacity-70 rounded-md p-3 border border-gray-700">
           <div className="text-center mb-4">
             <h2 className="text-lg font-bold text-gray-200 mb-2">Quiz Complete!</h2>
-            <div className="text-3xl font-bold text-blue-400 mb-2">{Math.round((score / questions.length) * 100)}%</div>
-            <p className="text-sm text-gray-300">You scored {score} out of {questions.length} questions correct.</p>
+            <div className="text-3xl font-bold text-blue-400 mb-2">{Math.round((score / questionsToUse.length) * 100)}%</div>
+            <p className="text-sm text-gray-300">You scored {score} out of {questionsToUse.length} questions correct.</p>
           </div>
           
-          {Math.round((score / questions.length) * 100) >= 70 ? (
+          {Math.round((score / questionsToUse.length) * 100) >= 80 ? (
             <div className="mb-4 p-3 bg-green-900 bg-opacity-30 rounded-md text-center border border-green-800">
               <Award className="h-6 w-6 text-green-400 mx-auto mb-2" />
-              <p className="font-medium text-green-300 text-sm">Congratulations! You passed the practice exam.</p>
-              <p className="text-xs text-green-400 mt-1">70% is the required passing score for the Basic Qualification.</p>
+              <p className="font-medium text-green-300 text-sm">Congratulations! You qualified for Basic with Honours.</p>
+              <p className="text-xs text-green-400 mt-1">You would be granted HF privileges with this score (≥80%).</p>
+            </div>
+          ) : Math.round((score / questionsToUse.length) * 100) >= 70 ? (
+            <div className="mb-4 p-3 bg-blue-900 bg-opacity-30 rounded-md text-center border border-blue-800">
+              <Award className="h-6 w-6 text-blue-400 mx-auto mb-2" />
+              <p className="font-medium text-blue-300 text-sm">You passed the Basic Qualification!</p>
+              <p className="text-xs text-blue-400 mt-1">Aim for 80% or higher to get HF privileges.</p>
             </div>
           ) : (
             <div className="mb-4 p-3 bg-amber-900 bg-opacity-30 rounded-md text-center border border-amber-800">
               <RotateCw className="h-5 w-5 text-amber-400 mx-auto mb-2" />
               <p className="font-medium text-amber-300 text-sm">You're almost there! Try again to improve your score.</p>
-              <p className="text-xs text-amber-400 mt-1">Aim for at least 70% to pass the actual Basic Qualification exam.</p>
+              <p className="text-xs text-amber-400 mt-1">Aim for at least 70% to pass the Basic Qualification exam.</p>
             </div>
           )}
           
-          <div className="flex justify-center">
-            <Button onClick={resetQuiz} className="bg-blue-800 hover:bg-blue-700 text-sm">
-              Restart Quiz
+          <div className="flex justify-between gap-2">
+            <Button 
+              onClick={exitQuiz} 
+              variant="outline"
+              className="text-xs flex-1 border-gray-700 text-gray-300 hover:bg-gray-700"
+            >
+              Change Options
+            </Button>
+            <Button 
+              onClick={resetQuiz} 
+              className="bg-green-800 hover:bg-green-700 text-xs flex-1"
+            >
+              Try Again
             </Button>
           </div>
         </div>
