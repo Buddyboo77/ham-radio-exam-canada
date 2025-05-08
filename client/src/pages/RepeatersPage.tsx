@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useQuery, useMutation } from "@tanstack/react-query";
-import { Repeater } from "@shared/schema";
+import { Repeater, Frequency } from "@shared/schema";
 import RepeaterItem from "@/components/repeaters/RepeaterItem";
 import RepeaterMap from "@/components/repeaters/RepeaterMap";
 import { Input } from "@/components/ui/input";
