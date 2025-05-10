@@ -122,16 +122,36 @@ export default function EnhancedMapPage() {
           </TabsContent>
         </Tabs>
         
-        <div className="mt-4 bg-blue-900/20 rounded-md p-2 border border-blue-900/30">
-          <div className="flex items-center text-xs text-blue-300 mb-1">
-            <MapIcon className="h-3 w-3 mr-1 text-blue-400" />
-            <span className="font-medium">About Interactive Maps</span>
+        <div className="mt-2 grid grid-cols-3 gap-2">
+          <div className="bg-blue-900/20 rounded-md p-2 border border-blue-800">
+            <div className="flex items-center text-xs text-blue-300 mb-1">
+              <Globe className="h-3 w-3 mr-1" />
+              <span className="font-medium">Live Activity</span>
+            </div>
+            <p className="text-xs text-gray-300">
+              Shows active operators and DX spots in real-time
+            </p>
           </div>
-          <p className="text-[10px] text-gray-400">
-            The interactive radio map combines real-time data to show repeater locations with coverage zones, active DX spots
-            from worldwide operators, and the position of local operators. Toggle different layers to focus on specific
-            information, and use the AR mode to visualize radio coverage in your physical environment.
-          </p>
+          
+          <div className="bg-green-900/20 rounded-md p-2 border border-green-800">
+            <div className="flex items-center text-xs text-green-300 mb-1">
+              <Radio className="h-3 w-3 mr-1" />
+              <span className="font-medium">Coverage</span>
+            </div>
+            <p className="text-xs text-gray-300">
+              Displays repeater coverage based on terrain
+            </p>
+          </div>
+          
+          <div className="bg-purple-900/20 rounded-md p-2 border border-purple-800">
+            <div className="flex items-center text-xs text-purple-300 mb-1">
+              <Compass className="h-3 w-3 mr-1" />
+              <span className="font-medium">AR View</span>
+            </div>
+            <p className="text-xs text-gray-300">
+              Visualize repeaters in your environment
+            </p>
+          </div>
         </div>
       </div>
     </div>
