@@ -39,53 +39,56 @@ const RepeaterItem: React.FC<RepeaterItemProps> = ({ repeater, onAddToScanner })
     const status = repeater.status?.toLowerCase() || '';
     switch (status) {
       case "operational":
-        return <Badge className="bg-success text-white">Operational</Badge>;
+      case "active":
+        return <Badge className="bg-green-700 text-white text-[10px] h-4 py-0">Active</Badge>;
       case "limited":
-        return <Badge className="bg-warning text-white">Limited</Badge>;
+        return <Badge className="bg-yellow-700 text-white text-[10px] h-4 py-0">Limited</Badge>;
       case "offline":
-        return <Badge className="bg-destructive text-white">Offline</Badge>;
+      case "inactive":
+        return <Badge className="bg-red-700 text-white text-[10px] h-4 py-0">Inactive</Badge>;
       default:
-        return <Badge className="bg-gray-300 text-gray-700">Unknown</Badge>;
+        return <Badge className="bg-gray-700 text-white text-[10px] h-4 py-0">Unknown</Badge>;
     }
   };
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow mb-2 p-3">
-        <div className="flex justify-between items-center">
-          <div className="flex-1 mr-2">
-            <div className="flex items-center gap-1">
-              <h3 className="font-bold text-sm text-primary truncate">{repeater.name}</h3>
-              {getStatusBadge()}
-            </div>
-            <p className="text-accent font-medium text-xs">
+      <div className="bg-gray-900 rounded-md border border-gray-700 mb-2 p-2">
+        <div className="mb-1">
+          <div className="flex items-center justify-between">
+            <h3 className="font-bold text-sm text-blue-300 truncate">{repeater.name}</h3>
+            {getStatusBadge()}
+          </div>
+          <div className="flex justify-between items-center text-xs mt-1">
+            <p className="text-white font-mono">
               {typeof repeater.frequency === 'number' ? repeater.frequency.toFixed(3) : repeater.frequency} MHz
             </p>
-            <div className="flex items-center text-xs text-gray-500">
+            <div className="flex items-center text-gray-400">
               <MapPinIcon className="h-2.5 w-2.5 mr-1" />
               <span className="truncate max-w-[150px]">{repeater.location}</span>
             </div>
           </div>
-          <div className="flex gap-1">
-            <Button
-              size="sm"
-              variant="outline"
-              onClick={() => setIsDetailsOpen(true)}
-              className="h-7 px-2 text-xs"
-              type="button"
-            >
-              Details
-            </Button>
-            <Button
-              size="sm"
-              onClick={handleAddToScanner}
-              className="h-7 px-2 text-xs"
-              type="button"
-            >
-              <Plus className="h-3 w-3 mr-1" />
-              Scanner
-            </Button>
-          </div>
+        </div>
+        
+        <div className="flex gap-2 bg-gray-800 -mx-2 -mb-2 px-2 py-1.5 mt-2 rounded-b-md border-t border-gray-700">
+          <Button
+            size="sm"
+            variant="outline"
+            onClick={() => setIsDetailsOpen(true)}
+            className="h-6 px-2 text-xs flex-1 bg-transparent border-gray-600 text-gray-300 hover:bg-gray-700 hover:text-white"
+            type="button"
+          >
+            Details
+          </Button>
+          <Button
+            size="sm"
+            onClick={handleAddToScanner}
+            className="h-6 px-2 text-xs flex-1 bg-green-700 hover:bg-green-600 text-white"
+            type="button"
+          >
+            <Plus className="h-3 w-3 mr-1" />
+            Scanner
+          </Button>
         </div>
       </div>
 
