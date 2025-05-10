@@ -40,6 +40,7 @@ import {
   Compass
 } from "lucide-react";
 import { useOnlineStatus } from "@/hooks/use-online-status";
+import { QuickAccessMenu } from "@/components/layout/QuickAccessMenu";
 
 function formatTime() {
   const now = new Date();
@@ -250,6 +251,7 @@ function App() {
       <TooltipProvider>
         <Toaster />
         <Router />
+        <QuickAccessMenu />
       </TooltipProvider>
     </QueryClientProvider>
   );
