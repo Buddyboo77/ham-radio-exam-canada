@@ -11,6 +11,7 @@ import LogbookPage from "@/pages/LogbookPage";
 import ReferencePage from "@/pages/ReferencePage";
 import LearningPage from "@/pages/LearningPage";
 import LocalInfoPage from "@/pages/LocalInfoPage";
+import CommunityCalendarPage from "@/pages/CommunityCalendarPage";
 import { useState, useEffect } from "react";
 import { 
   Radio, 
@@ -27,7 +28,8 @@ import {
   Power,
   Users,
   RadioTower,
-  Home as HomeIcon
+  Home as HomeIcon,
+  Calendar as CalendarIcon
 } from "lucide-react";
 import { useOnlineStatus } from "@/hooks/use-online-status";
 
@@ -62,6 +64,7 @@ function Router() {
     { path: "/reference", label: "Reference", icon: <BookOpen size={18} /> },
     { path: "/learning", label: "Learning", icon: <BookOpenCheck size={18} /> },
     { path: "/local-info", label: "Powell River", icon: <RadioTower size={18} /> },
+    { path: "/calendar", label: "Calendar", icon: <CalendarIcon size={18} /> },
   ];
   
   // If at root, redirect to frequencies
@@ -152,6 +155,7 @@ function Router() {
               <Route path="/reference" component={() => <ReferencePage />} />
               <Route path="/learning" component={() => <LearningPage />} />
               <Route path="/local-info" component={() => <LocalInfoPage />} />
+              <Route path="/calendar" component={() => <CommunityCalendarPage />} />
               <Route component={NotFound} />
             </Switch>
           </div>
