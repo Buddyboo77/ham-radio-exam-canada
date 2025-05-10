@@ -88,49 +88,71 @@ const RepeatersPage = () => {
   };
 
   return (
-    <div className="p-4">
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold mb-2">Powell River Repeaters</h1>
-        <p className="text-gray-600">
-          Find and monitor active repeaters in the Powell River area
-        </p>
+    <div className="p-2">
+      {/* Radio display header */}
+      <div className="bg-gradient-to-r from-blue-900 to-blue-950 rounded-md p-2 mb-3 border border-blue-800">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="radio-led green"></div>
+            <h2 className="text-sm font-mono tracking-wide text-blue-100 uppercase">
+              Powell River Repeaters
+            </h2>
+          </div>
+        </div>
       </div>
-
-      <div className="mb-4">
-        <div className="relative mb-4">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
+      
+      {/* Main content */}
+      <div className="bg-gray-800 bg-opacity-50 rounded-md p-2 border border-gray-700">
+        <div className="relative mb-3">
+          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-400" />
           <Input
             type="text"
-            placeholder="Search repeaters by name, frequency, or location..."
-            className="pl-8"
+            placeholder="Search by name or frequency..."
+            className="pl-8 bg-gray-900 border-gray-700 text-white"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
 
         <Tabs defaultValue="list" value={viewMode} onValueChange={setViewMode}>
-          <TabsList className="grid grid-cols-2 mb-4 w-48">
-            <TabsTrigger value="list">
-              <List className="h-4 w-4 mr-1" />
-              List
-            </TabsTrigger>
-            <TabsTrigger value="map">
-              <MapPin className="h-4 w-4 mr-1" />
-              Map
-            </TabsTrigger>
-          </TabsList>
+          <div className="flex justify-between items-center mb-2">
+            <TabsList className="h-9 p-1 bg-gray-900">
+              <TabsTrigger 
+                value="list" 
+                className="text-xs py-1.5 px-3 h-auto data-[state=active]:bg-blue-900"
+              >
+                <div className="flex items-center gap-1.5">
+                  <List className="h-3.5 w-3.5" />
+                  <span>List</span>
+                </div>
+              </TabsTrigger>
+              <TabsTrigger 
+                value="map" 
+                className="text-xs py-1.5 px-3 h-auto data-[state=active]:bg-green-900"
+              >
+                <div className="flex items-center gap-1.5">
+                  <MapPin className="h-3.5 w-3.5" />
+                  <span>Map</span>
+                </div>
+              </TabsTrigger>
+            </TabsList>
+            
+            <div className="text-xs text-gray-300">
+              {filteredRepeaters.length} repeaters found
+            </div>
+          </div>
 
-          <TabsContent value="list" className="space-y-4">
+          <TabsContent value="list" className="space-y-2">
             {isLoading ? (
               // Loading state
               Array(3).fill(0).map((_, i) => (
-                <Skeleton key={i} className="h-32 w-full rounded-lg" />
+                <Skeleton key={i} className="h-24 w-full rounded-md bg-gray-700/40" />
               ))
             ) : sortedRepeaters.length === 0 ? (
               // Empty state
-              <div className="text-center py-8 bg-white rounded-lg shadow">
-                <h3 className="font-medium text-gray-900">No repeaters found</h3>
-                <p className="mt-1 text-gray-500">
+              <div className="text-center py-4 bg-gray-900/70 rounded-md border border-gray-700">
+                <h3 className="font-medium text-gray-300">No repeaters found</h3>
+                <p className="mt-1 text-xs text-gray-400">
                   {searchQuery ? "Try a different search term" : "No repeaters available in the database"}
                 </p>
               </div>
@@ -147,10 +169,13 @@ const RepeatersPage = () => {
           </TabsContent>
 
           <TabsContent value="map">
-            <div className="bg-white rounded-lg shadow p-4 mb-4">
-              <h2 className="font-bold text-lg mb-4">Repeater Map</h2>
+            <div className="bg-gray-900/70 rounded-md border border-gray-700 p-2 mb-3">
+              <div className="text-xs text-gray-300 mb-2 flex items-center">
+                <MapPin className="h-3 w-3 mr-1 text-blue-400" />
+                <span>Interactive Repeater Map</span>
+              </div>
               {isLoading ? (
-                <Skeleton className="h-[500px] w-full rounded-lg" />
+                <Skeleton className="h-[350px] w-full rounded-md bg-gray-800/70" />
               ) : (
                 <RepeaterMap 
                   repeaters={sortedRepeaters} 
@@ -159,17 +184,17 @@ const RepeatersPage = () => {
               )}
             </div>
             
-            {/* List repeaters below the map as well */}
-            <div className="space-y-4">
+            {/* List repeaters below the map as well - more compact */}
+            <div className="space-y-2">
               {isLoading ? (
                 Array(2).fill(0).map((_, i) => (
-                  <Skeleton key={i} className="h-32 w-full rounded-lg" />
+                  <Skeleton key={i} className="h-24 w-full rounded-md bg-gray-700/40" />
                 ))
               ) : sortedRepeaters.length === 0 ? (
-                <div className="text-center py-8 bg-white rounded-lg shadow">
-                  <h3 className="font-medium text-gray-900">No repeaters found</h3>
-                  <p className="mt-1 text-gray-500">
-                    {searchQuery ? "Try a different search term" : "No repeaters available in the database"}
+                <div className="text-center py-3 bg-gray-900/70 rounded-md border border-gray-700">
+                  <h3 className="font-medium text-gray-300 text-sm">No repeaters found</h3>
+                  <p className="text-xs text-gray-400">
+                    {searchQuery ? "Try a different search term" : "No repeaters available"}
                   </p>
                 </div>
               ) : (
