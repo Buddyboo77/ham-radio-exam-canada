@@ -90,7 +90,7 @@ function Router() {
   const activeRoute = routes.find(route => route.path === location) || routes[0];
   
   return (
-    <div className="flex flex-col h-screen mx-auto pb-4 max-w-md relative pt-4">
+    <div className="flex flex-col h-screen mx-auto pb-4 max-w-md relative pt-14">
       {/* TOP NAV BUTTONS */}
       <div className="sticky top-0 z-50 mb-2 mx-2 p-1 bg-black bg-opacity-70 rounded-md">
         <div className="flex gap-2 items-center">
@@ -250,8 +250,8 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <Router />
         <QuickAccessMenu />
+        <Router />
       </TooltipProvider>
     </QueryClientProvider>
   );
