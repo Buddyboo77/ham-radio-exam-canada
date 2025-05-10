@@ -23,9 +23,15 @@ const RepeaterItem: React.FC<RepeaterItemProps> = ({ repeater, onAddToScanner })
 
   const handleAddToScanner = () => {
     onAddToScanner(repeater.frequency);
+    
+    // Format frequency safely
+    const formattedFreq = typeof repeater.frequency === 'number' 
+      ? repeater.frequency.toFixed(3) 
+      : repeater.frequency;
+    
     toast({
       title: "Added to Scanner",
-      description: `${repeater.frequency.toFixed(3)} MHz (${repeater.name}) added to scanner`,
+      description: `${formattedFreq} MHz (${repeater.name}) added to scanner`,
     });
   };
 
@@ -45,36 +51,39 @@ const RepeaterItem: React.FC<RepeaterItemProps> = ({ repeater, onAddToScanner })
 
   return (
     <>
-      <div className="bg-white rounded-lg shadow mb-4 p-4">
-        <div className="flex justify-between">
-          <div>
-            <div className="flex items-center gap-1 mb-1">
-              <h3 className="font-bold text-lg text-primary">{repeater.name}</h3>
+      <div className="bg-white rounded-lg shadow mb-2 p-3">
+        <div className="flex justify-between items-center">
+          <div className="flex-1 mr-2">
+            <div className="flex items-center gap-1">
+              <h3 className="font-bold text-sm text-primary truncate">{repeater.name}</h3>
               {getStatusBadge()}
             </div>
-            <p className="text-accent font-medium">{repeater.frequency.toFixed(3)} MHz</p>
-            <div className="flex items-center text-xs text-gray-500 mt-1">
-              <MapPinIcon className="h-3 w-3 mr-1" />
-              <span className="truncate max-w-[250px]">{repeater.location}</span>
+            <p className="text-accent font-medium text-xs">
+              {typeof repeater.frequency === 'number' ? repeater.frequency.toFixed(3) : repeater.frequency} MHz
+            </p>
+            <div className="flex items-center text-xs text-gray-500">
+              <MapPinIcon className="h-2.5 w-2.5 mr-1" />
+              <span className="truncate max-w-[150px]">{repeater.location}</span>
             </div>
           </div>
-          <div className="flex flex-col justify-between items-end">
+          <div className="flex gap-1">
             <Button
               size="sm"
               variant="outline"
               onClick={() => setIsDetailsOpen(true)}
-              className="mb-2"
+              className="h-7 px-2 text-xs"
               type="button"
             >
-              View Details
+              Details
             </Button>
             <Button
               size="sm"
               onClick={handleAddToScanner}
+              className="h-7 px-2 text-xs"
               type="button"
             >
-              <Plus className="h-4 w-4 mr-1" />
-              Add to Scanner
+              <Plus className="h-3 w-3 mr-1" />
+              Scanner
             </Button>
           </div>
         </div>
@@ -93,13 +102,17 @@ const RepeaterItem: React.FC<RepeaterItemProps> = ({ repeater, onAddToScanner })
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <p className="text-sm font-medium text-gray-500">Frequency</p>
-                <p className="text-lg font-bold text-primary">{repeater.frequency.toFixed(3)} MHz</p>
+                <p className="text-lg font-bold text-primary">
+                  {typeof repeater.frequency === 'number' ? repeater.frequency.toFixed(3) : repeater.frequency} MHz
+                </p>
               </div>
               
               <div>
                 <p className="text-sm font-medium text-gray-500">Offset</p>
                 <p className="font-medium">
-                  {repeater.offset >= 0 ? "+" : ""}{repeater.offset.toFixed(1)} MHz
+                  {typeof repeater.offset === 'number' ? 
+                    (repeater.offset >= 0 ? "+" : "") + repeater.offset.toFixed(1) : 
+                    repeater.offset} MHz
                 </p>
               </div>
               
@@ -120,7 +133,8 @@ const RepeaterItem: React.FC<RepeaterItemProps> = ({ repeater, onAddToScanner })
               
               {repeater.latitude && repeater.longitude && (
                 <div className="text-xs text-gray-500 mt-1">
-                  Coordinates: {repeater.latitude.toFixed(4)}, {repeater.longitude.toFixed(4)}
+                  Coordinates: {typeof repeater.latitude === 'number' ? repeater.latitude.toFixed(4) : repeater.latitude}, 
+                  {typeof repeater.longitude === 'number' ? repeater.longitude.toFixed(4) : repeater.longitude}
                 </div>
               )}
             </div>

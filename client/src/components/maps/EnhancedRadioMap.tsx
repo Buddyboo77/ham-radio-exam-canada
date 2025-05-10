@@ -397,9 +397,9 @@ export default function EnhancedRadioMap({
           <Popup className="repeater-popup">
             <div className="text-xs">
               <div className="font-bold text-sm">{repeater.callsign}</div>
-              <div className="font-mono">{repeater.frequency.toFixed(3)} MHz</div>
-              <div>Offset: {repeater.offset > 0 ? '+' : ''}{repeater.offset.toFixed(3)} MHz</div>
-              <div>Tone: {repeater.tone.toFixed(1)} Hz</div>
+              <div className="font-mono">{typeof repeater.frequency === 'number' ? repeater.frequency.toFixed(3) : repeater.frequency} MHz</div>
+              <div>Offset: {repeater.offset > 0 ? '+' : ''}{typeof repeater.offset === 'number' ? repeater.offset.toFixed(3) : repeater.offset} MHz</div>
+              <div>Tone: {typeof repeater.tone === 'number' ? repeater.tone.toFixed(1) : repeater.tone} Hz</div>
               {repeater.features && (
                 <div className="mt-1 flex flex-wrap gap-1">
                   {repeater.features.map(feature => (
