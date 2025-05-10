@@ -11,7 +11,7 @@ import LogbookPage from "@/pages/LogbookPage";
 import ReferencePage from "@/pages/ReferencePage";
 import LearningPage from "@/pages/LearningPage";
 import LocalInfoPage from "@/pages/LocalInfoPage";
-import CommunityCalendarPage from "@/pages/CommunityCalendarPage";
+
 import { useState, useEffect } from "react";
 import { 
   Radio, 
@@ -28,8 +28,7 @@ import {
   Power,
   Users,
   RadioTower,
-  Home as HomeIcon,
-  Calendar as CalendarIcon
+  Home as HomeIcon
 } from "lucide-react";
 import { useOnlineStatus } from "@/hooks/use-online-status";
 
@@ -64,7 +63,6 @@ function Router() {
     { path: "/reference", label: "Reference", icon: <BookOpen size={18} /> },
     { path: "/learning", label: "Learning", icon: <BookOpenCheck size={18} /> },
     { path: "/local-info", label: "Powell River", icon: <RadioTower size={18} /> },
-    { path: "/calendar", label: "Calendar", icon: <CalendarIcon size={18} /> },
   ];
   
   // If at root, redirect to frequencies
@@ -155,7 +153,6 @@ function Router() {
               <Route path="/reference" component={() => <ReferencePage />} />
               <Route path="/learning" component={() => <LearningPage />} />
               <Route path="/local-info" component={() => <LocalInfoPage />} />
-              <Route path="/calendar" component={() => <CommunityCalendarPage />} />
               <Route component={NotFound} />
             </Switch>
           </div>
@@ -202,13 +199,7 @@ function Router() {
               Powell River Amateur Radio <Radio className="inline-block ml-1 mr-1" size={14} /> VA7HAM
             </div>
             
-            <div className="flex items-center gap-2">
-              {/* Quick calendar button */}
-              <Link href="/calendar" className="flex items-center gap-2 bg-blue-800 hover:bg-blue-700 px-2 py-1 rounded-md border border-blue-600">
-                <CalendarIcon size={16} className="text-blue-100" />
-                <span className="text-xs text-white">Calendar</span>
-              </Link>
-              
+            <div className="flex items-center">
               {/* Quick local info button */}
               <Link href="/local-info" className="flex items-center gap-2 bg-purple-800 hover:bg-purple-700 px-2 py-1 rounded-md border border-purple-600">
                 <RadioTower size={16} className="text-purple-100" />
