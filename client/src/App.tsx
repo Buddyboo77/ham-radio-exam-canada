@@ -13,6 +13,7 @@ import LearningPage from "@/pages/LearningPage";
 import LocalInfoPage from "@/pages/LocalInfoPage";
 import CallsignLookupPage from "@/pages/CallsignLookupPage";
 import PropagationPage from "@/pages/PropagationPage";
+import DXClusterPage from "@/pages/DXClusterPage";
 
 import { useState, useEffect } from "react";
 import { 
@@ -30,7 +31,10 @@ import {
   Power,
   Users,
   RadioTower,
-  Home as HomeIcon
+  Home as HomeIcon,
+  User,
+  Sun,
+  Globe
 } from "lucide-react";
 import { useOnlineStatus } from "@/hooks/use-online-status";
 
@@ -61,6 +65,9 @@ function Router() {
     { path: "/frequencies", label: "Frequencies", icon: <Layers size={18} /> },
     { path: "/scanner", label: "Scanner", icon: <BarChart4 size={18} /> },
     { path: "/repeaters", label: "Repeaters", icon: <Map size={18} /> },
+    { path: "/callsign", label: "Callsign", icon: <User size={18} /> },
+    { path: "/propagation", label: "Propagation", icon: <Sun size={18} /> }, 
+    { path: "/dxcluster", label: "DX Cluster", icon: <Globe size={18} /> },
     { path: "/logbook", label: "Logbook", icon: <FileText size={18} /> },
     { path: "/reference", label: "Reference", icon: <BookOpen size={18} /> },
     { path: "/learning", label: "Learning", icon: <BookOpenCheck size={18} /> },
@@ -151,6 +158,9 @@ function Router() {
               <Route path="/frequencies" component={() => <FrequenciesPage />} />
               <Route path="/scanner" component={() => <ScannerPage />} />
               <Route path="/repeaters" component={() => <RepeatersPage />} />
+              <Route path="/callsign" component={() => <CallsignLookupPage />} />
+              <Route path="/propagation" component={() => <PropagationPage />} />
+              <Route path="/dxcluster" component={() => <DXClusterPage />} />
               <Route path="/logbook" component={() => <LogbookPage />} />
               <Route path="/reference" component={() => <ReferencePage />} />
               <Route path="/learning" component={() => <LearningPage />} />
