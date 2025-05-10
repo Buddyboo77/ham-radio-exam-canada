@@ -729,12 +729,12 @@ export default function ARVisualization({ enableCamera = false }: ARVisualizatio
         const numRings = Math.max(1, Math.floor(signalStrength * maxRings));
         
         // Color based on repeater status with better visibility
-        const colors = {
+        const colors: Record<'active' | 'limited' | 'inactive', string> = {
           active: 'rgba(52, 211, 153, 0.8)',
           limited: 'rgba(251, 191, 36, 0.8)',
           inactive: 'rgba(239, 68, 68, 0.8)'
         };
-        const ringColor = colors[repeater.status];
+        const ringColor = colors[repeater.status as keyof typeof colors];
         
         // Draw animated signal rings
         for (let i = 0; i < numRings; i++) {
@@ -744,7 +744,30 @@ export default function ARVisualization({ enableCamera = false }: ARVisualizatio
           
           ctx.beginPath();
           ctx.arc(xPos, yPos, ringSize, 0, 2 * Math.PI);
-          ctx.fillStyle = ringColor.replace('0.8', `${ringOpacity}`);
+          
+          // Handle color safely to avoid runtime errors with replace
+          let fillStyle = 'rgba(52, 211, 153, 0.7)'; // Default color (green)
+          if (ringColor) {
+            // Check if we have a valid color string with the pattern 'rgba(r, g, b, a)'
+            if (typeof ringColor === 'string' && ringColor.startsWith('rgba')) {
+              fillStyle = ringColor.replace('0.8', `${ringOpacity}`);
+            } else {
+              // Apply opacity directly based on repeater status
+              switch(repeater.status) {
+                case 'active':
+                  fillStyle = `rgba(52, 211, 153, ${ringOpacity})`;
+                  break;
+                case 'limited':
+                  fillStyle = `rgba(251, 191, 36, ${ringOpacity})`;
+                  break;
+                case 'inactive':
+                  fillStyle = `rgba(239, 68, 68, ${ringOpacity})`;
+                  break;
+              }
+            }
+          }
+          
+          ctx.fillStyle = fillStyle;
           ctx.fill();
         }
         
@@ -752,11 +775,33 @@ export default function ARVisualization({ enableCamera = false }: ARVisualizatio
         ctx.beginPath();
         ctx.arc(xPos, yPos, size, 0, 2 * Math.PI);
         
-        // Create radial gradient for the glow effect
+        // Create radial gradient for the glow effect - handle safely
         const gradient = ctx.createRadialGradient(xPos, yPos, size * 0.5, xPos, yPos, size);
-        const baseColor = ringColor.replace('rgba', 'rgb').replace(/, 0.8\)/, ')');
+        
+        // Get safe base colors for the gradient
+        let baseColor, glowColor;
+        
+        switch(repeater.status) {
+          case 'active':
+            baseColor = 'rgb(52, 211, 153)';
+            glowColor = 'rgba(52, 211, 153, 0.8)';
+            break;
+          case 'limited':
+            baseColor = 'rgb(251, 191, 36)';
+            glowColor = 'rgba(251, 191, 36, 0.8)';
+            break;
+          case 'inactive':
+            baseColor = 'rgb(239, 68, 68)';
+            glowColor = 'rgba(239, 68, 68, 0.8)';
+            break;
+          default:
+            baseColor = 'rgb(52, 211, 153)';
+            glowColor = 'rgba(52, 211, 153, 0.8)';
+        }
+        
+        // Apply the gradient
         gradient.addColorStop(0, baseColor);
-        gradient.addColorStop(1, ringColor);
+        gradient.addColorStop(1, glowColor);
         
         ctx.fillStyle = gradient;
         ctx.fill();
@@ -1021,7 +1066,7 @@ export default function ARVisualization({ enableCamera = false }: ARVisualizatio
               {repeaters?.length || 0} Repeaters
             </Badge>
             <span className="text-[8px] text-gray-400 mt-0.5 mr-1">
-              {repeaters?.filter(r => r.status === 'active').length || 0} active
+              {repeaters?.filter((r: Repeater) => r.status === 'active').length || 0} active
             </span>
           </div>
         </div>
