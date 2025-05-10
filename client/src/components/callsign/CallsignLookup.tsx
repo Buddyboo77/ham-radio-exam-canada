@@ -252,7 +252,8 @@ export default function CallsignLookup() {
                       <div className="bg-gray-900 p-2 rounded-md border border-gray-800">
                         <div className="text-gray-500 text-xs mb-1">Coordinates</div>
                         <div className="text-gray-300 font-mono text-xs">
-                          {data.latitude.toFixed(4)}, {data.longitude.toFixed(4)}
+                          {typeof data.latitude === 'number' ? data.latitude.toFixed(4) : data.latitude}, 
+                          {typeof data.longitude === 'number' ? data.longitude.toFixed(4) : data.longitude}
                         </div>
                       </div>
                       

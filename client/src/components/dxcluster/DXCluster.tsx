@@ -149,6 +149,9 @@ export default function DXCluster() {
   
   // Filter spots based on active tab, band, mode, and search term
   const filteredSpots = data?.filter(spot => {
+    // Make sure spot exists and has required properties
+    if (!spot) return false;
+    
     // Active tab filter
     if (activeTab !== 'all' && spot.continent !== activeTab) {
       return false;
@@ -164,28 +167,45 @@ export default function DXCluster() {
       return false;
     }
     
-    // Search term
-    if (searchTerm && !spot.dx.toLowerCase().includes(searchTerm.toLowerCase()) && 
-        !spot.comment.toLowerCase().includes(searchTerm.toLowerCase()) &&
-        !spot.country?.toLowerCase().includes(searchTerm.toLowerCase())) {
-      return false;
+    // Search term - with null checks to prevent errors
+    if (searchTerm) {
+      const searchLower = searchTerm.toLowerCase();
+      const dxMatch = spot.dx ? spot.dx.toLowerCase().includes(searchLower) : false;
+      const commentMatch = spot.comment ? spot.comment.toLowerCase().includes(searchLower) : false;
+      const countryMatch = spot.country ? spot.country.toLowerCase().includes(searchLower) : false;
+      
+      if (!dxMatch && !commentMatch && !countryMatch) {
+        return false;
+      }
     }
     
     return true;
   }) || [];
   
-  // Format frequency
-  const formatFrequency = (freq: number) => {
+  // Format frequency safely
+  const formatFrequency = (freq: number | string) => {
+    if (typeof freq !== 'number') {
+      return freq ? `${freq}` : 'Unknown';
+    }
+    
     if (freq >= 1000) {
       return `${(freq / 1000).toFixed(3)} MHz`;
     }
     return `${freq.toFixed(1)} kHz`;
   };
   
-  // Format time as "x minutes ago"
-  const formatTime = (timeStr: string) => {
+  // Format time as "x minutes ago" with additional safety checks
+  const formatTime = (timeStr?: string) => {
+    if (!timeStr) return 'Unknown';
+    
     try {
       const spotTime = new Date(timeStr);
+      
+      // Check if date is valid
+      if (isNaN(spotTime.getTime())) {
+        return 'Unknown';
+      }
+      
       const now = new Date();
       const diffMs = now.getTime() - spotTime.getTime();
       const diffMins = Math.round(diffMs / 60000);
@@ -196,8 +216,11 @@ export default function DXCluster() {
       
       const hours = Math.floor(diffMins / 60);
       if (hours === 1) return '1 hour ago';
-      return `${hours} hours ago`;
-    } catch {
+      if (hours < 24) return `${hours} hours ago`;
+      
+      return spotTime.toLocaleDateString();
+    } catch (error) {
+      console.log('Error formatting time:', error);
       return 'Unknown';
     }
   };
