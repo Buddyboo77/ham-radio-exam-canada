@@ -188,17 +188,37 @@ export default function ARVisualization({ enableCamera = false }: ARVisualizatio
         const data = await response.json();
         
         // Process and return the data with calculated coverage radius
-        return data.map((repeater: any) => ({
-          ...repeater,
-          coverageRadius: calculateCoverageRadius(repeater.frequency, repeater.elevation || 0, repeater.power || 25),
+        return data.map((repeaterData: any): Repeater => ({
+          id: repeaterData.id,
+          callsign: repeaterData.callsign || 'Unknown',
+          frequency: repeaterData.frequency || 146.52, // Default to calling frequency if missing
+          offset: repeaterData.offset || 0,
+          tone: repeaterData.tone || 88.5,
+          latitude: repeaterData.latitude || POWELL_RIVER_LOCATION.lat,
+          longitude: repeaterData.longitude || POWELL_RIVER_LOCATION.lng,
+          name: repeaterData.name || 'Unknown Repeater',
+          city: repeaterData.city || 'Unknown Location',
+          status: repeaterData.status || 'inactive',
+          elevation: repeaterData.elevation || 0,
+          features: repeaterData.features || [],
+          power: repeaterData.power || 25,
+          coverageRadius: calculateCoverageRadius(
+            repeaterData.frequency || 146.52, 
+            repeaterData.elevation || 0, 
+            repeaterData.power || 25
+          )
         }));
       } catch (error) {
         console.log("Using local Powell River repeater data");
         
         // Use our accurate Powell River repeater data with calculated coverage radius
-        return powellRiverRepeaters.map(repeater => ({
+        return powellRiverRepeaters.map((repeater): Repeater => ({
           ...repeater,
-          coverageRadius: calculateCoverageRadius(repeater.frequency, repeater.elevation, repeater.power),
+          coverageRadius: calculateCoverageRadius(
+            repeater.frequency,
+            repeater.elevation,
+            repeater.power
+          )
         }));
       }
     },
@@ -460,9 +480,13 @@ export default function ARVisualization({ enableCamera = false }: ARVisualizatio
                 console.log("Current camera settings:", settings);
                 
                 // Apply any additional settings that might improve AR experience
-                if (capabilities.torch) {
-                  videoTrack.applyConstraints({ advanced: [{ torch: false }] })
-                    .catch(e => console.log("Failed to configure torch:", e));
+                // Access advanced camera features if supported by the browser
+                // Note: torch is not in standard types but some devices support it
+                const advancedCapabilities = capabilities as any;
+                if (advancedCapabilities.torch) {
+                  videoTrack.applyConstraints({ 
+                    advanced: [{ torch: false } as any] 
+                  }).catch(e => console.log("Failed to configure torch:", e));
                 }
               } catch (err) {
                 console.log("Error getting camera settings:", err);
@@ -632,8 +656,8 @@ export default function ARVisualization({ enableCamera = false }: ARVisualizatio
     ctx.restore();
     
     // Draw repeaters with enhanced visualization
-    if (repeaters.length > 0) {
-      repeaters.forEach(repeater => {
+    if (repeaters && repeaters.length > 0) {
+      repeaters.forEach((repeater: Repeater) => {
         // Calculate direction to repeater
         const dLon = (repeater.longitude - userLocation.lng) * Math.PI / 180;
         const lat1 = userLocation.lat * Math.PI / 180;
