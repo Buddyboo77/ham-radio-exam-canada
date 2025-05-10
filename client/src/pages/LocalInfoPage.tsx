@@ -11,8 +11,8 @@ const CLUB_INFO = {
   meetings: "September-June on the second Wednesday at 7:00pm",
   location: "Powell River Recreation Complex",
   access: "Call on the repeater or 604-485-6916 to gain access",
-  socialGatherings: "Coffee on Saturday mornings at 10am at the local A&W",
-  description: "The Powell River Amateur Radio Club is a vibrant community that offers plenty of opportunities for learning, networking, and enjoyment. They regularly organize workshops, training sessions, field days, and participate in emergency preparedness events."
+  socialGatherings: "Coffee on Saturday mornings at 10am at the newly renovated A&W in Powell River",
+  description: "The Powell River Amateur Radio Club is a vibrant community that offers plenty of opportunities for learning, networking, and enjoyment. They regularly organize workshops, training sessions, field days, and participate in emergency preparedness events. Everyone is welcome to bring friends and family to informal coffee gatherings."
 };
 
 // Local Nets Schedule
@@ -26,12 +26,20 @@ const LOCAL_NETS = [
     netController: "Various club members"
   },
   {
-    name: "PRAC Club Net",
-    frequency: "146.680 MHz (-600 kHz offset, tone 141.3 Hz)",
-    day: "Wednesday",
-    time: "7:30 PM",
-    description: "Club announcements and discussions",
-    netController: "Club officers"
+    name: "PRARC Sunday Evening Net",
+    frequency: "147.200 MHz (+600 kHz offset, tone 141.3 Hz)",
+    day: "Sunday",
+    time: "8:00 PM",
+    description: "Casual net with check-ins and open chat. All amateur radio operators welcome.",
+    netController: "Lucy VA7KMB"
+  },
+  {
+    name: "qRD Emergency Communications Unit Net",
+    frequency: "147.200 MHz (+600 kHz offset, tone 141.3 Hz) and 444.025 MHz (+5 MHz, tone 141.3 Hz)",
+    day: "Thursday",
+    time: "6:30 PM",
+    description: "Emergency communications readiness. Winlink check-ins welcome to VE7RZI.",
+    netController: "Bill VE7RZI and Windy VE7AAK"
   },
   {
     name: "British Columbia Emergency Net",
@@ -62,12 +70,20 @@ const LOCAL_FREQUENCIES = [
     notes: "Texada Island repeater, linked to VE7RPR"
   },
   {
-    name: "VE7RCH Repeater (Church Mountain)",
+    name: "VE7PRR Repeater",
     frequency: "147.200 MHz",
     offset: "+600 kHz",
-    tone: "103.5 Hz",
+    tone: "141.3 Hz",
     type: "FM",
-    notes: "Good coverage for northern Strait of Georgia"
+    notes: "Sunday Evening Net and qRD Emergency Net"
+  },
+  {
+    name: "VE7TIR Repeater",
+    frequency: "444.025 MHz",
+    offset: "+5.000 MHz",
+    tone: "141.3 Hz",
+    type: "FM",
+    notes: "qRD Emergency Communications Unit Net"
   },
   {
     name: "Marine VHF Ch. 16",
@@ -149,6 +165,12 @@ const CLUB_MEMBERS = [
 
 // Local Special Events
 const LOCAL_EVENTS = [
+  {
+    name: "Coffee Meetup",
+    date: "Every Saturday",
+    location: "Newly renovated A&W in Powell River",
+    description: "Informal coffee meetings at 10:00am. Everyone's welcome to bring friends and family."
+  },
   {
     name: "Field Day",
     date: "Last full weekend in June",
