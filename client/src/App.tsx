@@ -218,7 +218,19 @@ function Router() {
               Powell River Amateur Radio <Radio className="inline-block ml-1 mr-1" size={14} /> VA7HAM
             </div>
             
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
+              {/* Quick map button */}
+              <Link href="/enhanced-map" className="flex items-center gap-2 bg-blue-800 hover:bg-blue-700 px-2 py-1 rounded-md border border-blue-600">
+                <Map size={16} className="text-blue-100" />
+                <span className="text-xs text-white">Maps</span>
+              </Link>
+              
+              {/* Quick AR button */}
+              <Link href="/ar-view" className="flex items-center gap-2 bg-green-800 hover:bg-green-700 px-2 py-1 rounded-md border border-green-600">
+                <Compass size={16} className="text-green-100" />
+                <span className="text-xs text-white">AR View</span>
+              </Link>
+              
               {/* Quick local info button */}
               <Link href="/local-info" className="flex items-center gap-2 bg-purple-800 hover:bg-purple-700 px-2 py-1 rounded-md border border-purple-600">
                 <RadioTower size={16} className="text-purple-100" />
