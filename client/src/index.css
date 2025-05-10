@@ -61,6 +61,34 @@
 }
 
 @layer components {
+  /* Calendar styles */
+  .calendar-day {
+    @apply text-gray-200 hover:bg-gray-700 hover:text-white;
+  }
+  
+  .calendar-day-today {
+    @apply bg-blue-900/30 text-blue-100 font-semibold;
+  }
+  
+  .calendar-day-selected {
+    @apply bg-blue-700 text-white font-bold;
+  }
+  
+  .calendar-day-outside {
+    @apply text-gray-500 hover:bg-gray-800;
+  }
+  
+  /* Calendar days with events */
+  .rdp-day_hasEvent {
+    @apply relative font-semibold;
+  }
+  
+  .rdp-day_hasEvent::after {
+    content: '';
+    @apply absolute w-1 h-1 bg-green-500 rounded-full bottom-1 left-1/2 transform -translate-x-1/2;
+    box-shadow: 0 0 4px rgba(74, 222, 128, 0.6);
+  }
+  
   /* Radio device styling */
   .radio-body {
     @apply bg-gradient-to-b from-gray-800 to-gray-900 rounded-[2rem] p-3 shadow-lg border-t border-gray-700 border-b-2 border-b-black overflow-hidden;

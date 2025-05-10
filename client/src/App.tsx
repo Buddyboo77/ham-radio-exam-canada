@@ -202,7 +202,13 @@ function Router() {
               Powell River Amateur Radio <Radio className="inline-block ml-1 mr-1" size={14} /> VA7HAM
             </div>
             
-            <div className="flex items-center">
+            <div className="flex items-center gap-2">
+              {/* Quick calendar button */}
+              <Link href="/calendar" className="flex items-center gap-2 bg-blue-800 hover:bg-blue-700 px-2 py-1 rounded-md border border-blue-600">
+                <CalendarIcon size={16} className="text-blue-100" />
+                <span className="text-xs text-white">Calendar</span>
+              </Link>
+              
               {/* Quick local info button */}
               <Link href="/local-info" className="flex items-center gap-2 bg-purple-800 hover:bg-purple-700 px-2 py-1 rounded-md border border-purple-600">
                 <RadioTower size={16} className="text-purple-100" />

@@ -168,8 +168,14 @@ export default function EventCalendar({ events }: EventCalendarProps) {
             modifiers={{
               hasEvent: (date) => getEventsForDate(date).length > 0
             }}
+            modifiersClassNames={{
+              hasEvent: "rdp-day_hasEvent"
+            }}
             classNames={{
-              day_hasEvent: "font-bold bg-blue-100/20 rounded"
+              day: "calendar-day",
+              day_today: "calendar-day-today",
+              day_selected: "calendar-day-selected",
+              day_outside: "calendar-day-outside"
             }}
           />
         ) : (
