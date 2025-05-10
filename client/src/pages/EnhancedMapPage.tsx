@@ -122,35 +122,40 @@ export default function EnhancedMapPage() {
           </TabsContent>
         </Tabs>
         
-        <div className="mt-2 grid grid-cols-3 gap-2">
-          <div className="bg-blue-900/20 rounded-md p-2 border border-blue-800">
-            <div className="flex items-center text-xs text-blue-300 mb-1">
-              <Globe className="h-3 w-3 mr-1" />
-              <span className="font-medium">Live Activity</span>
+        <div className="mt-3">
+          <div className="bg-gray-800 rounded-md p-3 border border-gray-700">
+            <h3 className="text-sm font-medium text-white mb-2">Map Mode Information</h3>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="bg-blue-900/30 rounded-md p-3 border border-blue-800 flex items-start">
+                <Globe className="h-5 w-5 mr-2 text-blue-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <span className="font-medium text-sm text-blue-300 block mb-1">Live Activity</span>
+                  <p className="text-sm text-white">
+                    Shows active operators and DX spots in real-time
+                  </p>
+                </div>
+              </div>
+              
+              <div className="bg-green-900/30 rounded-md p-3 border border-green-800 flex items-start">
+                <Radio className="h-5 w-5 mr-2 text-green-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <span className="font-medium text-sm text-green-300 block mb-1">Coverage</span>
+                  <p className="text-sm text-white">
+                    Displays repeater coverage based on terrain
+                  </p>
+                </div>
+              </div>
+              
+              <div className="bg-purple-900/30 rounded-md p-3 border border-purple-800 flex items-start">
+                <Compass className="h-5 w-5 mr-2 text-purple-400 mt-0.5 flex-shrink-0" />
+                <div>
+                  <span className="font-medium text-sm text-purple-300 block mb-1">AR View</span>
+                  <p className="text-sm text-white">
+                    Visualize repeaters in your environment
+                  </p>
+                </div>
+              </div>
             </div>
-            <p className="text-xs text-gray-300">
-              Shows active operators and DX spots in real-time
-            </p>
-          </div>
-          
-          <div className="bg-green-900/20 rounded-md p-2 border border-green-800">
-            <div className="flex items-center text-xs text-green-300 mb-1">
-              <Radio className="h-3 w-3 mr-1" />
-              <span className="font-medium">Coverage</span>
-            </div>
-            <p className="text-xs text-gray-300">
-              Displays repeater coverage based on terrain
-            </p>
-          </div>
-          
-          <div className="bg-purple-900/20 rounded-md p-2 border border-purple-800">
-            <div className="flex items-center text-xs text-purple-300 mb-1">
-              <Compass className="h-3 w-3 mr-1" />
-              <span className="font-medium">AR View</span>
-            </div>
-            <p className="text-xs text-gray-300">
-              Visualize repeaters in your environment
-            </p>
           </div>
         </div>
       </div>

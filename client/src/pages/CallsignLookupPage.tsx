@@ -33,17 +33,28 @@ export default function CallsignLookupPage() {
         
         <CallsignLookup />
         
-        <div className="mt-4 bg-blue-900/20 rounded-md p-2 border border-blue-900/30">
-          <div className="flex items-center text-xs text-blue-300 mb-1">
-            <MapPin className="h-3 w-3 mr-1 text-blue-400" />
-            <span className="font-medium">About Callsign Lookup</span>
-          </div>
-          <p className="text-[10px] text-gray-400">
-            The callsign lookup feature provides information about amateur radio operators worldwide. 
-            Search for a callsign to find operator details, license information, and location data. 
-            This demonstration uses simulated data - in a full version, it would connect to official 
-            amateur radio databases.
+        <div className="mt-4 bg-gray-800 rounded-md p-3 border border-gray-700">
+          <h3 className="text-sm font-medium text-white mb-2 flex items-center">
+            <MapPin className="h-4 w-4 mr-2 text-blue-400" />
+            About Callsign Lookup
+          </h3>
+          <p className="text-sm text-white mb-2">
+            The callsign lookup feature provides information about amateur radio operators worldwide.
           </p>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mt-3">
+            <div className="bg-blue-900/30 rounded-md p-3 border border-blue-800">
+              <h4 className="text-blue-300 font-medium mb-1">How to Use</h4>
+              <p className="text-sm text-white">
+                Enter a callsign above (e.g., VA7HAM) and click search. View operator details, location, and license information.
+              </p>
+            </div>
+            <div className="bg-purple-900/30 rounded-md p-3 border border-purple-800">
+              <h4 className="text-purple-300 font-medium mb-1">Available Data</h4>
+              <p className="text-sm text-white">
+                Operator name, license class, location, grid square coordinates, and contact information when available.
+              </p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
