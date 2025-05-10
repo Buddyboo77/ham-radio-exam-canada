@@ -14,6 +14,8 @@ import LocalInfoPage from "@/pages/LocalInfoPage";
 import CallsignLookupPage from "@/pages/CallsignLookupPage";
 import PropagationPage from "@/pages/PropagationPage";
 import DXClusterPage from "@/pages/DXClusterPage";
+import EnhancedMapPage from "@/pages/EnhancedMapPage";
+import ARViewPage from "@/pages/ARViewPage";
 
 import { useState, useEffect } from "react";
 import { 
@@ -34,7 +36,8 @@ import {
   Home as HomeIcon,
   User,
   Sun,
-  Globe
+  Globe,
+  Compass
 } from "lucide-react";
 import { useOnlineStatus } from "@/hooks/use-online-status";
 
@@ -68,6 +71,8 @@ function Router() {
     { path: "/callsign", label: "Callsign", icon: <User size={18} /> },
     { path: "/propagation", label: "Propagation", icon: <Sun size={18} /> }, 
     { path: "/dxcluster", label: "DX Cluster", icon: <Globe size={18} /> },
+    { path: "/enhanced-map", label: "Maps", icon: <Map size={18} /> },
+    { path: "/ar-view", label: "AR View", icon: <Compass size={18} /> },
     { path: "/logbook", label: "Logbook", icon: <FileText size={18} /> },
     { path: "/reference", label: "Reference", icon: <BookOpen size={18} /> },
     { path: "/learning", label: "Learning", icon: <BookOpenCheck size={18} /> },
@@ -161,6 +166,8 @@ function Router() {
               <Route path="/callsign" component={() => <CallsignLookupPage />} />
               <Route path="/propagation" component={() => <PropagationPage />} />
               <Route path="/dxcluster" component={() => <DXClusterPage />} />
+              <Route path="/enhanced-map" component={() => <EnhancedMapPage />} />
+              <Route path="/ar-view" component={() => <ARViewPage />} />
               <Route path="/logbook" component={() => <LogbookPage />} />
               <Route path="/reference" component={() => <ReferencePage />} />
               <Route path="/learning" component={() => <LearningPage />} />
