@@ -2,7 +2,6 @@ import { useState } from 'react';
 import { Compass, Radio, MapPin, Camera, Smartphone, Maximize2 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import ARVisualization from '@/components/ar/ARVisualization';
 
 export default function ARViewPage() {
@@ -26,30 +25,26 @@ export default function ARViewPage() {
       {/* Main content */}
       <div className="bg-gray-800 bg-opacity-50 rounded-md p-2 border border-gray-700">
         <div className="mb-3 flex justify-between items-center">
-          <TabsList className="h-9 p-1 bg-gray-900">
-            <TabsTrigger 
-              value="repeaters" 
-              className="text-xs py-1.5 px-3 h-auto data-[state=active]:bg-blue-900"
+          <div className="flex">
+            <button
+              className={`text-xs py-1.5 px-3 h-9 rounded-l flex items-center gap-1.5 ${
+                arMode === 'repeaters' ? 'bg-blue-900 text-white' : 'bg-gray-900 text-gray-300'
+              }`}
               onClick={() => setARMode('repeaters')}
-              data-state={arMode === 'repeaters' ? 'active' : 'inactive'}
             >
-              <div className="flex items-center gap-1.5">
-                <Radio className="h-3.5 w-3.5" />
-                <span>Repeaters</span>
-              </div>
-            </TabsTrigger>
-            <TabsTrigger 
-              value="antenna" 
-              className="text-xs py-1.5 px-3 h-auto data-[state=active]:bg-green-900"
+              <Radio className="h-3.5 w-3.5" />
+              <span>Repeaters</span>
+            </button>
+            <button
+              className={`text-xs py-1.5 px-3 h-9 rounded-r flex items-center gap-1.5 ${
+                arMode === 'antenna' ? 'bg-green-900 text-white' : 'bg-gray-900 text-gray-300'
+              }`}
               onClick={() => setARMode('antenna')}
-              data-state={arMode === 'antenna' ? 'active' : 'inactive'}
             >
-              <div className="flex items-center gap-1.5">
-                <Compass className="h-3.5 w-3.5" />
-                <span>Antenna</span>
-              </div>
-            </TabsTrigger>
-          </TabsList>
+              <Compass className="h-3.5 w-3.5" />
+              <span>Antenna</span>
+            </button>
+          </div>
           
           <Button
             size="sm" 
