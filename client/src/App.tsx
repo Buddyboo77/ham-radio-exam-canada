@@ -11,6 +11,8 @@ import LogbookPage from "@/pages/LogbookPage";
 import ReferencePage from "@/pages/ReferencePage";
 import LearningPage from "@/pages/LearningPage";
 import LocalInfoPage from "@/pages/LocalInfoPage";
+import CallsignLookupPage from "@/pages/CallsignLookupPage";
+import PropagationPage from "@/pages/PropagationPage";
 
 import { useState, useEffect } from "react";
 import { 
