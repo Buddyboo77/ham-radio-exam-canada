@@ -63,7 +63,7 @@ export default function EnhancedMapPage() {
           </div>
           
           <TabsContent value="live" className="mt-0">
-            <div className="h-[400px]">
+            <div className="h-[550px]">
               <EnhancedRadioMap 
                 initialCenter={[POWELL_RIVER_LOCATION.lat, POWELL_RIVER_LOCATION.lng]} 
                 initialZoom={8}
@@ -73,7 +73,7 @@ export default function EnhancedMapPage() {
           </TabsContent>
           
           <TabsContent value="coverage" className="mt-0">
-            <div className="h-[400px]">
+            <div className="h-[550px]">
               <EnhancedRadioMap 
                 initialCenter={[POWELL_RIVER_LOCATION.lat, POWELL_RIVER_LOCATION.lng]} 
                 initialZoom={8}

@@ -579,14 +579,14 @@ export default function EnhancedRadioMap({
         </div>
       </div>
       
-      {/* Map instructions - prominent placement above map */}
-      <div className="bg-blue-900 text-white rounded-lg p-3 mb-3 border border-blue-700 shadow-lg flex items-center justify-center">
-        <MapPin className="h-5 w-5 text-blue-300 mr-2" />
-        <span className="text-sm font-medium">Click any marker on the map to view detailed information</span>
+      {/* Map instructions - compact but visible above map */}
+      <div className="bg-blue-900 text-white rounded-md p-2 mb-2 border border-blue-700 shadow-lg flex items-center justify-center">
+        <MapPin className="h-4 w-4 text-blue-300 mr-2" />
+        <span className="text-xs font-medium">Click any marker on the map to view detailed information</span>
       </div>
     
       {/* Map display */}
-      <div className="flex-1 relative h-[400px] rounded-md overflow-hidden border border-gray-700">
+      <div className="flex-1 relative h-[550px] rounded-md overflow-hidden border border-gray-700">
         {isLoading && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000]">
             <div className="bg-gray-900 p-3 rounded-md flex items-center gap-2 shadow-lg">
@@ -618,7 +618,7 @@ export default function EnhancedRadioMap({
       </div>
       
       {/* Marker legend */}
-      <div className="mt-3 bg-blue-900/80 px-3 py-3 rounded-md border border-blue-700 flex flex-wrap gap-4 justify-between items-center shadow-md z-50">
+      <div className="mt-2 bg-blue-900/80 px-3 py-2 rounded-md border border-blue-700 flex flex-wrap gap-4 justify-between items-center shadow-md z-50">
         <div className="flex gap-3">
           <div className="flex items-center gap-1">
             <img src="https://cdn-icons-png.flaticon.com/512/825/825572.png" className="w-4 h-4" alt="VHF repeater" />
