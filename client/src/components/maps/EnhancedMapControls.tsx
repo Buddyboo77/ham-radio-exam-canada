@@ -1,27 +1,21 @@
+import { useEffect, useRef } from 'react';
 import { useMap } from 'react-leaflet';
-import { 
-  Eye, 
-  ZoomIn, 
-  Layers,
-  Radio,
-  Signal, 
-  BarChart, 
-  Users, 
-  Cloud,
-  Navigation,
-  Ruler
-} from 'lucide-react';
+import { Eye, Layers, ZoomIn, Target, Ruler, CloudRain, Signal, Wifi, Users, Laptop } from 'lucide-react';
+import { Tooltip } from '@/components/ui/tooltip';
+import { TooltipContent } from '@/components/ui/tooltip';
+import { TooltipProvider } from '@/components/ui/tooltip';
+import { TooltipTrigger } from '@/components/ui/tooltip';
+
+// Define map tile type
+type MapTileType = 'standard' | 'highContrast' | 'satellite' | 'monochrome';
 
 interface EnhancedMapControlsProps {
-  // Map type and accessibility
   contrastMode: boolean;
   setContrastMode: (value: boolean) => void;
   largePrintMode: boolean;
   setLargePrintMode: (value: boolean) => void;
-  mapTileType: 'standard' | 'highContrast' | 'satellite' | 'monochrome';
-  setMapTileType: (type: 'standard' | 'highContrast' | 'satellite' | 'monochrome') => void;
-  
-  // Layer visibility
+  mapTileType: MapTileType;
+  setMapTileType: (type: MapTileType) => void;
   showRepeaters: boolean;
   setShowRepeaters: (value: boolean) => void;
   showDXSpots: boolean;
@@ -30,29 +24,22 @@ interface EnhancedMapControlsProps {
   setShowUsers: (value: boolean) => void;
   showWeather: boolean;
   setShowWeather: (value: boolean) => void;
-  
-  // Coverage options
   showCoverage: boolean;
   setShowCoverage: (value: boolean) => void;
   coverageStyle: 'simple' | 'gradient' | 'terrain';
   setCoverageStyle: (style: 'simple' | 'gradient' | 'terrain') => void;
-  
-  // Measuring tools
   isMeasuring: boolean;
   setIsMeasuring: (value: boolean) => void;
   onClearMeasurements: () => void;
 }
 
 export function EnhancedMapControls({
-  // Map type and accessibility
   contrastMode,
   setContrastMode,
   largePrintMode,
   setLargePrintMode,
   mapTileType,
   setMapTileType,
-  
-  // Layer visibility
   showRepeaters,
   setShowRepeaters,
   showDXSpots,
@@ -61,24 +48,37 @@ export function EnhancedMapControls({
   setShowUsers,
   showWeather,
   setShowWeather,
-  
-  // Coverage options
   showCoverage,
   setShowCoverage,
   coverageStyle,
   setCoverageStyle,
-  
-  // Measuring tools
   isMeasuring,
   setIsMeasuring,
-  onClearMeasurements
+  onClearMeasurements,
 }: EnhancedMapControlsProps) {
   const map = useMap();
   
-  // Toggle high contrast mode
+  // Refs to track button click state
+  const contrastButtonRef = useRef<HTMLButtonElement>(null);
+  const layersButtonRef = useRef<HTMLButtonElement>(null);
+  const largePrintButtonRef = useRef<HTMLButtonElement>(null);
+  
+  // Refs to track action in progress
+  const contrastModeActionInProgress = useRef(false);
+  const cycleMapTypeActionInProgress = useRef(false);
+  const largePrintActionInProgress = useRef(false);
+  
+  // Toggle high contrast mode with debounce
   const toggleContrastMode = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    // Prevent multiple rapid clicks
+    if (contrastModeActionInProgress.current) {
+      return;
+    }
+    
+    contrastModeActionInProgress.current = true;
     
     try {
       const newContrastMode = !contrastMode;
@@ -94,18 +94,30 @@ export function EnhancedMapControls({
       setContrastMode(newContrastMode);
       
       // Update button aria state
-      if (e.currentTarget) {
-        e.currentTarget.setAttribute('aria-pressed', String(newContrastMode));
+      if (contrastButtonRef.current) {
+        contrastButtonRef.current.setAttribute('aria-pressed', String(newContrastMode));
       }
     } catch (error) {
       console.error('Error toggling contrast mode:', error);
+    } finally {
+      // Reset action flag after a delay
+      setTimeout(() => {
+        contrastModeActionInProgress.current = false;
+      }, 300);
     }
   };
   
-  // Toggle large print mode
+  // Toggle large print mode with debounce
   const toggleLargePrintMode = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
+    
+    // Prevent multiple rapid clicks
+    if (largePrintActionInProgress.current) {
+      return;
+    }
+    
+    largePrintActionInProgress.current = true;
     
     try {
       const newLargePrintMode = !largePrintMode;
@@ -123,22 +135,33 @@ export function EnhancedMapControls({
       }
       
       // Update button aria state
-      if (e.currentTarget) {
-        e.currentTarget.setAttribute('aria-pressed', String(newLargePrintMode));
+      if (largePrintButtonRef.current) {
+        largePrintButtonRef.current.setAttribute('aria-pressed', String(newLargePrintMode));
       }
     } catch (error) {
       console.error('Error toggling large print mode:', error);
+    } finally {
+      // Reset action flag after a delay
+      setTimeout(() => {
+        largePrintActionInProgress.current = false;
+      }, 300);
     }
   };
-  
-  // Cycle through map types
+
+  // Cycle through map types with debounce
   const cycleMapType = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     
+    // Prevent multiple rapid clicks
+    if (cycleMapTypeActionInProgress.current) {
+      return;
+    }
+    
+    cycleMapTypeActionInProgress.current = true;
+    
     try {
-      const types: ('standard' | 'highContrast' | 'satellite' | 'monochrome')[] = 
-        ['standard', 'highContrast', 'satellite', 'monochrome'];
+      const types: MapTileType[] = ['standard', 'highContrast', 'satellite', 'monochrome'];
       const currentIndex = types.indexOf(mapTileType);
       const nextIndex = (currentIndex + 1) % types.length;
       const nextMapType = types[nextIndex];
@@ -155,184 +178,234 @@ export function EnhancedMapControls({
       setMapTileType(nextMapType);
       
       // Update button title with the new map type
-      if (e.currentTarget) {
-        e.currentTarget.setAttribute('title', `Current map style: ${nextMapType}. Click to change.`);
+      if (layersButtonRef.current) {
+        layersButtonRef.current.setAttribute('title', `Current map style: ${nextMapType}. Click to change.`);
       }
     } catch (error) {
       console.error('Error cycling map type:', error);
+    } finally {
+      // Reset action flag after a delay
+      setTimeout(() => {
+        cycleMapTypeActionInProgress.current = false;
+      }, 300);
     }
   };
-  
+
+  // Toggle layer visibility for repeaters
+  const toggleRepeaters = () => {
+    setShowRepeaters(!showRepeaters);
+  };
+
+  // Toggle layer visibility for DX spots
+  const toggleDXSpots = () => {
+    setShowDXSpots(!showDXSpots);
+  };
+
+  // Toggle layer visibility for users
+  const toggleUsers = () => {
+    setShowUsers(!showUsers);
+  };
+
+  // Toggle weather overlay
+  const toggleWeather = () => {
+    setShowWeather(!showWeather);
+  };
+
+  // Toggle coverage visualization
+  const toggleCoverage = () => {
+    setShowCoverage(!showCoverage);
+  };
+
   // Toggle measuring mode
-  const toggleMeasuring = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+  const toggleMeasuring = () => {
+    const newMeasuringState = !isMeasuring;
+    setIsMeasuring(newMeasuringState);
     
-    try {
-      setIsMeasuring(!isMeasuring);
-      
-      if (isMeasuring) {
-        // If we're turning off measuring, clear the measurements
-        onClearMeasurements();
-        
-        // Reset cursor
-        const mapContainer = document.querySelector('.leaflet-container');
-        if (mapContainer) {
-          mapContainer.classList.remove('measuring-cursor');
-        }
-      } else {
-        // If we're turning on measuring, set a special cursor
-        const mapContainer = document.querySelector('.leaflet-container');
-        if (mapContainer) {
-          mapContainer.classList.add('measuring-cursor');
-        }
-      }
-    } catch (error) {
-      console.error('Error toggling measuring mode:', error);
+    // Clear measurements when turning off
+    if (!newMeasuringState) {
+      onClearMeasurements();
     }
   };
-  
-  // Toggle coverage style
-  const toggleCoverageStyle = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
+
+  // Cycle through coverage styles
+  const cycleCoverageStyle = () => {
+    const styles: ('simple' | 'gradient' | 'terrain')[] = ['simple', 'gradient', 'terrain'];
+    const currentIndex = styles.indexOf(coverageStyle);
+    const nextIndex = (currentIndex + 1) % styles.length;
     
-    try {
-      const styles: ('simple' | 'gradient' | 'terrain')[] = ['simple', 'gradient', 'terrain'];
-      const currentIndex = styles.indexOf(coverageStyle);
-      const nextIndex = (currentIndex + 1) % styles.length;
-      
-      setCoverageStyle(styles[nextIndex]);
-      
-      // If coverage is not shown, turn it on
-      if (!showCoverage) {
-        setShowCoverage(true);
-      }
-    } catch (error) {
-      console.error('Error cycling coverage style:', error);
-    }
+    setCoverageStyle(styles[nextIndex]);
   };
-  
+
+  // Refresh all layers if map is ready
+  useEffect(() => {
+    if (map) {
+      map.invalidateSize();
+    }
+  }, [map, mapTileType, largePrintMode]);
+
   return (
-    <>
-      {/* Accessibility controls */}
-      <div className="leaflet-top leaflet-right">
-        <div className="leaflet-control" style={{ marginTop: "40px", marginRight: "10px" }}>
-          <div className="flex flex-col gap-1 bg-gray-900/85 p-1.5 rounded-sm shadow-md border border-gray-700">          
-            <button 
-              type="button"
-              className={`flex items-center justify-center w-6 h-6 ${contrastMode ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
-              onClick={toggleContrastMode}
-              title="Toggle high contrast mode"
-              aria-pressed={contrastMode}
-            >
-              <Eye className="h-3 w-3" />
-            </button>
+    <div className="leaflet-top leaflet-right">
+      <div className="leaflet-control" style={{ marginTop: "40px", marginRight: "10px" }}>
+        <div className="flex flex-col gap-1 bg-gray-900/85 p-1.5 rounded-sm shadow-md border border-gray-700">
+          <TooltipProvider>
+            {/* High contrast mode */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button 
+                  ref={contrastButtonRef}
+                  type="button"
+                  className={`flex items-center justify-center w-6 h-6 ${contrastMode ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
+                  onClick={toggleContrastMode}
+                  aria-pressed={contrastMode}
+                >
+                  <Eye className="h-3 w-3" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Toggle high contrast mode</p>
+              </TooltipContent>
+            </Tooltip>
+
+            {/* Large print mode */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button 
+                  ref={largePrintButtonRef}
+                  type="button"
+                  className={`flex items-center justify-center w-6 h-6 ${largePrintMode ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
+                  onClick={toggleLargePrintMode}
+                  aria-pressed={largePrintMode}
+                >
+                  <ZoomIn className="h-3 w-3" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Toggle large print mode</p>
+              </TooltipContent>
+            </Tooltip>
             
-            <button 
-              type="button"
-              className={`flex items-center justify-center w-6 h-6 ${largePrintMode ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
-              onClick={toggleLargePrintMode}
-              title="Toggle large print mode"
-              aria-pressed={largePrintMode}
-            >
-              <ZoomIn className="h-3 w-3" />
-            </button>
-            
-            <button 
-              type="button"
-              className="flex items-center justify-center w-6 h-6 bg-gray-700 text-gray-200 hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm"
-              onClick={cycleMapType}
-              title={`Current map style: ${mapTileType}. Click to change.`}
-            >
-              <Layers className="h-3 w-3" />
-            </button>
-          </div>
+            {/* Cycle map types */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button 
+                  ref={layersButtonRef}
+                  type="button"
+                  className="flex items-center justify-center w-6 h-6 bg-gray-700 text-gray-200 hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm"
+                  onClick={cycleMapType}
+                  title={`Current map style: ${mapTileType}. Click to change.`}
+                >
+                  <Layers className="h-3 w-3" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Cycle map styles</p>
+              </TooltipContent>
+            </Tooltip>
+
+            {/* Toggle repeaters */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button 
+                  type="button"
+                  className={`flex items-center justify-center w-6 h-6 ${showRepeaters ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
+                  onClick={toggleRepeaters}
+                  aria-pressed={showRepeaters}
+                >
+                  <Signal className="h-3 w-3" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Toggle repeaters</p>
+              </TooltipContent>
+            </Tooltip>
+
+            {/* Toggle DX spots */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button 
+                  type="button"
+                  className={`flex items-center justify-center w-6 h-6 ${showDXSpots ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
+                  onClick={toggleDXSpots}
+                  aria-pressed={showDXSpots}
+                >
+                  <Wifi className="h-3 w-3" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Toggle DX spots</p>
+              </TooltipContent>
+            </Tooltip>
+
+            {/* Toggle users */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button 
+                  type="button"
+                  className={`flex items-center justify-center w-6 h-6 ${showUsers ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
+                  onClick={toggleUsers}
+                  aria-pressed={showUsers}
+                >
+                  <Users className="h-3 w-3" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Toggle user locations</p>
+              </TooltipContent>
+            </Tooltip>
+
+            {/* Toggle weather */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button 
+                  type="button"
+                  className={`flex items-center justify-center w-6 h-6 ${showWeather ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
+                  onClick={toggleWeather}
+                  aria-pressed={showWeather}
+                >
+                  <CloudRain className="h-3 w-3" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Toggle weather overlay</p>
+              </TooltipContent>
+            </Tooltip>
+
+            {/* Toggle coverage */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button 
+                  type="button"
+                  className={`flex items-center justify-center w-6 h-6 ${showCoverage ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
+                  onClick={toggleCoverage}
+                  aria-pressed={showCoverage}
+                >
+                  <Target className="h-3 w-3" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Toggle coverage visualization</p>
+              </TooltipContent>
+            </Tooltip>
+
+            {/* Toggle measuring */}
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <button 
+                  type="button"
+                  className={`flex items-center justify-center w-6 h-6 ${isMeasuring ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
+                  onClick={toggleMeasuring}
+                  aria-pressed={isMeasuring}
+                >
+                  <Ruler className="h-3 w-3" />
+                </button>
+              </TooltipTrigger>
+              <TooltipContent side="left">
+                <p>Toggle distance measurement</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
       </div>
-      
-      {/* Layer controls */}
-      <div className="leaflet-bottom leaflet-right">
-        <div className="leaflet-control" style={{ marginBottom: "40px", marginRight: "10px" }}>
-          <div className="flex flex-col gap-1 bg-gray-900/85 p-1.5 rounded-sm shadow-md border border-gray-700">
-            <button 
-              type="button"
-              className={`flex items-center justify-center w-6 h-6 ${showRepeaters ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
-              onClick={() => setShowRepeaters(!showRepeaters)}
-              title="Toggle repeaters"
-              aria-pressed={showRepeaters}
-            >
-              <Radio className="h-3 w-3" />
-            </button>
-            
-            <button 
-              type="button"
-              className={`flex items-center justify-center w-6 h-6 ${showCoverage ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
-              onClick={() => setShowCoverage(!showCoverage)}
-              title="Toggle coverage"
-              aria-pressed={showCoverage}
-            >
-              <Signal className="h-3 w-3" />
-            </button>
-            
-            <button 
-              type="button"
-              className={`flex items-center justify-center w-6 h-6 ${showDXSpots ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
-              onClick={() => setShowDXSpots(!showDXSpots)}
-              title="Toggle DX spots"
-              aria-pressed={showDXSpots}
-            >
-              <BarChart className="h-3 w-3" />
-            </button>
-            
-            <button 
-              type="button"
-              className={`flex items-center justify-center w-6 h-6 ${showUsers ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
-              onClick={() => setShowUsers(!showUsers)}
-              title="Toggle users"
-              aria-pressed={showUsers}
-            >
-              <Users className="h-3 w-3" />
-            </button>
-            
-            <button 
-              type="button"
-              className={`flex items-center justify-center w-6 h-6 ${showWeather ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
-              onClick={() => setShowWeather(!showWeather)}
-              title="Toggle weather"
-              aria-pressed={showWeather}
-            >
-              <Cloud className="h-3 w-3" />
-            </button>
-          </div>
-        </div>
-      </div>
-      
-      {/* Tool controls */}
-      <div className="leaflet-bottom leaflet-left">
-        <div className="leaflet-control" style={{ marginBottom: "40px", marginLeft: "10px" }}>
-          <div className="flex flex-col gap-1 bg-gray-900/85 p-1.5 rounded-sm shadow-md border border-gray-700">
-            <button 
-              type="button"
-              className={`flex items-center justify-center w-6 h-6 ${isMeasuring ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
-              onClick={toggleMeasuring}
-              title="Measure distance"
-              aria-pressed={isMeasuring}
-            >
-              <Ruler className="h-3 w-3" />
-            </button>
-            
-            <button 
-              type="button"
-              className={`flex items-center justify-center w-6 h-6 bg-gray-700 text-gray-200 hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
-              onClick={toggleCoverageStyle}
-              title={`Coverage style: ${coverageStyle}. Click to change.`}
-            >
-              <Navigation className="h-3 w-3" />
-            </button>
-          </div>
-        </div>
-      </div>
-    </>
+    </div>
   );
 }

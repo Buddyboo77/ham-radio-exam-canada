@@ -1,220 +1,201 @@
-import { useEffect } from 'react';
-import { Circle, Tooltip, Polyline, useMap } from 'react-leaflet';
-import L from 'leaflet';
+import { Circle, LayerGroup, Polygon, useMap } from 'react-leaflet';
+import L, { LatLngExpression } from 'leaflet';
 import { hasLineOfSight, calculateFresnelZone } from '@/lib/utils';
 
 interface Repeater {
   id: number;
   callsign: string;
   frequency: number;
+  offset: number;
+  tone: number;
   latitude: number;
   longitude: number;
+  name?: string;
+  city?: string;
   status: 'active' | 'inactive' | 'limited';
   coverageRadius: number;
   elevation?: number;
+  features?: string[];
+  power?: number;
 }
 
 interface RepeaterCoverageProps {
-  repeater: Repeater;
+  repeaters: Repeater[];
   coverageStyle: 'simple' | 'gradient' | 'terrain';
-  userPosition: [number, number] | null;
-  selected: boolean;
+  selectedRepeater?: number | null;
 }
 
 export function RepeaterCoverage({ 
-  repeater, 
+  repeaters, 
   coverageStyle,
-  userPosition,
-  selected
+  selectedRepeater 
 }: RepeaterCoverageProps) {
   const map = useMap();
   
-  // Radius colors based on repeater status
-  const getStatusColor = (status: string, opacity: number = 0.15) => {
-    switch (status) {
-      case 'active': return `rgba(0, 255, 0, ${opacity})`;
-      case 'inactive': return `rgba(255, 0, 0, ${opacity})`;
-      case 'limited': return `rgba(255, 165, 0, ${opacity})`;
-      default: return `rgba(0, 0, 255, ${opacity})`;
-    }
-  };
+  // Filter for active repeaters only
+  const activeRepeaters = repeaters?.filter(r => r.status === 'active') || [];
   
-  // Options for the coverage circle
-  const circleOptions = {
-    color: getStatusColor(repeater.status, 0.8),
-    fillColor: getStatusColor(repeater.status),
-    fillOpacity: selected ? 0.4 : 0.15,
-    weight: selected ? 2 : 1,
-  };
-  
-  // Options for gradient coverage when selected
-  const gradientCircleOptions: L.CircleMarkerOptions[] = [
-    { ...circleOptions, fillOpacity: 0.4, radius: repeater.coverageRadius },
-    { ...circleOptions, fillOpacity: 0.3, radius: repeater.coverageRadius * 0.8 },
-    { ...circleOptions, fillOpacity: 0.2, radius: repeater.coverageRadius * 0.6 },
-    { ...circleOptions, fillOpacity: 0.1, radius: repeater.coverageRadius * 0.4 }
-  ];
-  
-  // Create a line-of-sight line if we have user position and repeater
-  const lineOfSightOptions = {
-    userHasLOS: false,
-    distance: 0,
-    color: 'red',
-    opacity: 0.7,
-    dashArray: '5, 10'
-  };
-  
-  if (userPosition && repeater.elevation) {
-    // Assume user is at 2 meters height (standing person)
-    const userHeight = 2; 
-    // Distance in kilometers
-    const distance = L.latLng(userPosition[0], userPosition[1])
-      .distanceTo(L.latLng(repeater.latitude, repeater.longitude)) / 1000;
+  // Calculate coverage opacity based on elevation and power
+  const calculateOpacity = (repeater: Repeater) => {
+    // Base opacity is 0.3
+    let opacity = 0.3;
     
-    lineOfSightOptions.distance = distance;
-    lineOfSightOptions.userHasLOS = hasLineOfSight(userHeight, repeater.elevation, distance);
-    lineOfSightOptions.color = lineOfSightOptions.userHasLOS ? 'green' : 'red';
-  }
-  
-  // Focus the map on this repeater when selected
-  useEffect(() => {
-    if (selected) {
-      map.setView([repeater.latitude, repeater.longitude], 10);
+    // Adjust based on repeater elevation (if available)
+    if (repeater.elevation) {
+      // Higher elevation = better coverage = more opacity
+      opacity += Math.min(repeater.elevation / 1000, 0.3); // Max +0.3 for elevation
     }
-  }, [selected, map, repeater]);
+    
+    // Adjust based on repeater power (if available)
+    if (repeater.power) {
+      // Higher power = better coverage = more opacity
+      opacity += Math.min(repeater.power / 100, 0.2); // Max +0.2 for power
+    }
+    
+    // Cap at 0.8 for visibility
+    return Math.min(opacity, 0.8);
+  };
   
-  // Render based on coverage style
-  if (coverageStyle === 'simple' || !selected) {
+  // Generate a circular coverage area
+  const renderSimpleCoverage = (repeater: Repeater) => {
+    const isSelected = selectedRepeater === repeater.id;
+    const radius = repeater.coverageRadius * 1000; // Convert km to meters
+    const fillColor = isSelected ? '#3b82f6' : '#2563eb';
+    const fillOpacity = isSelected ? 0.45 : 0.25;
+    const weight = isSelected ? 2 : 1;
+    
     return (
-      <Circle 
-        center={[repeater.latitude, repeater.longitude]} 
-        radius={repeater.coverageRadius}
-        pathOptions={circleOptions}
-      >
-        <Tooltip direction="top" permanent={selected}>
-          <div className="text-xs">
-            <strong>{repeater.callsign}</strong> - {repeater.frequency.toFixed(3)} MHz
-            <div>Coverage: {(repeater.coverageRadius / 1000).toFixed(1)} km</div>
-            {repeater.elevation && <div>Elevation: {repeater.elevation}m</div>}
-          </div>
-        </Tooltip>
-      </Circle>
-    );
-  }
-  
-  if (coverageStyle === 'gradient') {
-    return (
-      <>
-        {gradientCircleOptions.map((options, index) => (
-          <Circle 
-            key={`${repeater.id}-gradient-${index}`}
-            center={[repeater.latitude, repeater.longitude]} 
-            radius={options.radius}
-            pathOptions={options}
-          />
-        ))}
-        
-        <Tooltip 
-          direction="top" 
-          permanent={selected}
-          position={[repeater.latitude, repeater.longitude]}
-        >
-          <div className="text-xs">
-            <strong>{repeater.callsign}</strong> - {repeater.frequency.toFixed(3)} MHz
-            <div>Coverage: {(repeater.coverageRadius / 1000).toFixed(1)} km</div>
-            {repeater.elevation && <div>Elevation: {repeater.elevation}m</div>}
-          </div>
-        </Tooltip>
-        
-        {userPosition && (
-          <>
-            <Polyline 
-              positions={[
-                [repeater.latitude, repeater.longitude],
-                [userPosition[0], userPosition[1]]
-              ]}
-              pathOptions={{
-                color: lineOfSightOptions.color,
-                weight: 2,
-                opacity: lineOfSightOptions.opacity,
-                dashArray: lineOfSightOptions.dashArray
-              }}
-            />
-            <Tooltip 
-              direction="top" 
-              permanent={true}
-              position={[
-                (repeater.latitude + userPosition[0]) / 2,
-                (repeater.longitude + userPosition[1]) / 2
-              ]}
-            >
-              <div className="text-xs">
-                <div>{lineOfSightOptions.distance.toFixed(1)} km</div>
-                <div>{lineOfSightOptions.userHasLOS ? 'Line of sight' : 'No line of sight'}</div>
-              </div>
-            </Tooltip>
-          </>
-        )}
-      </>
-    );
-  }
-  
-  // Terrain-based coverage would normally use a GeoJSON layer or heatmap
-  // showing signal strength based on terrain, but for this example we'll use a similar approach
-  return (
-    <>
-      <Circle 
-        center={[repeater.latitude, repeater.longitude]} 
-        radius={repeater.coverageRadius}
+      <Circle
+        key={`coverage-${repeater.id}`}
+        center={[repeater.latitude, repeater.longitude]}
+        radius={radius}
         pathOptions={{
-          ...circleOptions,
-          fillOpacity: 0.1,
-          fillColor: getStatusColor(repeater.status, 0.3)
+          fillColor,
+          fillOpacity,
+          color: isSelected ? '#60a5fa' : '#3b82f6',
+          weight
         }}
       />
+    );
+  };
+  
+  // Generate a gradient coverage area
+  const renderGradientCoverage = (repeater: Repeater) => {
+    const isSelected = selectedRepeater === repeater.id;
+    const baseRadius = repeater.coverageRadius * 1000; // Convert km to meters
+    const opacity = calculateOpacity(repeater);
+    
+    // Create 3 concentric circles with decreasing opacity
+    return (
+      <>
+        <Circle
+          key={`coverage-inner-${repeater.id}`}
+          center={[repeater.latitude, repeater.longitude]}
+          radius={baseRadius * 0.33}
+          pathOptions={{
+            fillColor: isSelected ? '#3b82f6' : '#2563eb',
+            fillOpacity: isSelected ? opacity * 1.2 : opacity,
+            color: 'transparent',
+            weight: 0
+          }}
+        />
+        <Circle
+          key={`coverage-middle-${repeater.id}`}
+          center={[repeater.latitude, repeater.longitude]}
+          radius={baseRadius * 0.66}
+          pathOptions={{
+            fillColor: isSelected ? '#3b82f6' : '#2563eb',
+            fillOpacity: isSelected ? opacity * 0.8 : opacity * 0.6,
+            color: 'transparent',
+            weight: 0
+          }}
+        />
+        <Circle
+          key={`coverage-outer-${repeater.id}`}
+          center={[repeater.latitude, repeater.longitude]}
+          radius={baseRadius}
+          pathOptions={{
+            fillColor: isSelected ? '#3b82f6' : '#2563eb',
+            fillOpacity: isSelected ? opacity * 0.5 : opacity * 0.3,
+            color: isSelected ? '#60a5fa' : '#3b82f6',
+            weight: isSelected ? 2 : 1
+          }}
+        />
+      </>
+    );
+  };
+  
+  // Generate terrain-aware coverage visualization
+  const renderTerrainCoverage = (repeater: Repeater) => {
+    // In a real implementation, this would use terrain data
+    // For now, we'll simulate it with an irregular polygon
+    
+    const isSelected = selectedRepeater === repeater.id;
+    const center: [number, number] = [repeater.latitude, repeater.longitude];
+    const opacity = calculateOpacity(repeater);
+    const baseRadius = repeater.coverageRadius * 1000; // Convert km to meters
+    
+    // Generate irregular polygon points simulating terrain effects
+    // In a real implementation, these would be calculated based on terrain data
+    const generateIrregularPolygon = () => {
+      const points: LatLngExpression[] = [];
+      const numPoints = 24; // Number of points around the circle
       
-      <Tooltip 
-        direction="top" 
-        permanent={selected}
-        position={[repeater.latitude, repeater.longitude]}
-      >
-        <div className="text-xs">
-          <strong>{repeater.callsign}</strong> - {repeater.frequency.toFixed(3)} MHz
-          <div>Coverage: {(repeater.coverageRadius / 1000).toFixed(1)} km</div>
-          {repeater.elevation && <div>Elevation: {repeater.elevation}m</div>}
-          <div className="text-gray-500 italic mt-1">Terrain analysis would show detailed coverage</div>
-        </div>
-      </Tooltip>
+      for (let i = 0; i < numPoints; i++) {
+        const angle = (Math.PI * 2 * i) / numPoints;
+        
+        // Randomize radius to simulate terrain effects
+        // In a real implementation, this would use actual terrain data
+        let radiusFactor = 0.6 + Math.random() * 0.4;
+        
+        // Simulate directional coverage (e.g., if repeater is on a mountain side)
+        // For demo purposes, we'll favor north-east direction
+        if (angle > Math.PI / 4 && angle < 3 * Math.PI / 4) {
+          radiusFactor *= 1.3; // Better coverage to the north-east
+        }
+        
+        const distance = baseRadius * radiusFactor;
+        const lat = center[0] + (Math.sin(angle) * distance) / 111000; // 111km per degree of latitude
+        const lng = center[1] + (Math.cos(angle) * distance) / (111000 * Math.cos(center[0] * (Math.PI / 180)));
+        
+        points.push([lat, lng]);
+      }
       
-      {userPosition && (
-        <>
-          <Polyline 
-            positions={[
-              [repeater.latitude, repeater.longitude],
-              [userPosition[0], userPosition[1]]
-            ]}
-            pathOptions={{
-              color: lineOfSightOptions.color,
-              weight: 2,
-              opacity: lineOfSightOptions.opacity,
-              dashArray: lineOfSightOptions.dashArray
-            }}
-          />
-          <Tooltip 
-            direction="top" 
-            permanent={true}
-            position={[
-              (repeater.latitude + userPosition[0]) / 2,
-              (repeater.longitude + userPosition[1]) / 2
-            ]}
-          >
-            <div className="text-xs">
-              <div>{lineOfSightOptions.distance.toFixed(1)} km</div>
-              <div>{lineOfSightOptions.userHasLOS ? 'Line of sight' : 'No line of sight'}</div>
-            </div>
-          </Tooltip>
-        </>
-      )}
-    </>
+      return points;
+    };
+    
+    const polygonPoints = generateIrregularPolygon();
+    
+    return (
+      <Polygon
+        key={`terrain-coverage-${repeater.id}`}
+        positions={polygonPoints}
+        pathOptions={{
+          fillColor: isSelected ? '#3b82f6' : '#2563eb',
+          fillOpacity: isSelected ? opacity * 1.2 : opacity,
+          color: isSelected ? '#60a5fa' : '#3b82f6',
+          weight: isSelected ? 2 : 1
+        }}
+      />
+    );
+  };
+  
+  // Render the appropriate coverage visualization based on style
+  const renderCoverage = (repeater: Repeater) => {
+    switch (coverageStyle) {
+      case 'gradient':
+        return renderGradientCoverage(repeater);
+      case 'terrain':
+        return renderTerrainCoverage(repeater);
+      case 'simple':
+      default:
+        return renderSimpleCoverage(repeater);
+    }
+  };
+  
+  return (
+    <LayerGroup>
+      {activeRepeaters.map(repeater => renderCoverage(repeater))}
+    </LayerGroup>
   );
 }

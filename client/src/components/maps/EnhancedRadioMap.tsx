@@ -751,6 +751,21 @@ export default function EnhancedRadioMap({
             {/* Weather overlay */}
             {showWeather && <WeatherOverlay enabled={showWeather} />}
             
+            {/* Repeater coverage */}
+            {showCoverage && repeaters && (
+              <RepeaterCoverage 
+                repeaters={repeaters} 
+                coverageStyle={coverageStyle}
+                selectedRepeater={selectedRepeater}
+              />
+            )}
+            
+            {/* Coordinate display */}
+            <CoordinateDisplay 
+              format={coordinateFormat} 
+              onFormatChange={setCoordinateFormat} 
+            />
+            
             {/* Map controls */}
             {userPosition && <RecenterMapControl position={userPosition} />}
             
