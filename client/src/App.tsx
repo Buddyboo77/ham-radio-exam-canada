@@ -17,6 +17,9 @@ import DXClusterPage from "@/pages/DXClusterPage";
 import EnhancedMapPage from "@/pages/EnhancedMapPage";
 import ARViewPage from "@/pages/ARViewPage";
 import CommunicationPage from "@/pages/CommunicationPage";
+import AuthPage from "@/pages/AuthPage";
+import { AuthProvider, useAuth } from "@/hooks/use-auth";
+import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 import { useState, useEffect } from "react";
 import { 
@@ -83,12 +86,19 @@ function Router() {
     { path: "/local-info", label: "Powell River", icon: <RadioTower size={18} /> },
   ];
   
-  // If at root, redirect to frequencies
+  // Auth-aware routing
+  const { isAuthenticated, logout } = useAuth();
+  
+  // If at root, redirect to frequencies if authenticated, otherwise to auth page
   useEffect(() => {
     if (location === "/") {
-      setLocation("/frequencies");
+      if (isAuthenticated) {
+        setLocation("/frequencies");
+      } else {
+        setLocation("/auth");
+      }
     }
-  }, [location, setLocation]);
+  }, [location, setLocation, isAuthenticated]);
   
   const activeRoute = routes.find(route => route.path === location) || routes[0];
   
@@ -144,19 +154,60 @@ function Router() {
           {/* Main content area */}
           <div className="flex-1 overflow-y-auto max-h-[70vh]">
             <Switch>
-              <Route path="/frequencies" component={() => <FrequenciesPage />} />
-              <Route path="/scanner" component={() => <ScannerPage />} />
-              <Route path="/repeaters" component={() => <RepeatersPage />} />
-              <Route path="/callsign" component={() => <CallsignLookupPage />} />
-              <Route path="/propagation" component={() => <PropagationPage />} />
-              <Route path="/dxcluster" component={() => <DXClusterPage />} />
-              <Route path="/communication" component={() => <CommunicationPage />} />
-              <Route path="/enhanced-map" component={() => <EnhancedMapPage />} />
-              <Route path="/ar-view" component={() => <ARViewPage />} />
-              <Route path="/logbook" component={() => <LogbookPage />} />
-              <Route path="/reference" component={() => <ReferencePage />} />
-              <Route path="/learning" component={() => <LearningPage />} />
-              <Route path="/local-info" component={() => <LocalInfoPage />} />
+              <Route path="/auth" component={AuthPage} />
+              
+              <ProtectedRoute path="/frequencies">
+                <FrequenciesPage />
+              </ProtectedRoute>
+              
+              <ProtectedRoute path="/scanner">
+                <ScannerPage />
+              </ProtectedRoute>
+              
+              <ProtectedRoute path="/repeaters">
+                <RepeatersPage />
+              </ProtectedRoute>
+              
+              <ProtectedRoute path="/callsign">
+                <CallsignLookupPage />
+              </ProtectedRoute>
+              
+              <ProtectedRoute path="/propagation">
+                <PropagationPage />
+              </ProtectedRoute>
+              
+              <ProtectedRoute path="/dxcluster">
+                <DXClusterPage />
+              </ProtectedRoute>
+              
+              <ProtectedRoute path="/communication">
+                <CommunicationPage />
+              </ProtectedRoute>
+              
+              <ProtectedRoute path="/enhanced-map">
+                <EnhancedMapPage />
+              </ProtectedRoute>
+              
+              <ProtectedRoute path="/ar-view">
+                <ARViewPage />
+              </ProtectedRoute>
+              
+              <ProtectedRoute path="/logbook">
+                <LogbookPage />
+              </ProtectedRoute>
+              
+              <ProtectedRoute path="/reference">
+                <ReferencePage />
+              </ProtectedRoute>
+              
+              <ProtectedRoute path="/learning">
+                <LearningPage />
+              </ProtectedRoute>
+              
+              <ProtectedRoute path="/local-info">
+                <LocalInfoPage />
+              </ProtectedRoute>
+              
               <Route component={NotFound} />
             </Switch>
           </div>
@@ -188,6 +239,19 @@ function Router() {
                 </div>
               </Link>
             ))}
+            
+            {/* Logout button */}
+            <div 
+              onClick={() => {
+                logout();
+                setLocation('/auth');
+                setIsMenuOpen(false);
+              }}
+              className="radio-nav-button bg-red-900 hover:bg-red-800"
+            >
+              <Power size={18} />
+              <span className="text-xs">Logout</span>
+            </div>
           </div>
           
           {/* Radio title message */}
@@ -234,8 +298,10 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <QuickAccessMenu />
-        <Router />
+        <AuthProvider>
+          <QuickAccessMenu />
+          <Router />
+        </AuthProvider>
       </TooltipProvider>
     </QueryClientProvider>
   );
