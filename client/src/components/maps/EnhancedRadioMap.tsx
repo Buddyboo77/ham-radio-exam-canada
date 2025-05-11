@@ -9,6 +9,9 @@ import { Loader2, MapPin, Radio, Wifi, Globe, Signal, Search, Target, Layers, Ey
 import { Badge } from '@/components/ui/badge';
 import 'leaflet/dist/leaflet.css';
 import WeatherOverlay from './WeatherOverlay';
+import { CoordinateDisplay } from './CoordinateDisplay';
+import { RepeaterCoverage } from './RepeaterCoverage';
+import { EnhancedMapControls } from './EnhancedMapControls';
 
 // Fix Leaflet marker icon issue in React
 // This is needed because Leaflet's default marker relies on assets that aren't properly handled by bundlers
@@ -159,13 +162,30 @@ function RecenterMapControl({ position }: { position: [number, number] }) {
 type MapTileType = 'standard' | 'highContrast' | 'satellite' | 'monochrome';
 
 // Accessibility controls for the map
+
+
 function AccessibilityMapControls({ 
   contrastMode, 
   setContrastMode, 
   largePrintMode, 
   setLargePrintMode,
   mapTileType,
-  setMapTileType
+  setMapTileType,
+  showRepeaters,
+  setShowRepeaters,
+  showDXSpots,
+  setShowDXSpots,
+  showUsers,
+  setShowUsers,
+  showWeather,
+  setShowWeather,
+  showCoverage,
+  setShowCoverage,
+  coverageStyle,
+  setCoverageStyle,
+  isMeasuring,
+  setIsMeasuring,
+  onClearMeasurements,
 }: { 
   contrastMode: boolean;
   setContrastMode: (value: boolean) => void;
@@ -173,131 +193,47 @@ function AccessibilityMapControls({
   setLargePrintMode: (value: boolean) => void;
   mapTileType: MapTileType;
   setMapTileType: (type: MapTileType) => void;
+  showRepeaters: boolean;
+  setShowRepeaters: (value: boolean) => void;
+  showDXSpots: boolean;
+  setShowDXSpots: (value: boolean) => void;
+  showUsers: boolean;
+  setShowUsers: (value: boolean) => void;
+  showWeather: boolean;
+  setShowWeather: (value: boolean) => void;
+  showCoverage: boolean;
+  setShowCoverage: (value: boolean) => void;
+  coverageStyle: 'simple' | 'gradient' | 'terrain';
+  setCoverageStyle: (style: 'simple' | 'gradient' | 'terrain') => void;
+  isMeasuring: boolean;
+  setIsMeasuring: (value: boolean) => void;
+  onClearMeasurements: () => void;
 }) {
-  const map = useMap();
-  
-  // Toggle high contrast mode
-  const toggleContrastMode = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent default link behavior
-    e.stopPropagation(); // Prevent event bubbling
-    
-    try {
-      const newContrastMode = !contrastMode;
-      
-      // First update the map tile type based on the new contrast mode
-      if (newContrastMode) {
-        setMapTileType('highContrast');
-      } else {
-        setMapTileType('standard');
-      }
-      
-      // Then update the contrast mode state
-      setContrastMode(newContrastMode);
-      
-      // Update button aria state
-      if (e.currentTarget) {
-        e.currentTarget.setAttribute('aria-pressed', String(newContrastMode));
-      }
-    } catch (error) {
-      console.error('Error toggling contrast mode:', error);
-    }
-  };
-  
-  // Toggle large print mode
-  const toggleLargePrintMode = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent default link behavior
-    e.stopPropagation(); // Prevent event bubbling
-    
-    try {
-      const newLargePrintMode = !largePrintMode;
-      setLargePrintMode(newLargePrintMode);
-      
-      // Apply CSS changes to make map elements larger
-      const mapContainer = document.querySelector('.leaflet-container');
-      if (mapContainer) {
-        if (newLargePrintMode) {
-          // Make icons and text larger
-          mapContainer.classList.add('large-print-mode');
-        } else {
-          mapContainer.classList.remove('large-print-mode');
-        }
-      }
-      
-      // Update button aria state
-      if (e.currentTarget) {
-        e.currentTarget.setAttribute('aria-pressed', String(newLargePrintMode));
-      }
-    } catch (error) {
-      console.error('Error toggling large print mode:', error);
-    }
-  };
-
-  // Cycle through map types
-  const cycleMapType = (e: React.MouseEvent) => {
-    e.preventDefault(); // Prevent default link behavior
-    e.stopPropagation(); // Prevent event bubbling
-    
-    try {
-      const types: MapTileType[] = ['standard', 'highContrast', 'satellite', 'monochrome'];
-      const currentIndex = types.indexOf(mapTileType);
-      const nextIndex = (currentIndex + 1) % types.length;
-      const nextMapType = types[nextIndex];
-      
-      // First update contrast mode if needed
-      if (nextMapType === 'highContrast') {
-        setContrastMode(true);
-      } else if (contrastMode) {
-        // If contrast mode is on but we're switching to a non-high-contrast mode
-        setContrastMode(false);
-      }
-      
-      // Then set the map tile type
-      setMapTileType(nextMapType);
-      
-      // Update button title with the new map type
-      if (e.currentTarget) {
-        e.currentTarget.setAttribute('title', `Current map style: ${nextMapType}. Click to change.`);
-      }
-    } catch (error) {
-      console.error('Error cycling map type:', error);
-    }
-  };
-
+  // Simply use our enhanced map controls component
   return (
-    <div className="leaflet-top leaflet-right">
-      <div className="leaflet-control" style={{ marginTop: "40px", marginRight: "10px" }}>
-        <div className="flex flex-col gap-1 bg-gray-900/85 p-1.5 rounded-sm shadow-md border border-gray-700">          
-          <button 
-            type="button"
-            className={`flex items-center justify-center w-6 h-6 ${contrastMode ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
-            onClick={toggleContrastMode}
-            title="Toggle high contrast mode"
-            aria-pressed={contrastMode}
-          >
-            <Eye className="h-3 w-3" />
-          </button>
-          
-          <button 
-            type="button"
-            className={`flex items-center justify-center w-6 h-6 ${largePrintMode ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
-            onClick={toggleLargePrintMode}
-            title="Toggle large print mode"
-            aria-pressed={largePrintMode}
-          >
-            <ZoomIn className="h-3 w-3" />
-          </button>
-          
-          <button 
-            type="button"
-            className="flex items-center justify-center w-6 h-6 bg-gray-700 text-gray-200 hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm"
-            onClick={cycleMapType}
-            title={`Current map style: ${mapTileType}. Click to change.`}
-          >
-            <Layers className="h-3 w-3" />
-          </button>
-        </div>
-      </div>
-    </div>
+    <EnhancedMapControls
+      contrastMode={contrastMode}
+      setContrastMode={setContrastMode}
+      largePrintMode={largePrintMode}
+      setLargePrintMode={setLargePrintMode}
+      mapTileType={mapTileType}
+      setMapTileType={setMapTileType}
+      showRepeaters={showRepeaters}
+      setShowRepeaters={setShowRepeaters}
+      showDXSpots={showDXSpots}
+      setShowDXSpots={setShowDXSpots}
+      showUsers={showUsers}
+      setShowUsers={setShowUsers}
+      showWeather={showWeather}
+      setShowWeather={setShowWeather}
+      showCoverage={showCoverage}
+      setShowCoverage={setShowCoverage}
+      coverageStyle={coverageStyle}
+      setCoverageStyle={setCoverageStyle}
+      isMeasuring={isMeasuring}
+      setIsMeasuring={setIsMeasuring}
+      onClearMeasurements={onClearMeasurements}
+    />
   );
 }
 
@@ -347,9 +283,15 @@ export default function EnhancedRadioMap({
   const [coordinateFormat, setCoordinateFormat] = useState<'dd' | 'dms' | 'grid'>('dd');
   const [measuringPoints, setMeasuringPoints] = useState<Array<[number, number]>>([]);
   const [isMeasuring, setIsMeasuring] = useState(false);
+  const [selectedRepeater, setSelectedRepeater] = useState<number | null>(null);
   
   // Animated heatmap effect for refreshing DX spots
   const [recentDXSpots, setRecentDXSpots] = useState<string[]>([]);
+  
+  // Function to clear measuring points
+  const clearMeasuringPoints = () => {
+    setMeasuringPoints([]);
+  };
   
   // Query repeaters data
   const { data: repeaters, isLoading: loadingRepeaters } = useQuery({
@@ -814,12 +756,27 @@ export default function EnhancedRadioMap({
             
             {/* Accessibility controls */}
             <AccessibilityMapControls 
-              contrastMode={contrastMode} 
+              contrastMode={contrastMode}
               setContrastMode={setContrastMode}
               largePrintMode={largePrintMode}
               setLargePrintMode={setLargePrintMode}
               mapTileType={mapTileType}
               setMapTileType={setMapTileType}
+              showRepeaters={showRepeaters}
+              setShowRepeaters={setShowRepeaters}
+              showDXSpots={showDXSpots}
+              setShowDXSpots={setShowDXSpots}
+              showUsers={showUsers}
+              setShowUsers={setShowUsers}
+              showWeather={showWeather}
+              setShowWeather={setShowWeather}
+              showCoverage={showCoverage}
+              setShowCoverage={setShowCoverage}
+              coverageStyle={coverageStyle}
+              setCoverageStyle={setCoverageStyle}
+              isMeasuring={isMeasuring}
+              setIsMeasuring={setIsMeasuring}
+              onClearMeasurements={clearMeasuringPoints}
             />
           </MapContainer>
         </div>
