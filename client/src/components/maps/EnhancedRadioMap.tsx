@@ -5,9 +5,10 @@ import L from 'leaflet';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Loader2, MapPin, Radio, Wifi, Globe, Signal, Search, Target, Layers, Eye, ZoomIn, Activity } from 'lucide-react';
+import { Loader2, MapPin, Radio, Wifi, Globe, Signal, Search, Target, Layers, Eye, ZoomIn, Activity, Cloud } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import 'leaflet/dist/leaflet.css';
+import WeatherOverlay from './WeatherOverlay';
 
 // Fix Leaflet marker icon issue in React
 // This is needed because Leaflet's default marker relies on assets that aren't properly handled by bundlers
@@ -282,6 +283,7 @@ export default function EnhancedRadioMap({
   const [showRepeaters, setShowRepeaters] = useState(true);
   const [showDXSpots, setShowDXSpots] = useState(true);
   const [showUsers, setShowUsers] = useState(true);
+  const [showWeather, setShowWeather] = useState(false);
   
   // State for accessibility
   const [contrastMode, setContrastMode] = useState(highContrastMode);
@@ -686,6 +688,18 @@ export default function EnhancedRadioMap({
                 <MapPin className="h-3 w-3 text-green-400" /> Operators
               </Label>
             </div>
+            
+            <div className="flex items-center space-x-2">
+              <Switch
+                id="show-weather"
+                checked={showWeather}
+                onCheckedChange={setShowWeather}
+                className="data-[state=checked]:bg-cyan-600"
+              />
+              <Label htmlFor="show-weather" className="text-xs flex items-center gap-1">
+                <Cloud className="h-3 w-3 text-cyan-400" /> Weather
+              </Label>
+            </div>
           </div>
           
           <Button 
@@ -737,6 +751,9 @@ export default function EnhancedRadioMap({
             {repeaterMarkers}
             {dxSpotMarkers}
             {userLocationMarkers}
+            
+            {/* Weather overlay */}
+            {showWeather && <WeatherOverlay enabled={showWeather} />}
             
             {/* Map controls */}
             {userPosition && <RecenterMapControl position={userPosition} />}
