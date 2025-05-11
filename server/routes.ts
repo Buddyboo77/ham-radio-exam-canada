@@ -4,6 +4,7 @@ import { storage } from "./storage";
 import { z } from "zod";
 import { insertFrequencySchema, insertLogEntrySchema, insertRepeaterSchema } from "@shared/schema";
 import axios from "axios";
+import { WebSocketServer, WebSocket } from 'ws';
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Get frequency by value
@@ -342,5 +343,142 @@ export async function registerRoutes(app: Express): Promise<Server> {
   });
 
   const httpServer = createServer(app);
+  
+  // Initialize WebSocket server
+  const wss = new WebSocketServer({ server: httpServer, path: '/ws' });
+  
+  // Active client connections
+  const clients = new Map<string, { ws: WebSocket, callsign: string, username: string }>();
+  const dxSpots = new Map<string, any>(); // Store recent DX spots
+  
+  wss.on('connection', (ws) => {
+    const clientId = Math.random().toString(36).substring(2, 15);
+    clients.set(clientId, { ws, callsign: '', username: `Guest-${clientId.substring(0, 5)}` });
+    
+    console.log(`WebSocket client connected: ${clientId}`);
+    
+    // Send initial state
+    ws.send(JSON.stringify({
+      type: 'INIT',
+      clients: Array.from(clients.values())
+        .filter(client => client.ws.readyState === WebSocket.OPEN)
+        .map(client => ({ 
+          callsign: client.callsign, 
+          username: client.username 
+        })),
+      dxSpots: Array.from(dxSpots.values())
+    }));
+    
+    // Broadcast to all clients that a new user joined
+    broadcastMessage({
+      type: 'USER_JOINED',
+      clientId,
+      username: clients.get(clientId)?.username
+    });
+    
+    ws.on('message', (message) => {
+      try {
+        const data = JSON.parse(message.toString());
+        
+        switch (data.type) {
+          case 'CHAT_MESSAGE':
+            // Broadcast chat message to all clients
+            broadcastMessage({
+              type: 'CHAT_MESSAGE',
+              username: clients.get(clientId)?.username || 'Unknown',
+              callsign: clients.get(clientId)?.callsign || '',
+              message: data.message,
+              timestamp: new Date().toISOString()
+            });
+            break;
+            
+          case 'DX_SPOT':
+            // Add new DX spot and broadcast to all clients
+            const spotId = `${Date.now()}-${Math.random().toString(36).substring(2, 9)}`;
+            const newSpot = {
+              id: spotId,
+              callsign: data.callsign,
+              frequency: data.frequency,
+              mode: data.mode,
+              spotter: clients.get(clientId)?.callsign || data.spotter || 'Anonymous',
+              comment: data.comment,
+              timestamp: new Date().toISOString()
+            };
+            
+            dxSpots.set(spotId, newSpot);
+            
+            // Keep only the last 100 spots
+            if (dxSpots.size > 100) {
+              const oldest = Array.from(dxSpots.keys())[0];
+              dxSpots.delete(oldest);
+            }
+            
+            broadcastMessage({
+              type: 'NEW_DX_SPOT',
+              spot: newSpot
+            });
+            break;
+            
+          case 'SET_USER_INFO':
+            // Update user info
+            if (clients.has(clientId)) {
+              const client = clients.get(clientId)!;
+              client.callsign = data.callsign || client.callsign;
+              client.username = data.username || client.username;
+              clients.set(clientId, client);
+              
+              // Notify all clients of the updated user
+              broadcastMessage({
+                type: 'USER_UPDATED',
+                clientId,
+                username: client.username,
+                callsign: client.callsign
+              });
+            }
+            break;
+            
+          case 'PING':
+            // Respond with a pong to keep connection alive
+            ws.send(JSON.stringify({ type: 'PONG', timestamp: Date.now() }));
+            break;
+        }
+      } catch (error) {
+        console.error('Error processing WebSocket message:', error);
+      }
+    });
+    
+    ws.on('close', () => {
+      // Notify all clients that a user left
+      broadcastMessage({
+        type: 'USER_LEFT',
+        clientId,
+        username: clients.get(clientId)?.username
+      });
+      
+      // Remove client from active clients
+      clients.delete(clientId);
+      console.log(`WebSocket client disconnected: ${clientId}`);
+    });
+  });
+  
+  // Function to broadcast message to all connected clients
+  function broadcastMessage(message: any) {
+    const messageString = JSON.stringify(message);
+    clients.forEach((client) => {
+      if (client.ws.readyState === WebSocket.OPEN) {
+        client.ws.send(messageString);
+      }
+    });
+  }
+  
+  // Start periodic websocket maintenance
+  setInterval(() => {
+    clients.forEach((client, id) => {
+      if (client.ws.readyState !== WebSocket.OPEN) {
+        clients.delete(id);
+      }
+    });
+  }, 30000); // Every 30 seconds
+  
   return httpServer;
 }
