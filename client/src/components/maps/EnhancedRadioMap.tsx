@@ -155,6 +155,9 @@ function RecenterMapControl({ position }: { position: [number, number] }) {
   );
 }
 
+// Define map tile type
+type MapTileType = 'standard' | 'highContrast' | 'satellite' | 'monochrome';
+
 // Accessibility controls for the map
 function AccessibilityMapControls({ 
   contrastMode, 
@@ -168,37 +171,64 @@ function AccessibilityMapControls({
   setContrastMode: (value: boolean) => void;
   largePrintMode: boolean;
   setLargePrintMode: (value: boolean) => void;
-  mapTileType: 'standard' | 'highContrast' | 'satellite' | 'monochrome';
-  setMapTileType: (type: 'standard' | 'highContrast' | 'satellite' | 'monochrome') => void;
+  mapTileType: MapTileType;
+  setMapTileType: (type: MapTileType) => void;
 }) {
   const map = useMap();
   
   // Toggle high contrast mode
-  const toggleContrastMode = () => {
-    const newContrastMode = !contrastMode;
-    setContrastMode(newContrastMode);
+  const toggleContrastMode = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default link behavior
+    e.stopPropagation(); // Prevent event bubbling
     
-    // Switch map tile type based on contrast mode
-    if (newContrastMode) {
-      setMapTileType('highContrast');
-    } else {
-      setMapTileType('standard');
+    try {
+      const newContrastMode = !contrastMode;
+      
+      // First update the map tile type based on the new contrast mode
+      if (newContrastMode) {
+        setMapTileType('highContrast');
+      } else {
+        setMapTileType('standard');
+      }
+      
+      // Then update the contrast mode state
+      setContrastMode(newContrastMode);
+      
+      // Update button aria state
+      if (e.currentTarget) {
+        e.currentTarget.setAttribute('aria-pressed', String(newContrastMode));
+      }
+    } catch (error) {
+      console.error('Error toggling contrast mode:', error);
     }
   };
   
   // Toggle large print mode
-  const toggleLargePrintMode = () => {
-    setLargePrintMode(!largePrintMode);
+  const toggleLargePrintMode = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default link behavior
+    e.stopPropagation(); // Prevent event bubbling
     
-    // You could apply CSS changes to make map elements larger
-    const mapContainer = document.querySelector('.leaflet-container');
-    if (mapContainer) {
-      if (!largePrintMode) {
-        // Make icons and text larger
-        mapContainer.classList.add('large-print-mode');
-      } else {
-        mapContainer.classList.remove('large-print-mode');
+    try {
+      const newLargePrintMode = !largePrintMode;
+      setLargePrintMode(newLargePrintMode);
+      
+      // Apply CSS changes to make map elements larger
+      const mapContainer = document.querySelector('.leaflet-container');
+      if (mapContainer) {
+        if (newLargePrintMode) {
+          // Make icons and text larger
+          mapContainer.classList.add('large-print-mode');
+        } else {
+          mapContainer.classList.remove('large-print-mode');
+        }
       }
+      
+      // Update button aria state
+      if (e.currentTarget) {
+        e.currentTarget.setAttribute('aria-pressed', String(newLargePrintMode));
+      }
+    } catch (error) {
+      console.error('Error toggling large print mode:', error);
     }
   };
 
@@ -208,24 +238,25 @@ function AccessibilityMapControls({
     e.stopPropagation(); // Prevent event bubbling
     
     try {
-      const types: Array<'standard' | 'highContrast' | 'satellite' | 'monochrome'> = 
-        ['standard', 'highContrast', 'satellite', 'monochrome'];
+      const types: MapTileType[] = ['standard', 'highContrast', 'satellite', 'monochrome'];
       const currentIndex = types.indexOf(mapTileType);
       const nextIndex = (currentIndex + 1) % types.length;
+      const nextMapType = types[nextIndex];
       
       // First update contrast mode if needed
-      if (types[nextIndex] === 'highContrast') {
+      if (nextMapType === 'highContrast') {
         setContrastMode(true);
-      } else if (contrastMode && types[nextIndex] !== 'highContrast') {
+      } else if (contrastMode) {
+        // If contrast mode is on but we're switching to a non-high-contrast mode
         setContrastMode(false);
       }
       
       // Then set the map tile type
-      setMapTileType(types[nextIndex]);
+      setMapTileType(nextMapType);
       
       // Update button title with the new map type
       if (e.currentTarget) {
-        e.currentTarget.setAttribute('title', `Current map style: ${types[nextIndex]}. Click to change.`);
+        e.currentTarget.setAttribute('title', `Current map style: ${nextMapType}. Click to change.`);
       }
     } catch (error) {
       console.error('Error cycling map type:', error);
@@ -237,6 +268,7 @@ function AccessibilityMapControls({
       <div className="leaflet-control" style={{ marginTop: "40px", marginRight: "10px" }}>
         <div className="flex flex-col gap-1 bg-gray-900/85 p-1.5 rounded-sm shadow-md border border-gray-700">          
           <button 
+            type="button"
             className={`flex items-center justify-center w-6 h-6 ${contrastMode ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
             onClick={toggleContrastMode}
             title="Toggle high contrast mode"
@@ -246,6 +278,7 @@ function AccessibilityMapControls({
           </button>
           
           <button 
+            type="button"
             className={`flex items-center justify-center w-6 h-6 ${largePrintMode ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
             onClick={toggleLargePrintMode}
             title="Toggle large print mode"
@@ -255,6 +288,7 @@ function AccessibilityMapControls({
           </button>
           
           <button 
+            type="button"
             className="flex items-center justify-center w-6 h-6 bg-gray-700 text-gray-200 hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm"
             onClick={cycleMapType}
             title={`Current map style: ${mapTileType}. Click to change.`}
@@ -302,7 +336,7 @@ export default function EnhancedRadioMap({
   // State for accessibility
   const [contrastMode, setContrastMode] = useState(highContrastMode);
   const [largePrintMode, setLargePrintMode] = useState(false);
-  const [mapTileType, setMapTileType] = useState<'standard' | 'highContrast' | 'satellite' | 'monochrome'>(
+  const [mapTileType, setMapTileType] = useState<MapTileType>(
     highContrastMode ? 'highContrast' : 'standard'
   );
   const [showCoverage, setShowCoverage] = useState(false);
