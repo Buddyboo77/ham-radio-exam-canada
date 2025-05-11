@@ -610,22 +610,25 @@ export default function EnhancedRadioMap({
       </div>
       
       {/* Marker legend */}
-      <div className="mt-2 bg-gray-900 px-2 py-1 rounded-md border border-gray-800 flex flex-wrap gap-4 justify-between items-center">
+      <div className="mt-2 bg-blue-900/50 px-3 py-2 rounded-md border border-blue-800 flex flex-wrap gap-4 justify-between items-center">
         <div className="flex gap-3">
           <div className="flex items-center gap-1">
             <img src="https://cdn-icons-png.flaticon.com/512/825/825572.png" className="w-4 h-4" alt="VHF repeater" />
-            <span className="text-[9px] text-gray-400">VHF Repeater</span>
+            <span className="text-[10px] text-blue-100">VHF Repeater</span>
           </div>
           <div className="flex items-center gap-1">
             <img src="https://cdn-icons-png.flaticon.com/512/825/825560.png" className="w-4 h-4" alt="UHF repeater" />
-            <span className="text-[9px] text-gray-400">UHF Repeater</span>
+            <span className="text-[10px] text-blue-100">UHF Repeater</span>
           </div>
           <div className="flex items-center gap-1">
             <img src="https://cdn-icons-png.flaticon.com/512/6877/6877752.png" className="w-4 h-4" alt="DX spot" />
-            <span className="text-[9px] text-gray-400">DX Spot</span>
+            <span className="text-[10px] text-blue-100">DX Spot</span>
           </div>
         </div>
-        <div className="text-[9px] text-gray-500">Click markers for details</div>
+        <div className="text-white text-[11px] font-medium px-2 py-1 bg-blue-800/60 rounded-md flex items-center">
+          <MapPin className="h-3 w-3 mr-1" />
+          Click markers for details
+        </div>
       </div>
     </div>
   );

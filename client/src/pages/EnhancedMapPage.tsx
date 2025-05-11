@@ -9,7 +9,7 @@ export default function EnhancedMapPage() {
   const [mapMode, setMapMode] = useState('live');
   
   return (
-    <div className="p-2">
+    <div className="p-2 pt-3">
       {/* Radio display header */}
       <div className="bg-gradient-to-r from-blue-900 to-blue-950 rounded-md p-2 mb-3 border border-blue-800">
         <div className="flex items-center justify-between">
