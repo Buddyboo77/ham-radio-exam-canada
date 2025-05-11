@@ -5,6 +5,7 @@ import { EMERGENCY_FREQUENCY } from "@/lib/constants";
 import FrequencyItem from "@/components/frequencies/FrequencyItem";
 import EmergencyAlert from "@/components/frequencies/EmergencyAlert";
 import WeatherWidget from "@/components/weather/WeatherWidget";
+import MeetingInfoBanner from "@/components/reference/MeetingInfoBanner";
 import { Input } from "@/components/ui/input";
 import { 
   Search, 
