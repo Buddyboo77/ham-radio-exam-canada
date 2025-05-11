@@ -39,6 +39,39 @@
   min-width: 280px !important;
 }
 
+/* Weather overlay styles */
+.weather-div-icon {
+  background: none !important;
+}
+
+.weather-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  position: relative;
+}
+
+.weather-icon .temp {
+  font-size: 0.8rem;
+  font-weight: bold;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 1px 4px;
+  border-radius: 4px;
+  position: absolute;
+  bottom: -10px;
+}
+
+.wind-arrow {
+  font-size: 1.2rem;
+  color: rgba(255, 255, 255, 0.7);
+  text-shadow: 0 0 3px rgba(0, 0, 0, 0.8);
+  pointer-events: none;
+  z-index: 500;
+}
+
 .large-print-mode .leaflet-control-zoom a {
   font-size: 20px !important;
   line-height: 30px !important;
