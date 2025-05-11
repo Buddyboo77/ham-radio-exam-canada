@@ -70,6 +70,16 @@ export const logEntries = pgTable("log_entries", {
   signalReport: text("signal_report"),
   notes: text("notes"),
   userId: integer("user_id").references(() => users.id),
+  // Media attachments
+  photoUrl: text("photo_url"),
+  audioUrl: text("audio_url"),
+  // QSO details
+  mode: text("mode"),
+  band: text("band"),
+  power: real("power"),
+  qslSent: boolean("qsl_sent").default(false),
+  qslReceived: boolean("qsl_received").default(false),
+  favorite: boolean("favorite").default(false),
 });
 
 export const insertLogEntrySchema = createInsertSchema(logEntries).omit({

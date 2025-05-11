@@ -108,7 +108,7 @@ export default function ChatInterface() {
       <div className="p-3 border-b border-gray-800 flex justify-between items-center">
         <h3 className="text-lg font-semibold text-white">Real-Time Communication</h3>
         <div className="flex items-center gap-2">
-          <Badge variant={connected ? "success" : "destructive"} className="h-6">
+          <Badge variant={connected ? "default" : "destructive"} className="h-6 bg-green-600">
             {connected ? "Connected" : "Disconnected"}
           </Badge>
           <Badge variant="outline" className="flex items-center gap-1 h-6">

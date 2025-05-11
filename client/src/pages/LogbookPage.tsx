@@ -6,15 +6,26 @@ import { LogEntry as LogEntryType } from "@shared/schema";
 import { Button } from "@/components/ui/button";
 import LogEntry from "@/components/logbook/LogEntry";
 import LogEntryForm from "@/components/logbook/LogEntryForm";
-import { PlusCircle, Search } from "lucide-react";
+import EnhancedLogEntryForm from "@/components/logbook/EnhancedLogEntryForm";
+import LogbookStats from "@/components/logbook/LogbookStats";
+import LogExporter from "@/components/logbook/LogExporter";
+import { PlusCircle, Search, FileDown, BarChart2, SlidersHorizontal, Star, RadioTower } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { useToast } from "@/hooks/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 const LogbookPage = () => {
   const [isFormVisible, setIsFormVisible] = useState(false);
   const [selectedEntry, setSelectedEntry] = useState<LogEntryType | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
+  const [activeTab, setActiveTab] = useState<"logs" | "stats" | "export">("logs");
+  const [sortOrder, setSortOrder] = useState<"newest" | "oldest">("newest");
+  const [filterFavorites, setFilterFavorites] = useState(false);
+  const [useEnhancedForm, setUseEnhancedForm] = useState(true);
   const { toast } = useToast();
 
   const { data: logEntries = [], isLoading } = useQuery<LogEntryType[]>({
@@ -23,8 +34,10 @@ const LogbookPage = () => {
 
   const { mutate: deleteLogEntry } = useMutation({
     mutationFn: async (id: number) => {
-      const response = await apiRequest("DELETE", `/api/logbook/${id}`);
-      return response.json();
+      const response = await apiRequest(`/api/logbook/${id}`, {
+        method: 'DELETE'
+      });
+      return response;
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["/api/logbook"] });
