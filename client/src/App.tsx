@@ -91,27 +91,7 @@ function Router() {
   
   return (
     <div className="flex flex-col h-screen mx-auto pb-4 max-w-md relative pt-14">
-      {/* TOP NAV BUTTONS */}
-      <div className="sticky top-0 z-50 mb-2 mx-2 p-1 bg-black bg-opacity-70 rounded-md">
-        <div className="flex gap-2 items-center">
-          {/* HOME BUTTON */}
-          <Link href="/frequencies">
-            <button className="bg-green-600 hover:bg-green-500 p-3 rounded-md flex items-center gap-2 border-2 border-green-400 shadow-glow-green">
-              <HomeIcon size={20} className="text-white" />
-              <span className="text-white font-bold">HOME</span>
-            </button>
-          </Link>
-          
-          {/* LEARNING BUTTON */}
-          <Link href="/learning" className="flex-1">
-            <button className="w-full py-3 bg-blue-600 hover:bg-blue-500 rounded-md flex items-center justify-center gap-3 border-2 border-blue-400 shadow-glow-blue animate-pulse">
-              <BookOpenCheck size={24} className="text-blue-100" />
-              <span className="text-white font-bold text-lg">LEARNING CENTER</span>
-              <div className="w-3 h-3 bg-green-500 rounded-full"></div>
-            </button>
-          </Link>
-        </div>
-      </div>
+      {/* Our QuickAccessMenu is now our main navigation */}
       
       <div className="radio-body relative overflow-hidden">
         {/* Antenna */}
