@@ -161,82 +161,6 @@ function RecenterMapControl({ position }: { position: [number, number] }) {
 // Define map tile type
 type MapTileType = 'standard' | 'highContrast' | 'satellite' | 'monochrome';
 
-// Accessibility controls for the map
-
-
-function AccessibilityMapControls({ 
-  contrastMode, 
-  setContrastMode, 
-  largePrintMode, 
-  setLargePrintMode,
-  mapTileType,
-  setMapTileType,
-  showRepeaters,
-  setShowRepeaters,
-  showDXSpots,
-  setShowDXSpots,
-  showUsers,
-  setShowUsers,
-  showWeather,
-  setShowWeather,
-  showCoverage,
-  setShowCoverage,
-  coverageStyle,
-  setCoverageStyle,
-  isMeasuring,
-  setIsMeasuring,
-  onClearMeasurements,
-}: { 
-  contrastMode: boolean;
-  setContrastMode: (value: boolean) => void;
-  largePrintMode: boolean;
-  setLargePrintMode: (value: boolean) => void;
-  mapTileType: MapTileType;
-  setMapTileType: (type: MapTileType) => void;
-  showRepeaters: boolean;
-  setShowRepeaters: (value: boolean) => void;
-  showDXSpots: boolean;
-  setShowDXSpots: (value: boolean) => void;
-  showUsers: boolean;
-  setShowUsers: (value: boolean) => void;
-  showWeather: boolean;
-  setShowWeather: (value: boolean) => void;
-  showCoverage: boolean;
-  setShowCoverage: (value: boolean) => void;
-  coverageStyle: 'simple' | 'gradient' | 'terrain';
-  setCoverageStyle: (style: 'simple' | 'gradient' | 'terrain') => void;
-  isMeasuring: boolean;
-  setIsMeasuring: (value: boolean) => void;
-  onClearMeasurements: () => void;
-}) {
-  // Simply use our enhanced map controls component
-  return (
-    <EnhancedMapControls
-      contrastMode={contrastMode}
-      setContrastMode={setContrastMode}
-      largePrintMode={largePrintMode}
-      setLargePrintMode={setLargePrintMode}
-      mapTileType={mapTileType}
-      setMapTileType={setMapTileType}
-      showRepeaters={showRepeaters}
-      setShowRepeaters={setShowRepeaters}
-      showDXSpots={showDXSpots}
-      setShowDXSpots={setShowDXSpots}
-      showUsers={showUsers}
-      setShowUsers={setShowUsers}
-      showWeather={showWeather}
-      setShowWeather={setShowWeather}
-      showCoverage={showCoverage}
-      setShowCoverage={setShowCoverage}
-      coverageStyle={coverageStyle}
-      setCoverageStyle={setCoverageStyle}
-      isMeasuring={isMeasuring}
-      setIsMeasuring={setIsMeasuring}
-      onClearMeasurements={onClearMeasurements}
-    />
-  );
-}
-
 // Map tile providers for different accessibility modes
 const MAP_TILES = {
   standard: {
@@ -769,8 +693,8 @@ export default function EnhancedRadioMap({
             {/* Map controls */}
             {userPosition && <RecenterMapControl position={userPosition} />}
             
-            {/* Accessibility controls */}
-            <AccessibilityMapControls 
+            {/* Enhanced map controls */}
+            <EnhancedMapControls 
               contrastMode={contrastMode}
               setContrastMode={setContrastMode}
               largePrintMode={largePrintMode}
