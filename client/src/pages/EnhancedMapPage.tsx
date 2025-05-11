@@ -91,20 +91,10 @@ export default function EnhancedMapPage() {
           </TabsContent>
         </Tabs>
         
-        {/* More discrete map info bar */}
-        <div className="mt-2 opacity-80 hover:opacity-100 transition-opacity">
-          <div className="flex flex-wrap gap-3 justify-start py-1.5 px-3 bg-gray-800 bg-opacity-60 rounded-md border border-gray-700 text-[10px]">
-            <div className="flex items-center">
-              <Globe className="h-3 w-3 mr-1 text-blue-400" />
-              <span className="text-blue-300 font-medium">Live Activity:</span>
-              <span className="text-gray-300 ml-1">Operators & DX spots</span>
-            </div>
-            
-            <div className="flex items-center">
-              <Radio className="h-3 w-3 mr-1 text-green-400" />
-              <span className="text-green-300 font-medium">Coverage:</span>
-              <span className="text-gray-300 ml-1">Repeater signal ranges</span>
-            </div>
+        {/* Ultra-minimal footer */}
+        <div className="flex justify-center mt-1">
+          <div className="inline-flex gap-2 opacity-60 hover:opacity-90 transition-opacity">
+            <span className="text-[8px] text-gray-500">© Powell River Amateur Radio Club</span>
           </div>
         </div>
       </div>

@@ -218,43 +218,34 @@ function AccessibilityMapControls({
   };
 
   return (
-    <div className="leaflet-bottom leaflet-left" style={{ marginBottom: "30px" }}>
-      <div className="leaflet-control">
-        <div className="flex flex-col gap-2 bg-gray-800 p-2 rounded-md shadow-md border border-gray-700">
-          <div className="text-xs text-white font-semibold mb-1 text-center">Accessibility</div>
-          
+    <div className="leaflet-top leaflet-right">
+      <div className="leaflet-control" style={{ marginTop: "40px", marginRight: "10px" }}>
+        <div className="flex flex-col gap-1 bg-gray-900/85 p-1.5 rounded-sm shadow-md border border-gray-700">          
           <button 
-            className={`flex items-center justify-center w-8 h-8 ${contrastMode ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
+            className={`flex items-center justify-center w-6 h-6 ${contrastMode ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
             onClick={toggleContrastMode}
             title="Toggle high contrast mode"
             aria-pressed={contrastMode}
           >
-            <Eye className="h-4 w-4" />
+            <Eye className="h-3 w-3" />
           </button>
           
           <button 
-            className={`flex items-center justify-center w-8 h-8 ${largePrintMode ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
+            className={`flex items-center justify-center w-6 h-6 ${largePrintMode ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
             onClick={toggleLargePrintMode}
             title="Toggle large print mode"
             aria-pressed={largePrintMode}
           >
-            <ZoomIn className="h-4 w-4" />
+            <ZoomIn className="h-3 w-3" />
           </button>
           
           <button 
-            className="flex items-center justify-center w-8 h-8 bg-gray-700 text-gray-200 hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm"
+            className="flex items-center justify-center w-6 h-6 bg-gray-700 text-gray-200 hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm"
             onClick={cycleMapType}
             title={`Current map style: ${mapTileType}. Click to change.`}
           >
-            <Layers className="h-4 w-4" />
+            <Layers className="h-3 w-3" />
           </button>
-
-          <div className="text-[9px] text-blue-300 text-center mt-1">
-            {mapTileType === 'standard' && 'Standard'}
-            {mapTileType === 'highContrast' && 'High Contrast'}
-            {mapTileType === 'satellite' && 'Satellite'}
-            {mapTileType === 'monochrome' && 'Monochrome'}
-          </div>
         </div>
       </div>
     </div>
@@ -763,24 +754,24 @@ export default function EnhancedRadioMap({
         </div>
       </div>
       
-      {/* Marker legend */}
-      <div className="mt-2 bg-blue-900/80 px-3 py-2 rounded-md border border-blue-700 flex flex-wrap gap-4 justify-between items-center shadow-md z-50">
-        <div className="flex gap-3">
-          <div className="flex items-center gap-1">
-            <img src="https://cdn-icons-png.flaticon.com/512/825/825572.png" className="w-4 h-4" alt="VHF repeater" />
-            <span className="text-[10px] text-blue-100">VHF Repeater</span>
+      {/* Discreet, floating marker legend */}
+      <div className="absolute right-3 bottom-3 z-50 opacity-60 hover:opacity-100 transition-opacity">
+        <div className="bg-gray-900/90 px-2 py-1 rounded-sm border border-gray-700 shadow-md">
+          <div className="flex flex-col gap-1">
+            <div className="text-[8px] text-white font-semibold mb-0.5">Map Legend</div>
+            <div className="flex items-center gap-1">
+              <img src="https://cdn-icons-png.flaticon.com/512/825/825572.png" className="w-3 h-3" alt="VHF repeater" />
+              <span className="text-[8px] text-blue-100">VHF</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <img src="https://cdn-icons-png.flaticon.com/512/825/825560.png" className="w-3 h-3" alt="UHF repeater" />
+              <span className="text-[8px] text-blue-100">UHF</span>
+            </div>
+            <div className="flex items-center gap-1">
+              <img src="https://cdn-icons-png.flaticon.com/512/6877/6877752.png" className="w-3 h-3" alt="DX spot" />
+              <span className="text-[8px] text-blue-100">DX</span>
+            </div>
           </div>
-          <div className="flex items-center gap-1">
-            <img src="https://cdn-icons-png.flaticon.com/512/825/825560.png" className="w-4 h-4" alt="UHF repeater" />
-            <span className="text-[10px] text-blue-100">UHF Repeater</span>
-          </div>
-          <div className="flex items-center gap-1">
-            <img src="https://cdn-icons-png.flaticon.com/512/6877/6877752.png" className="w-4 h-4" alt="DX spot" />
-            <span className="text-[10px] text-blue-100">DX Spot</span>
-          </div>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="text-xs text-white font-semibold">Map Legend</div>
         </div>
       </div>
     </div>
