@@ -159,37 +159,72 @@ function AccessibilityMapControls({
   contrastMode, 
   setContrastMode, 
   largePrintMode, 
-  setLargePrintMode 
+  setLargePrintMode,
+  mapTileType,
+  setMapTileType
 }: { 
   contrastMode: boolean;
   setContrastMode: (value: boolean) => void;
   largePrintMode: boolean;
   setLargePrintMode: (value: boolean) => void;
+  mapTileType: 'standard' | 'highContrast' | 'satellite' | 'monochrome';
+  setMapTileType: (type: 'standard' | 'highContrast' | 'satellite' | 'monochrome') => void;
 }) {
   const map = useMap();
   
   // Toggle high contrast mode
   const toggleContrastMode = () => {
-    setContrastMode(!contrastMode);
+    const newContrastMode = !contrastMode;
+    setContrastMode(newContrastMode);
     
-    // You can add code here to modify the map's TileLayer URL or style
-    // when contrast mode changes
+    // Switch map tile type based on contrast mode
+    if (newContrastMode) {
+      setMapTileType('highContrast');
+    } else {
+      setMapTileType('standard');
+    }
   };
   
   // Toggle large print mode
   const toggleLargePrintMode = () => {
     setLargePrintMode(!largePrintMode);
     
-    // You can adjust icon sizes or other map elements
-    // when large print mode changes
+    // You could apply CSS changes to make map elements larger
+    const mapContainer = document.querySelector('.leaflet-container');
+    if (mapContainer) {
+      if (!largePrintMode) {
+        // Make icons and text larger
+        mapContainer.classList.add('large-print-mode');
+      } else {
+        mapContainer.classList.remove('large-print-mode');
+      }
+    }
+  };
+
+  // Cycle through map types
+  const cycleMapType = () => {
+    const types: Array<'standard' | 'highContrast' | 'satellite' | 'monochrome'> = 
+      ['standard', 'highContrast', 'satellite', 'monochrome'];
+    const currentIndex = types.indexOf(mapTileType);
+    const nextIndex = (currentIndex + 1) % types.length;
+    setMapTileType(types[nextIndex]);
+    
+    // Update contrast mode to match if we're selecting high contrast
+    if (types[nextIndex] === 'highContrast') {
+      setContrastMode(true);
+    } else if (types[nextIndex] === 'standard') {
+      setContrastMode(false);
+    }
   };
 
   return (
     <div className="leaflet-bottom leaflet-left" style={{ marginBottom: "30px" }}>
       <div className="leaflet-control">
-        <div className="flex flex-col gap-2 bg-white p-1 rounded-sm shadow-md">
+        <div className="flex flex-col gap-2 bg-gray-800 p-2 rounded-md shadow-md border border-gray-700">
+          <div className="text-xs text-white font-semibold mb-1 text-center">Accessibility</div>
+          
           <button 
-            className={`flex items-center justify-center w-8 h-8 ${contrastMode ? 'bg-blue-700 text-white' : 'bg-white text-gray-800'} hover:bg-blue-600 hover:text-white border border-gray-300 rounded-sm`}
+            className={`flex items-center justify-center w-8 h-8 ${contrastMode ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
             onClick={toggleContrastMode}
             title="Toggle high contrast mode"
             aria-pressed={contrastMode}
@@ -198,18 +233,53 @@ function AccessibilityMapControls({
           </button>
           
           <button 
-            className={`flex items-center justify-center w-8 h-8 ${largePrintMode ? 'bg-blue-700 text-white' : 'bg-white text-gray-800'} hover:bg-blue-600 hover:text-white border border-gray-300 rounded-sm`}
+            className={`flex items-center justify-center w-8 h-8 ${largePrintMode ? 'bg-blue-700 text-white' : 'bg-gray-700 text-gray-200'} hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm`}
             onClick={toggleLargePrintMode}
             title="Toggle large print mode"
             aria-pressed={largePrintMode}
           >
             <ZoomIn className="h-4 w-4" />
           </button>
+          
+          <button 
+            className="flex items-center justify-center w-8 h-8 bg-gray-700 text-gray-200 hover:bg-blue-600 hover:text-white border border-gray-600 rounded-sm"
+            onClick={cycleMapType}
+            title={`Current map style: ${mapTileType}. Click to change.`}
+          >
+            <Layers className="h-4 w-4" />
+          </button>
+
+          <div className="text-[9px] text-blue-300 text-center mt-1">
+            {mapTileType === 'standard' && 'Standard'}
+            {mapTileType === 'highContrast' && 'High Contrast'}
+            {mapTileType === 'satellite' && 'Satellite'}
+            {mapTileType === 'monochrome' && 'Monochrome'}
+          </div>
         </div>
       </div>
     </div>
   );
 }
+
+// Map tile providers for different accessibility modes
+const MAP_TILES = {
+  standard: {
+    url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  },
+  highContrast: {
+    url: "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png",
+    attribution: '&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>, &copy; <a href="https://openmaptiles.org/">OpenMapTiles</a> &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors'
+  },
+  satellite: {
+    url: "https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",
+    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+  },
+  monochrome: {
+    url: "https://stamen-tiles-{s}.a.ssl.fastly.net/toner/{z}/{x}/{y}{r}.png",
+    attribution: 'Map tiles by <a href="http://stamen.com">Stamen Design</a>, <a href="http://creativecommons.org/licenses/by/3.0">CC BY 3.0</a> &mdash; Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+  }
+};
 
 export default function EnhancedRadioMap({ 
   initialCenter = [49.8352, -124.5248], // Default to Powell River
@@ -225,6 +295,9 @@ export default function EnhancedRadioMap({
   // State for accessibility
   const [contrastMode, setContrastMode] = useState(highContrastMode);
   const [largePrintMode, setLargePrintMode] = useState(false);
+  const [mapTileType, setMapTileType] = useState<'standard' | 'highContrast' | 'satellite' | 'monochrome'>(
+    highContrastMode ? 'highContrast' : 'standard'
+  );
   const [showCoverage, setShowCoverage] = useState(false);
   const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
   
@@ -662,8 +735,8 @@ export default function EnhancedRadioMap({
         <div className="relative h-full w-full rounded-md overflow-hidden">
           <MapContainer center={initialCenter} zoom={initialZoom} className="h-full w-full rounded-md" style={{ height: "100%" }}>
             <TileLayer
-              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+              attribution={MAP_TILES[mapTileType].attribution}
+              url={MAP_TILES[mapTileType].url}
             />
             
             {/* Show current user location if enabled */}
@@ -676,6 +749,16 @@ export default function EnhancedRadioMap({
             
             {/* Map controls */}
             {userPosition && <RecenterMapControl position={userPosition} />}
+            
+            {/* Accessibility controls */}
+            <AccessibilityMapControls 
+              contrastMode={contrastMode} 
+              setContrastMode={setContrastMode}
+              largePrintMode={largePrintMode}
+              setLargePrintMode={setLargePrintMode}
+              mapTileType={mapTileType}
+              setMapTileType={setMapTileType}
+            />
           </MapContainer>
         </div>
       </div>

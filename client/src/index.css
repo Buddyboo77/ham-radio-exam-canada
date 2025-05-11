@@ -24,6 +24,28 @@
   }
 }
 
+/* Accessibility styles for maps */
+.large-print-mode .leaflet-popup-content {
+  font-size: 1.2rem !important;
+  line-height: 1.6 !important;
+}
+
+.large-print-mode .leaflet-marker-icon {
+  transform: scale(1.5) !important;
+}
+
+.large-print-mode .leaflet-popup-content-wrapper {
+  padding: 12px !important;
+  min-width: 280px !important;
+}
+
+.large-print-mode .leaflet-control-zoom a {
+  font-size: 20px !important;
+  line-height: 30px !important;
+  width: 34px !important;
+  height: 34px !important;
+}
+
 :root {
   /* Radio dark theme colors */
   --background: 216 14% 14%;

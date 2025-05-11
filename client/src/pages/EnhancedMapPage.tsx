@@ -7,6 +7,7 @@ import { POWELL_RIVER_LOCATION } from '@/lib/constants';
 
 export default function EnhancedMapPage() {
   const [mapMode, setMapMode] = useState('live');
+  const [accessibilityEnabled, setAccessibilityEnabled] = useState(false);
   
   return (
     <div className="p-2 pt-8">
