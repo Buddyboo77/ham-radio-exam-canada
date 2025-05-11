@@ -10,6 +10,7 @@ import RepeatersPage from "@/pages/RepeatersPage";
 import LogbookPage from "@/pages/LogbookPage";
 import ReferencePage from "@/pages/ReferencePage";
 import LearningPage from "@/pages/LearningPage";
+import EnhancedLearningPage from "@/pages/EnhancedLearningPage";
 import LocalInfoPage from "@/pages/LocalInfoPage";
 import CallsignLookupPage from "@/pages/CallsignLookupPage";
 import PropagationPage from "@/pages/PropagationPage";
@@ -201,7 +202,7 @@ function Router() {
               </ProtectedRoute>
               
               <ProtectedRoute path="/learning">
-                <LearningPage />
+                <EnhancedLearningPage />
               </ProtectedRoute>
               
               <ProtectedRoute path="/local-info">

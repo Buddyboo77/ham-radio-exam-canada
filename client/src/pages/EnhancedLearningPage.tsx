@@ -29,8 +29,189 @@ import ProgressBadges from "@/components/learning/ProgressBadges";
 // Import hooks
 import { useLearningProgress } from '@/hooks/use-learning-progress';
 
-// Question data - import it or directly declare here
-import { QUIZ_QUESTIONS } from './quizQuestions';
+// Define quiz questions data
+const QUIZ_QUESTIONS = [
+  {
+    question: "What does APRS stand for?",
+    options: [
+      "Amateur Position Reporting System",
+      "Automatic Packet Reporting System",
+      "Automated Position Radio Service",
+      "Amateur Packet Radio Service"
+    ],
+    correctAnswer: 1,
+    explanation: "APRS stands for Automatic Packet Reporting System, which is used for real-time digital communications for local situational awareness.",
+    category: "Operating"
+  },
+  {
+    question: "What frequency range is allocated to the Canadian 2-meter amateur band?",
+    options: [
+      "144-148 MHz",
+      "222-225 MHz",
+      "420-450 MHz",
+      "50-54 MHz"
+    ],
+    correctAnswer: 0,
+    explanation: "The 2-meter amateur band in Canada is allocated to 144-148 MHz.",
+    category: "Regulations"
+  },
+  {
+    question: "Which of the following is NOT a digital mode used in amateur radio?",
+    options: [
+      "PSK31",
+      "RTTY",
+      "CDMA",
+      "FT8"
+    ],
+    correctAnswer: 2,
+    explanation: "CDMA (Code Division Multiple Access) is a commercial cellular technology, not an amateur radio digital mode.",
+    category: "Technical"
+  },
+  {
+    question: "What is the correct way to call CQ on a repeater?",
+    options: [
+      "CQ CQ CQ, this is VE7XXX calling CQ and listening",
+      "VE7XXX listening",
+      "This is VE7XXX, anyone around for a chat?",
+      "CQ DX, CQ DX, this is VE7XXX"
+    ],
+    correctAnswer: 2,
+    explanation: "On a repeater, it's customary to simply announce your callsign and that you're listening or available for a chat. 'CQ' calls are typically used on HF bands.",
+    category: "Operating"
+  },
+  {
+    question: "Which component is used to store electrical energy in an electric field?",
+    options: [
+      "Resistor",
+      "Inductor",
+      "Capacitor",
+      "Diode"
+    ],
+    correctAnswer: 2,
+    explanation: "A capacitor stores electrical energy in an electric field between its plates.",
+    category: "Technical"
+  },
+  {
+    question: "What is the maximum DC power input allowed for Canadian amateur operators with Basic qualification?",
+    options: [
+      "250 watts",
+      "1000 watts",
+      "100 watts",
+      "1500 watts"
+    ],
+    correctAnswer: 0,
+    explanation: "Amateur operators with Basic qualification in Canada are limited to 250 watts DC power input.",
+    category: "Regulations"
+  },
+  {
+    question: "What is the resonant frequency of a circuit with a 10 µH inductor and a 100 pF capacitor?",
+    options: [
+      "5.03 MHz",
+      "1.59 MHz",
+      "15.9 MHz",
+      "50.3 MHz"
+    ],
+    correctAnswer: 0,
+    explanation: "Using the formula f = 1/(2π√LC), the resonant frequency is 5.03 MHz.",
+    category: "Technical"
+  },
+  {
+    question: "In the RST signal reporting system, what does the 'T' stand for?",
+    options: [
+      "Time",
+      "Tone",
+      "Transmitter",
+      "Throughput"
+    ],
+    correctAnswer: 1,
+    explanation: "In the RST (Readability, Strength, Tone) signal reporting system, 'T' stands for Tone, which describes the quality of the CW (Morse code) signal.",
+    category: "Operating"
+  },
+  {
+    question: "Which of the following bands requires a special authorization in Canada?",
+    options: [
+      "70 cm (430-450 MHz)",
+      "10 m (28-29.7 MHz)",
+      "60 m (5 MHz channels)",
+      "2 m (144-148 MHz)"
+    ],
+    correctAnswer: 2,
+    explanation: "In Canada, the 60-meter band requires special authorization and has specific restrictions on power and modes.",
+    category: "Regulations"
+  },
+  {
+    question: "What is the purpose of an RF choke in an antenna system?",
+    options: [
+      "To match impedances",
+      "To filter DC power",
+      "To block RF current on the outside of a coaxial cable",
+      "To reduce harmonic radiation"
+    ],
+    correctAnswer: 2,
+    explanation: "An RF choke in an antenna system is used to block unwanted RF current from flowing on the outside of a coaxial cable shield.",
+    category: "Technical"
+  },
+  {
+    question: "Which Q-signal means 'I am changing frequency'?",
+    options: [
+      "QSY",
+      "QRT",
+      "QRZ",
+      "QTH"
+    ],
+    correctAnswer: 0,
+    explanation: "QSY means 'I am changing frequency' or 'Change your frequency to...'. Q-signals are shorthand codes used in radio communications.",
+    category: "Operating"
+  },
+  {
+    question: "As a Canadian amateur, what prefix would you use for portable operation in the U.S.?",
+    options: [
+      "K/VE7XXX",
+      "VE7XXX/W",
+      "VE7XXX/K",
+      "W/VE7XXX"
+    ],
+    correctAnswer: 3,
+    explanation: "When operating in the U.S., Canadian amateurs should use the format W/VE7XXX, indicating the U.S. prefix followed by your Canadian call sign.",
+    category: "Regulations"
+  },
+  {
+    question: "What is the velocity factor of a typical coaxial cable?",
+    options: [
+      "1.0",
+      "0.66",
+      "2.0",
+      "0.1"
+    ],
+    correctAnswer: 1,
+    explanation: "The velocity factor of a typical coaxial cable is around 0.66, meaning radio waves travel at about 66% of the speed of light through the cable.",
+    category: "Technical"
+  },
+  {
+    question: "What does the term 'QRM' refer to?",
+    options: [
+      "Atmospheric noise",
+      "Man-made interference",
+      "Fading signals",
+      "A good readable signal"
+    ],
+    correctAnswer: 1,
+    explanation: "QRM refers to man-made interference to radio communications.",
+    category: "Operating"
+  },
+  {
+    question: "Which organization is responsible for licensing amateur radio operators in Canada?",
+    options: [
+      "RAC (Radio Amateurs of Canada)",
+      "ARRL (American Radio Relay League)",
+      "ISED (Innovation, Science and Economic Development Canada)",
+      "CRTC (Canadian Radio-television and Telecommunications Commission)"
+    ],
+    correctAnswer: 2,
+    explanation: "Innovation, Science and Economic Development Canada (ISED), formerly Industry Canada, administers amateur radio regulations in Canada.",
+    category: "Regulations"
+  }
+];
 
 export default function EnhancedLearningPage() {
   // Navigation state

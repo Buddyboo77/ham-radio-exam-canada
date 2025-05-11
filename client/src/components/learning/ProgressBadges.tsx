@@ -1,41 +1,33 @@
 import { useState } from 'react';
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { ScrollArea } from "@/components/ui/scroll-area";
+import { Separator } from "@/components/ui/separator";
 import { 
   Award, 
+  ChevronDown, 
+  ChevronRight, 
+  Medal, 
   Star, 
-  Calendar, 
-  Radio, 
-  Clock, 
   Zap, 
-  BookOpen, 
-  FileText, 
-  Settings, 
-  Cpu, 
-  Info,
-  ChevronDown,
-  ChevronUp
+  BookOpenCheck,
+  Brain,
+  Radio,
+  Cpu,
+  Calendar,
+  Trophy,
+  BadgeCheck,
+  Clock,
+  BookOpen,
+  CheckCircle,
+  XCircle
 } from 'lucide-react';
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { useLearningProgress } from '@/hooks/use-learning-progress';
-import { format } from 'date-fns';
 
+import { useLearningProgress } from '@/hooks/use-learning-progress';
+
+// Badge type
 interface BadgeType {
   id: string;
   name: string;
@@ -47,142 +39,84 @@ interface BadgeType {
   category: 'achievement' | 'mastery' | 'activity';
 }
 
-// Enhance badge data with icons and colors
-const enhanceBadges = (badges: any[]): BadgeType[] => {
-  return badges.map(badge => {
-    let icon;
-    let color;
-    let category: 'achievement' | 'mastery' | 'activity' = 'achievement';
-    
-    // Determine icon and color based on badge ID
-    switch (badge.id) {
-      case 'first-quiz':
-        icon = <FileText />;
-        color = 'bg-blue-900 border-blue-700';
-        category = 'achievement';
-        break;
-      case 'perfect-score':
-        icon = <Award />;
-        color = 'bg-purple-900 border-purple-700';
-        category = 'achievement';
-        break;
-      case 'study-streak-7':
-        icon = <Calendar />;
-        color = 'bg-green-900 border-green-700';
-        category = 'activity';
-        break;
-      case 'morse-10wpm':
-        icon = <Radio />;
-        color = 'bg-amber-900 border-amber-700';
-        category = 'mastery';
-        break;
-      case 'flashcard-master':
-        icon = <BookOpen />;
-        color = 'bg-blue-900 border-blue-700';
-        category = 'mastery';
-        break;
-      case 'technical-expert':
-        icon = <Cpu />;
-        color = 'bg-indigo-900 border-indigo-700';
-        category = 'mastery';
-        break;
-      case 'regulations-expert':
-        icon = <FileText />;
-        color = 'bg-red-900 border-red-700';
-        category = 'mastery';
-        break;
-      case 'operating-expert':
-        icon = <Radio />;
-        color = 'bg-blue-900 border-blue-700';
-        category = 'mastery';
-        break;
-      case 'all-rounder':
-        icon = <Settings />;
-        color = 'bg-amber-900 border-amber-700';
-        category = 'achievement';
-        break;
-      case 'exam-ready':
-        icon = <Star />;
-        color = 'bg-yellow-900 border-yellow-700';
-        category = 'achievement';
-        break;
-      default:
-        icon = <Info />;
-        color = 'bg-gray-800 border-gray-700';
-        category = 'achievement';
-    }
-    
-    return {
-      ...badge,
-      icon,
-      color,
-      category
-    };
-  });
-};
-
-// Badge detail dialog
+// Detail dialog for badges
 const BadgeDetailDialog = ({ badge }: { badge: BadgeType }) => {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button variant="ghost" className="p-0 h-auto">
-          <div className={`relative group cursor-pointer`}>
-            <div className={`w-16 h-16 rounded-full flex items-center justify-center ${badge.acquired ? badge.color : 'bg-gray-800 border-gray-700'} border-2`}>
-              <div className={`w-14 h-14 rounded-full flex items-center justify-center bg-gray-900 ${badge.acquired ? 'text-gray-200' : 'text-gray-500'}`}>
-                {badge.icon}
-              </div>
-            </div>
-            <div className="text-xs text-center mt-1 font-medium">
-              <span className={badge.acquired ? 'text-gray-200' : 'text-gray-500'}>
-                {badge.name}
-              </span>
-            </div>
-          </div>
-        </Button>
+        <button className="absolute top-0 right-0 p-1">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2"
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            className="text-gray-400 hover:text-gray-300"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="M12 16v-4" />
+            <path d="M12 8h.01" />
+          </svg>
+        </button>
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="bg-gray-900 text-white">
         <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <div className={`w-8 h-8 rounded-full flex items-center justify-center ${badge.color}`}>
-              <div className="w-6 h-6 text-white">
-                {badge.icon}
-              </div>
-            </div>
-            <span>{badge.name}</span>
+          <DialogTitle className="text-lg flex items-center gap-2">
+            <span className={`text-${badge.color}-400`}>
+              {badge.icon}
+            </span>
+            {badge.name}
             {badge.acquired && (
-              <Badge variant="outline" className="ml-2 bg-green-900 text-green-100 border-none">
-                Acquired
-              </Badge>
+              <CheckCircle className="ml-2 text-green-500 h-5 w-5" />
             )}
           </DialogTitle>
-          <DialogDescription>
-            {badge.description}
+          <DialogDescription className="text-gray-400">
+            {badge.category === 'achievement' && 'Achievement Badge'}
+            {badge.category === 'mastery' && 'Mastery Badge'}
+            {badge.category === 'activity' && 'Activity Badge'}
           </DialogDescription>
         </DialogHeader>
+        
         <div className="space-y-4">
+          <p className="text-gray-300">{badge.description}</p>
+          
           {badge.acquired ? (
-            <div className="bg-gray-900 p-3 rounded-md">
-              <div className="text-xs text-gray-400 mb-1">Acquired on</div>
-              <div className="font-mono text-sm text-blue-300">
-                {badge.date ? format(new Date(badge.date), 'PPP') : 'Unknown date'}
+            <div className="bg-green-900 bg-opacity-30 p-3 rounded-md border border-green-800">
+              <div className="flex items-center gap-2">
+                <Trophy className="h-5 w-5 text-green-400" />
+                <div>
+                  <div className="text-green-300 font-medium">Acquired!</div>
+                  {badge.date && (
+                    <div className="text-green-400 text-xs">
+                      On {new Date(badge.date).toLocaleDateString()}
+                    </div>
+                  )}
+                </div>
               </div>
             </div>
           ) : (
-            <div className="bg-gray-900 p-3 rounded-md">
-              <div className="text-xs text-gray-400 mb-1">Status</div>
-              <div className="text-sm text-amber-300">Not yet acquired</div>
-              <div className="mt-2 text-xs text-gray-300">
-                Keep working on your ham radio skills to earn this badge!
+            <div className="bg-gray-800 p-3 rounded-md border border-gray-700">
+              <div className="flex items-center gap-2">
+                <XCircle className="h-5 w-5 text-gray-400" />
+                <div className="text-gray-300">Not yet acquired</div>
               </div>
             </div>
           )}
         </div>
+        
+        <DialogFooter>
+          <Button className="bg-gray-800 hover:bg-gray-700">Close</Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );
 };
 
+// Main component
 interface ProgressBadgesProps {
   collapsed?: boolean;
   onToggleCollapsed?: () => void;
@@ -190,129 +124,183 @@ interface ProgressBadgesProps {
 
 export default function ProgressBadges({ collapsed = false, onToggleCollapsed }: ProgressBadgesProps) {
   const { progress } = useLearningProgress();
-  const badges = enhanceBadges(progress.badges);
-  const [filterCategory, setFilterCategory] = useState<'all' | 'achievement' | 'mastery' | 'activity'>('all');
+
+  // Helper function to map badge data
+  const mapBadgeData = (): BadgeType[] => {
+    if (!progress) return [];
+    
+    // Map progress badges to display badges
+    return progress.badges.map(badge => {
+      let icon = <Award />;
+      let color = 'blue';
+      let category: 'achievement' | 'mastery' | 'activity' = 'achievement';
+      
+      // Assign icon and color based on badge id
+      switch (badge.id) {
+        case 'first-quiz':
+          icon = <BookOpenCheck />;
+          color = 'green';
+          break;
+        case 'quiz-master':
+          icon = <Award />;
+          color = 'yellow';
+          category = 'mastery';
+          break;
+        case 'technical-expert':
+          icon = <Cpu />;
+          color = 'indigo';
+          category = 'mastery';
+          break;
+        case 'regulations-expert':
+          icon = <BookOpen />;
+          color = 'blue';
+          category = 'mastery';
+          break;
+        case 'operating-expert':
+          icon = <Radio />;
+          color = 'green';
+          category = 'mastery';
+          break;
+        case 'flashcard-starter':
+          icon = <Brain />;
+          color = 'purple';
+          break;
+        case 'memory-master':
+          icon = <Star />;
+          color = 'yellow';
+          category = 'mastery';
+          break;
+        case 'morse-beginner':
+          icon = <Radio />;
+          color = 'amber';
+          break;
+        case 'morse-expert':
+          icon = <Zap />;
+          color = 'amber';
+          category = 'mastery';
+          break;
+        case 'circuit-builder':
+          icon = <Cpu />;
+          color = 'blue';
+          break;
+        case 'ham-dedication':
+          icon = <Calendar />;
+          color = 'pink';
+          category = 'activity';
+          break;
+        case 'exam-ready':
+          icon = <Trophy />;
+          color = 'yellow';
+          category = 'achievement';
+          break;
+      }
+      
+      return {
+        ...badge,
+        icon,
+        color,
+        category
+      };
+    });
+  };
   
-  const earnedBadges = badges.filter(b => b.acquired);
-  const progress_percentage = badges.length > 0 ? Math.round((earnedBadges.length / badges.length) * 100) : 0;
-  
-  // Filter badges by category
-  const filteredBadges = filterCategory === 'all' 
-    ? badges 
-    : badges.filter(b => b.category === filterCategory);
+  const badges = mapBadgeData();
+  const acquiredBadges = badges.filter(b => b.acquired);
   
   return (
-    <Card className="rounded-md overflow-hidden">
-      <CardHeader className="pb-3">
-        <div className="flex justify-between items-center">
-          <CardTitle className="text-lg flex items-center gap-2">
-            <Award className="h-5 w-5 text-yellow-400" />
-            Your Badges
-          </CardTitle>
-          {onToggleCollapsed && (
-            <Button 
-              variant="ghost" 
-              size="sm" 
-              onClick={onToggleCollapsed} 
-              className="h-7 w-7 p-0"
-            >
-              {collapsed ? <ChevronDown className="h-5 w-5" /> : <ChevronUp className="h-5 w-5" />}
-            </Button>
-          )}
+    <div className="bg-gray-800 rounded-md border border-gray-700 overflow-hidden">
+      <div 
+        className="p-3 flex items-center justify-between cursor-pointer"
+        onClick={onToggleCollapsed}
+      >
+        <div className="flex items-center gap-2">
+          <BadgeCheck className="h-5 w-5 text-blue-400" />
+          <h3 className="text-sm font-medium text-gray-200">
+            Your Progress Badges
+          </h3>
+          <div className="bg-blue-900 text-blue-300 text-xs px-1.5 py-0.5 rounded">
+            {acquiredBadges.length}/{badges.length}
+          </div>
         </div>
         
-        {!collapsed && (
-          <CardDescription className="mt-1">
-            Track your learning achievements and progress
-          </CardDescription>
-        )}
-      </CardHeader>
+        <button className="text-gray-400 hover:text-gray-300">
+          {collapsed ? <ChevronDown className="h-5 w-5" /> : <ChevronUp className="h-5 w-5" />}
+        </button>
+      </div>
       
-      {!collapsed && (
-        <>
-          <CardContent className="space-y-4">
-            {/* Progress overview */}
-            <div className="grid grid-cols-3 gap-2">
-              <div className="bg-gray-900 p-2 rounded-md">
-                <div className="text-xs text-gray-400">Badges Earned</div>
-                <div className="text-lg font-mono text-yellow-300">{earnedBadges.length}/{badges.length}</div>
-              </div>
-              <div className="bg-gray-900 p-2 rounded-md">
-                <div className="text-xs text-gray-400">Study Streak</div>
-                <div className="text-lg font-mono text-green-300">{progress.currentStreak} days</div>
-              </div>
-              <div className="bg-gray-900 p-2 rounded-md">
-                <div className="text-xs text-gray-400">Completion</div>
-                <div className="text-lg font-mono text-blue-300">{progress_percentage}%</div>
-              </div>
-            </div>
-            
-            {/* Progress bar */}
-            <div>
-              <div className="flex justify-between text-xs text-gray-400 mb-1">
-                <span>Progress toward all badges</span>
-                <span>{progress_percentage}%</span>
-              </div>
-              <Progress value={progress_percentage} className="h-2" />
-            </div>
-            
-            {/* Category filters */}
-            <div className="flex flex-wrap gap-1">
-              <Badge 
-                variant="outline" 
-                className={`cursor-pointer hover:bg-gray-700 ${filterCategory === 'all' ? 'bg-gray-700 text-gray-100' : 'text-gray-400'}`}
-                onClick={() => setFilterCategory('all')}
-              >
-                All
-              </Badge>
-              <Badge 
-                variant="outline" 
-                className={`cursor-pointer hover:bg-blue-900/50 ${filterCategory === 'achievement' ? 'bg-blue-900/50 text-blue-100' : 'text-gray-400'}`}
-                onClick={() => setFilterCategory('achievement')}
-              >
-                Achievements
-              </Badge>
-              <Badge 
-                variant="outline" 
-                className={`cursor-pointer hover:bg-purple-900/50 ${filterCategory === 'mastery' ? 'bg-purple-900/50 text-purple-100' : 'text-gray-400'}`}
-                onClick={() => setFilterCategory('mastery')}
-              >
-                Mastery
-              </Badge>
-              <Badge 
-                variant="outline" 
-                className={`cursor-pointer hover:bg-green-900/50 ${filterCategory === 'activity' ? 'bg-green-900/50 text-green-100' : 'text-gray-400'}`}
-                onClick={() => setFilterCategory('activity')}
-              >
-                Activity
-              </Badge>
-            </div>
-            
-            {/* Badges grid */}
-            <div className="grid grid-cols-4 gap-4">
-              {filteredBadges.map(badge => (
-                <BadgeDetailDialog key={badge.id} badge={badge} />
-              ))}
-            </div>
-          </CardContent>
+      {!collapsed && badges.length > 0 && (
+        <div className="p-3 pt-0">
+          <Separator className="my-3 bg-gray-700" />
           
-          <CardFooter className="text-xs text-gray-400 italic pt-0">
-            Earn more badges by completing learning modules and practicing your skills.
-          </CardFooter>
-        </>
-      )}
-      
-      {collapsed && (
-        <CardContent>
-          <div className="flex justify-between items-center">
-            <div className="space-y-1">
-              <div className="text-sm text-gray-300">Progress</div>
-              <Progress value={progress_percentage} className="h-1.5 w-32" />
-            </div>
-            <div className="text-sm font-mono text-yellow-300">{earnedBadges.length}/{badges.length}</div>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-2">
+            {badges.map((badge) => (
+              <div 
+                key={badge.id} 
+                className={`p-4 rounded-md relative flex flex-col items-center ${
+                  badge.acquired 
+                    ? `bg-${badge.color}-900 bg-opacity-20 border border-${badge.color}-800` 
+                    : 'bg-gray-900 opacity-60 border border-gray-800'
+                }`}
+              >
+                <BadgeDetailDialog badge={badge} />
+                
+                <div className={`text-${badge.color}-400 mb-2`}>
+                  {badge.icon}
+                </div>
+                
+                <div className="text-center">
+                  <div className="text-xs font-medium text-gray-300 mb-1">{badge.name}</div>
+                  <div className="text-[10px] text-gray-400 line-clamp-2">{badge.description}</div>
+                </div>
+                
+                {badge.acquired && (
+                  <div className="absolute -top-1 -right-1 bg-green-700 rounded-full p-0.5">
+                    <CheckCircle className="h-3 w-3 text-white" />
+                  </div>
+                )}
+              </div>
+            ))}
           </div>
-        </CardContent>
+          
+          {/* Statistics section */}
+          <div className="mt-4 bg-gray-900 rounded-md p-3 border border-gray-800">
+            <h4 className="text-xs font-medium text-gray-300 mb-2">Progress Stats</h4>
+            <div className="grid grid-cols-3 gap-3">
+              <div className="p-2 bg-gray-800 rounded border border-gray-700">
+                <div className="text-xs text-gray-400">Quizzes</div>
+                <div className="text-xl font-bold text-blue-400">{progress.completedQuizzes}</div>
+              </div>
+              <div className="p-2 bg-gray-800 rounded border border-gray-700">
+                <div className="text-xs text-gray-400">Flashcards</div>
+                <div className="text-xl font-bold text-green-400">{progress.flashcardsReviewed}</div>
+              </div>
+              <div className="p-2 bg-gray-800 rounded border border-gray-700">
+                <div className="text-xs text-gray-400">Streak</div>
+                <div className="text-xl font-bold text-amber-400">{progress.currentStreak} days</div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
-    </Card>
+    </div>
+  );
+}
+
+function ChevronUp(props: React.SVGProps<SVGSVGElement>) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      {...props}
+    >
+      <path d="m18 15-6-6-6 6"/>
+    </svg>
   );
 }

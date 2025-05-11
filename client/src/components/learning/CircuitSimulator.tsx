@@ -1,1060 +1,892 @@
-import { useState, useRef, useEffect } from 'react';
-import { Button } from '@/components/ui/button';
-import { Slider } from '@/components/ui/slider';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { Switch } from '@/components/ui/switch';
-import { Label } from '@/components/ui/label';
-import { Badge } from '@/components/ui/badge';
-import { 
-  Battery, 
-  Zap, 
-  ToggleLeft, 
-  Lightbulb, 
-  Wand2, 
-  AlertTriangle, 
-  Info,
+import { useState, useEffect, useRef } from 'react';
+import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Slider } from "@/components/ui/slider";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useLearningProgress } from '@/hooks/use-learning-progress';
+import {
+  Cpu,
+  Lightbulb,
+  Battery,
+  AlertCircle,
+  Zap,
+  RotateCw,
   Plus,
-  X,
-  Maximize2,
-  Minus
+  Cable,
+  ArrowRight
 } from 'lucide-react';
 
-// Circuit component types
-type ComponentType = 'battery' | 'resistor' | 'capacitor' | 'inductor' | 'led' | 'switch';
+// Types
+type ComponentType = 'resistor' | 'capacitor' | 'inductor' | 'diode' | 'led' | 'battery' | 'switch' | 'wire' | 'ground' | 'speaker' | 'antenna';
+type UnitType = 'Ω' | 'kΩ' | 'MΩ' | 'F' | 'μF' | 'nF' | 'pF' | 'H' | 'mH' | 'μH' | 'V' | 'A' | 'mA' | 'W' | '';
 
-// Circuit component interface
 interface CircuitComponent {
   id: string;
   type: ComponentType;
   value: number;
-  unit: string;
+  unit: UnitType;
   x: number;
   y: number;
   rotation: number;
   connections: string[];
+  label: string;
   state?: 'on' | 'off';
-  label?: string;
 }
 
-// Predefined circuit templates
-const CIRCUIT_TEMPLATES = [
+interface CircuitTemplate {
+  name: string;
+  description: string;
+  difficulty: 'basic' | 'intermediate' | 'advanced';
+  components: CircuitComponent[];
+  explanation: string;
+  learningPoints: string[];
+}
+
+// Circuit templates
+const CIRCUIT_TEMPLATES: CircuitTemplate[] = [
   {
     name: 'Basic LED Circuit',
-    description: 'Simple circuit with a battery, resistor, and LED',
+    description: 'A simple LED circuit with a battery, resistor, and LED',
+    difficulty: 'basic',
     components: [
-      {
-        id: 'bat1',
-        type: 'battery',
-        value: 9,
-        unit: 'V',
-        x: 100,
-        y: 200,
-        rotation: 0,
-        connections: ['res1'],
-        label: 'Battery'
+      { 
+        id: 'battery1', 
+        type: 'battery', 
+        value: 9, 
+        unit: 'V', 
+        x: 100, 
+        y: 150, 
+        rotation: 0, 
+        connections: ['resistor1'], 
+        label: '9V' 
       },
-      {
-        id: 'res1',
-        type: 'resistor',
-        value: 330,
-        unit: 'Ω',
-        x: 250,
-        y: 200,
-        rotation: 0,
-        connections: ['bat1', 'led1'],
-        label: 'Current Limiter'
+      { 
+        id: 'resistor1', 
+        type: 'resistor', 
+        value: 220, 
+        unit: 'Ω', 
+        x: 200, 
+        y: 150, 
+        rotation: 0, 
+        connections: ['battery1', 'led1'], 
+        label: '220Ω' 
       },
-      {
-        id: 'led1',
-        type: 'led',
-        value: 20,
-        unit: 'mA',
-        x: 400,
-        y: 200,
-        rotation: 0,
-        connections: ['res1', 'bat1'],
-        state: 'off',
-        label: 'LED'
+      { 
+        id: 'led1', 
+        type: 'led', 
+        value: 2, 
+        unit: 'V', 
+        x: 300, 
+        y: 150, 
+        rotation: 0, 
+        connections: ['resistor1', 'ground1'], 
+        label: 'LED',
+        state: 'off'
       },
-      {
-        id: 'sw1',
-        type: 'switch',
-        value: 0,
-        unit: '',
-        x: 150,
-        y: 120,
-        rotation: 90,
-        connections: ['bat1'],
-        state: 'off',
-        label: 'Power Switch'
+      { 
+        id: 'ground1', 
+        type: 'ground', 
+        value: 0, 
+        unit: '', 
+        x: 400, 
+        y: 200, 
+        rotation: 0, 
+        connections: ['led1', 'battery1'], 
+        label: 'GND' 
       }
+    ],
+    explanation: 'This circuit demonstrates how current flows from the positive terminal of the battery, through the resistor (which limits the current to protect the LED), through the LED (which emits light when current flows through it), and back to the negative terminal of the battery.',
+    learningPoints: [
+      'Current flows from positive to negative in a circuit',
+      'Resistors limit current flow to protect components',
+      'LEDs require current limiting resistors to prevent damage',
+      'The circuit must be closed (complete) for current to flow'
     ]
   },
   {
-    name: 'RC Time Constant',
-    description: 'Resistor-Capacitor circuit demonstrating charging/discharging',
+    name: 'RC Filter Circuit',
+    description: 'A basic RC filter circuit with a resistor and capacitor',
+    difficulty: 'intermediate',
     components: [
-      {
-        id: 'bat1',
-        type: 'battery',
-        value: 12,
-        unit: 'V',
-        x: 100,
-        y: 200,
-        rotation: 0,
-        connections: ['res1', 'sw1'],
-        label: 'Power Source'
+      { 
+        id: 'battery1', 
+        type: 'battery', 
+        value: 12, 
+        unit: 'V', 
+        x: 100, 
+        y: 150, 
+        rotation: 0, 
+        connections: ['resistor1'], 
+        label: '12V' 
       },
-      {
-        id: 'res1',
-        type: 'resistor',
-        value: 10000,
-        unit: 'Ω',
-        x: 250,
-        y: 200,
-        rotation: 0,
-        connections: ['bat1', 'cap1'],
-        label: 'Resistor'
+      { 
+        id: 'resistor1', 
+        type: 'resistor', 
+        value: 1, 
+        unit: 'kΩ', 
+        x: 200, 
+        y: 150, 
+        rotation: 0, 
+        connections: ['battery1', 'capacitor1'], 
+        label: '1kΩ' 
       },
-      {
-        id: 'cap1',
-        type: 'capacitor',
-        value: 100,
-        unit: 'μF',
-        x: 400,
-        y: 200,
-        rotation: 0,
-        connections: ['res1', 'bat1'],
-        label: 'Capacitor'
+      { 
+        id: 'capacitor1', 
+        type: 'capacitor', 
+        value: 0.1, 
+        unit: 'μF', 
+        x: 300, 
+        y: 200, 
+        rotation: 90, 
+        connections: ['resistor1', 'ground1'], 
+        label: '0.1μF' 
       },
-      {
-        id: 'sw1',
-        type: 'switch',
-        value: 0,
-        unit: '',
-        x: 150,
-        y: 120,
-        rotation: 90,
-        connections: ['bat1'],
-        state: 'off',
-        label: 'Charge/Discharge'
+      { 
+        id: 'ground1', 
+        type: 'ground', 
+        value: 0, 
+        unit: '', 
+        x: 400, 
+        y: 250, 
+        rotation: 0, 
+        connections: ['capacitor1', 'battery1'], 
+        label: 'GND' 
       }
+    ],
+    explanation: 'This circuit forms a low-pass filter. The resistor and capacitor together determine the cutoff frequency, which is the frequency above which signals are attenuated. This is commonly used in radio circuits to filter out unwanted high-frequency noise.',
+    learningPoints: [
+      'RC filters are fundamental in radio circuits',
+      'The cutoff frequency is determined by the RC time constant',
+      'Low-pass filters allow low frequencies to pass while blocking high frequencies',
+      'The formula for cutoff frequency is f = 1/(2πRC)'
     ]
   },
   {
-    name: 'LC Resonant Circuit',
-    description: 'Inductor-Capacitor circuit demonstrating resonance',
+    name: 'FM Radio Antenna Match',
+    description: 'A dipole antenna matching circuit',
+    difficulty: 'advanced',
     components: [
-      {
-        id: 'bat1',
-        type: 'battery',
-        value: 9,
-        unit: 'V',
-        x: 100,
-        y: 200,
-        rotation: 0,
-        connections: ['sw1'],
-        label: 'Power Source'
+      { 
+        id: 'antenna1', 
+        type: 'antenna', 
+        value: 0, 
+        unit: '', 
+        x: 100, 
+        y: 100, 
+        rotation: 0, 
+        connections: ['capacitor1'], 
+        label: 'Dipole' 
       },
-      {
-        id: 'sw1',
-        type: 'switch',
-        value: 0,
-        unit: '',
-        x: 200,
-        y: 200,
-        rotation: 0,
-        connections: ['bat1', 'ind1'],
-        state: 'off',
-        label: 'Power Switch'
+      { 
+        id: 'capacitor1', 
+        type: 'capacitor', 
+        value: 10, 
+        unit: 'pF', 
+        x: 200, 
+        y: 100, 
+        rotation: 0, 
+        connections: ['antenna1', 'inductor1'], 
+        label: '10pF' 
       },
-      {
-        id: 'ind1',
-        type: 'inductor',
-        value: 10,
-        unit: 'mH',
-        x: 300,
-        y: 200,
-        rotation: 0,
-        connections: ['sw1', 'cap1'],
-        label: 'Inductor'
+      { 
+        id: 'inductor1', 
+        type: 'inductor', 
+        value: 0.1, 
+        unit: 'μH', 
+        x: 300, 
+        y: 100, 
+        rotation: 0, 
+        connections: ['capacitor1', 'wire1'], 
+        label: '0.1μH' 
       },
-      {
-        id: 'cap1',
-        type: 'capacitor',
-        value: 100,
-        unit: 'nF',
-        x: 400,
-        y: 200,
-        rotation: 0,
-        connections: ['ind1', 'bat1'],
-        label: 'Capacitor'
+      { 
+        id: 'wire1', 
+        type: 'wire', 
+        value: 0, 
+        unit: '', 
+        x: 400, 
+        y: 100, 
+        rotation: 0, 
+        connections: ['inductor1'], 
+        label: 'To Radio' 
+      },
+      { 
+        id: 'ground1', 
+        type: 'ground', 
+        value: 0, 
+        unit: '', 
+        x: 250, 
+        y: 200, 
+        rotation: 0, 
+        connections: [], 
+        label: 'GND' 
       }
+    ],
+    explanation: 'This circuit matches the impedance of a dipole antenna to the input impedance of a radio receiver. The LC network (inductor and capacitor) acts as an impedance transformer to maximize power transfer from the antenna to the radio.',
+    learningPoints: [
+      'Impedance matching is critical for efficient power transfer',
+      'LC networks can transform impedance to match source and load',
+      'Proper matching improves signal reception and reduces losses',
+      'Resonant circuits have minimum impedance at the resonant frequency'
     ]
   }
 ];
 
+// Main component
 interface CircuitSimulatorProps {
   initialTemplate?: string;
-  onCircuitChange?: (isCorrect: boolean) => void;
 }
 
-export default function CircuitSimulator({ initialTemplate, onCircuitChange }: CircuitSimulatorProps) {
+export default function CircuitSimulator({ initialTemplate = 'Basic LED Circuit' }: CircuitSimulatorProps) {
   // State
-  const [components, setComponents] = useState<CircuitComponent[]>([]);
-  const [selectedComponent, setSelectedComponent] = useState<string | null>(null);
-  const [circuitPowered, setCircuitPowered] = useState(false);
-  const [simulationResult, setSimulationResult] = useState<{
-    voltage: number;
-    current: number;
-    power: number;
-    message: string;
-    warnings: string[];
-    isValid: boolean;
-  }>({
-    voltage: 0,
-    current: 0,
-    power: 0,
-    message: 'Circuit not powered',
-    warnings: [],
-    isValid: false
-  });
-  const [zoom, setZoom] = useState(1);
-  const [dragging, setDragging] = useState(false);
-  const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
-  const [showLabels, setShowLabels] = useState(true);
-  const [showValues, setShowValues] = useState(true);
+  const [activeTemplate, setActiveTemplate] = useState<CircuitTemplate | null>(null);
+  const [componentsState, setComponentsState] = useState<CircuitComponent[]>([]);
+  const [circuitWorking, setCircuitWorking] = useState<boolean | null>(null);
+  const [circuitVoltage, setCircuitVoltage] = useState<number>(9);
+  const [simulating, setSimulating] = useState<boolean>(false);
+  const [simResult, setSimResult] = useState<string | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
   
-  const canvasRef = useRef<HTMLDivElement>(null);
+  // Learning progress
+  const { recordCircuitSuccess } = useLearningProgress();
   
-  // Load initial template if provided
+  // Initialize with selected template
   useEffect(() => {
-    if (initialTemplate) {
-      const template = CIRCUIT_TEMPLATES.find(t => t.name === initialTemplate);
-      if (template) {
-        setComponents(template.components);
-      }
+    const template = CIRCUIT_TEMPLATES.find(t => t.name === initialTemplate);
+    if (template) {
+      setActiveTemplate(template);
+      setComponentsState(JSON.parse(JSON.stringify(template.components)));
     }
   }, [initialTemplate]);
   
-  // Handle component selection
-  const handleSelectComponent = (id: string) => {
-    setSelectedComponent(id);
-  };
-  
-  // Handle component deletion
-  const handleDeleteComponent = (id: string) => {
-    setComponents(prev => prev.filter(c => c.id !== id));
-    if (selectedComponent === id) {
-      setSelectedComponent(null);
+  // Draw circuit diagram
+  useEffect(() => {
+    if (!canvasRef.current || !componentsState.length) return;
+    
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    // Clear canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
+    // Draw background grid
+    ctx.beginPath();
+    ctx.strokeStyle = '#2a2a2a';
+    ctx.lineWidth = 0.5;
+    
+    for (let x = 0; x <= canvas.width; x += 20) {
+      ctx.moveTo(x, 0);
+      ctx.lineTo(x, canvas.height);
     }
-  };
-  
-  // Handle component dragging
-  const handleDragStart = (e: React.MouseEvent, id: string) => {
-    e.preventDefault();
-    setDragging(true);
-    setSelectedComponent(id);
-    setDragStart({ x: e.clientX, y: e.clientY });
-  };
-  
-  // Handle component movement
-  const handleMouseMove = (e: React.MouseEvent) => {
-    if (dragging && selectedComponent) {
-      const dx = e.clientX - dragStart.x;
-      const dy = e.clientY - dragStart.y;
-      
-      setComponents(prev => prev.map(c => {
-        if (c.id === selectedComponent) {
-          return { ...c, x: c.x + dx, y: c.y + dy };
-        }
-        return c;
-      }));
-      
-      setDragStart({ x: e.clientX, y: e.clientY });
+    
+    for (let y = 0; y <= canvas.height; y += 20) {
+      ctx.moveTo(0, y);
+      ctx.lineTo(canvas.width, y);
     }
-  };
-  
-  // Handle component drop
-  const handleMouseUp = () => {
-    setDragging(false);
-  };
-  
-  // Handle component value change
-  const handleValueChange = (id: string, value: number) => {
-    setComponents(prev => prev.map(c => {
-      if (c.id === id) {
-        return { ...c, value };
+    
+    ctx.stroke();
+    
+    // Draw components
+    componentsState.forEach(component => {
+      // Save context
+      ctx.save();
+      
+      // Transform to component position and rotation
+      ctx.translate(component.x, component.y);
+      ctx.rotate((component.rotation * Math.PI) / 180);
+      
+      // Draw based on component type
+      switch (component.type) {
+        case 'resistor':
+          drawResistor(ctx, component);
+          break;
+        case 'capacitor':
+          drawCapacitor(ctx, component);
+          break;
+        case 'inductor':
+          drawInductor(ctx, component);
+          break;
+        case 'diode':
+          drawDiode(ctx, component);
+          break;
+        case 'led':
+          drawLED(ctx, component);
+          break;
+        case 'battery':
+          drawBattery(ctx, component);
+          break;
+        case 'switch':
+          drawSwitch(ctx, component);
+          break;
+        case 'wire':
+          drawWire(ctx, component);
+          break;
+        case 'ground':
+          drawGround(ctx, component);
+          break;
+        case 'speaker':
+          drawSpeaker(ctx, component);
+          break;
+        case 'antenna':
+          drawAntenna(ctx, component);
+          break;
       }
-      return c;
-    }));
+      
+      // Draw label
+      ctx.fillStyle = '#a0a0a0';
+      ctx.font = '10px sans-serif';
+      ctx.fillText(component.label, -15, 30);
+      
+      // Restore context
+      ctx.restore();
+    });
+    
+    // Draw connections
+    drawConnections(ctx, componentsState);
+    
+  }, [componentsState]);
+  
+  // Draw resistor
+  const drawResistor = (ctx: CanvasRenderingContext2D, component: CircuitComponent) => {
+    ctx.beginPath();
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 2;
+    
+    // Draw leads
+    ctx.moveTo(-20, 0);
+    ctx.lineTo(-10, 0);
+    ctx.moveTo(10, 0);
+    ctx.lineTo(20, 0);
+    
+    // Draw resistor body
+    ctx.rect(-10, -7, 20, 14);
+    ctx.stroke();
+    
+    // Fill
+    ctx.fillStyle = '#555';
+    ctx.fillRect(-10, -7, 20, 14);
   };
   
-  // Handle switch toggle
-  const handleToggleSwitch = (id: string) => {
-    setComponents(prev => prev.map(c => {
-      if (c.id === id && c.type === 'switch') {
-        return { 
-          ...c, 
-          state: c.state === 'on' ? 'off' : 'on'
-        };
-      }
-      return c;
-    }));
+  // Draw capacitor
+  const drawCapacitor = (ctx: CanvasRenderingContext2D, component: CircuitComponent) => {
+    ctx.beginPath();
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 2;
+    
+    // Draw leads
+    ctx.moveTo(-20, 0);
+    ctx.lineTo(-5, 0);
+    ctx.moveTo(5, 0);
+    ctx.lineTo(20, 0);
+    
+    // Draw capacitor plates
+    ctx.moveTo(-5, -10);
+    ctx.lineTo(-5, 10);
+    ctx.moveTo(5, -10);
+    ctx.lineTo(5, 10);
+    ctx.stroke();
   };
   
-  // Handle circuit power toggle
-  const handlePowerToggle = () => {
-    setCircuitPowered(!circuitPowered);
+  // Draw inductor
+  const drawInductor = (ctx: CanvasRenderingContext2D, component: CircuitComponent) => {
+    ctx.beginPath();
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 2;
+    
+    // Draw leads
+    ctx.moveTo(-20, 0);
+    ctx.lineTo(-15, 0);
+    ctx.moveTo(15, 0);
+    ctx.lineTo(20, 0);
+    
+    // Draw inductor coils
+    ctx.arc(-10, 0, 5, 0, Math.PI, false);
+    ctx.arc(0, 0, 5, Math.PI, 0, false);
+    ctx.arc(10, 0, 5, 0, Math.PI, false);
+    ctx.stroke();
   };
   
-  // Reset circuit to initial template
-  const resetCircuit = () => {
-    if (initialTemplate) {
-      const template = CIRCUIT_TEMPLATES.find(t => t.name === initialTemplate);
-      if (template) {
-        setComponents(template.components);
-      }
+  // Draw diode
+  const drawDiode = (ctx: CanvasRenderingContext2D, component: CircuitComponent) => {
+    ctx.beginPath();
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 2;
+    
+    // Draw leads
+    ctx.moveTo(-20, 0);
+    ctx.lineTo(-5, 0);
+    ctx.moveTo(5, 0);
+    ctx.lineTo(20, 0);
+    
+    // Draw diode triangle
+    ctx.moveTo(-5, -7);
+    ctx.lineTo(-5, 7);
+    ctx.lineTo(5, 0);
+    ctx.closePath();
+    
+    // Draw diode line
+    ctx.moveTo(5, -7);
+    ctx.lineTo(5, 7);
+    
+    ctx.stroke();
+    
+    // Fill triangle
+    ctx.fillStyle = '#555';
+    ctx.fill();
+  };
+  
+  // Draw LED
+  const drawLED = (ctx: CanvasRenderingContext2D, component: CircuitComponent) => {
+    ctx.beginPath();
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 2;
+    
+    // Draw leads
+    ctx.moveTo(-20, 0);
+    ctx.lineTo(-5, 0);
+    ctx.moveTo(5, 0);
+    ctx.lineTo(20, 0);
+    
+    // Draw diode triangle
+    ctx.moveTo(-5, -7);
+    ctx.lineTo(-5, 7);
+    ctx.lineTo(5, 0);
+    ctx.closePath();
+    
+    // Draw diode line
+    ctx.moveTo(5, -7);
+    ctx.lineTo(5, 7);
+    
+    // Draw light rays
+    if (component.state === 'on') {
+      ctx.moveTo(8, -5);
+      ctx.lineTo(15, -10);
+      ctx.moveTo(8, 0);
+      ctx.lineTo(18, 0);
+      ctx.moveTo(8, 5);
+      ctx.lineTo(15, 10);
+    }
+    
+    ctx.stroke();
+    
+    // Fill triangle with appropriate color
+    ctx.fillStyle = component.state === 'on' ? '#f00' : '#900';
+    ctx.fill();
+  };
+  
+  // Draw battery
+  const drawBattery = (ctx: CanvasRenderingContext2D, component: CircuitComponent) => {
+    ctx.beginPath();
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 2;
+    
+    // Draw leads
+    ctx.moveTo(-20, 0);
+    ctx.lineTo(-15, 0);
+    ctx.moveTo(15, 0);
+    ctx.lineTo(20, 0);
+    
+    // Draw battery cells
+    ctx.moveTo(-15, -10);
+    ctx.lineTo(-15, 10);
+    ctx.moveTo(-10, -5);
+    ctx.lineTo(-10, 5);
+    ctx.moveTo(-5, -10);
+    ctx.lineTo(-5, 10);
+    ctx.moveTo(0, -5);
+    ctx.lineTo(0, 5);
+    ctx.moveTo(5, -10);
+    ctx.lineTo(5, 10);
+    ctx.moveTo(10, -5);
+    ctx.lineTo(10, 5);
+    ctx.moveTo(15, -10);
+    ctx.lineTo(15, 10);
+    
+    ctx.stroke();
+    
+    // Draw + and - symbols
+    ctx.font = '12px sans-serif';
+    ctx.fillStyle = '#f0f0f0';
+    ctx.fillText('+', -5, -15);
+    ctx.fillText('-', 5, -15);
+  };
+  
+  // Draw switch
+  const drawSwitch = (ctx: CanvasRenderingContext2D, component: CircuitComponent) => {
+    ctx.beginPath();
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 2;
+    
+    // Draw leads
+    ctx.moveTo(-20, 0);
+    ctx.lineTo(-10, 0);
+    ctx.moveTo(10, 0);
+    ctx.lineTo(20, 0);
+    
+    // Draw switch
+    ctx.arc(-10, 0, 3, 0, 2 * Math.PI);
+    ctx.moveTo(10, 0);
+    ctx.arc(10, 0, 3, 0, 2 * Math.PI);
+    
+    // Draw switch lever
+    if (component.state === 'on') {
+      ctx.moveTo(-10, 0);
+      ctx.lineTo(10, 0);
     } else {
-      setComponents([]);
+      ctx.moveTo(-10, 0);
+      ctx.lineTo(5, -7);
     }
-    setCircuitPowered(false);
-    setSelectedComponent(null);
+    
+    ctx.stroke();
   };
   
-  // Load a predefined template
+  // Draw wire
+  const drawWire = (ctx: CanvasRenderingContext2D, component: CircuitComponent) => {
+    ctx.beginPath();
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 2;
+    
+    // Draw wire
+    ctx.moveTo(-20, 0);
+    ctx.lineTo(20, 0);
+    
+    ctx.stroke();
+  };
+  
+  // Draw ground
+  const drawGround = (ctx: CanvasRenderingContext2D, component: CircuitComponent) => {
+    ctx.beginPath();
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 2;
+    
+    // Draw lead
+    ctx.moveTo(0, -20);
+    ctx.lineTo(0, 0);
+    
+    // Draw ground symbol
+    ctx.moveTo(-10, 0);
+    ctx.lineTo(10, 0);
+    ctx.moveTo(-7, 5);
+    ctx.lineTo(7, 5);
+    ctx.moveTo(-4, 10);
+    ctx.lineTo(4, 10);
+    
+    ctx.stroke();
+  };
+  
+  // Draw speaker
+  const drawSpeaker = (ctx: CanvasRenderingContext2D, component: CircuitComponent) => {
+    ctx.beginPath();
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 2;
+    
+    // Draw leads
+    ctx.moveTo(-20, 0);
+    ctx.lineTo(-10, 0);
+    ctx.moveTo(10, 0);
+    ctx.lineTo(20, 0);
+    
+    // Draw speaker symbol
+    ctx.rect(-10, -10, 20, 20);
+    ctx.moveTo(0, -10);
+    ctx.lineTo(0, 10);
+    
+    ctx.stroke();
+  };
+  
+  // Draw antenna
+  const drawAntenna = (ctx: CanvasRenderingContext2D, component: CircuitComponent) => {
+    ctx.beginPath();
+    ctx.strokeStyle = '#f0f0f0';
+    ctx.lineWidth = 2;
+    
+    // Draw lead
+    ctx.moveTo(0, 0);
+    ctx.lineTo(0, 20);
+    
+    // Draw antenna elements
+    ctx.moveTo(-15, -15);
+    ctx.lineTo(15, -15);
+    ctx.moveTo(-10, -10);
+    ctx.lineTo(10, -10);
+    ctx.moveTo(-5, -5);
+    ctx.lineTo(5, -5);
+    ctx.moveTo(0, -15);
+    ctx.lineTo(0, 0);
+    
+    ctx.stroke();
+  };
+  
+  // Draw connections between components
+  const drawConnections = (ctx: CanvasRenderingContext2D, components: CircuitComponent[]) => {
+    ctx.beginPath();
+    ctx.strokeStyle = '#606060';
+    ctx.lineWidth = 1;
+    
+    // Create a map of component positions
+    const positionMap = new Map<string, { x: number, y: number }>();
+    components.forEach(component => {
+      positionMap.set(component.id, { x: component.x, y: component.y });
+    });
+    
+    // Draw connections
+    components.forEach(component => {
+      component.connections.forEach(connectionId => {
+        const targetPosition = positionMap.get(connectionId);
+        if (targetPosition) {
+          // Calculate midpoint for connection routing
+          const midX = (component.x + targetPosition.x) / 2;
+          const midY = (component.y + targetPosition.y) / 2;
+          
+          // Draw connection
+          ctx.moveTo(component.x, component.y);
+          // Avoid diagonal lines for cleaner appearance
+          if (Math.abs(component.x - targetPosition.x) > Math.abs(component.y - targetPosition.y)) {
+            ctx.lineTo(midX, component.y);
+            ctx.lineTo(midX, targetPosition.y);
+          } else {
+            ctx.lineTo(component.x, midY);
+            ctx.lineTo(targetPosition.x, midY);
+          }
+          ctx.lineTo(targetPosition.x, targetPosition.y);
+        }
+      });
+    });
+    
+    ctx.stroke();
+  };
+  
+  // Toggle switch state
+  const toggleSwitch = (switchId: string) => {
+    setComponentsState(prev => 
+      prev.map(comp => 
+        comp.id === switchId 
+          ? { ...comp, state: comp.state === 'on' ? 'off' : 'on' } 
+          : comp
+      )
+    );
+  };
+  
+  // Simulate circuit
+  const simulateCircuit = () => {
+    setSimulating(true);
+    
+    // In a real app, this would be a more complex simulation
+    // For this demo, we'll use some simplified logic
+    
+    // Check if circuit has a battery
+    const hasBattery = componentsState.some(c => c.type === 'battery');
+    
+    // Check if circuit has a ground
+    const hasGround = componentsState.some(c => c.type === 'ground');
+    
+    // Check if any switch is off
+    const allSwitchesOn = componentsState
+      .filter(c => c.type === 'switch')
+      .every(c => c.state === 'on');
+    
+    // Check for LEDs
+    const leds = componentsState.filter(c => c.type === 'led');
+    
+    // Simple simulation
+    setTimeout(() => {
+      if (!hasBattery) {
+        setSimResult('Circuit is missing a power source');
+        setCircuitWorking(false);
+      } else if (!hasGround) {
+        setSimResult('Circuit is missing a ground connection');
+        setCircuitWorking(false);
+      } else if (componentsState.some(c => c.type === 'switch') && !allSwitchesOn) {
+        setSimResult('One or more switches are open');
+        setCircuitWorking(false);
+      } else {
+        setSimResult('Circuit is working correctly!');
+        setCircuitWorking(true);
+        
+        // Turn on LEDs
+        if (leds.length > 0) {
+          setComponentsState(prev => 
+            prev.map(comp => 
+              comp.type === 'led' ? { ...comp, state: 'on' } : comp
+            )
+          );
+        }
+        
+        // Record success
+        recordCircuitSuccess();
+      }
+      
+      setSimulating(false);
+    }, 1500);
+  };
+  
+  // Load a template
   const loadTemplate = (templateName: string) => {
     const template = CIRCUIT_TEMPLATES.find(t => t.name === templateName);
     if (template) {
-      setComponents(template.components);
-      setCircuitPowered(false);
-      setSelectedComponent(null);
+      setActiveTemplate(template);
+      setComponentsState(JSON.parse(JSON.stringify(template.components)));
+      setCircuitWorking(null);
+      setSimResult(null);
     }
   };
   
-  // Add a new component
-  const addComponent = (type: ComponentType) => {
-    const id = `${type}${Math.floor(Math.random() * 1000)}`;
-    
-    let value = 0;
-    let unit = '';
-    
-    switch (type) {
-      case 'battery':
-        value = 9;
-        unit = 'V';
-        break;
-      case 'resistor':
-        value = 1000;
-        unit = 'Ω';
-        break;
-      case 'capacitor':
-        value = 100;
-        unit = 'μF';
-        break;
-      case 'inductor':
-        value = 10;
-        unit = 'mH';
-        break;
-      case 'led':
-        value = 20;
-        unit = 'mA';
-        break;
-      case 'switch':
-        value = 0;
-        unit = '';
-        break;
+  // Reset the circuit to its original state
+  const resetCircuit = () => {
+    if (activeTemplate) {
+      setComponentsState(JSON.parse(JSON.stringify(activeTemplate.components)));
+      setCircuitWorking(null);
+      setSimResult(null);
     }
-    
-    const newComponent: CircuitComponent = {
-      id,
-      type,
-      value,
-      unit,
-      x: 200,
-      y: 200,
-      rotation: 0,
-      connections: [],
-      state: type === 'switch' ? 'off' : undefined,
-      label: type.charAt(0).toUpperCase() + type.slice(1)
-    };
-    
-    setComponents(prev => [...prev, newComponent]);
-    setSelectedComponent(id);
   };
   
-  // Simulate the circuit
-  useEffect(() => {
-    if (circuitPowered) {
-      // This is a simplified simulation
-      // In a real circuit simulator, we would solve Kirchhoff's laws
-      
-      // Check for errors/issues
-      const warnings: string[] = [];
-      let isValid = true;
-      
-      // Check if we have a battery
-      const batteries = components.filter(c => c.type === 'battery');
-      if (batteries.length === 0) {
-        warnings.push('No power source in the circuit');
-        isValid = false;
-      }
-      
-      // Check for switches that might break the circuit
-      const switches = components.filter(c => c.type === 'switch');
-      const openSwitches = switches.filter(s => s.state === 'off');
-      if (openSwitches.length > 0) {
-        warnings.push(`${openSwitches.length} open switch${openSwitches.length > 1 ? 'es' : ''} breaking the circuit`);
-        isValid = false;
-      }
-      
-      // Check for components without connections
-      const disconnected = components.filter(c => c.connections.length === 0);
-      if (disconnected.length > 0) {
-        warnings.push(`${disconnected.length} disconnected component${disconnected.length > 1 ? 's' : ''}`);
-        isValid = false;
-      }
-      
-      // Simulate current flow
-      let totalVoltage = 0;
-      let totalResistance = 0.001; // Avoid division by zero
-      
-      // Sum up all battery voltages
-      batteries.forEach(battery => {
-        totalVoltage += battery.value;
-      });
-      
-      // Sum up all resistances (simplified series circuit)
-      components.filter(c => c.type === 'resistor').forEach(resistor => {
-        totalResistance += resistor.value;
-      });
-      
-      // Calculate current (I = V/R)
-      const current = totalVoltage / totalResistance;
-      
-      // Calculate power (P = I*V)
-      const power = current * totalVoltage;
-      
-      // Check for potential issues
-      const leds = components.filter(c => c.type === 'led');
-      
-      // Update LEDs based on current
-      setComponents(prev => prev.map(c => {
-        if (c.type === 'led') {
-          // LED is on if circuit is valid and current is sufficient
-          return { 
-            ...c, 
-            state: isValid && current > 0.001 ? 'on' : 'off'
-          };
-        }
-        return c;
-      }));
-      
-      // LED current checks
-      leds.forEach(led => {
-        if (current > led.value * 0.001 * 1.5) {
-          warnings.push(`LED current too high (${(current * 1000).toFixed(1)} mA > ${led.value} mA)`);
-        }
-      });
-      
-      let message = 'Circuit powered';
-      if (!isValid) {
-        message = 'Circuit incomplete or disconnected';
-      } else if (warnings.length > 0) {
-        message = 'Circuit functioning with warnings';
-      } else {
-        message = 'Circuit functioning correctly';
-      }
-      
-      // Update simulation result
-      setSimulationResult({
-        voltage: totalVoltage,
-        current: current * 1000, // Convert to mA for display
-        power: power * 1000, // Convert to mW for display
-        message,
-        warnings,
-        isValid
-      });
-      
-      // Notify parent component if needed
-      if (onCircuitChange) {
-        onCircuitChange(isValid && warnings.length === 0);
-      }
-    } else {
-      // Reset simulation when power is off
-      setSimulationResult({
-        voltage: 0,
-        current: 0,
-        power: 0,
-        message: 'Circuit not powered',
-        warnings: [],
-        isValid: false
-      });
-      
-      // Reset LEDs to off state
-      setComponents(prev => prev.map(c => {
-        if (c.type === 'led') {
-          return { ...c, state: 'off' };
-        }
-        return c;
-      }));
-    }
-  }, [circuitPowered, components, onCircuitChange]);
-  
-  // Render a component based on its type
-  const renderComponent = (component: CircuitComponent) => {
-    const isSelected = selectedComponent === component.id;
-    const componentStyle = {
-      transform: `rotate(${component.rotation}deg) scale(${zoom})`,
-      cursor: 'pointer',
-      border: isSelected ? '2px solid #3b82f6' : 'none',
-      backgroundColor: isSelected ? 'rgba(59, 130, 246, 0.1)' : 'transparent',
-      padding: '8px',
-      borderRadius: '4px',
-      position: 'absolute' as 'absolute',
-      left: `${component.x}px`,
-      top: `${component.y}px`,
-      zIndex: isSelected ? 10 : 1,
-      userSelect: 'none' as 'none'
-    };
+  // Update battery voltage
+  const updateBatteryVoltage = (voltage: number) => {
+    setCircuitVoltage(voltage);
     
-    const renderLabel = () => {
-      if (!showLabels || !component.label) return null;
-      
-      return (
-        <div className="text-xs text-gray-300 mt-1 text-center">
-          {component.label}
-        </div>
-      );
-    };
-    
-    const renderValue = () => {
-      if (!showValues || component.type === 'switch') return null;
-      
-      return (
-        <div className="text-xs text-blue-300 mt-1 text-center font-mono">
-          {component.value}{component.unit}
-        </div>
-      );
-    };
-    
-    switch (component.type) {
-      case 'battery':
-        return (
-          <div 
-            style={componentStyle}
-            onClick={() => handleSelectComponent(component.id)}
-            onMouseDown={(e) => handleDragStart(e, component.id)}
-          >
-            <div className="bg-yellow-900 border border-yellow-700 rounded-md p-2 flex flex-col items-center">
-              <Battery className="h-8 w-8 text-yellow-400" />
-              {renderValue()}
-            </div>
-            {renderLabel()}
-          </div>
-        );
-        
-      case 'resistor':
-        return (
-          <div 
-            style={componentStyle}
-            onClick={() => handleSelectComponent(component.id)}
-            onMouseDown={(e) => handleDragStart(e, component.id)}
-          >
-            <div className="bg-gray-800 border border-gray-700 rounded-md p-2 flex flex-col items-center">
-              <div className="h-8 w-16 flex items-center justify-center relative">
-                <div className="absolute h-2 bg-gray-500 w-full"></div>
-                <div className="absolute h-6 w-10 bg-amber-900 rounded-sm flex items-center justify-center">
-                  <div className="text-[10px] font-mono text-amber-400">R</div>
-                </div>
-              </div>
-              {renderValue()}
-            </div>
-            {renderLabel()}
-          </div>
-        );
-        
-      case 'capacitor':
-        return (
-          <div 
-            style={componentStyle}
-            onClick={() => handleSelectComponent(component.id)}
-            onMouseDown={(e) => handleDragStart(e, component.id)}
-          >
-            <div className="bg-gray-800 border border-gray-700 rounded-md p-2 flex flex-col items-center">
-              <div className="h-8 w-12 flex items-center justify-center relative">
-                <div className="absolute h-2 bg-gray-500 w-full"></div>
-                <div className="absolute h-8 w-1 bg-gray-500 left-3"></div>
-                <div className="absolute h-8 w-1 bg-gray-500 right-3"></div>
-              </div>
-              {renderValue()}
-            </div>
-            {renderLabel()}
-          </div>
-        );
-        
-      case 'inductor':
-        return (
-          <div 
-            style={componentStyle}
-            onClick={() => handleSelectComponent(component.id)}
-            onMouseDown={(e) => handleDragStart(e, component.id)}
-          >
-            <div className="bg-gray-800 border border-gray-700 rounded-md p-2 flex flex-col items-center">
-              <div className="h-8 w-16 flex items-center justify-center relative">
-                <div className="absolute h-2 bg-gray-500 w-full"></div>
-                <div className="absolute h-6 w-10 flex items-center justify-center">
-                  <div className="text-blue-300 text-lg">∿∿∿</div>
-                </div>
-              </div>
-              {renderValue()}
-            </div>
-            {renderLabel()}
-          </div>
-        );
-        
-      case 'led':
-        return (
-          <div 
-            style={componentStyle}
-            onClick={() => handleSelectComponent(component.id)}
-            onMouseDown={(e) => handleDragStart(e, component.id)}
-          >
-            <div className="bg-gray-800 border border-gray-700 rounded-md p-2 flex flex-col items-center">
-              <Lightbulb 
-                className={`h-8 w-8 ${
-                  component.state === 'on' ? 'text-green-400 drop-shadow-[0_0_8px_rgba(74,222,128,0.6)]' : 'text-gray-600'
-                }`} 
-              />
-              {renderValue()}
-            </div>
-            {renderLabel()}
-          </div>
-        );
-        
-      case 'switch':
-        return (
-          <div 
-            style={componentStyle}
-            onClick={() => handleSelectComponent(component.id)}
-            onMouseDown={(e) => handleDragStart(e, component.id)}
-          >
-            <div className="bg-gray-800 border border-gray-700 rounded-md p-2 flex flex-col items-center">
-              <button 
-                className={`h-8 w-12 rounded-full flex items-center border ${
-                  component.state === 'on' 
-                    ? 'bg-green-900 border-green-700 justify-end' 
-                    : 'bg-gray-900 border-gray-700 justify-start'
-                }`}
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleToggleSwitch(component.id);
-                }}
-              >
-                <div className={`h-6 w-6 rounded-full ${
-                  component.state === 'on' 
-                    ? 'bg-green-400 border-green-500' 
-                    : 'bg-gray-400 border-gray-500'
-                }`}></div>
-              </button>
-              <div className="text-xs text-gray-300 mt-1">
-                {component.state === 'on' ? 'ON' : 'OFF'}
-              </div>
-            </div>
-            {renderLabel()}
-          </div>
-        );
-        
-      default:
-        return null;
-    }
+    // Update all batteries in the circuit
+    setComponentsState(prev => 
+      prev.map(comp => 
+        comp.type === 'battery' 
+          ? { ...comp, value: voltage, label: `${voltage}V` } 
+          : comp
+      )
+    );
   };
   
   return (
     <div className="space-y-4">
-      <Tabs defaultValue="simulator" className="w-full">
-        <TabsList className="grid grid-cols-3 w-full">
-          <TabsTrigger value="simulator">Simulator</TabsTrigger>
-          <TabsTrigger value="components">Components</TabsTrigger>
-          <TabsTrigger value="help">Help</TabsTrigger>
-        </TabsList>
+      <div className="flex justify-between items-center">
+        <h2 className="text-lg font-bold text-white flex items-center gap-2">
+          <Cpu className="h-5 w-5 text-blue-400" />
+          Circuit Simulator
+        </h2>
         
-        <TabsContent value="simulator">
-          <div className="bg-gray-900 border border-gray-800 rounded-md overflow-hidden">
-            {/* Toolbar */}
-            <div className="bg-gray-800 p-2 flex items-center justify-between">
-              <div className="flex items-center gap-2">
+        <Select 
+          value={activeTemplate?.name}
+          onValueChange={loadTemplate}
+        >
+          <SelectTrigger className="w-[220px] bg-gray-900 border-gray-700">
+            <SelectValue placeholder="Select a template" />
+          </SelectTrigger>
+          <SelectContent className="bg-gray-900 border-gray-700">
+            {CIRCUIT_TEMPLATES.map(template => (
+              <SelectItem key={template.name} value={template.name}>
+                {template.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      
+      {activeTemplate && (
+        <Card className="bg-gray-900 border-gray-700">
+          <CardHeader className="pb-2">
+            <div className="flex justify-between items-start">
+              <div>
+                <CardTitle className="text-lg text-gray-100">{activeTemplate.name}</CardTitle>
+                <CardDescription>{activeTemplate.description}</CardDescription>
+              </div>
+              <Badge variant={
+                activeTemplate.difficulty === 'basic' ? 'outline' :
+                activeTemplate.difficulty === 'intermediate' ? 'default' : 'secondary'
+              }>
+                {activeTemplate.difficulty}
+              </Badge>
+            </div>
+          </CardHeader>
+          
+          <CardContent className="space-y-4">
+            {/* Circuit canvas */}
+            <div className="bg-gray-950 rounded-md border border-gray-800 overflow-hidden">
+              <canvas 
+                ref={canvasRef} 
+                width={500} 
+                height={300} 
+                className="w-full h-[300px]"
+              />
+            </div>
+            
+            {/* Controls */}
+            <div className="grid grid-cols-2 gap-4">
+              <div className="space-y-2">
+                <h3 className="text-sm font-medium text-gray-300">Battery Voltage</h3>
+                <div className="flex items-center gap-3">
+                  <Battery className="text-blue-400 h-5 w-5" />
+                  <Slider
+                    value={[circuitVoltage]}
+                    onValueChange={(value) => updateBatteryVoltage(value[0])}
+                    max={12}
+                    min={1.5}
+                    step={1.5}
+                    className="flex-1"
+                  />
+                  <span className="text-sm font-mono w-12">{circuitVoltage}V</span>
+                </div>
+              </div>
+              
+              <div className="flex items-end gap-2 justify-end">
                 <Button 
                   variant="outline" 
-                  size="sm"
-                  onClick={handlePowerToggle}
-                  className={`${
-                    circuitPowered 
-                      ? 'bg-green-800 hover:bg-green-700 border-green-700' 
-                      : 'bg-gray-700 hover:bg-gray-600 border-gray-600'
-                  }`}
-                >
-                  <Zap className={`h-4 w-4 mr-1 ${circuitPowered ? 'text-yellow-300' : 'text-gray-400'}`} />
-                  {circuitPowered ? 'ON' : 'OFF'}
-                </Button>
-                
-                <Select onValueChange={loadTemplate}>
-                  <SelectTrigger className="w-[180px] h-8 text-xs bg-gray-700 border-gray-600">
-                    <SelectValue placeholder="Load template..." />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {CIRCUIT_TEMPLATES.map(template => (
-                      <SelectItem key={template.name} value={template.name} className="text-xs">
-                        {template.name}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-                
-                <Button 
-                  variant="outline" 
-                  size="sm"
                   onClick={resetCircuit}
-                  className="bg-gray-700 hover:bg-gray-600 border-gray-600 h-8"
+                  className="bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
                 >
+                  <RotateCw className="h-4 w-4 mr-2" />
                   Reset
                 </Button>
-              </div>
-              
-              <div className="flex items-center gap-2">
                 <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => setZoom(prev => Math.max(0.5, prev - 0.1))}
-                  className="bg-gray-700 hover:bg-gray-600 border-gray-600 h-8 p-0 w-8"
+                  onClick={simulateCircuit}
+                  disabled={simulating}
+                  className="bg-green-800 hover:bg-green-700"
                 >
-                  <Minus className="h-3 w-3" />
-                </Button>
-                
-                <span className="text-xs text-gray-300 font-mono">{(zoom * 100).toFixed(0)}%</span>
-                
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => setZoom(prev => Math.min(2, prev + 0.1))}
-                  className="bg-gray-700 hover:bg-gray-600 border-gray-600 h-8 p-0 w-8"
-                >
-                  <Plus className="h-3 w-3" />
-                </Button>
-                
-                <Button 
-                  variant="outline" 
-                  size="sm"
-                  onClick={() => setZoom(1)}
-                  className="bg-gray-700 hover:bg-gray-600 border-gray-600 h-8 p-0 w-8"
-                >
-                  <Maximize2 className="h-3 w-3" />
+                  <Zap className="h-4 w-4 mr-2" />
+                  {simulating ? 'Simulating...' : 'Run Simulation'}
                 </Button>
               </div>
             </div>
             
-            {/* Circuit canvas */}
-            <div 
-              ref={canvasRef}
-              className="relative h-80 bg-gray-950 overflow-hidden"
-              onMouseMove={handleMouseMove}
-              onMouseUp={handleMouseUp}
-              onMouseLeave={handleMouseUp}
-            >
-              {/* Grid lines */}
-              <div className="absolute inset-0" style={{ 
-                backgroundImage: 'linear-gradient(to right, rgba(75, 85, 99, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(75, 85, 99, 0.1) 1px, transparent 1px)',
-                backgroundSize: `${20 * zoom}px ${20 * zoom}px`
-              }}></div>
-              
-              {/* Components */}
-              {components.map(component => renderComponent(component))}
-              
-              {/* Wire connections would go here in a more sophisticated simulator */}
-            </div>
-            
-            {/* Info panel */}
-            <div className="bg-gray-800 p-2">
-              <div className="flex justify-between items-center mb-2">
-                <div className="text-sm text-gray-300 font-medium">Circuit Status</div>
-                <Badge 
-                  className={`${
-                    !circuitPowered 
-                      ? 'bg-gray-700 hover:bg-gray-600'
-                      : simulationResult.warnings.length > 0
-                        ? 'bg-yellow-900 hover:bg-yellow-800'
-                        : simulationResult.isValid
-                          ? 'bg-green-900 hover:bg-green-800'
-                          : 'bg-red-900 hover:bg-red-800'
-                  }`}
-                >
-                  {simulationResult.message}
-                </Badge>
-              </div>
-              
-              <div className="grid grid-cols-3 gap-2 mb-2">
-                <div className="bg-gray-900 rounded p-1">
-                  <div className="text-xs text-gray-400">Voltage</div>
-                  <div className="text-sm font-mono text-blue-300">{simulationResult.voltage.toFixed(1)} V</div>
-                </div>
-                <div className="bg-gray-900 rounded p-1">
-                  <div className="text-xs text-gray-400">Current</div>
-                  <div className="text-sm font-mono text-green-300">{simulationResult.current.toFixed(1)} mA</div>
-                </div>
-                <div className="bg-gray-900 rounded p-1">
-                  <div className="text-xs text-gray-400">Power</div>
-                  <div className="text-sm font-mono text-amber-300">{simulationResult.power.toFixed(1)} mW</div>
-                </div>
-              </div>
-              
-              {simulationResult.warnings.length > 0 && (
-                <div className="bg-yellow-900/30 border border-yellow-800 rounded p-1 mb-2">
-                  <div className="flex items-center text-xs text-yellow-300 mb-1">
-                    <AlertTriangle className="h-3 w-3 mr-1" />
-                    Warnings
-                  </div>
-                  <ul className="text-xs text-gray-300 list-disc pl-4">
-                    {simulationResult.warnings.map((warning, index) => (
-                      <li key={index}>{warning}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              
-              <div className="flex justify-between text-xs">
-                <div className="flex items-center gap-1">
-                  <Label htmlFor="show-labels" className="text-xs text-gray-300">Show Labels</Label>
-                  <Switch id="show-labels" checked={showLabels} onCheckedChange={setShowLabels} />
-                </div>
-                <div className="flex items-center gap-1">
-                  <Label htmlFor="show-values" className="text-xs text-gray-300">Show Values</Label>
-                  <Switch id="show-values" checked={showValues} onCheckedChange={setShowValues} />
-                </div>
-              </div>
-            </div>
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="components">
-          <div className="bg-gray-900 border border-gray-800 rounded-md p-3">
-            <div className="grid grid-cols-3 gap-3 mb-4">
-              <button 
-                className="bg-gray-800 border border-gray-700 rounded-md p-2 hover:bg-gray-750 flex flex-col items-center"
-                onClick={() => addComponent('battery')}
-              >
-                <Battery className="h-8 w-8 text-yellow-400 mb-1" />
-                <span className="text-xs text-gray-300">Battery</span>
-              </button>
-              
-              <button 
-                className="bg-gray-800 border border-gray-700 rounded-md p-2 hover:bg-gray-750 flex flex-col items-center"
-                onClick={() => addComponent('resistor')}
-              >
-                <div className="h-8 w-16 flex items-center justify-center relative mb-1">
-                  <div className="h-2 bg-gray-500 w-full absolute"></div>
-                  <div className="h-6 w-10 bg-amber-900 rounded-sm absolute flex items-center justify-center">
-                    <div className="text-[10px] font-mono text-amber-400">R</div>
-                  </div>
-                </div>
-                <span className="text-xs text-gray-300">Resistor</span>
-              </button>
-              
-              <button 
-                className="bg-gray-800 border border-gray-700 rounded-md p-2 hover:bg-gray-750 flex flex-col items-center"
-                onClick={() => addComponent('capacitor')}
-              >
-                <div className="h-8 w-12 flex items-center justify-center relative mb-1">
-                  <div className="h-2 bg-gray-500 w-full absolute"></div>
-                  <div className="h-8 w-1 bg-gray-500 absolute left-3"></div>
-                  <div className="h-8 w-1 bg-gray-500 absolute right-3"></div>
-                </div>
-                <span className="text-xs text-gray-300">Capacitor</span>
-              </button>
-              
-              <button 
-                className="bg-gray-800 border border-gray-700 rounded-md p-2 hover:bg-gray-750 flex flex-col items-center"
-                onClick={() => addComponent('inductor')}
-              >
-                <div className="h-8 w-16 flex items-center justify-center relative mb-1">
-                  <div className="h-2 bg-gray-500 w-full absolute"></div>
-                  <div className="h-6 w-10 flex items-center justify-center absolute">
-                    <div className="text-blue-300 text-lg">∿∿∿</div>
-                  </div>
-                </div>
-                <span className="text-xs text-gray-300">Inductor</span>
-              </button>
-              
-              <button 
-                className="bg-gray-800 border border-gray-700 rounded-md p-2 hover:bg-gray-750 flex flex-col items-center"
-                onClick={() => addComponent('led')}
-              >
-                <Lightbulb className="h-8 w-8 text-gray-600 mb-1" />
-                <span className="text-xs text-gray-300">LED</span>
-              </button>
-              
-              <button 
-                className="bg-gray-800 border border-gray-700 rounded-md p-2 hover:bg-gray-750 flex flex-col items-center"
-                onClick={() => addComponent('switch')}
-              >
-                <ToggleLeft className="h-8 w-8 text-gray-400 mb-1" />
-                <span className="text-xs text-gray-300">Switch</span>
-              </button>
-            </div>
-            
-            {/* Component properties editor - only shown when a component is selected */}
-            {selectedComponent && (
-              <div className="bg-gray-800 border border-gray-700 rounded-md p-3">
-                <div className="flex justify-between items-center mb-3">
-                  <div className="text-sm text-gray-100 font-medium">
-                    Component Properties
-                  </div>
-                  <Button 
-                    variant="destructive" 
-                    size="sm"
-                    onClick={() => handleDeleteComponent(selectedComponent)}
-                    className="h-7 text-xs bg-red-900 hover:bg-red-800"
-                  >
-                    <X className="h-3 w-3 mr-1" />
-                    Delete
-                  </Button>
-                </div>
-                
-                {components.filter(c => c.id === selectedComponent).map(component => (
-                  <div key={component.id} className="space-y-3">
-                    <div className="grid grid-cols-2 gap-2">
-                      <div>
-                        <Label className="text-xs text-gray-300">Type</Label>
-                        <div className="bg-gray-700 rounded p-1.5 text-sm text-gray-200">
-                          {component.type.charAt(0).toUpperCase() + component.type.slice(1)}
-                        </div>
-                      </div>
-                      
-                      <div>
-                        <Label className="text-xs text-gray-300">Label</Label>
-                        <input 
-                          type="text"
-                          className="w-full bg-gray-700 border border-gray-600 rounded p-1.5 text-sm text-gray-200"
-                          value={component.label || ''}
-                          onChange={(e) => setComponents(prev => prev.map(c => 
-                            c.id === component.id ? { ...c, label: e.target.value } : c
-                          ))}
-                        />
-                      </div>
-                    </div>
-                    
-                    {/* Value adjustment - not applicable for switches */}
-                    {component.type !== 'switch' && (
-                      <div>
-                        <div className="flex justify-between items-center">
-                          <Label className="text-xs text-gray-300">
-                            Value: {component.value} {component.unit}
-                          </Label>
-                        </div>
-                        <Slider
-                          value={[component.value]}
-                          min={component.type === 'battery' ? 1.5 : 1}
-                          max={
-                            component.type === 'battery' ? 24 : 
-                            component.type === 'resistor' ? 10000 :
-                            component.type === 'capacitor' ? 1000 :
-                            component.type === 'inductor' ? 100 :
-                            component.type === 'led' ? 50 : 100
-                          }
-                          step={
-                            component.type === 'battery' ? 0.1 :
-                            component.type === 'resistor' ? 10 : 1
-                          }
-                          onValueChange={(value) => handleValueChange(component.id, value[0])}
-                        />
-                      </div>
-                    )}
-                    
-                    {/* Switch toggle */}
-                    {component.type === 'switch' && (
-                      <div className="flex items-center justify-between">
-                        <Label className="text-sm text-gray-300">
-                          Switch State
-                        </Label>
-                        <Switch 
-                          checked={component.state === 'on'}
-                          onCheckedChange={() => handleToggleSwitch(component.id)}
-                        />
-                      </div>
-                    )}
-                    
-                    {/* Rotation control */}
-                    <div>
-                      <Label className="text-xs text-gray-300">
-                        Rotation: {component.rotation}°
-                      </Label>
-                      <Slider
-                        value={[component.rotation]}
-                        min={0}
-                        max={359}
-                        step={90}
-                        onValueChange={(value) => setComponents(prev => prev.map(c => 
-                          c.id === component.id ? { ...c, rotation: value[0] } : c
-                        ))}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
+            {/* Simulation result */}
+            {simResult && (
+              <Alert variant={circuitWorking ? "default" : "destructive"} className={
+                circuitWorking 
+                  ? "bg-green-900 bg-opacity-20 border-green-800" 
+                  : "bg-red-900 bg-opacity-20 border-red-800"
+              }>
+                <AlertCircle className="h-4 w-4" />
+                <AlertTitle>
+                  {circuitWorking ? "Success!" : "Simulation Failed"}
+                </AlertTitle>
+                <AlertDescription>
+                  {simResult}
+                </AlertDescription>
+              </Alert>
             )}
-          </div>
-        </TabsContent>
-        
-        <TabsContent value="help">
-          <div className="bg-gray-900 border border-gray-800 rounded-md p-3">
-            <div className="text-sm text-gray-100 font-medium mb-3">Circuit Simulator Help</div>
             
-            <div className="space-y-3">
-              <div className="bg-blue-900/30 border border-blue-800 rounded p-2">
-                <div className="flex items-center text-xs text-blue-300 mb-1">
-                  <Info className="h-3 w-3 mr-1" />
-                  How to Use
-                </div>
-                <ul className="text-xs text-gray-300 list-disc pl-4 space-y-1">
-                  <li>Add components by selecting them from the Components tab</li>
-                  <li>Drag components to position them on the canvas</li>
-                  <li>Click on a component to select it and edit its properties</li>
-                  <li>Toggle the power button to simulate the circuit</li>
-                  <li>Use the zoom controls to adjust the view</li>
-                </ul>
-              </div>
+            {/* Explanation */}
+            <div className="p-3 bg-blue-900 bg-opacity-20 rounded-md border border-blue-800">
+              <h3 className="text-sm font-medium text-blue-300 mb-2 flex items-center gap-2">
+                <Lightbulb className="h-4 w-4 text-yellow-400" />
+                How It Works
+              </h3>
+              <p className="text-sm text-gray-300 mb-3">{activeTemplate.explanation}</p>
               
-              <div className="text-xs text-gray-400">
-                <h3 className="font-medium text-gray-300 mb-1">Components:</h3>
-                <ul className="list-disc pl-4 space-y-0.5">
-                  <li><span className="text-yellow-400">Battery</span> - Power source with adjustable voltage</li>
-                  <li><span className="text-amber-400">Resistor</span> - Limits current flow; higher values = more resistance</li>
-                  <li><span className="text-blue-400">Capacitor</span> - Stores and releases energy</li>
-                  <li><span className="text-blue-400">Inductor</span> - Resists changes in current flow</li>
-                  <li><span className="text-green-400">LED</span> - Light-emitting diode; requires correct current</li>
-                  <li><span className="text-gray-400">Switch</span> - Controls whether circuit is open or closed</li>
-                </ul>
-              </div>
-              
-              <div className="text-xs text-gray-400">
-                <h3 className="font-medium text-gray-300 mb-1">Tips:</h3>
-                <ul className="list-disc pl-4 space-y-0.5">
-                  <li>LEDs need a current-limiting resistor to prevent damage</li>
-                  <li>A complete circuit must have a path from power source positive to negative</li>
-                  <li>All switches must be closed (ON) for current to flow</li>
-                  <li>Capacitors block DC current after they're fully charged</li>
-                  <li>Use the templates to see examples of working circuits</li>
-                </ul>
-              </div>
-              
-              <div className="text-center text-xs text-gray-400 italic mt-4">
-                This is a simplified simulator for educational purposes.
-                Real circuits would require more detailed analysis.
-              </div>
+              <h4 className="text-xs font-medium text-blue-300 mb-1">Key Concepts:</h4>
+              <ul className="space-y-1">
+                {activeTemplate.learningPoints.map((point, index) => (
+                  <li key={index} className="text-xs text-gray-300 flex items-start gap-2">
+                    <ArrowRight className="h-3 w-3 text-blue-400 mt-0.5 shrink-0" />
+                    {point}
+                  </li>
+                ))}
+              </ul>
             </div>
-          </div>
-        </TabsContent>
-      </Tabs>
+          </CardContent>
+        </Card>
+      )}
     </div>
   );
 }

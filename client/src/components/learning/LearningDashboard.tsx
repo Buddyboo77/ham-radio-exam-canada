@@ -1,101 +1,31 @@
-import { useState } from 'react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Progress } from "@/components/ui/progress";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
-import { Progress } from "@/components/ui/progress";
-import { 
-  BookOpen, 
-  Radio, 
-  FileText, 
-  GraduationCap, 
-  Award, 
-  Zap, 
-  BarChart4, 
-  Brain, 
-  Cpu, 
-  Calculator,
+import { Separator } from "@/components/ui/separator";
+import {
+  BookOpen,
+  Brain,
+  Cpu,
+  CalendarDays,
+  MapPin,
+  BarChart3,
+  Radio,
+  AlertCircle,
   BookOpenCheck,
-  LightbulbIcon,
-  Clock,
+  MessageSquare,
+  InfoIcon,
   Lightbulb,
-  PlayCircle,
-  ExternalLink 
+  Zap,
+  LineChart
 } from 'lucide-react';
-import ProgressBadges from './ProgressBadges';
+
 import { useLearningProgress } from '@/hooks/use-learning-progress';
+import { useSpacedRepetition } from '@/hooks/use-spaced-repetition';
 
-// Learning journey steps
-const LEARNING_JOURNEY = [
-  {
-    id: 'basics',
-    title: 'Ham Radio Basics',
-    description: 'Essential concepts for beginners',
-    progress: 100,
-    icon: <Radio className="h-5 w-5 text-blue-400" />,
-    modules: [
-      { name: 'Radio Waves & Propagation', completed: true },
-      { name: 'Basic Equipment Overview', completed: true },
-      { name: 'First Transmissions', completed: true }
-    ]
-  },
-  {
-    id: 'regulations',
-    title: 'Canadian Regulations',
-    description: 'Licensing requirements and rules',
-    progress: 75,
-    icon: <FileText className="h-5 w-5 text-amber-400" />,
-    modules: [
-      { name: 'License Structure', completed: true },
-      { name: 'Frequency Allocations', completed: true },
-      { name: 'Operating Procedures', completed: true },
-      { name: 'Emergency Protocols', completed: false }
-    ]
-  },
-  {
-    id: 'technical',
-    title: 'Technical Knowledge',
-    description: 'Electronics and radio theory',
-    progress: 40,
-    icon: <Cpu className="h-5 w-5 text-green-400" />,
-    modules: [
-      { name: 'Basic Electronics', completed: true },
-      { name: 'Antenna Theory', completed: true },
-      { name: 'Radio Circuits', completed: false },
-      { name: 'Digital Modes', completed: false },
-      { name: 'Troubleshooting', completed: false }
-    ]
-  },
-  {
-    id: 'operating',
-    title: 'Operating Skills',
-    description: 'Practical on-air techniques',
-    progress: 60,
-    icon: <BookOpenCheck className="h-5 w-5 text-purple-400" />,
-    modules: [
-      { name: 'Voice Operating', completed: true },
-      { name: 'Morse Code Basics', completed: true },
-      { name: 'Digital Mode Operation', completed: true },
-      { name: 'Contest Operation', completed: false },
-      { name: 'DX Operation', completed: false }
-    ]
-  },
-  {
-    id: 'advanced',
-    title: 'Advanced Topics',
-    description: 'Complex radio concepts and techniques',
-    progress: 20,
-    icon: <GraduationCap className="h-5 w-5 text-red-400" />,
-    modules: [
-      { name: 'Advanced Propagation', completed: true },
-      { name: 'EME & Satellite Operations', completed: false },
-      { name: 'SDR Development', completed: false },
-      { name: 'RF Design', completed: false },
-      { name: 'Advanced Antenna Systems', completed: false }
-    ]
-  }
-];
-
+// Learning resource type
 interface ClassResource {
   title: string;
   type: 'video' | 'article' | 'interactive' | 'course' | 'book';
@@ -106,372 +36,389 @@ interface ClassResource {
   description: string;
 }
 
-// Educational resources
+// Club events
+interface ClubEvent {
+  title: string;
+  date: string;
+  location: string;
+  description: string;
+  recurring?: string;
+}
+
+// Sample learning resources
 const LEARNING_RESOURCES: ClassResource[] = [
   {
-    title: 'Understanding Antenna Basics',
-    type: 'video',
-    level: 'beginner',
-    duration: '15 min',
-    link: '#',
-    source: 'Ham Radio Crash Course',
-    description: 'An introduction to different antenna types and their applications.'
+    title: "Amateur Radio Basics",
+    type: "video",
+    level: "beginner",
+    duration: "15 min",
+    link: "#",
+    source: "Ham Radio 2.0",
+    description: "Introduction to amateur radio terminology and basic concepts."
   },
   {
-    title: 'Basic Electronics for Ham Radio',
-    type: 'course',
-    level: 'beginner',
-    duration: '5 hours',
-    link: '#',
-    source: 'ARRL Learning Center',
-    description: 'Learn the fundamentals of electronics necessary for ham radio operation.'
+    title: "Understanding Antennas",
+    type: "article",
+    level: "beginner",
+    duration: "10 min",
+    link: "#",
+    source: "ARRL",
+    description: "Learn about different types of antennas and their applications."
   },
   {
-    title: 'Digital Modes Explained',
-    type: 'article',
-    level: 'intermediate',
-    duration: '30 min',
-    link: '#',
-    source: 'QST Magazine',
-    description: 'Overview of popular digital modes including FT8, PSK31, and RTTY.'
+    title: "Radio Wave Propagation",
+    type: "interactive",
+    level: "intermediate",
+    duration: "25 min",
+    link: "#",
+    source: "Ham Academy",
+    description: "Interactive simulation of radio wave propagation through various atmospheric conditions."
   },
   {
-    title: 'Morse Code Training',
-    type: 'interactive',
-    level: 'beginner',
-    duration: 'Self-paced',
-    link: '#',
-    source: 'LCWO.net',
-    description: 'Progressive lessons to learn Morse code from scratch to 20 WPM.'
+    title: "Morse Code Fundamentals",
+    type: "course",
+    level: "beginner",
+    duration: "3 hours",
+    link: "#",
+    source: "CW Academy",
+    description: "Complete beginner's course for learning Morse code from scratch."
   },
   {
-    title: 'HF Propagation and the Sun',
-    type: 'video',
-    level: 'intermediate',
-    duration: '45 min',
-    link: '#',
-    source: 'K6LCS',
-    description: 'How solar cycles affect HF radio propagation.'
+    title: "Radio Electronics Essentials",
+    type: "book",
+    level: "intermediate",
+    duration: "8 hours",
+    link: "#",
+    source: "RAC Publications",
+    description: "In-depth guide to radio electronics, components and circuit design."
   },
   {
-    title: 'EME Communication Techniques',
-    type: 'article',
-    level: 'advanced',
-    duration: '1 hour',
-    link: '#',
-    source: 'VE7BQH',
-    description: 'Earth-Moon-Earth communication methods and equipment setup.'
+    title: "Digital Modes Explained",
+    type: "video",
+    level: "intermediate",
+    duration: "45 min",
+    link: "#",
+    source: "Digital Ham",
+    description: "Overview of popular digital communication modes including FT8, RTTY, and PSK31."
+  }
+];
+
+// Powell River club events
+const CLUB_EVENTS: ClubEvent[] = [
+  {
+    title: "PRARC Monthly Meeting",
+    date: "Second Wednesday, 7:00pm",
+    location: "Powell River",
+    description: "Regular monthly meeting of the Powell River Amateur Radio Club",
+    recurring: "monthly"
   },
   {
-    title: 'Canadian Basic Qualification Handbook',
-    type: 'book',
-    level: 'beginner',
-    duration: 'Reference',
-    link: '#',
-    source: 'Radio Amateurs of Canada',
-    description: 'The official study guide for the Canadian Basic Qualification exam.'
+    title: "Coffee Social",
+    date: "Saturdays, 10:00am",
+    location: "A&W Restaurant",
+    description: "Weekly informal gathering to chat about radio and more",
+    recurring: "weekly"
   },
   {
-    title: 'Antenna Modeling with EZNEC',
-    type: 'interactive',
-    level: 'advanced',
-    duration: '3 hours',
-    link: '#',
-    source: 'W7EL',
-    description: 'Learn to model and optimize antennas using EZNEC software.'
+    title: "qRD Emergency Communications Unit Net",
+    date: "Thursdays, 6:30pm",
+    location: "VE7PRR repeater",
+    description: "Weekly net for emergency communications training",
+    recurring: "weekly"
+  },
+  {
+    title: "PRARC Sunday Evening Net",
+    date: "Sundays, 8:00pm",
+    location: "VE7PRR repeater",
+    description: "Weekly club net with check-ins and announcements",
+    recurring: "weekly"
   }
 ];
 
 export default function LearningDashboard() {
-  const [activeTab, setActiveTab] = useState('overview');
-  const { progress, getNextRecommendation } = useLearningProgress();
-  const recommendation = getNextRecommendation();
+  // Hooks for progress data
+  const { progress } = useLearningProgress();
+  const { getStats } = useSpacedRepetition();
   
-  const totalProgress = Math.round(
-    LEARNING_JOURNEY.reduce((sum, journey) => sum + journey.progress, 0) / LEARNING_JOURNEY.length
-  );
+  // Get flashcard stats
+  const flashcardStats = getStats();
   
-  // Filter resources by level
-  const filterResourcesByLevel = (level: 'beginner' | 'intermediate' | 'advanced') => {
-    return LEARNING_RESOURCES.filter(resource => resource.level === level);
+  // Format a date string in a human-readable format
+  const formatDate = (dateString: string | null): string => {
+    if (!dateString) return 'Never';
+    
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', { 
+      weekday: 'short',
+      month: 'short', 
+      day: 'numeric' 
+    });
   };
   
-  // Resource card
+  // Calculate overall progress percentage
+  const calculateOverallProgress = (): number => {
+    if (!progress) return 0;
+    
+    const quizWeight = 0.4;
+    const flashcardWeight = 0.4;
+    const morseWeight = 0.2;
+    
+    // Calculate quiz progress
+    let quizProgress = 0;
+    if (progress.totalQuestions > 0) {
+      quizProgress = (progress.totalCorrect / progress.totalQuestions) * 100;
+    }
+    
+    // Calculate flashcard progress
+    let flashcardProgress = 0;
+    if (flashcardStats.total > 0) {
+      flashcardProgress = (flashcardStats.mastered / flashcardStats.total) * 100;
+    }
+    
+    // Calculate morse progress
+    const morseLevels = 10; // Total number of morse lessons
+    const morseProgress = (progress.morseLessonsCompleted / morseLevels) * 100;
+    
+    // Weighted average
+    return (
+      quizProgress * quizWeight +
+      flashcardProgress * flashcardWeight +
+      morseProgress * morseWeight
+    );
+  };
+  
+  // Get a learning recommendation based on progress
+  const getLearningRecommendation = (): { title: string; description: string; icon: React.ReactNode } => {
+    if (!progress) {
+      return {
+        title: "Start Your Learning Journey",
+        description: "Begin with our beginner quizzes and flashcards to build your ham radio knowledge.",
+        icon: <BookOpen className="h-12 w-12 text-blue-400" />
+      };
+    }
+    
+    // No quizzes completed yet
+    if (progress.completedQuizzes === 0) {
+      return {
+        title: "Take Your First Quiz",
+        description: "Start with a beginner-friendly quiz to test your knowledge of amateur radio basics.",
+        icon: <BookOpenCheck className="h-12 w-12 text-green-400" />
+      };
+    }
+    
+    // No flashcards reviewed yet
+    if (progress.flashcardsReviewed === 0) {
+      return {
+        title: "Try Flashcards",
+        description: "Flashcards are a great way to memorize radio terms, Q-codes, and concepts.",
+        icon: <Brain className="h-12 w-12 text-purple-400" />
+      };
+    }
+    
+    // No morse code practice yet
+    if (progress.morseLessonsCompleted === 0) {
+      return {
+        title: "Learn Morse Code",
+        description: "Morse code is a valuable skill for amateur radio operators. Start with the basics.",
+        icon: <Radio className="h-12 w-12 text-amber-400" />
+      };
+    }
+    
+    // Circuit simulation if quiz and flashcard progress is good
+    if (progress.completedQuizzes > 5 && progress.flashcardsReviewed > 20 && progress.badges.find(b => b.id === 'circuit-builder' && !b.acquired)) {
+      return {
+        title: "Try Circuit Simulation",
+        description: "Put your knowledge into practice by building virtual circuits to understand radio electronics better.",
+        icon: <Cpu className="h-12 w-12 text-blue-400" />
+      };
+    }
+    
+    // General recommendation for continued learning
+    return {
+      title: "Continue Your Journey",
+      description: "You're making great progress! Try focusing on areas where you have lower scores or explore advanced topics.",
+      icon: <Zap className="h-12 w-12 text-yellow-400" />
+    };
+  };
+  
+  // Component for resource cards
   const ResourceCard = ({ resource }: { resource: ClassResource }) => (
-    <Card className="overflow-hidden">
-      <CardHeader className="p-3 pb-2">
-        <CardTitle className="text-sm flex justify-between items-center">
-          <span className="truncate">{resource.title}</span>
-          <Badge 
-            variant="outline" 
-            className={`text-[10px] ml-1 ${
-              resource.level === 'beginner' ? 'bg-blue-900/30 border-blue-800 text-blue-200' :
-              resource.level === 'intermediate' ? 'bg-purple-900/30 border-purple-800 text-purple-200' :
-              'bg-red-900/30 border-red-800 text-red-200'
-            }`}
-          >
-            {resource.level.charAt(0).toUpperCase() + resource.level.slice(1)}
-          </Badge>
-        </CardTitle>
-      </CardHeader>
-      <CardContent className="p-3 pt-0 text-xs text-gray-400">
-        <div className="flex items-center justify-between mb-1">
-          <div className="flex items-center">
-            {resource.type === 'video' && <PlayCircle className="h-3 w-3 mr-1 text-red-400" />}
-            {resource.type === 'article' && <FileText className="h-3 w-3 mr-1 text-blue-400" />}
-            {resource.type === 'interactive' && <Zap className="h-3 w-3 mr-1 text-amber-400" />}
-            {resource.type === 'course' && <GraduationCap className="h-3 w-3 mr-1 text-green-400" />}
-            {resource.type === 'book' && <BookOpen className="h-3 w-3 mr-1 text-purple-400" />}
-            <span>{resource.type.charAt(0).toUpperCase() + resource.type.slice(1)}</span>
-          </div>
-          <div className="flex items-center">
-            <Clock className="h-3 w-3 mr-1" />
-            <span>{resource.duration}</span>
-          </div>
+    <div className="bg-gray-900 p-3 rounded-md border border-gray-800 flex flex-col">
+      <div className="flex justify-between items-start mb-2">
+        <div className="text-sm font-medium text-gray-200">{resource.title}</div>
+        <Badge variant={
+          resource.level === 'beginner' ? 'outline' :
+          resource.level === 'intermediate' ? 'default' : 'secondary'
+        }>
+          {resource.level}
+        </Badge>
+      </div>
+      <p className="text-xs text-gray-400 mb-2 line-clamp-2">{resource.description}</p>
+      <div className="mt-auto pt-2 flex justify-between items-center text-[10px] text-gray-500">
+        <div className="flex items-center gap-1">
+          {resource.type === 'video' && <Zap className="h-3 w-3" />}
+          {resource.type === 'article' && <BookOpen className="h-3 w-3" />}
+          {resource.type === 'interactive' && <Cpu className="h-3 w-3" />}
+          {resource.type === 'course' && <BookOpenCheck className="h-3 w-3" />}
+          {resource.type === 'book' && <BookOpen className="h-3 w-3" />}
+          <span>{resource.type}</span>
         </div>
-        <p className="line-clamp-2 text-gray-300">{resource.description}</p>
-      </CardContent>
-      <CardFooter className="p-3 pt-0 flex items-center justify-between">
-        <div className="text-[10px] text-gray-500">{resource.source}</div>
-        <Button variant="ghost" size="sm" className="h-7 p-0 px-2">
-          <ExternalLink className="h-3 w-3 mr-1" />
-          <span className="text-xs">Open</span>
-        </Button>
-      </CardFooter>
-    </Card>
+        <div>{resource.duration}</div>
+      </div>
+    </div>
   );
   
+  // Component for event cards
+  const EventCard = ({ event }: { event: ClubEvent }) => (
+    <div className="bg-gray-900 p-3 rounded-md border border-gray-800">
+      <div className="text-sm font-medium text-gray-200 mb-1">{event.title}</div>
+      <div className="flex flex-col space-y-1 mb-2">
+        <div className="flex items-center gap-1 text-[10px] text-gray-400">
+          <CalendarDays className="h-3 w-3 text-blue-400" />
+          <span>{event.date}</span>
+          {event.recurring && (
+            <Badge variant="outline" className="text-[8px] h-4 ml-1">
+              {event.recurring}
+            </Badge>
+          )}
+        </div>
+        <div className="flex items-center gap-1 text-[10px] text-gray-400">
+          <MapPin className="h-3 w-3 text-red-400" />
+          <span>{event.location}</span>
+        </div>
+      </div>
+      <p className="text-xs text-gray-400">{event.description}</p>
+    </div>
+  );
+  
+  // Progress recommendation component
+  const Recommendation = () => {
+    const rec = getLearningRecommendation();
+    return (
+      <Card className="bg-gray-900 border-gray-800 overflow-hidden">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-sm text-gray-200 flex items-center gap-2">
+            <Lightbulb className="h-4 w-4 text-yellow-400" />
+            Learning Recommendation
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex items-start gap-4">
+            <div className="p-3 bg-gray-800 rounded-md">{rec.icon}</div>
+            <div>
+              <h4 className="text-base font-medium text-gray-100 mb-1">{rec.title}</h4>
+              <p className="text-sm text-gray-400">{rec.description}</p>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    );
+  };
+  
   return (
-    <div className="space-y-4">
-      <Tabs defaultValue={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="grid grid-cols-3 mb-4">
-          <TabsTrigger value="overview">Overview</TabsTrigger>
-          <TabsTrigger value="resources">Resources</TabsTrigger>
-          <TabsTrigger value="achievements">Achievements</TabsTrigger>
+    <div className="space-y-6">
+      {/* Overall progress */}
+      <Card className="bg-blue-900 bg-opacity-15 border-blue-800">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-blue-100">Learning Progress</CardTitle>
+          <CardDescription className="text-blue-200">
+            Track your journey through ham radio knowledge
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div>
+              <div className="flex justify-between mb-1">
+                <span className="text-sm text-blue-200">Overall Progress</span>
+                <span className="text-sm text-blue-200">
+                  {Math.round(calculateOverallProgress())}%
+                </span>
+              </div>
+              <Progress value={calculateOverallProgress()} className="h-2" />
+            </div>
+            
+            <div className="grid grid-cols-3 gap-3">
+              <div className="bg-blue-900 bg-opacity-30 p-2 rounded-md flex flex-col items-center">
+                <div className="text-sm font-medium text-blue-100 mb-1">Quizzes</div>
+                <div className="text-2xl font-bold text-blue-50">{progress?.completedQuizzes || 0}</div>
+                <div className="text-xs text-blue-200">
+                  {progress?.totalQuestions ? `${progress.totalCorrect} / ${progress.totalQuestions} correct` : 'No attempts'}
+                </div>
+              </div>
+              
+              <div className="bg-purple-900 bg-opacity-30 p-2 rounded-md flex flex-col items-center">
+                <div className="text-sm font-medium text-purple-100 mb-1">Flashcards</div>
+                <div className="text-2xl font-bold text-purple-50">{progress?.flashcardsReviewed || 0}</div>
+                <div className="text-xs text-purple-200">
+                  {flashcardStats.mastered} mastered
+                </div>
+              </div>
+              
+              <div className="bg-amber-900 bg-opacity-30 p-2 rounded-md flex flex-col items-center">
+                <div className="text-sm font-medium text-amber-100 mb-1">Morse WPM</div>
+                <div className="text-2xl font-bold text-amber-50">{progress?.morseHighestWPM || 0}</div>
+                <div className="text-xs text-amber-200">
+                  {progress?.morseAccuracy > 0 ? `${Math.round(progress.morseAccuracy)}% accuracy` : 'No practice yet'}
+                </div>
+              </div>
+            </div>
+            
+            <div className="flex justify-between text-xs">
+              <div className="flex items-center gap-1 text-blue-200">
+                <CalendarDays className="h-3 w-3" />
+                <span>Last study: {formatDate(progress?.lastStudyDate)}</span>
+              </div>
+              
+              {progress?.currentStreak > 0 && (
+                <div className="flex items-center gap-1 text-green-300">
+                  <Zap className="h-3 w-3" />
+                  <span>{progress.currentStreak} day streak</span>
+                </div>
+              )}
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      
+      {/* Recommendation */}
+      <Recommendation />
+      
+      {/* Tabs for resources and events */}
+      <Tabs defaultValue="resources" className="w-full">
+        <TabsList className="grid w-full grid-cols-2 bg-gray-800">
+          <TabsTrigger value="resources" className="text-sm">Learning Resources</TabsTrigger>
+          <TabsTrigger value="events" className="text-sm">Local Club Events</TabsTrigger>
         </TabsList>
         
-        <TabsContent value="overview" className="space-y-4">
-          {/* Learning journey progress */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <BookOpen className="h-5 w-5 text-blue-400" />
-                Your Learning Journey
-              </CardTitle>
-              <CardDescription>
-                Track your progress through the ham radio learning path
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Overall progress */}
+        <TabsContent value="resources" className="space-y-4 mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {LEARNING_RESOURCES.map((resource, index) => (
+              <ResourceCard key={index} resource={resource} />
+            ))}
+          </div>
+          <div className="text-center">
+            <Button variant="outline" className="bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700">
+              View All Resources
+            </Button>
+          </div>
+        </TabsContent>
+        
+        <TabsContent value="events" className="space-y-4 mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+            {CLUB_EVENTS.map((event, index) => (
+              <EventCard key={index} event={event} />
+            ))}
+          </div>
+          
+          <div className="bg-amber-900 bg-opacity-20 p-3 rounded-md border border-amber-800">
+            <div className="flex items-start gap-2">
+              <InfoIcon className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
               <div>
-                <div className="flex justify-between text-sm text-gray-300 mb-1">
-                  <span>Total Progress</span>
-                  <span>{totalProgress}%</span>
-                </div>
-                <Progress value={totalProgress} className="h-2" />
+                <h4 className="text-sm font-medium text-amber-300 mb-1">Radio Gatherings</h4>
+                <p className="text-xs text-amber-200">For the most up-to-date information on club events, please call on the VE7PRR repeater or contact a club member directly at (604) 485-6916.</p>
               </div>
-              
-              {/* Learning paths */}
-              <div className="space-y-3">
-                {LEARNING_JOURNEY.map(journey => (
-                  <div key={journey.id} className="bg-gray-800 rounded-md p-3">
-                    <div className="flex justify-between items-center mb-2">
-                      <div className="flex items-center gap-2">
-                        <div className="bg-gray-900 p-1.5 rounded-md">
-                          {journey.icon}
-                        </div>
-                        <div>
-                          <h3 className="text-sm font-medium text-gray-200">{journey.title}</h3>
-                          <p className="text-xs text-gray-400">{journey.description}</p>
-                        </div>
-                      </div>
-                      <Badge variant="outline" className="bg-blue-900/30 border-blue-800">
-                        {journey.progress}%
-                      </Badge>
-                    </div>
-                    <Progress value={journey.progress} className="h-1.5 mb-2" />
-                    <div className="text-xs text-gray-500">
-                      <span className="text-gray-300">{journey.modules.filter(m => m.completed).length}</span>
-                      <span> of </span>
-                      <span className="text-gray-300">{journey.modules.length}</span>
-                      <span> modules completed</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-          
-          {/* Personalized recommendation */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center gap-2">
-                <Lightbulb className="h-5 w-5 text-yellow-400" />
-                Recommended Next Steps
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="bg-blue-900/20 border border-blue-800 rounded-md p-3">
-                <div className="flex items-start gap-3">
-                  <div className="bg-blue-900 p-2 rounded-md">
-                    {recommendation.type === 'quiz' && <FileText className="h-8 w-8 text-blue-300" />}
-                    {recommendation.type === 'flashcard' && <BookOpen className="h-8 w-8 text-blue-300" />}
-                    {recommendation.type === 'morse' && <Radio className="h-8 w-8 text-blue-300" />}
-                  </div>
-                  <div>
-                    <h3 className="text-sm font-medium text-blue-300 mb-1">
-                      {recommendation.type === 'quiz' && `Take a ${recommendation.category || 'practice'} quiz`}
-                      {recommendation.type === 'flashcard' && 'Review flashcards'}
-                      {recommendation.type === 'morse' && 'Practice Morse code'}
-                    </h3>
-                    <p className="text-xs text-gray-300">{recommendation.reason}</p>
-                    <Button className="mt-2 bg-blue-800 hover:bg-blue-700 text-xs h-7" size="sm">
-                      Start Now
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
-          
-          {/* Recent activity summary */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm">Recent Activity</CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="flex items-center justify-between py-1 border-b border-gray-800">
-                <div className="flex items-center gap-2">
-                  <FileText className="h-4 w-4 text-blue-400" />
-                  <span className="text-xs text-gray-300">Completed Quiz: Technical</span>
-                </div>
-                <div className="text-xs text-gray-500">Today</div>
-              </div>
-              <div className="flex items-center justify-between py-1 border-b border-gray-800">
-                <div className="flex items-center gap-2">
-                  <BookOpen className="h-4 w-4 text-green-400" />
-                  <span className="text-xs text-gray-300">Flashcard Review: 15 cards</span>
-                </div>
-                <div className="text-xs text-gray-500">Yesterday</div>
-              </div>
-              <div className="flex items-center justify-between py-1 border-b border-gray-800">
-                <div className="flex items-center gap-2">
-                  <Award className="h-4 w-4 text-yellow-400" />
-                  <span className="text-xs text-gray-300">Badge Earned: Consistent Learner</span>
-                </div>
-                <div className="text-xs text-gray-500">3 days ago</div>
-              </div>
-              <div className="flex items-center justify-between py-1">
-                <div className="flex items-center gap-2">
-                  <Radio className="h-4 w-4 text-amber-400" />
-                  <span className="text-xs text-gray-300">Morse Practice: 8 WPM</span>
-                </div>
-                <div className="text-xs text-gray-500">5 days ago</div>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="resources" className="space-y-4">
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-lg flex items-center gap-2">
-                <BookOpen className="h-5 w-5 text-green-400" />
-                Learning Resources
-              </CardTitle>
-              <CardDescription>
-                Curated educational materials to enhance your ham radio skills
-              </CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              {/* Difficulty level tabs */}
-              <Tabs defaultValue="beginner" className="w-full">
-                <TabsList className="grid grid-cols-3 mb-4">
-                  <TabsTrigger value="beginner">Beginner</TabsTrigger>
-                  <TabsTrigger value="intermediate">Intermediate</TabsTrigger>
-                  <TabsTrigger value="advanced">Advanced</TabsTrigger>
-                </TabsList>
-                
-                <TabsContent value="beginner" className="space-y-2">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {filterResourcesByLevel('beginner').map((resource, idx) => (
-                      <ResourceCard key={`beginner-${idx}`} resource={resource} />
-                    ))}
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="intermediate" className="space-y-2">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {filterResourcesByLevel('intermediate').map((resource, idx) => (
-                      <ResourceCard key={`intermediate-${idx}`} resource={resource} />
-                    ))}
-                  </div>
-                </TabsContent>
-                
-                <TabsContent value="advanced" className="space-y-2">
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                    {filterResourcesByLevel('advanced').map((resource, idx) => (
-                      <ResourceCard key={`advanced-${idx}`} resource={resource} />
-                    ))}
-                  </div>
-                </TabsContent>
-              </Tabs>
-            </CardContent>
-            <CardFooter className="text-xs text-gray-400 italic">
-              Resources are updated regularly to reflect the latest educational materials.
-            </CardFooter>
-          </Card>
-          
-          {/* Local exam info */}
-          <Card>
-            <CardHeader className="pb-3">
-              <CardTitle className="text-sm flex items-center gap-2">
-                <FileText className="h-4 w-4 text-blue-400" />
-                Exam Information
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              <div className="bg-gray-800 p-3 rounded-md">
-                <div className="text-sm text-gray-200 mb-1">Powell River Amateur Radio Club Exam Session</div>
-                <div className="text-xs text-gray-400 flex items-center gap-1 mb-1">
-                  <Calendar className="h-3 w-3" />
-                  <span>Second Wednesday monthly, 7:00pm</span>
-                </div>
-                <div className="text-xs text-gray-400 flex items-center gap-1">
-                  <MapPin className="h-3 w-3" />
-                  <span>Powell River Recreation Complex, Room 3</span>
-                </div>
-              </div>
-              
-              <div className="bg-gray-800 p-3 rounded-md">
-                <div className="text-sm text-gray-200 mb-1">Vancouver Island Amateur Radio Society</div>
-                <div className="text-xs text-gray-400 flex items-center gap-1 mb-1">
-                  <Calendar className="h-3 w-3" />
-                  <span>First Saturday bimonthly, 1:00pm</span>
-                </div>
-                <div className="text-xs text-gray-400 flex items-center gap-1">
-                  <MapPin className="h-3 w-3" />
-                  <span>Nanaimo, BC (120km south of Powell River, via ferry)</span>
-                </div>
-              </div>
-              
-              <div className="bg-blue-900/20 border border-blue-800 rounded-md p-3">
-                <div className="text-xs text-blue-300 mb-1 flex items-center">
-                  <Info className="h-3 w-3 mr-1" />
-                  <span>Exam Preparation Tip</span>
-                </div>
-                <p className="text-xs text-gray-300">
-                  The Basic Qualification exam consists of 100 multiple-choice questions. 
-                  You'll need 70% to pass, or 80% to earn Basic with Honours privileges including HF access.
-                </p>
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-        
-        <TabsContent value="achievements">
-          <ProgressBadges />
+            </div>
+          </div>
         </TabsContent>
       </Tabs>
     </div>
