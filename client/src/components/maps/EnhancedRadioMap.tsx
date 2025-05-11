@@ -203,18 +203,32 @@ function AccessibilityMapControls({
   };
 
   // Cycle through map types
-  const cycleMapType = () => {
-    const types: Array<'standard' | 'highContrast' | 'satellite' | 'monochrome'> = 
-      ['standard', 'highContrast', 'satellite', 'monochrome'];
-    const currentIndex = types.indexOf(mapTileType);
-    const nextIndex = (currentIndex + 1) % types.length;
-    setMapTileType(types[nextIndex]);
+  const cycleMapType = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent default link behavior
+    e.stopPropagation(); // Prevent event bubbling
     
-    // Update contrast mode to match if we're selecting high contrast
-    if (types[nextIndex] === 'highContrast') {
-      setContrastMode(true);
-    } else if (types[nextIndex] === 'standard') {
-      setContrastMode(false);
+    try {
+      const types: Array<'standard' | 'highContrast' | 'satellite' | 'monochrome'> = 
+        ['standard', 'highContrast', 'satellite', 'monochrome'];
+      const currentIndex = types.indexOf(mapTileType);
+      const nextIndex = (currentIndex + 1) % types.length;
+      
+      // First update contrast mode if needed
+      if (types[nextIndex] === 'highContrast') {
+        setContrastMode(true);
+      } else if (contrastMode && types[nextIndex] !== 'highContrast') {
+        setContrastMode(false);
+      }
+      
+      // Then set the map tile type
+      setMapTileType(types[nextIndex]);
+      
+      // Update button title with the new map type
+      if (e.currentTarget) {
+        e.currentTarget.setAttribute('title', `Current map style: ${types[nextIndex]}. Click to change.`);
+      }
+    } catch (error) {
+      console.error('Error cycling map type:', error);
     }
   };
 
