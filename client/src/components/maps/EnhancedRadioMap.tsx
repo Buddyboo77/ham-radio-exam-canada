@@ -578,9 +578,15 @@ export default function EnhancedRadioMap({
           {dxSpots && dxSpots.length > 0 && <div className="ml-auto">Updated: {formatTime(dxSpots[0].time)}</div>}
         </div>
       </div>
+      
+      {/* Map instructions - prominent placement above map */}
+      <div className="bg-blue-900 text-white rounded-lg p-3 mb-3 border border-blue-700 shadow-lg flex items-center justify-center">
+        <MapPin className="h-5 w-5 text-blue-300 mr-2" />
+        <span className="text-sm font-medium">Click any marker on the map to view detailed information</span>
+      </div>
     
       {/* Map display */}
-      <div className="flex-1 relative min-h-[300px] rounded-md overflow-hidden border border-gray-700">
+      <div className="flex-1 relative h-[400px] rounded-md overflow-hidden border border-gray-700">
         {isLoading && (
           <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center z-[1000]">
             <div className="bg-gray-900 p-3 rounded-md flex items-center gap-2 shadow-lg">
@@ -590,8 +596,8 @@ export default function EnhancedRadioMap({
           </div>
         )}
         
-        <div className="relative rounded-md overflow-hidden">
-          <MapContainer center={initialCenter} zoom={initialZoom} className="h-full w-full rounded-md">
+        <div className="relative h-full w-full rounded-md overflow-hidden">
+          <MapContainer center={initialCenter} zoom={initialZoom} className="h-full w-full rounded-md" style={{ height: "100%" }}>
             <TileLayer
               attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
               url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
@@ -608,14 +614,6 @@ export default function EnhancedRadioMap({
             {/* Map controls */}
             {userPosition && <RecenterMapControl position={userPosition} />}
           </MapContainer>
-          
-          {/* Overlay instruction banner */}
-          <div className="absolute bottom-3 left-0 right-0 mx-auto w-max z-[1000]">
-            <div className="bg-black/80 backdrop-blur-sm text-white font-semibold px-4 py-2 rounded-full flex items-center shadow-lg border border-blue-500">
-              <MapPin className="h-4 w-4 text-blue-400 mr-2" />
-              Click markers for details
-            </div>
-          </div>
         </div>
       </div>
       
