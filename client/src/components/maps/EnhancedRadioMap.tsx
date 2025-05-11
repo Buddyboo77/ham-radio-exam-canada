@@ -342,6 +342,12 @@ export default function EnhancedRadioMap({
   const [showCoverage, setShowCoverage] = useState(false);
   const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
   
+  // State for enhanced features
+  const [coverageStyle, setCoverageStyle] = useState<'simple' | 'gradient' | 'terrain'>('simple');
+  const [coordinateFormat, setCoordinateFormat] = useState<'dd' | 'dms' | 'grid'>('dd');
+  const [measuringPoints, setMeasuringPoints] = useState<Array<[number, number]>>([]);
+  const [isMeasuring, setIsMeasuring] = useState(false);
+  
   // Animated heatmap effect for refreshing DX spots
   const [recentDXSpots, setRecentDXSpots] = useState<string[]>([]);
   
