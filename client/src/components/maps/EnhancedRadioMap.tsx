@@ -590,27 +590,37 @@ export default function EnhancedRadioMap({
           </div>
         )}
         
-        <MapContainer center={initialCenter} zoom={initialZoom} className="h-full w-full rounded-md">
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-          />
+        <div className="relative rounded-md overflow-hidden">
+          <MapContainer center={initialCenter} zoom={initialZoom} className="h-full w-full rounded-md">
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            
+            {/* Show current user location if enabled */}
+            {showUserLocation && <CurrentLocationMarker setUserPosition={setUserPosition} />}
+            
+            {/* Layer groups */}
+            {repeaterMarkers}
+            {dxSpotMarkers}
+            {userLocationMarkers}
+            
+            {/* Map controls */}
+            {userPosition && <RecenterMapControl position={userPosition} />}
+          </MapContainer>
           
-          {/* Show current user location if enabled */}
-          {showUserLocation && <CurrentLocationMarker setUserPosition={setUserPosition} />}
-          
-          {/* Layer groups */}
-          {repeaterMarkers}
-          {dxSpotMarkers}
-          {userLocationMarkers}
-          
-          {/* Map controls */}
-          {userPosition && <RecenterMapControl position={userPosition} />}
-        </MapContainer>
+          {/* Overlay instruction banner */}
+          <div className="absolute bottom-3 left-0 right-0 mx-auto w-max z-[1000]">
+            <div className="bg-black/80 backdrop-blur-sm text-white font-semibold px-4 py-2 rounded-full flex items-center shadow-lg border border-blue-500">
+              <MapPin className="h-4 w-4 text-blue-400 mr-2" />
+              Click markers for details
+            </div>
+          </div>
+        </div>
       </div>
       
       {/* Marker legend */}
-      <div className="mt-2 bg-blue-900/50 px-3 py-2 rounded-md border border-blue-800 flex flex-wrap gap-4 justify-between items-center">
+      <div className="mt-3 bg-blue-900/80 px-3 py-3 rounded-md border border-blue-700 flex flex-wrap gap-4 justify-between items-center shadow-md z-50">
         <div className="flex gap-3">
           <div className="flex items-center gap-1">
             <img src="https://cdn-icons-png.flaticon.com/512/825/825572.png" className="w-4 h-4" alt="VHF repeater" />
@@ -625,9 +635,8 @@ export default function EnhancedRadioMap({
             <span className="text-[10px] text-blue-100">DX Spot</span>
           </div>
         </div>
-        <div className="text-white text-[11px] font-medium px-2 py-1 bg-blue-800/60 rounded-md flex items-center">
-          <MapPin className="h-3 w-3 mr-1" />
-          Click markers for details
+        <div className="flex items-center gap-2">
+          <div className="text-xs text-white font-semibold">Map Legend</div>
         </div>
       </div>
     </div>
