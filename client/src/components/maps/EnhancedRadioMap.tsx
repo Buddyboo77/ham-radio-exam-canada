@@ -5,7 +5,7 @@ import L from 'leaflet';
 import { Button } from '@/components/ui/button';
 import { Switch } from '@/components/ui/switch';
 import { Label } from '@/components/ui/label';
-import { Loader2, MapPin, Radio, Wifi, Globe, Signal, Search, Target, Layers } from 'lucide-react';
+import { Loader2, MapPin, Radio, Wifi, Globe, Signal, Search, Target, Layers, Eye, ZoomIn, Activity } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import 'leaflet/dist/leaflet.css';
 
@@ -82,6 +82,7 @@ interface EnhancedRadioMapProps {
   initialCenter?: [number, number]; // Default center of map
   initialZoom?: number; // Default zoom level
   showUserLocation?: boolean; // Whether to show and track the user's actual location
+  highContrastMode?: boolean; // Whether to use high contrast mode for accessibility
 }
 
 // Component to get current user location and center map on it
@@ -153,15 +154,77 @@ function RecenterMapControl({ position }: { position: [number, number] }) {
   );
 }
 
+// Accessibility controls for the map
+function AccessibilityMapControls({ 
+  contrastMode, 
+  setContrastMode, 
+  largePrintMode, 
+  setLargePrintMode 
+}: { 
+  contrastMode: boolean;
+  setContrastMode: (value: boolean) => void;
+  largePrintMode: boolean;
+  setLargePrintMode: (value: boolean) => void;
+}) {
+  const map = useMap();
+  
+  // Toggle high contrast mode
+  const toggleContrastMode = () => {
+    setContrastMode(!contrastMode);
+    
+    // You can add code here to modify the map's TileLayer URL or style
+    // when contrast mode changes
+  };
+  
+  // Toggle large print mode
+  const toggleLargePrintMode = () => {
+    setLargePrintMode(!largePrintMode);
+    
+    // You can adjust icon sizes or other map elements
+    // when large print mode changes
+  };
+
+  return (
+    <div className="leaflet-bottom leaflet-left" style={{ marginBottom: "30px" }}>
+      <div className="leaflet-control">
+        <div className="flex flex-col gap-2 bg-white p-1 rounded-sm shadow-md">
+          <button 
+            className={`flex items-center justify-center w-8 h-8 ${contrastMode ? 'bg-blue-700 text-white' : 'bg-white text-gray-800'} hover:bg-blue-600 hover:text-white border border-gray-300 rounded-sm`}
+            onClick={toggleContrastMode}
+            title="Toggle high contrast mode"
+            aria-pressed={contrastMode}
+          >
+            <Eye className="h-4 w-4" />
+          </button>
+          
+          <button 
+            className={`flex items-center justify-center w-8 h-8 ${largePrintMode ? 'bg-blue-700 text-white' : 'bg-white text-gray-800'} hover:bg-blue-600 hover:text-white border border-gray-300 rounded-sm`}
+            onClick={toggleLargePrintMode}
+            title="Toggle large print mode"
+            aria-pressed={largePrintMode}
+          >
+            <ZoomIn className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default function EnhancedRadioMap({ 
   initialCenter = [49.8352, -124.5248], // Default to Powell River
   initialZoom = 7,
   showUserLocation = true,
+  highContrastMode = false,
 }: EnhancedRadioMapProps) {
   // State for layer visibility
   const [showRepeaters, setShowRepeaters] = useState(true);
   const [showDXSpots, setShowDXSpots] = useState(true);
   const [showUsers, setShowUsers] = useState(true);
+  
+  // State for accessibility
+  const [contrastMode, setContrastMode] = useState(highContrastMode);
+  const [largePrintMode, setLargePrintMode] = useState(false);
   const [showCoverage, setShowCoverage] = useState(false);
   const [userPosition, setUserPosition] = useState<[number, number] | null>(null);
   
