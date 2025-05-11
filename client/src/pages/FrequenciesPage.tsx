@@ -82,6 +82,9 @@ const FrequenciesPage = () => {
 
   return (
     <div className="pb-4">
+      {/* Meeting Info Banner - prominent display of club meetings */}
+      <MeetingInfoBanner />
+      
       {/* Active frequency display - styled as a radio tuner */}
       <div className="bg-black border border-gray-700 rounded-md mb-3 p-3">
         <div className="radio-frequency-display text-lg mb-2">
