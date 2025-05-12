@@ -111,8 +111,6 @@ const LEARNING_RESOURCES: ClassResource[] = [
   }
 ];
 
-
-
 export default function LearningDashboard() {
   // Hooks for progress data
   const { progress } = useLearningProgress();
@@ -248,34 +246,33 @@ export default function LearningDashboard() {
         onClick={handleResourceClick}
         className="bg-gray-900 p-3 rounded-md border border-gray-800 flex flex-col hover:bg-gray-800 hover:border-gray-700 transition-colors cursor-pointer"
       >
-      <div className="flex justify-between items-start mb-2">
-        <div className="text-sm font-medium text-gray-200">{resource.title}</div>
-        <Badge variant={
-          resource.level === 'beginner' ? 'outline' :
-          resource.level === 'intermediate' ? 'default' : 'secondary'
-        }>
-          {resource.level}
-        </Badge>
-      </div>
-      <p className="text-xs text-gray-400 mb-2 line-clamp-2">{resource.description}</p>
-      <div className="mt-auto pt-2 flex justify-between items-center text-[10px] text-gray-500">
-        <div className="flex items-center gap-1">
-          {resource.type === 'video' && <Zap className="h-3 w-3" />}
-          {resource.type === 'article' && <BookOpen className="h-3 w-3" />}
-          {resource.type === 'interactive' && <Cpu className="h-3 w-3" />}
-          {resource.type === 'course' && <BookOpenCheck className="h-3 w-3" />}
-          {resource.type === 'book' && <BookOpen className="h-3 w-3" />}
-          <span>{resource.type}</span>
+        <div className="flex justify-between items-start mb-2">
+          <div className="text-sm font-medium text-gray-200">{resource.title}</div>
+          <Badge variant={
+            resource.level === 'beginner' ? 'outline' :
+            resource.level === 'intermediate' ? 'default' : 'secondary'
+          }>
+            {resource.level}
+          </Badge>
         </div>
-        <div className="flex items-center">
-          <span className="mr-1">{resource.duration}</span>
-          <span className="text-blue-400">↗</span>
+        <p className="text-xs text-gray-400 mb-2 line-clamp-2">{resource.description}</p>
+        <div className="mt-auto pt-2 flex justify-between items-center text-[10px] text-gray-500">
+          <div className="flex items-center gap-1">
+            {resource.type === 'video' && <Zap className="h-3 w-3" />}
+            {resource.type === 'article' && <BookOpen className="h-3 w-3" />}
+            {resource.type === 'interactive' && <Cpu className="h-3 w-3" />}
+            {resource.type === 'course' && <BookOpenCheck className="h-3 w-3" />}
+            {resource.type === 'book' && <BookOpen className="h-3 w-3" />}
+            <span>{resource.type}</span>
+          </div>
+          <div className="flex items-center">
+            <span className="mr-1">{resource.duration}</span>
+            <span className="text-blue-400">↗</span>
+          </div>
         </div>
       </div>
-    </div>
-  );
-  
-
+    );
+  };
   
   // Progress recommendation component
   const Recommendation = () => {
