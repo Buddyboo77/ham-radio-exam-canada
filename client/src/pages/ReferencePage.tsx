@@ -2,13 +2,14 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Book, Radio, AlertTriangle, Search, Bookmark, Users, Shield } from "lucide-react";
+import { Book, Radio, AlertTriangle, Search, Bookmark, Users, Shield, Music } from "lucide-react";
 import ReferenceItem from "@/components/reference/ReferenceItem";
 import ClubInfoCard from "@/components/reference/ClubInfoCard";
+import EnhancedMorseCode from "@/components/reference/EnhancedMorseCode";
 import { ReferenceItem as ReferenceItemType } from "@shared/schema";
 
 const ReferencePage = () => {
-  const [activeTab, setActiveTab] = useState<string>("reference");
+  const [activeTab, setActiveTab] = useState<string>("morse");
   const [searchTerm, setSearchTerm] = useState("");
   
   const { data: referenceItems = [], isLoading } = useQuery<ReferenceItemType[]>({
@@ -57,12 +58,18 @@ const ReferencePage = () => {
       </div>
       
       {/* Tab Navigation as Radio Buttons */}
-      <div className="grid grid-cols-3 gap-2 mb-3">
+      <div className="grid grid-cols-4 gap-2 mb-3">
         <button
           className={`radio-channel ${activeTab === 'reference' ? 'active' : ''}`}
           onClick={() => setActiveTab('reference')}
         >
           <Book size={12} className="mr-1" /> Reference
+        </button>
+        <button
+          className={`radio-channel ${activeTab === 'morse' ? 'active' : ''}`}
+          onClick={() => setActiveTab('morse')}
+        >
+          <Music size={12} className="mr-1" /> Morse
         </button>
         <button
           className={`radio-channel ${activeTab === 'club' ? 'active' : ''}`}
@@ -177,6 +184,11 @@ const ReferencePage = () => {
               </div>
             </div>
           </div>
+        )}
+        
+        {/* Morse Code Tab */}
+        {activeTab === 'morse' && (
+          <EnhancedMorseCode />
         )}
         
         {/* Emergency Info Tab */}
