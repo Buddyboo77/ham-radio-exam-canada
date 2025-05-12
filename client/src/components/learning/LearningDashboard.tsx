@@ -42,7 +42,7 @@ const LEARNING_RESOURCES: ClassResource[] = [
     type: "video",
     level: "beginner",
     duration: "20 min",
-    link: "https://www.youtube.com/embed/1uClHuGG_WU",
+    link: "https://www.youtube.com/watch?v=1uClHuGG_WU",
     source: "Dave Casler KE0OG",
     description: "Introduction to amateur radio terminology and basic concepts."
   },
@@ -219,12 +219,35 @@ export default function LearningDashboard() {
     };
   };
   
-  // Component for resource cards
-  const ResourceCard = ({ resource }: { resource: ClassResource }) => (
-    <div 
-      onClick={() => window.open(resource.link, '_blank', 'noopener,noreferrer')}
-      className="bg-gray-900 p-3 rounded-md border border-gray-800 flex flex-col hover:bg-gray-800 hover:border-gray-700 transition-colors cursor-pointer"
-    >
+  // Component for resource cards with reliable link handling
+  const ResourceCard = ({ resource }: { resource: ClassResource }) => {
+    const handleResourceClick = () => {
+      try {
+        // Force window.open to bypass popup blockers with user interaction
+        const newWindow = window.open(resource.link, '_blank');
+        // Fallback if window.open is blocked
+        if (!newWindow || newWindow.closed || typeof newWindow.closed === 'undefined') {
+          // Create a temporary link element and click it
+          const link = document.createElement('a');
+          link.href = resource.link;
+          link.target = '_blank';
+          link.rel = 'noopener noreferrer';
+          document.body.appendChild(link);
+          link.click();
+          document.body.removeChild(link);
+        }
+      } catch (err) {
+        console.error('Failed to open link:', err);
+        // Last resort, try changing location directly
+        window.location.href = resource.link;
+      }
+    };
+
+    return (
+      <div 
+        onClick={handleResourceClick}
+        className="bg-gray-900 p-3 rounded-md border border-gray-800 flex flex-col hover:bg-gray-800 hover:border-gray-700 transition-colors cursor-pointer"
+      >
       <div className="flex justify-between items-start mb-2">
         <div className="text-sm font-medium text-gray-200">{resource.title}</div>
         <Badge variant={
@@ -360,17 +383,14 @@ export default function LearningDashboard() {
             ))}
           </div>
           <div className="text-center">
-            <a 
-              href="https://rac.ca/amateur-radio-links/" 
-              target="_blank" 
-              rel="noopener noreferrer"
-              className="inline-block"
+            <Button 
+              variant="outline" 
+              className="bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700 flex items-center gap-2"
+              onClick={() => window.open("https://rac.ca/amateur-radio-links/", "_blank")}
             >
-              <Button variant="outline" className="bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700 flex items-center gap-2">
-                <span>View More Resources</span>
-                <span className="text-blue-400 text-xs">↗</span>
-              </Button>
-            </a>
+              <span>View More Resources</span>
+              <span className="text-blue-400 text-xs">↗</span>
+            </Button>
           </div>
         </div>
       </div>
