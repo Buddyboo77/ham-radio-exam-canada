@@ -45,14 +45,14 @@ interface ClubEvent {
   recurring?: string;
 }
 
-// Sample learning resources
+// Sample learning resources (with actual links)
 const LEARNING_RESOURCES: ClassResource[] = [
   {
     title: "Amateur Radio Basics",
     type: "video",
     level: "beginner",
     duration: "15 min",
-    link: "#",
+    link: "https://www.youtube.com/watch?v=vwPJ3NhOPoc",
     source: "Ham Radio 2.0",
     description: "Introduction to amateur radio terminology and basic concepts."
   },
@@ -61,7 +61,7 @@ const LEARNING_RESOURCES: ClassResource[] = [
     type: "article",
     level: "beginner",
     duration: "10 min",
-    link: "#",
+    link: "https://www.arrl.org/building-simple-antennas",
     source: "ARRL",
     description: "Learn about different types of antennas and their applications."
   },
@@ -70,16 +70,16 @@ const LEARNING_RESOURCES: ClassResource[] = [
     type: "interactive",
     level: "intermediate",
     duration: "25 min",
-    link: "#",
-    source: "Ham Academy",
-    description: "Interactive simulation of radio wave propagation through various atmospheric conditions."
+    link: "https://www.sws.bom.gov.au/HF_Systems/7/1",
+    source: "Space Weather Services",
+    description: "Interactive resources about radio wave propagation through various atmospheric conditions."
   },
   {
     title: "Morse Code Fundamentals",
     type: "course",
     level: "beginner",
     duration: "3 hours",
-    link: "#",
+    link: "https://cwops.org/cw-academy/",
     source: "CW Academy",
     description: "Complete beginner's course for learning Morse code from scratch."
   },
@@ -88,7 +88,7 @@ const LEARNING_RESOURCES: ClassResource[] = [
     type: "book",
     level: "intermediate",
     duration: "8 hours",
-    link: "#",
+    link: "https://rac.ca/study-guides/",
     source: "RAC Publications",
     description: "In-depth guide to radio electronics, components and circuit design."
   },
@@ -97,9 +97,27 @@ const LEARNING_RESOURCES: ClassResource[] = [
     type: "video",
     level: "intermediate",
     duration: "45 min",
-    link: "#",
+    link: "https://www.youtube.com/watch?v=WOb0X4b1DfU",
     source: "Digital Ham",
     description: "Overview of popular digital communication modes including FT8, RTTY, and PSK31."
+  },
+  {
+    title: "Canadian Amateur Radio Exam Prep",
+    type: "course",
+    level: "beginner",
+    duration: "10 hours",
+    link: "https://www.ic.gc.ca/eic/site/025.nsf/eng/h_00040.html",
+    source: "Innovation, Science and Economic Development Canada",
+    description: "Official study materials for Canadian amateur radio operator certification."
+  },
+  {
+    title: "Powell River Amateur Radio Club",
+    type: "article",
+    level: "beginner",
+    duration: "5 min",
+    link: "https://powellriverarc.ca/",
+    source: "PRARC",
+    description: "Resources and information specific to the Powell River Amateur Radio Club."
   }
 ];
 
@@ -243,7 +261,12 @@ export default function LearningDashboard() {
   
   // Component for resource cards
   const ResourceCard = ({ resource }: { resource: ClassResource }) => (
-    <div className="bg-gray-900 p-3 rounded-md border border-gray-800 flex flex-col">
+    <a 
+      href={resource.link} 
+      target="_blank" 
+      rel="noopener noreferrer" 
+      className="bg-gray-900 p-3 rounded-md border border-gray-800 flex flex-col hover:bg-gray-800 hover:border-gray-700 transition-colors"
+    >
       <div className="flex justify-between items-start mb-2">
         <div className="text-sm font-medium text-gray-200">{resource.title}</div>
         <Badge variant={
@@ -263,9 +286,12 @@ export default function LearningDashboard() {
           {resource.type === 'book' && <BookOpen className="h-3 w-3" />}
           <span>{resource.type}</span>
         </div>
-        <div>{resource.duration}</div>
+        <div className="flex items-center">
+          <span className="mr-1">{resource.duration}</span>
+          <span className="text-blue-400">↗</span>
+        </div>
       </div>
-    </div>
+    </a>
   );
   
   // Component for event cards
@@ -397,9 +423,17 @@ export default function LearningDashboard() {
             ))}
           </div>
           <div className="text-center">
-            <Button variant="outline" className="bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700">
-              View All Resources
-            </Button>
+            <a 
+              href="https://rac.ca/amateur-radio-links/" 
+              target="_blank" 
+              rel="noopener noreferrer"
+              className="inline-block"
+            >
+              <Button variant="outline" className="bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700 flex items-center gap-2">
+                <span>View More Resources</span>
+                <span className="text-blue-400 text-xs">↗</span>
+              </Button>
+            </a>
           </div>
         </TabsContent>
         

@@ -471,7 +471,7 @@ export default function EnhancedLearningPage() {
                 <div className="mb-4">
                   <div className="mb-2 text-xs text-gray-300">Number of questions:</div>
                   <div className="grid grid-cols-4 gap-2">
-                    {[10, 25, 50, 100].map(count => (
+                    {[5, 10, 15, 20].map(count => (
                       <div
                         key={count}
                         className={`px-2 py-1 rounded-sm text-[10px] cursor-pointer text-center border ${
