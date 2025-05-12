@@ -42,7 +42,7 @@ const LEARNING_RESOURCES: ClassResource[] = [
     type: "video",
     level: "beginner",
     duration: "20 min",
-    link: "https://www.youtube.com/watch?v=1uClHuGG_WU",
+    link: "https://www.youtube.com/embed/1uClHuGG_WU",
     source: "Dave Casler KE0OG",
     description: "Introduction to amateur radio terminology and basic concepts."
   },
@@ -221,11 +221,9 @@ export default function LearningDashboard() {
   
   // Component for resource cards
   const ResourceCard = ({ resource }: { resource: ClassResource }) => (
-    <a 
-      href={resource.link} 
-      target="_blank" 
-      rel="noopener noreferrer" 
-      className="bg-gray-900 p-3 rounded-md border border-gray-800 flex flex-col hover:bg-gray-800 hover:border-gray-700 transition-colors"
+    <div 
+      onClick={() => window.open(resource.link, '_blank', 'noopener,noreferrer')}
+      className="bg-gray-900 p-3 rounded-md border border-gray-800 flex flex-col hover:bg-gray-800 hover:border-gray-700 transition-colors cursor-pointer"
     >
       <div className="flex justify-between items-start mb-2">
         <div className="text-sm font-medium text-gray-200">{resource.title}</div>
@@ -251,7 +249,7 @@ export default function LearningDashboard() {
           <span className="text-blue-400">↗</span>
         </div>
       </div>
-    </a>
+    </div>
   );
   
 
