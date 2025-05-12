@@ -85,6 +85,7 @@ function Router() {
     { path: "/logbook", label: "Logbook", icon: <FileText size={18} /> },
     { path: "/reference", label: "Reference", icon: <BookOpen size={18} /> },
     { path: "/learning", label: "Learning", icon: <BookOpenCheck size={18} /> },
+    { path: "/morse-code", label: "Morse Code", icon: <Radio size={18} /> },
     { path: "/local-info", label: "Powell River", icon: <RadioTower size={18} /> },
   ];
   
@@ -208,6 +209,10 @@ function Router() {
               
               <ProtectedRoute path="/local-info">
                 <LocalInfoPage />
+              </ProtectedRoute>
+              
+              <ProtectedRoute path="/morse-code">
+                <MorseCodePage />
               </ProtectedRoute>
               
               <Route component={NotFound} />

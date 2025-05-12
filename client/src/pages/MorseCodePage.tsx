@@ -1,6 +1,6 @@
 import { Radio, Music, Award } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import MorseCodeGame from "@/components/games/MorseCodeGame";
+import { MorseCodeGame } from "@/components/games/MorseCodeGame";
 import EnhancedMorseCode from "@/components/reference/EnhancedMorseCode";
 
 const MorseCodePage = () => {

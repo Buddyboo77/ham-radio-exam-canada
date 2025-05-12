@@ -1,90 +1,51 @@
-import { useState, useEffect } from "react";
-import { Play, Pause, Volume2, Copy, Info, VolumeX } from "lucide-react";
+import { useState, useEffect, useRef } from "react";
+import { Play, Pause, Volume2, VolumeX, Music, Copy, Check } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+import { Slider } from "@/components/ui/slider";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Badge } from "@/components/ui/badge";
+import { Textarea } from "@/components/ui/textarea";
+import { toast } from "@/hooks/use-toast";
 
-interface MorseCharacter {
-  char: string;
-  morse: string;
-  color?: string;
-}
+// Morse code dictionary
+const MORSE_CODE_DICT: Record<string, string> = {
+  'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 
+  'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 
+  'M': '--', 'N': '-.', 'O': '---', 'P': '.--.', 'Q': '--.-', 'R': '.-.', 
+  'S': '...', 'T': '-', 'U': '..-', 'V': '...-', 'W': '.--', 'X': '-..-', 
+  'Y': '-.--', 'Z': '--..', '0': '-----', '1': '.----', '2': '..---', 
+  '3': '...--', '4': '....-', '5': '.....', '6': '-....', '7': '--...', 
+  '8': '---..', '9': '----.', '.': '.-.-.-', ',': '--..--', '?': '..--..', 
+  "'": '.----.', '!': '-.-.--', '/': '-..-.', '(': '-.--.', ')': '-.--.-', 
+  '&': '.-...', ':': '---...', ';': '-.-.-.', '=': '-...-', '+': '.-.-.', 
+  '-': '-....-', '_': '..--.-', '"': '.-..-.', '$': '...-..-', '@': '.--.-.',
+  'SOS': '...---...'
+};
 
-// Modern grouped Morse code chart
-const MORSE_CODE: Record<string, MorseCharacter[]> = {
-  "Letters": [
-    { char: "A", morse: ".-" },
-    { char: "B", morse: "-..." },
-    { char: "C", morse: "-.-." },
-    { char: "D", morse: "-.." },
-    { char: "E", morse: "." },
-    { char: "F", morse: "..-." },
-    { char: "G", morse: "--." },
-    { char: "H", morse: "...." },
-    { char: "I", morse: ".." },
-    { char: "J", morse: ".---" },
-    { char: "K", morse: "-.-" },
-    { char: "L", morse: ".-.." },
-    { char: "M", morse: "--" },
-    { char: "N", morse: "-." },
-    { char: "O", morse: "---" },
-    { char: "P", morse: ".--." },
-    { char: "Q", morse: "--.-" },
-    { char: "R", morse: ".-." },
-    { char: "S", morse: "..." },
-    { char: "T", morse: "-" },
-    { char: "U", morse: "..-" },
-    { char: "V", morse: "...-" },
-    { char: "W", morse: ".--" },
-    { char: "X", morse: "-..-" },
-    { char: "Y", morse: "-.--" },
-    { char: "Z", morse: "--.." }
-  ],
-  "Numbers": [
-    { char: "0", morse: "-----", color: "text-amber-400" },
-    { char: "1", morse: ".----", color: "text-amber-400" },
-    { char: "2", morse: "..---", color: "text-amber-400" },
-    { char: "3", morse: "...--", color: "text-amber-400" },
-    { char: "4", morse: "....-", color: "text-amber-400" },
-    { char: "5", morse: ".....", color: "text-amber-400" },
-    { char: "6", morse: "-....", color: "text-amber-400" },
-    { char: "7", morse: "--...", color: "text-amber-400" },
-    { char: "8", morse: "---..", color: "text-amber-400" },
-    { char: "9", morse: "----.", color: "text-amber-400" }
-  ],
-  "Punctuation": [
-    { char: ".", morse: ".-.-.-", color: "text-green-400" },
-    { char: ",", morse: "--..--", color: "text-green-400" },
-    { char: "?", morse: "..--..", color: "text-green-400" },
-    { char: "'", morse: ".----.", color: "text-green-400" },
-    { char: "!", morse: "-.-.--", color: "text-green-400" },
-    { char: "/", morse: "-..-.", color: "text-green-400" },
-    { char: "(", morse: "-.--.", color: "text-green-400" },
-    { char: ")", morse: "-.--.-", color: "text-green-400" },
-    { char: "&", morse: ".-...", color: "text-green-400" },
-    { char: ":", morse: "---...", color: "text-green-400" },
-    { char: ";", morse: "-.-.-.", color: "text-green-400" },
-    { char: "=", morse: "-...-", color: "text-green-400" },
-    { char: "+", morse: ".-.-.", color: "text-green-400" },
-    { char: "-", morse: "-....-", color: "text-green-400" },
-    { char: "_", morse: "..--.-", color: "text-green-400" },
-    { char: "\"", morse: ".-..-.", color: "text-green-400" },
-    { char: "$", morse: "...-..-", color: "text-green-400" },
-    { char: "@", morse: ".--.-.", color: "text-green-400" }
-  ],
-  "Prosigns": [
-    { char: "AR", morse: ".-.-.", color: "text-purple-400" },
-    { char: "SK", morse: "...-.-", color: "text-purple-400" },
-    { char: "BT", morse: "-...-", color: "text-purple-400" },
-    { char: "KN", morse: "-.--.", color: "text-purple-400" },
-    { char: "CL", morse: "-.-..-..", color: "text-purple-400" },
-    { char: "SOS", morse: "...---...", color: "text-red-500" }
-  ]
+// Reverse morse code dictionary for decoding
+const REVERSE_MORSE_CODE_DICT: Record<string, string> = 
+  Object.entries(MORSE_CODE_DICT).reduce((acc, [key, value]) => {
+    acc[value] = key;
+    return acc;
+  }, {} as Record<string, string>);
+
+// Prosigns
+const PROSIGNS = {
+  'AR': '.-.-.',    // End of message
+  'AS': '.-...',    // Wait
+  'BT': '-...-',    // Break / New section
+  'KN': '-.--.',    // Go only named station
+  'SK': '...-.-',   // End of contact
+  'CL': '-.-..-..'  // Going off the air / Clear
 };
 
 // Audio context for Morse code playback
@@ -92,84 +53,68 @@ let audioContext: AudioContext | null = null;
 let oscillator: OscillatorNode | null = null;
 let gainNode: GainNode | null = null;
 
+// Helper to encode text to morse code
+const textToMorse = (text: string): string => {
+  return text
+    .toUpperCase()
+    .split('')
+    .map(char => {
+      if (char === ' ') {
+        return ' / ';
+      }
+      return MORSE_CODE_DICT[char] || '';
+    })
+    .filter(code => code !== '')
+    .join(' ');
+};
+
+// Helper to decode morse to text
+const morseToText = (morse: string): string => {
+  return morse
+    .split(' / ')
+    .map(word => 
+      word
+        .split(' ')
+        .map(code => REVERSE_MORSE_CODE_DICT[code] || '')
+        .join('')
+    )
+    .join(' ');
+};
+
 const EnhancedMorseCode: React.FC = () => {
-  const [selectedChar, setSelectedChar] = useState<MorseCharacter | null>(null);
-  const [inputText, setInputText] = useState("");
-  const [morseOutput, setMorseOutput] = useState("");
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [wpm, setWpm] = useState(15); // Words per minute
-  const [activeSection, setActiveSection] = useState<string>("Letters");
-  const [copySuccess, setCopySuccess] = useState(false);
-
-  // Initialize audio context
+  // State
+  const [inputText, setInputText] = useState<string>('');
+  const [morseCode, setMorseCode] = useState<string>('');
+  const [decodedText, setDecodedText] = useState<string>('');
+  const [wpm, setWpm] = useState<number>(15);
+  const [volume, setVolume] = useState<number>(70);
+  const [isPlaying, setIsPlaying] = useState<boolean>(false);
+  const [currentTab, setCurrentTab] = useState<string>('converter');
+  const [copied, setCopied] = useState<boolean>(false);
+  
+  // Update morse code when input text changes
   useEffect(() => {
-    return () => {
-      if (oscillator) {
-        oscillator.stop();
-        oscillator.disconnect();
-      }
-      if (audioContext) {
-        audioContext.close();
-      }
-    };
-  }, []);
-
-  // Convert text to Morse code
-  useEffect(() => {
-    const convertToMorse = (text: string): string => {
-      return text
-        .toUpperCase()
-        .split("")
-        .map(char => {
-          // Find the character in our Morse code dictionary
-          for (const section in MORSE_CODE) {
-            const found = MORSE_CODE[section].find(item => item.char === char);
-            if (found) return found.morse;
-          }
-          // Handle space
-          if (char === " ") return "   "; // 3 spaces for word separation
-          return ""; // Ignore characters not in the dictionary
-        })
-        .join(" "); // 1 space between characters
-    };
-
-    setMorseOutput(convertToMorse(inputText));
+    setMorseCode(textToMorse(inputText));
   }, [inputText]);
-
-  const handleCharClick = (char: MorseCharacter) => {
-    setSelectedChar(char);
-    if (!isMuted) {
-      playMorseSound(char.morse);
+  
+  // Update decoded text when morse code changes
+  useEffect(() => {
+    try {
+      setDecodedText(morseToText(morseCode));
+    } catch (error) {
+      setDecodedText('');
     }
-  };
-
-  const handleCopyMorse = () => {
-    navigator.clipboard.writeText(morseOutput);
-    setCopySuccess(true);
-    setTimeout(() => setCopySuccess(false), 2000);
-  };
-
-  const togglePlay = () => {
-    if (isPlaying) {
-      stopMorseSound();
-    } else {
-      playMorseSound(morseOutput);
+  }, [morseCode]);
+  
+  // Play morse code
+  const playMorseCode = () => {
+    if (morseCode.trim() === '') return;
+    
+    // Clean up previous audio
+    if (oscillator) {
+      oscillator.stop();
+      oscillator.disconnect();
     }
-    setIsPlaying(!isPlaying);
-  };
-
-  const toggleMute = () => {
-    setIsMuted(!isMuted);
-    if (isPlaying) {
-      stopMorseSound();
-      setIsPlaying(false);
-    }
-  };
-
-  // Play Morse code as sound
-  const playMorseSound = (morse: string) => {
-    stopMorseSound(); // Stop any current playback
     
     if (!audioContext) {
       audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
@@ -189,259 +134,278 @@ const EnhancedMorseCode: React.FC = () => {
     oscillator.type = "sine";
     oscillator.frequency.value = 700; // Hz
     
+    gainNode.gain.value = volume / 100; // Convert percentage to gain (0-1)
+    
     oscillator.connect(gainNode);
     gainNode.connect(audioContext.destination);
     
-    gainNode.gain.value = 0; // Start silent
     oscillator.start();
+    gainNode.gain.value = 0; // Start silent
     
     let currentTime = audioContext.currentTime;
     
-    for (let i = 0; i < morse.length; i++) {
-      const char = morse[i];
+    // Split into words (separated by /)
+    const words = morseCode.split(' / ');
+    
+    words.forEach((word, wordIdx) => {
+      // Split word into characters (separated by space)
+      const characters = word.split(' ');
       
-      if (char === ".") {
-        // Play a dot
-        gainNode.gain.setValueAtTime(0.5, currentTime);
-        currentTime += dotDuration;
-        gainNode.gain.setValueAtTime(0, currentTime);
-        currentTime += pauseBetweenElements;
-      } else if (char === "-") {
-        // Play a dash
-        gainNode.gain.setValueAtTime(0.5, currentTime);
-        currentTime += dashDuration;
-        gainNode.gain.setValueAtTime(0, currentTime);
-        currentTime += pauseBetweenElements;
-      } else if (char === " ") {
-        // Space - adjust timing depending on number of consecutive spaces
-        if (i + 1 < morse.length && morse[i + 1] === " " && morse[i + 2] === " ") {
-          // Three spaces means a pause between words
-          currentTime += pauseBetweenWords;
-          i += 2; // Skip the next two spaces
-        } else {
-          // Otherwise it's a pause between characters
+      characters.forEach((character, charIdx) => {
+        for (let i = 0; i < character.length; i++) {
+          const symbol = character[i];
+          
+          if (symbol === '.') {
+            // Play a dot
+            gainNode!.gain.setValueAtTime(volume / 100, currentTime);
+            currentTime += dotDuration;
+            gainNode!.gain.setValueAtTime(0, currentTime);
+            currentTime += pauseBetweenElements;
+          } else if (symbol === '-') {
+            // Play a dash
+            gainNode!.gain.setValueAtTime(volume / 100, currentTime);
+            currentTime += dashDuration;
+            gainNode!.gain.setValueAtTime(0, currentTime);
+            currentTime += pauseBetweenElements;
+          }
+        }
+        
+        // Add pause between characters unless it's the last character
+        if (charIdx < characters.length - 1) {
           currentTime += pauseBetweenCharacters;
         }
+      });
+      
+      // Add pause between words unless it's the last word
+      if (wordIdx < words.length - 1) {
+        currentTime += pauseBetweenWords;
       }
-    }
+    });
     
     // Stop after playing the last symbol
     oscillator.stop(currentTime);
+    
+    // Flag playback as active
+    setIsPlaying(true);
     
     // Set a timeout to update the UI when playback finishes
     setTimeout(() => {
       setIsPlaying(false);
     }, (currentTime - audioContext.currentTime) * 1000);
   };
-
-  const stopMorseSound = () => {
+  
+  // Stop playback
+  const stopPlayback = () => {
     if (oscillator) {
       oscillator.stop();
       oscillator.disconnect();
-      oscillator = null;
     }
-    if (gainNode) {
-      gainNode.disconnect();
-      gainNode = null;
-    }
+    setIsPlaying(false);
   };
-
+  
+  // Handle copying to clipboard
+  const copyToClipboard = (text: string) => {
+    navigator.clipboard.writeText(text).then(() => {
+      setCopied(true);
+      
+      toast({
+        title: "Copied to clipboard",
+        description: "The text has been copied to your clipboard.",
+      });
+      
+      setTimeout(() => {
+        setCopied(false);
+      }, 2000);
+    });
+  };
+  
+  // Organized character sets for the reference cards
+  const characterSets = {
+    'Letters': Object.entries(MORSE_CODE_DICT).filter(([key]) => /^[A-Z]$/.test(key)),
+    'Numbers': Object.entries(MORSE_CODE_DICT).filter(([key]) => /^[0-9]$/.test(key)),
+    'Punctuation': Object.entries(MORSE_CODE_DICT).filter(([key]) => /^[^A-Z0-9]$/.test(key) && key.length === 1),
+    'Prosigns': Object.entries(PROSIGNS)
+  };
+  
+  // Render the converter tab content
+  const renderConverterTab = () => (
+    <div className="space-y-4">
+      <Card className="bg-gray-850 border-gray-700">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-lg">Text to Morse Code Converter</CardTitle>
+          <CardDescription>
+            Type text below to convert it to Morse code
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-3">
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-sm font-medium text-gray-300">Input Text</label>
+                <Button 
+                  variant="ghost" 
+                  size="sm"
+                  className="h-6 px-2"
+                  onClick={() => setInputText('')}
+                >
+                  Clear
+                </Button>
+              </div>
+              <Textarea 
+                value={inputText}
+                onChange={e => setInputText(e.target.value)}
+                placeholder="Type text to convert to Morse code..."
+                className="bg-gray-950 border-gray-800 focus:ring-blue-600"
+              />
+            </div>
+            
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-sm font-medium text-gray-300">Morse Code</label>
+                <div className="flex gap-1">
+                  <Button 
+                    variant="ghost" 
+                    size="sm"
+                    className="h-6 px-2"
+                    onClick={() => copyToClipboard(morseCode)}
+                  >
+                    {copied ? <Check size={14} /> : <Copy size={14} />}
+                  </Button>
+                  <Button 
+                    variant={isPlaying ? "destructive" : "default"}
+                    size="sm"
+                    className="h-6 px-2"
+                    onClick={isPlaying ? stopPlayback : playMorseCode}
+                    disabled={morseCode.trim() === ''}
+                  >
+                    {isPlaying ? <Pause size={14} /> : <Play size={14} />}
+                  </Button>
+                </div>
+              </div>
+              <div className="bg-gray-950 border border-gray-800 rounded-md p-3 font-mono text-gray-300 min-h-[60px] break-all">
+                {morseCode || <span className="text-gray-500">Morse code will appear here...</span>}
+              </div>
+            </div>
+            
+            <div>
+              <div className="flex items-center justify-between mb-1">
+                <label className="text-sm font-medium text-gray-300">Playback Settings</label>
+              </div>
+              <div className="grid grid-cols-2 gap-4">
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-400">Speed (WPM)</span>
+                    <Badge variant="outline" className="text-xs h-5">{wpm} WPM</Badge>
+                  </div>
+                  <Slider 
+                    min={5} 
+                    max={40} 
+                    step={1} 
+                    value={[wpm]} 
+                    onValueChange={value => setWpm(value[0])}
+                    className="py-4"
+                  />
+                </div>
+                <div>
+                  <div className="flex items-center justify-between">
+                    <span className="text-xs text-gray-400">Volume</span>
+                    <Badge variant="outline" className="text-xs h-5">{volume}%</Badge>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <VolumeX size={16} className="text-gray-400" />
+                    <Slider 
+                      min={0} 
+                      max={100} 
+                      step={5} 
+                      value={[volume]} 
+                      onValueChange={value => setVolume(value[0])}
+                      className="flex-1"
+                    />
+                    <Volume2 size={16} className="text-gray-400" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+    </div>
+  );
+  
+  // Render the reference tab content
+  const renderReferenceTab = () => (
+    <div className="space-y-4">
+      <Tabs defaultValue="Letters">
+        <TabsList className="grid grid-cols-4">
+          <TabsTrigger value="Letters">Letters</TabsTrigger>
+          <TabsTrigger value="Numbers">Numbers</TabsTrigger>
+          <TabsTrigger value="Punctuation">Punctuation</TabsTrigger>
+          <TabsTrigger value="Prosigns">Prosigns</TabsTrigger>
+        </TabsList>
+        
+        {Object.entries(characterSets).map(([category, chars]) => (
+          <TabsContent key={category} value={category} className="space-y-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
+              {chars.map(([char, code]) => (
+                <Card key={char} className="bg-gray-850 border-gray-700">
+                  <CardContent className="p-3">
+                    <div className="flex justify-between items-center">
+                      <div className="text-xl font-mono font-bold text-blue-300">{char}</div>
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="h-6 w-6 p-0"
+                        onClick={() => {
+                          if (!audioContext) {
+                            audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
+                          }
+                          
+                          // Play just this character
+                          setMorseCode(code);
+                          playMorseCode();
+                        }}
+                      >
+                        <Music size={14} />
+                      </Button>
+                    </div>
+                    <div className="font-mono text-gray-300 mt-1">{code}</div>
+                    <div className="flex items-center gap-1 mt-2">
+                      {code.split('').map((symbol, index) => (
+                        <span 
+                          key={index} 
+                          className={`inline-block ${symbol === '.' ? 'w-2 h-2' : 'w-6 h-2'} rounded-full ${
+                            symbol === '.' ? 'bg-blue-400' : 'bg-blue-600'
+                          }`}
+                        />
+                      ))}
+                    </div>
+                  </CardContent>
+                </Card>
+              ))}
+            </div>
+          </TabsContent>
+        ))}
+      </Tabs>
+    </div>
+  );
+  
+  // Main component render
   return (
     <div className="space-y-4">
-      {/* Header with title and Morse code fact */}
-      <div className="bg-gradient-to-r from-blue-900 to-purple-900 rounded-lg p-3 border border-blue-700">
-        <h2 className="text-lg font-bold text-white mb-1 flex items-center gap-2">
-          <span className="morse-icon w-5 h-5 bg-blue-500 rounded-full flex items-center justify-center">•</span>
-          Morse Code Reference
-        </h2>
-        <p className="text-xs text-blue-100 mb-2">
-          Developed in the 1830s, Morse code remains vital for emergency communications
-          and is used by radio operators worldwide.
-        </p>
-        <div className="flex items-center justify-between">
-          <div className="flex gap-2">
-            <Badge variant="secondary" className="bg-blue-800 hover:bg-blue-700 text-[10px]">
-              SOS = ...---...
-            </Badge>
-            <Badge variant="secondary" className="bg-purple-800 hover:bg-purple-700 text-[10px] hidden sm:flex">
-              International Standard
-            </Badge>
-          </div>
-          <div className="text-[9px] text-blue-200 flex items-center">
-            <Info size={10} className="mr-1" /> 
-            <span>Dots: short signals, Dashes: long signals</span>
-          </div>
-        </div>
-      </div>
-
-      {/* Interactive Morse translator */}
-      <div className="bg-gray-850 rounded-lg p-3 border border-gray-700">
-        <div className="mb-3">
-          <label className="text-xs text-gray-400 mb-1 block">Type to convert to Morse code:</label>
-          <div className="flex items-center gap-2">
-            <input
-              type="text"
-              value={inputText}
-              onChange={(e) => setInputText(e.target.value)}
-              placeholder="Enter text here..."
-              className="w-full bg-gray-900 border border-gray-700 rounded-md px-3 py-2 text-white text-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            />
-            <div className="flex-shrink-0">
-              <Button
-                size="sm"
-                variant="ghost"
-                className={`h-9 px-2 ${copySuccess ? 'text-green-400' : 'text-gray-400'}`}
-                onClick={handleCopyMorse}
-              >
-                <Copy size={16} />
-              </Button>
-            </div>
-            <div className="flex-shrink-0">
-              <Button
-                size="sm"
-                variant="ghost"
-                className={`h-9 px-2 ${isPlaying ? 'text-blue-400' : 'text-gray-400'}`}
-                onClick={togglePlay}
-              >
-                {isPlaying ? <Pause size={16} /> : <Play size={16} />}
-              </Button>
-            </div>
-            <div className="flex-shrink-0">
-              <Button
-                size="sm"
-                variant="ghost"
-                className={`h-9 px-2 ${isMuted ? 'text-gray-500' : 'text-gray-400'}`}
-                onClick={toggleMute}
-              >
-                {isMuted ? <VolumeX size={16} /> : <Volume2 size={16} />}
-              </Button>
-            </div>
-          </div>
-          <div className="mt-2 p-2 bg-gray-900 border border-gray-800 rounded-md min-h-[40px] text-sm font-mono">
-            <span className="text-blue-400">{morseOutput || '• • •   — — —   • • •'}</span>
-          </div>
-        </div>
-
-        {/* WPM (speed) slider */}
-        <div className="mb-4 flex items-center gap-2">
-          <span className="text-xs text-gray-400 w-12">Speed:</span>
-          <input
-            type="range"
-            min="5"
-            max="30"
-            value={wpm}
-            onChange={(e) => setWpm(parseInt(e.target.value))}
-            className="flex-1 h-1.5 appearance-none rounded-full bg-gray-700"
-          />
-          <span className="text-xs font-mono text-gray-300 w-12">{wpm} WPM</span>
-        </div>
-
-        {/* Selected character focus view */}
-        {selectedChar && (
-          <div className="mb-4 p-3 bg-gray-800 border border-gray-700 rounded-lg flex flex-col items-center">
-            <div className="text-4xl font-bold mb-2 text-blue-300">{selectedChar.char}</div>
-            <div className="text-xl font-mono mb-1">{selectedChar.morse}</div>
-            <div className="flex items-center gap-2">
-              {selectedChar.morse.split('').map((symbol, index) => (
-                <span 
-                  key={index} 
-                  className={`inline-block ${symbol === '.' ? 'w-2 h-2' : 'w-6 h-2'} rounded-full ${
-                    symbol === '.' ? 'bg-blue-400' : 'bg-blue-600'
-                  }`}
-                />
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Morse code chart with tabs */}
-        <div className="rounded-lg border border-gray-700 overflow-hidden">
-          <div className="flex bg-gray-800">
-            {Object.keys(MORSE_CODE).map((section) => (
-              <button
-                key={section}
-                className={`text-xs py-2 px-3 ${
-                  activeSection === section
-                    ? 'bg-blue-900 text-white'
-                    : 'bg-gray-800 text-gray-400 hover:bg-gray-750'
-                }`}
-                onClick={() => setActiveSection(section)}
-              >
-                {section}
-              </button>
-            ))}
-          </div>
-          
-          <div className="p-3 bg-gray-850 max-h-[220px] overflow-y-auto">
-            <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 gap-2">
-              {MORSE_CODE[activeSection].map((item) => (
-                <TooltipProvider key={item.char}>
-                  <Tooltip>
-                    <TooltipTrigger asChild>
-                      <button
-                        className={`relative p-2 rounded-md border transition-all ${
-                          selectedChar?.char === item.char
-                            ? 'bg-blue-900 border-blue-700'
-                            : 'bg-gray-800 border-gray-700 hover:bg-gray-750'
-                        }`}
-                        onClick={() => handleCharClick(item)}
-                      >
-                        <div className={`text-xl font-bold mb-1 ${item.color || 'text-blue-300'}`}>
-                          {item.char}
-                        </div>
-                        <div className="text-xs text-gray-300 font-mono">{item.morse}</div>
-                        <div className="absolute bottom-0 right-0 opacity-20">
-                          {item.morse.includes('...---...') && (
-                            <span className="text-red-500 font-bold text-4xl">SOS</span>
-                          )}
-                        </div>
-                      </button>
-                    </TooltipTrigger>
-                    <TooltipContent side="top" className="bg-gray-800 border-gray-700">
-                      <div className="text-center">
-                        <p className="text-sm">Click to play</p>
-                        <div className="flex items-center justify-center mt-1 gap-1">
-                          {item.morse.split('').map((symbol, index) => (
-                            <span 
-                              key={index} 
-                              className={`inline-block ${symbol === '.' ? 'w-1.5 h-1.5' : 'w-5 h-1.5'} rounded-full ${
-                                symbol === '.' ? 'bg-blue-400' : 'bg-blue-600'
-                              }`}
-                            />
-                          ))}
-                        </div>
-                      </div>
-                    </TooltipContent>
-                  </Tooltip>
-                </TooltipProvider>
-              ))}
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Tips and tricks section */}
-      <div className="bg-blue-900 bg-opacity-20 rounded-lg p-3 border border-blue-800">
-        <h3 className="text-sm font-medium text-blue-300 mb-2">Tips for Learning Morse Code</h3>
-        <ul className="space-y-1 text-xs text-gray-300">
-          <li className="flex items-start gap-1">
-            <span className="text-blue-400 text-lg leading-none">•</span>
-            <span>Focus on sound patterns rather than dots and dashes</span>
-          </li>
-          <li className="flex items-start gap-1">
-            <span className="text-blue-400 text-lg leading-none">•</span>
-            <span>Practice daily with short, regular sessions</span>
-          </li>
-          <li className="flex items-start gap-1">
-            <span className="text-blue-400 text-lg leading-none">•</span>
-            <span>Start with common letters (E, T, A, N, I, S, O)</span>
-          </li>
-          <li className="flex items-start gap-1">
-            <span className="text-blue-400 text-lg leading-none">•</span>
-            <span>Use the integrated translator tool to practice sending messages</span>
-          </li>
-        </ul>
-      </div>
+      <Tabs value={currentTab} onValueChange={setCurrentTab}>
+        <TabsList className="grid grid-cols-2">
+          <TabsTrigger value="converter">Converter & Playback</TabsTrigger>
+          <TabsTrigger value="reference">Character Reference</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="converter">
+          {renderConverterTab()}
+        </TabsContent>
+        
+        <TabsContent value="reference">
+          {renderReferenceTab()}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 };
