@@ -1,688 +1,476 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Progress } from "@/components/ui/progress";
+import { Brain, RefreshCw, Check, X, ChevronRight, BookOpen, HelpCircle } from "lucide-react";
 import { 
-  RotateCw, 
-  Plus, 
-  Book, 
-  AlertCircle, 
-  Info,
-  CheckCircle2,
-  XCircle,
-  Clock,
-  ArrowRight,
-  Brain,
-  ArrowLeftRight,
-  Sparkles
-} from "lucide-react";
-import { v4 as uuidv4 } from 'uuid';
-
-// Import hooks
-import { useSpacedRepetition, FlashcardWithMetadata } from "@/hooks/use-spaced-repetition";
+  useSpacedRepetition, 
+  FlashcardWithMetadata 
+} from "@/hooks/use-spaced-repetition";
 import { useLearningProgress } from "@/hooks/use-learning-progress";
 
-// Define basic flashcard structure
-interface Flashcard {
-  id: string;
-  question: string;
-  answer: string;
-  category: string;
-}
-
-// Default flashcards data
-const DEFAULT_FLASHCARDS: Flashcard[] = [
-  {
-    id: "1",
-    question: "What is the wavelength of a radio wave with a frequency of 146.52 MHz?",
-    answer: "Approximately 2 meters",
-    category: "Technical"
-  },
-  {
-    id: "2",
-    question: "What is the purpose of an antenna tuner?",
-    answer: "To match the impedance of the radio to the impedance of the antenna",
-    category: "Technical"
-  },
-  {
-    id: "3",
-    question: "What does APRS stand for?",
-    answer: "Automatic Packet Reporting System",
-    category: "Operating"
-  },
-  {
-    id: "4",
-    question: "What type of electronic component opposes any change in current?",
-    answer: "Inductor",
-    category: "Technical"
-  },
-  {
-    id: "5",
-    question: "What is the phonetic alphabet designation for the letter 'Q'?",
-    answer: "Quebec",
-    category: "Operating"
-  },
-  {
-    id: "6",
-    question: "What is the function of a balun?",
-    answer: "To convert between balanced and unbalanced feed lines",
-    category: "Technical"
-  },
-  {
-    id: "7",
-    question: "Which frequency range is allocated to the 70cm band in Canada?",
-    answer: "430-450 MHz",
-    category: "Regulations"
-  },
-  {
-    id: "8",
-    question: "What does the Q-signal 'QSL' mean?",
-    answer: "I acknowledge receipt",
-    category: "Operating"
-  },
-  {
-    id: "9",
-    question: "What is the maximum power output allowed for Basic with Honours qualification in Canada?",
-    answer: "250 watts PEP",
-    category: "Regulations"
-  },
-  {
-    id: "10",
-    question: "What is the velocity factor of coaxial cable and why is it important?",
-    answer: "It's the speed at which radio waves travel through the cable compared to free space (typically 0.66 or 66%). It's important for calculating electrical length of feed lines.",
-    category: "Technical"
-  },
-  {
-    id: "11",
-    question: "What is the term for unwanted signals generated in a receiver?",
-    answer: "Intermodulation distortion",
-    category: "Technical"
-  },
-  {
-    id: "12",
-    question: "What is the primary purpose of the RG-58 coaxial cable type?",
-    answer: "RG-58 is a thin, flexible 50-ohm coaxial cable commonly used for shorter runs in amateur radio setups",
-    category: "Technical"
-  },
-  {
-    id: "13",
-    question: "Which antenna type provides gain in all horizontal directions but compresses the signal vertically?",
-    answer: "Collinear antenna",
-    category: "Technical"
-  },
-  {
-    id: "14",
-    question: "What does the term 'front-to-back ratio' refer to when discussing antennas?",
-    answer: "The difference in gain between the front and back of a directional antenna",
-    category: "Technical"
-  },
-  {
-    id: "15",
-    question: "What is the main advantage of single sideband (SSB) transmission?",
-    answer: "More efficient use of power and bandwidth",
-    category: "Operating"
-  }
-];
-
-// Component to display a single flashcard
-interface FlashcardProps {
-  card: FlashcardWithMetadata;
-  onFlip: () => void;
-  onRate: (quality: number) => void;
-  showAnswer: boolean;
-  isReview: boolean;
-}
-
-const FlashcardDisplay = ({ card, onFlip, onRate, showAnswer, isReview }: FlashcardProps) => {
-  return (
-    <div className="bg-gray-900 rounded-lg border border-gray-700 p-4 h-64 relative">
-      <div className="absolute top-2 right-2 flex gap-1">
-        <Badge variant={
-          card.status === 'new' ? 'outline' :
-          card.status === 'learning' ? 'default' :
-          card.status === 'review' ? 'secondary' : 'success'
-        }>
-          {card.status}
-        </Badge>
-        <Badge variant="outline">{card.category}</Badge>
-      </div>
-
-      <div className="flex flex-col justify-between h-full">
-        <div className="mt-8 text-center">
-          {!showAnswer ? (
-            <div>
-              <h3 className="text-lg font-medium text-white mb-2">Question</h3>
-              <p className="text-gray-300">{card.question}</p>
-            </div>
-          ) : (
-            <div>
-              <h3 className="text-lg font-medium text-green-400 mb-2">Answer</h3>
-              <p className="text-gray-300">{card.answer}</p>
-            </div>
-          )}
-        </div>
-
-        <div className="mt-2">
-          {!showAnswer ? (
-            <Button 
-              onClick={onFlip} 
-              className="w-full bg-blue-800 hover:bg-blue-700">
-              Show Answer
-            </Button>
-          ) : (
-            <div>
-              {isReview && (
-                <div className="mb-2">
-                  <h4 className="text-sm font-medium text-gray-300 mb-1">How well did you know this?</h4>
-                  <div className="grid grid-cols-6 gap-1">
-                    <Button 
-                      onClick={() => onRate(0)} 
-                      size="sm" 
-                      className="bg-red-900 hover:bg-red-800 p-0 h-7"
-                      title="Complete blackout">
-                      0
-                    </Button>
-                    <Button 
-                      onClick={() => onRate(1)} 
-                      size="sm" 
-                      className="bg-red-800 hover:bg-red-700 p-0 h-7"
-                      title="Wrong, but recognized">
-                      1
-                    </Button>
-                    <Button 
-                      onClick={() => onRate(2)} 
-                      size="sm" 
-                      className="bg-amber-700 hover:bg-amber-600 p-0 h-7"
-                      title="Wrong, but almost right">
-                      2
-                    </Button>
-                    <Button 
-                      onClick={() => onRate(3)} 
-                      size="sm" 
-                      className="bg-amber-600 hover:bg-amber-500 p-0 h-7"
-                      title="Right, but with effort">
-                      3
-                    </Button>
-                    <Button 
-                      onClick={() => onRate(4)} 
-                      size="sm" 
-                      className="bg-green-700 hover:bg-green-600 p-0 h-7"
-                      title="Right, with little difficulty">
-                      4
-                    </Button>
-                    <Button 
-                      onClick={() => onRate(5)} 
-                      size="sm" 
-                      className="bg-green-600 hover:bg-green-500 p-0 h-7"
-                      title="Perfect response">
-                      5
-                    </Button>
-                  </div>
-                </div>
-              )}
-              
-              {!isReview && (
-                <Button 
-                  onClick={onFlip} 
-                  className="w-full bg-blue-800 hover:bg-blue-700">
-                  Back to Question
-                </Button>
-              )}
-            </div>
-          )}
-        </div>
-      </div>
-    </div>
-  );
-};
-
-// The main Flashcards component
-interface EnhancedFlashcardsProps {
-  initialCategory?: string;
-  studyMode?: 'learn' | 'review' | 'browse';
-}
-
-export default function EnhancedFlashcards({ 
-  initialCategory = 'all', 
-  studyMode = 'review' 
-}: EnhancedFlashcardsProps) {
-  // State for flashcards data
-  const [allFlashcards, setAllFlashcards] = useState<Flashcard[]>([]);
-  const [flashcardsLoaded, setFlashcardsLoaded] = useState(false);
-  
-  // Spaced repetition and learning progress hooks
+export default function EnhancedFlashcards() {
+  // Hooks
   const { 
-    getCardsWithMetadata, 
+    flashcards, 
     getDueCards, 
-    getMasteredCards,
-    rateCard, 
+    getCardsByCategory, 
+    reviewCard, 
+    resetCard,
     getStats 
   } = useSpacedRepetition();
+  
   const { recordFlashcardReview } = useLearningProgress();
   
-  // Study session state
-  const [activeCategory, setActiveCategory] = useState(initialCategory);
-  const [activeMode, setActiveMode] = useState<'learn' | 'review' | 'browse'>(studyMode);
-  const [showAnswer, setShowAnswer] = useState(false);
+  // State
+  const [activeTab, setActiveTab] = useState('review');
+  const [currentCategory, setCurrentCategory] = useState<string | null>(null);
+  const [dueCards, setDueCards] = useState<FlashcardWithMetadata[]>([]);
+  const [categoryCards, setCategoryCards] = useState<FlashcardWithMetadata[]>([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
-  const [studyCards, setStudyCards] = useState<FlashcardWithMetadata[]>([]);
+  const [isShowingAnswer, setIsShowingAnswer] = useState(false);
+  const [sessionStats, setSessionStats] = useState({
+    correct: 0,
+    incorrect: 0,
+    skipped: 0,
+    total: 0
+  });
   
-  // New card form state
-  const [addCardDialogOpen, setAddCardDialogOpen] = useState(false);
-  const [newCardQuestion, setNewCardQuestion] = useState('');
-  const [newCardAnswer, setNewCardAnswer] = useState('');
-  const [newCardCategory, setNewCardCategory] = useState('Technical');
+  // Compute categories from flashcards
+  const categories = [...new Set(flashcards.map(card => card.category))];
   
-  // Use local storage for flashcards
+  // Get stats
+  const stats = getStats();
+  
+  // Load cards based on active tab
   useEffect(() => {
-    const storedCards = localStorage.getItem('ham-radio-flashcards');
-    if (storedCards) {
-      setAllFlashcards(JSON.parse(storedCards));
-    } else {
-      setAllFlashcards(DEFAULT_FLASHCARDS);
-      localStorage.setItem('ham-radio-flashcards', JSON.stringify(DEFAULT_FLASHCARDS));
+    if (activeTab === 'review') {
+      // For review tab, get all due cards
+      const due = getDueCards(20);
+      setDueCards(due);
+      setCurrentCardIndex(0);
+      setIsShowingAnswer(false);
+      setSessionStats({
+        correct: 0,
+        incorrect: 0,
+        skipped: 0,
+        total: due.length
+      });
+    } else if (activeTab === 'browse' && currentCategory) {
+      // For browse tab, get all cards in the selected category
+      const cards = getCardsByCategory(currentCategory);
+      setCategoryCards(cards);
+      setCurrentCardIndex(0);
+      setIsShowingAnswer(false);
     }
-    setFlashcardsLoaded(true);
-  }, []);
+  }, [activeTab, currentCategory, flashcards.length]);
   
-  // Prepare study cards whenever dependencies change
-  useEffect(() => {
-    if (!flashcardsLoaded) return;
-    prepareStudySession();
-  }, [flashcardsLoaded, activeCategory, activeMode, allFlashcards]);
-  
-  // Function to prepare cards for current study session
-  const prepareStudySession = () => {
-    if (!allFlashcards.length) return;
-    
-    // Add metadata to all cards
-    const cardsWithMetadata = getCardsWithMetadata(allFlashcards);
-    
-    // Filter by category if needed
-    const categoryFiltered = activeCategory === 'all' 
-      ? cardsWithMetadata 
-      : cardsWithMetadata.filter(card => 
-          card.category.toLowerCase() === activeCategory.toLowerCase()
-        );
-    
-    let cardsToStudy: FlashcardWithMetadata[] = [];
-    
-    if (activeMode === 'review') {
-      // In review mode, get cards due for review
-      cardsToStudy = getDueCards(categoryFiltered, 20);
-    } else if (activeMode === 'browse') {
-      // In browse mode, show all cards
-      cardsToStudy = categoryFiltered;
-    } else {
-      // In learn mode, prioritize new cards
-      cardsToStudy = categoryFiltered.sort((a, b) => {
-        // New cards first
-        if (a.status === 'new' && b.status !== 'new') return -1;
-        if (a.status !== 'new' && b.status === 'new') return 1;
-        
-        // Then learning cards
-        if (a.status === 'learning' && b.status !== 'learning') return -1;
-        if (a.status !== 'learning' && b.status === 'learning') return 1;
-        
-        // Then review cards
-        if (a.status === 'review' && b.status !== 'review') return -1;
-        if (a.status !== 'review' && b.status === 'review') return 1;
-        
-        return 0;
-      }).slice(0, 30);
+  // Calculate current card
+  const getCurrentCard = (): FlashcardWithMetadata | null => {
+    if (activeTab === 'review') {
+      return dueCards.length > 0 && currentCardIndex < dueCards.length
+        ? dueCards[currentCardIndex]
+        : null;
+    } else if (activeTab === 'browse') {
+      return categoryCards.length > 0 && currentCardIndex < categoryCards.length
+        ? categoryCards[currentCardIndex]
+        : null;
     }
-    
-    // If no cards to study, get all cards
-    if (cardsToStudy.length === 0 && categoryFiltered.length > 0) {
-      cardsToStudy = categoryFiltered;
-    }
-    
-    // Reset state for new study session
-    setStudyCards(cardsToStudy);
-    setCurrentCardIndex(0);
-    setShowAnswer(false);
+    return null;
   };
   
-  // Handle flipping the card
-  const handleFlip = () => {
-    setShowAnswer(!showAnswer);
+  // Handle card review
+  const handleCardReview = (quality: 0 | 1 | 2 | 3 | 4 | 5) => {
+    const currentCard = getCurrentCard();
+    if (!currentCard) return;
+    
+    // Record review in spaced repetition system
+    const newStatus = reviewCard(currentCard.id, quality);
+    
+    // Record in learning progress
+    if (newStatus) {
+      recordFlashcardReview(currentCard.id, newStatus, currentCard.category);
+    }
+    
+    // Update session stats
+    if (quality >= 3) {
+      setSessionStats(prev => ({ ...prev, correct: prev.correct + 1 }));
+    } else {
+      setSessionStats(prev => ({ ...prev, incorrect: prev.incorrect + 1 }));
+    }
+    
+    // Go to next card
+    goToNextCard();
   };
   
-  // Handle rating a card
-  const handleRate = (quality: number) => {
-    if (!studyCards.length) return;
-    
-    const currentCard = studyCards[currentCardIndex];
-    
-    // Update card review history
-    rateCard(currentCard.id, quality, currentCard.category);
-    
-    // Update learning progress
-    const newStatus = quality >= 4 
-      ? (currentCard.interval > 25 ? 'mastered' : 'review') 
-      : (quality >= 3 ? 'review' : 'learning');
-    
-    recordFlashcardReview(currentCard.id, newStatus as any, currentCard.category);
-    
-    // Move to next card
+  // Handle skip
+  const handleSkip = () => {
+    setSessionStats(prev => ({ ...prev, skipped: prev.skipped + 1 }));
     goToNextCard();
   };
   
   // Go to next card
   const goToNextCard = () => {
-    if (currentCardIndex < studyCards.length - 1) {
-      setCurrentCardIndex(prev => prev + 1);
-      setShowAnswer(false);
-    } else {
-      // End of study session
+    setCurrentCardIndex(prev => prev + 1);
+    setIsShowingAnswer(false);
+  };
+  
+  // Reset current session
+  const resetSession = () => {
+    if (activeTab === 'review') {
+      const due = getDueCards(20);
+      setDueCards(due);
       setCurrentCardIndex(0);
-      setShowAnswer(false);
-      
-      // Refresh the study cards
-      prepareStudySession();
+      setIsShowingAnswer(false);
+      setSessionStats({
+        correct: 0,
+        incorrect: 0,
+        skipped: 0,
+        total: due.length
+      });
     }
   };
   
-  // Handle adding a new flashcard
-  const handleAddCard = (card: Flashcard) => {
-    const newCard: Flashcard = {
-      ...card,
-      id: uuidv4()
-    };
-    
-    const updatedCards = [...allFlashcards, newCard];
-    setAllFlashcards(updatedCards);
-    localStorage.setItem('ham-radio-flashcards', JSON.stringify(updatedCards));
-    
-    // Close dialog and reset form
-    setAddCardDialogOpen(false);
-    setNewCardQuestion('');
-    setNewCardAnswer('');
-    setNewCardCategory('Technical');
+  // Reset specific card
+  const handleResetCard = () => {
+    const currentCard = getCurrentCard();
+    if (currentCard) {
+      resetCard(currentCard.id);
+    }
   };
   
-  // Get flashcard statistics
-  const stats = getStats();
+  // Determine if the session is complete
+  const isSessionComplete = (): boolean => {
+    if (activeTab === 'review') {
+      return currentCardIndex >= dueCards.length;
+    }
+    return false;
+  };
+  
+  // Calculate session progress
+  const calculateProgress = (): number => {
+    if (activeTab === 'review') {
+      return dueCards.length > 0 
+        ? (currentCardIndex / dueCards.length) * 100
+        : 0;
+    }
+    return 0;
+  };
+  
+  // Get status badge color
+  const getStatusColor = (status: 'new' | 'learning' | 'review' | 'mastered'): "default" | "secondary" | "outline" | "success" => {
+    switch (status) {
+      case 'new':
+        return 'outline';
+      case 'learning':
+        return 'default';
+      case 'review':
+        return 'secondary';
+      case 'mastered':
+        return 'success';
+    }
+  };
   
   return (
     <div className="space-y-4">
-      {/* Flashcard study controls */}
       <div className="flex justify-between items-center">
-        <div className="flex">
-          <Tabs 
-            value={activeMode} 
-            onValueChange={(value) => setActiveMode(value as 'learn' | 'review' | 'browse')}
-            className="w-full"
-          >
-            <TabsList className="bg-gray-800 p-1">
-              <TabsTrigger 
-                value="learn"
-                className="data-[state=active]:bg-blue-800 text-xs"
-              >
-                <Brain className="h-3 w-3 mr-1" /> Learn
-              </TabsTrigger>
-              <TabsTrigger 
-                value="review"
-                className="data-[state=active]:bg-blue-800 text-xs"
-              >
-                <RotateCw className="h-3 w-3 mr-1" /> Review
-              </TabsTrigger>
-              <TabsTrigger 
-                value="browse"
-                className="data-[state=active]:bg-blue-800 text-xs"
-              >
-                <Book className="h-3 w-3 mr-1" /> Browse
-              </TabsTrigger>
-            </TabsList>
-          </Tabs>
-        </div>
+        <h2 className="text-lg font-bold text-white flex items-center gap-2">
+          <Brain className="h-5 w-5 text-purple-400" />
+          Spaced Repetition Flashcards
+        </h2>
         
-        <Dialog open={addCardDialogOpen} onOpenChange={setAddCardDialogOpen}>
-          <DialogTrigger asChild>
-            <Button size="sm" className="bg-green-700 hover:bg-green-600">
-              <Plus className="h-4 w-4 mr-1" /> Add Card
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-gray-900 text-white">
-            <DialogHeader>
-              <DialogTitle>Add New Flashcard</DialogTitle>
-              <DialogDescription className="text-gray-400">
-                Create a new flashcard to study.
-              </DialogDescription>
-            </DialogHeader>
-            
-            <div className="space-y-4">
-              <div>
-                <label className="text-sm font-medium text-gray-300">Question</label>
-                <Textarea 
-                  value={newCardQuestion}
-                  onChange={(e) => setNewCardQuestion(e.target.value)}
-                  className="bg-gray-800 border-gray-700 text-white"
-                  placeholder="Enter the question..."
-                />
-              </div>
-              
-              <div>
-                <label className="text-sm font-medium text-gray-300">Answer</label>
-                <Textarea 
-                  value={newCardAnswer}
-                  onChange={(e) => setNewCardAnswer(e.target.value)}
-                  className="bg-gray-800 border-gray-700 text-white"
-                  placeholder="Enter the answer..."
-                />
-              </div>
-              
-              <div>
-                <label className="text-sm font-medium text-gray-300">Category</label>
-                <Select 
-                  value={newCardCategory}
-                  onValueChange={setNewCardCategory}
-                >
-                  <SelectTrigger className="bg-gray-800 border-gray-700 text-white">
-                    <SelectValue />
-                  </SelectTrigger>
-                  <SelectContent className="bg-gray-800 border-gray-700 text-white">
-                    <SelectItem value="Technical">Technical</SelectItem>
-                    <SelectItem value="Operating">Operating</SelectItem>
-                    <SelectItem value="Regulations">Regulations</SelectItem>
-                  </SelectContent>
-                </Select>
-              </div>
-            </div>
-            
-            <DialogFooter>
-              <Button 
-                variant="outline" 
-                onClick={() => setAddCardDialogOpen(false)}
-                className="bg-transparent text-gray-300 border-gray-600 hover:bg-gray-800"
-              >
-                Cancel
-              </Button>
-              <Button 
-                onClick={() => handleAddCard({
-                  id: "",
-                  question: newCardQuestion,
-                  answer: newCardAnswer,
-                  category: newCardCategory
-                })}
-                className="bg-green-700 hover:bg-green-600"
-                disabled={!newCardQuestion || !newCardAnswer}
-              >
-                Add Flashcard
-              </Button>
-            </DialogFooter>
-          </DialogContent>
-        </Dialog>
-      </div>
-      
-      {/* Category filter */}
-      <div className="grid grid-cols-4 gap-1">
-        <button
-          className={`px-2 py-1 text-xs rounded-sm ${
-            activeCategory === 'all' 
-              ? 'bg-blue-900 text-blue-100' 
-              : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-          }`}
-          onClick={() => setActiveCategory('all')}
-        >
-          All ({allFlashcards.length})
-        </button>
-        <button
-          className={`px-2 py-1 text-xs rounded-sm ${
-            activeCategory === 'technical' 
-              ? 'bg-blue-900 text-blue-100' 
-              : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-          }`}
-          onClick={() => setActiveCategory('technical')}
-        >
-          Technical ({allFlashcards.filter(c => c.category.toLowerCase() === 'technical').length})
-        </button>
-        <button
-          className={`px-2 py-1 text-xs rounded-sm ${
-            activeCategory === 'operating' 
-              ? 'bg-blue-900 text-blue-100' 
-              : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-          }`}
-          onClick={() => setActiveCategory('operating')}
-        >
-          Operating ({allFlashcards.filter(c => c.category.toLowerCase() === 'operating').length})
-        </button>
-        <button
-          className={`px-2 py-1 text-xs rounded-sm ${
-            activeCategory === 'regulations' 
-              ? 'bg-blue-900 text-blue-100' 
-              : 'bg-gray-800 text-gray-300 hover:bg-gray-700'
-          }`}
-          onClick={() => setActiveCategory('regulations')}
-        >
-          Regulations ({allFlashcards.filter(c => c.category.toLowerCase() === 'regulations').length})
-        </button>
-      </div>
-      
-      {/* Study progress */}
-      <div className="bg-gray-900 p-3 rounded-md mb-4 border border-gray-800">
-        <div className="mb-2 flex justify-between items-center">
-          <h3 className="text-sm font-medium text-gray-300 flex items-center">
-            <Sparkles className="h-3 w-3 mr-1 text-yellow-500" /> 
-            Flashcard Progress
-          </h3>
-          <div className="text-xs text-gray-400">
-            {activeMode === 'review' && 
-              <span>{stats.dueToday} due today</span>
-            }
-          </div>
-        </div>
-        
-        <div className="grid grid-cols-4 gap-2 mb-2">
-          <div className="bg-gray-800 rounded-sm p-1 text-center">
-            <div className="text-sm font-medium text-gray-300">{stats.total}</div>
-            <div className="text-[10px] text-gray-500">Total</div>
-          </div>
-          <div className="bg-gray-800 rounded-sm p-1 text-center">
-            <div className="text-sm font-medium text-blue-300">{stats.learning}</div>
-            <div className="text-[10px] text-gray-500">Learning</div>
-          </div>
-          <div className="bg-gray-800 rounded-sm p-1 text-center">
-            <div className="text-sm font-medium text-amber-300">{stats.review}</div>
-            <div className="text-[10px] text-gray-500">Review</div>
-          </div>
-          <div className="bg-gray-800 rounded-sm p-1 text-center">
-            <div className="text-sm font-medium text-green-300">{stats.mastered}</div>
-            <div className="text-[10px] text-gray-500">Mastered</div>
-          </div>
-        </div>
-        
-        {/* Mastery progress bar */}
-        {stats.total > 0 && (
-          <div className="mb-1">
-            <div className="flex justify-between items-center mb-1 text-[10px] text-gray-400">
-              <span>Mastery progress</span>
-              <span>{Math.round((stats.mastered / stats.total) * 100)}%</span>
-            </div>
-            <div className="h-2 bg-gray-800 rounded-full overflow-hidden">
-              <div 
-                className="h-full bg-gradient-to-r from-blue-600 via-blue-500 to-green-500"
-                style={{width: `${(stats.mastered / stats.total) * 100}%`}}
-              ></div>
-            </div>
-          </div>
-        )}
-      </div>
-      
-      {/* Current flashcard */}
-      {studyCards.length > 0 ? (
         <div>
-          <div className="text-xs text-gray-400 mb-1 flex justify-between">
-            <span>Card {currentCardIndex + 1} of {studyCards.length}</span>
-            {activeMode === 'review' && (
-              <span>
-                Next review: {new Date(studyCards[currentCardIndex].nextReviewDate).toLocaleDateString()}
-              </span>
-            )}
+          <Badge variant="outline" className="mr-2">
+            {stats.total} Cards
+          </Badge>
+          <Badge variant="secondary">
+            {stats.dueToday} Due Today
+          </Badge>
+        </div>
+      </div>
+      
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="w-full"
+      >
+        <TabsList className="grid w-full grid-cols-2 bg-gray-800">
+          <TabsTrigger value="review">Review Due Cards</TabsTrigger>
+          <TabsTrigger value="browse">Browse By Category</TabsTrigger>
+        </TabsList>
+        
+        <TabsContent value="review" className="pt-4 space-y-4">
+          {isSessionComplete() ? (
+            <Card className="bg-gray-900 border-gray-700">
+              <CardHeader>
+                <CardTitle>Session Complete!</CardTitle>
+                <CardDescription>
+                  You've reviewed all your due cards for now.
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div className="grid grid-cols-3 gap-3 text-center py-4">
+                  <div>
+                    <div className="text-2xl font-bold text-green-400">{sessionStats.correct}</div>
+                    <div className="text-xs text-gray-400">Correct</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-red-400">{sessionStats.incorrect}</div>
+                    <div className="text-xs text-gray-400">Incorrect</div>
+                  </div>
+                  <div>
+                    <div className="text-2xl font-bold text-gray-400">{sessionStats.skipped}</div>
+                    <div className="text-xs text-gray-400">Skipped</div>
+                  </div>
+                </div>
+                
+                <div className="flex justify-center">
+                  <Button onClick={resetSession} className="flex items-center">
+                    <RefreshCw className="h-4 w-4 mr-2" />
+                    Start New Session
+                  </Button>
+                </div>
+              </CardContent>
+            </Card>
+          ) : dueCards.length === 0 ? (
+            <Card className="bg-gray-900 border-gray-700 text-center p-8">
+              <BookOpen className="h-12 w-12 mx-auto text-gray-700 mb-4" />
+              <h3 className="text-lg font-medium mb-2">No Cards Due</h3>
+              <p className="text-gray-400 mb-4">
+                You don't have any cards to review right now. Check back later or browse by category.
+              </p>
+            </Card>
+          ) : (
+            <>
+              <div className="flex items-center justify-between mb-2">
+                <div className="text-sm text-gray-400">
+                  Card {currentCardIndex + 1} of {dueCards.length}
+                </div>
+                <div className="flex items-center">
+                  <Badge variant="outline" className="mr-2">
+                    {getCurrentCard()?.category}
+                  </Badge>
+                  <Badge variant={getStatusColor(getCurrentCard()?.status || 'new')}>
+                    {getCurrentCard()?.status}
+                  </Badge>
+                </div>
+              </div>
+              
+              <Progress value={calculateProgress()} className="mb-4" />
+              
+              <Card className="bg-gray-900 border-gray-700 overflow-hidden">
+                <div 
+                  className={`min-h-[200px] p-6 flex items-center justify-center text-center transition-all cursor-pointer ${
+                    isShowingAnswer ? 'bg-gray-800' : 'bg-gray-900'
+                  }`}
+                  onClick={() => setIsShowingAnswer(true)}
+                >
+                  {isShowingAnswer ? (
+                    <div className="animate-fadeIn">
+                      <p className="text-2xl font-medium text-white mb-2">
+                        {getCurrentCard()?.answer}
+                      </p>
+                      <div className="text-sm text-gray-400">
+                        Click on a rating button below
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <p className="text-2xl font-medium text-white mb-4">
+                        {getCurrentCard()?.question}
+                      </p>
+                      <Button variant="outline" size="sm">
+                        Show Answer
+                      </Button>
+                    </div>
+                  )}
+                </div>
+                
+                {isShowingAnswer && (
+                  <CardFooter className="flex flex-col gap-4 pb-6 pt-4 bg-gray-800">
+                    <div className="w-full">
+                      <div className="grid grid-cols-4 gap-2">
+                        <Button 
+                          onClick={() => handleCardReview(1)} 
+                          variant="outline"
+                          className="bg-red-900 bg-opacity-50 border-red-700 hover:bg-red-800"
+                        >
+                          <div className="text-center w-full">
+                            <div className="font-mono text-xs">1</div>
+                            <div className="text-[10px] text-gray-400">Forgot</div>
+                          </div>
+                        </Button>
+                        <Button 
+                          onClick={() => handleCardReview(3)} 
+                          variant="outline"
+                          className="bg-yellow-900 bg-opacity-50 border-yellow-700 hover:bg-yellow-800"
+                        >
+                          <div className="text-center w-full">
+                            <div className="font-mono text-xs">3</div>
+                            <div className="text-[10px] text-gray-400">Hard</div>
+                          </div>
+                        </Button>
+                        <Button 
+                          onClick={() => handleCardReview(4)} 
+                          variant="outline"
+                          className="bg-blue-900 bg-opacity-50 border-blue-700 hover:bg-blue-800"
+                        >
+                          <div className="text-center w-full">
+                            <div className="font-mono text-xs">4</div>
+                            <div className="text-[10px] text-gray-400">Good</div>
+                          </div>
+                        </Button>
+                        <Button 
+                          onClick={() => handleCardReview(5)} 
+                          variant="outline"
+                          className="bg-green-900 bg-opacity-50 border-green-700 hover:bg-green-800"
+                        >
+                          <div className="text-center w-full">
+                            <div className="font-mono text-xs">5</div>
+                            <div className="text-[10px] text-gray-400">Easy</div>
+                          </div>
+                        </Button>
+                      </div>
+                    </div>
+                    
+                    <div className="flex justify-between w-full">
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={handleSkip}
+                        className="text-gray-400"
+                      >
+                        Skip
+                      </Button>
+                      <Button 
+                        variant="ghost" 
+                        size="sm"
+                        onClick={handleResetCard}
+                        className="text-gray-400"
+                      >
+                        Reset Card
+                      </Button>
+                    </div>
+                  </CardFooter>
+                )}
+              </Card>
+            </>
+          )}
+        </TabsContent>
+        
+        <TabsContent value="browse" className="pt-4 space-y-4">
+          <div className="mb-4">
+            <Select
+              value={currentCategory || ""}
+              onValueChange={setCurrentCategory}
+            >
+              <SelectTrigger className="bg-gray-800 border-gray-700">
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent className="bg-gray-900 border-gray-700">
+                {categories.map(category => (
+                  <SelectItem key={category} value={category}>
+                    {category}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
           
-          <Progress 
-            value={(currentCardIndex / studyCards.length) * 100} 
-            className="h-1 mb-3" 
-          />
-          
-          <FlashcardDisplay
-            card={studyCards[currentCardIndex]}
-            onFlip={handleFlip}
-            onRate={handleRate}
-            showAnswer={showAnswer}
-            isReview={activeMode === 'review'}
-          />
-          
-          {activeMode === 'browse' && (
-            <div className="mt-3 flex justify-between">
-              <Button 
-                onClick={() => {
-                  setCurrentCardIndex(prev => Math.max(0, prev - 1));
-                  setShowAnswer(false);
-                }}
-                className="bg-gray-800 hover:bg-gray-700"
-                disabled={currentCardIndex === 0}
-              >
-                Previous
-              </Button>
-              <Button 
-                onClick={() => {
-                  setCurrentCardIndex(prev => Math.min(studyCards.length - 1, prev + 1));
-                  setShowAnswer(false);
-                }}
-                className="bg-gray-800 hover:bg-gray-700"
-                disabled={currentCardIndex === studyCards.length - 1}
-              >
-                Next
-              </Button>
+          {!currentCategory ? (
+            <div className="bg-gray-900 rounded-md border border-gray-800 p-8 text-center">
+              <HelpCircle className="h-12 w-12 mx-auto text-gray-700 mb-4" />
+              <h3 className="text-lg font-medium mb-2">Select a Category</h3>
+              <p className="text-gray-400 mb-4">
+                Choose a category from the dropdown to browse flashcards.
+              </p>
+              
+              <div className="grid grid-cols-2 gap-3 max-w-md mx-auto mt-6">
+                {stats.categories.map(cat => (
+                  <div 
+                    key={cat.category} 
+                    className="bg-gray-800 p-3 rounded-md border border-gray-700 cursor-pointer hover:bg-gray-750"
+                    onClick={() => setCurrentCategory(cat.category)}
+                  >
+                    <div className="font-medium">{cat.category}</div>
+                    <div className="text-sm text-gray-400">{cat.total} cards</div>
+                    <div className="flex gap-1 mt-1">
+                      <Badge variant="success" className="h-1.5 w-1.5 rounded-full p-0" />
+                      <div className="text-xs text-gray-500">{cat.mastered} mastered</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
             </div>
+          ) : categoryCards.length === 0 ? (
+            <div className="bg-gray-900 rounded-md border border-gray-800 p-8 text-center">
+              <BookOpen className="h-12 w-12 mx-auto text-gray-700 mb-4" />
+              <h3 className="text-lg font-medium mb-2">No Cards</h3>
+              <p className="text-gray-400 mb-4">
+                This category doesn't have any flashcards yet.
+              </p>
+            </div>
+          ) : (
+            <Card className="bg-gray-900 border-gray-700 overflow-hidden">
+              <div className="flex items-center justify-between px-4 py-2 bg-gray-800">
+                <div className="text-sm text-gray-400">
+                  Card {currentCardIndex + 1} of {categoryCards.length}
+                </div>
+                <Badge variant={getStatusColor(getCurrentCard()?.status || 'new')}>
+                  {getCurrentCard()?.status}
+                </Badge>
+              </div>
+              
+              <div 
+                className={`min-h-[200px] p-6 flex items-center justify-center text-center transition-all cursor-pointer ${
+                  isShowingAnswer ? 'bg-gray-800' : 'bg-gray-900'
+                }`}
+                onClick={() => setIsShowingAnswer(!isShowingAnswer)}
+              >
+                {isShowingAnswer ? (
+                  <div className="animate-fadeIn">
+                    <p className="text-xl font-medium text-white">
+                      {getCurrentCard()?.answer}
+                    </p>
+                  </div>
+                ) : (
+                  <div>
+                    <p className="text-xl font-medium text-white mb-4">
+                      {getCurrentCard()?.question}
+                    </p>
+                    <Button variant="outline" size="sm">
+                      Show Answer
+                    </Button>
+                  </div>
+                )}
+              </div>
+              
+              <div className="flex justify-between p-3 bg-gray-800">
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleResetCard}
+                  className="text-gray-400"
+                >
+                  Reset Card
+                </Button>
+                
+                <Button
+                  onClick={goToNextCard}
+                  disabled={currentCardIndex >= categoryCards.length - 1}
+                  className="bg-blue-800 hover:bg-blue-700"
+                >
+                  <ChevronRight className="h-4 w-4" />
+                  {currentCardIndex >= categoryCards.length - 1 ? 'Last Card' : 'Next Card'}
+                </Button>
+              </div>
+            </Card>
           )}
-        </div>
-      ) : (
-        <div className="bg-gray-900 rounded-lg border border-gray-700 p-8 text-center">
-          <Info className="h-6 w-6 text-blue-400 mx-auto mb-2" />
-          <h3 className="text-lg font-medium text-gray-200 mb-1">No cards to study</h3>
-          <p className="text-gray-400 text-sm mb-4">
-            {activeCategory === 'all' 
-              ? "You don't have any flashcards yet."
-              : `You don't have any ${activeCategory} flashcards.`
-            }
-          </p>
-          <Button 
-            onClick={() => setAddCardDialogOpen(true)}
-            className="bg-blue-800 hover:bg-blue-700"
-          >
-            <Plus className="h-4 w-4 mr-1" /> Add Your First Card
-          </Button>
-        </div>
-      )}
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }

@@ -41,106 +41,70 @@ export interface LearningProgress {
   lastStudyDate: string | null;
 }
 
-const initialBadges = [
-  {
-    id: 'first-quiz',
-    name: 'Quiz Novice',
-    description: 'Complete your first practice quiz',
-    acquired: false
-  },
-  {
-    id: 'quiz-master',
-    name: 'Quiz Master',
-    description: 'Score 100% on a quiz with at least 10 questions',
-    acquired: false
-  },
-  {
-    id: 'technical-expert',
-    name: 'Technical Expert',
-    description: 'Score at least 80% on a technical category quiz',
-    acquired: false
-  },
-  {
-    id: 'regulations-expert',
-    name: 'Regulations Expert',
-    description: 'Score at least 80% on a regulations category quiz',
-    acquired: false
-  },
-  {
-    id: 'operating-expert',
-    name: 'Operating Expert',
-    description: 'Score at least 80% on an operating category quiz',
-    acquired: false
-  },
-  {
-    id: 'flashcard-starter',
-    name: 'Flashcard Starter',
-    description: 'Review your first 10 flashcards',
-    acquired: false
-  },
-  {
-    id: 'memory-master',
-    name: 'Memory Master',
-    description: 'Master at least 20 flashcards',
-    acquired: false
-  },
-  {
-    id: 'morse-beginner',
-    name: 'Morse Beginner',
-    description: 'Complete your first Morse code lesson',
-    acquired: false
-  },
-  {
-    id: 'morse-expert',
-    name: 'Morse Expert',
-    description: 'Achieve a speed of at least 10 WPM with 90% accuracy',
-    acquired: false
-  },
-  {
-    id: 'circuit-builder',
-    name: 'Circuit Builder',
-    description: 'Successfully build your first working circuit',
-    acquired: false
-  },
-  {
-    id: 'ham-dedication',
-    name: 'Ham Dedication',
-    description: 'Maintain a study streak of at least 5 days',
-    acquired: false
-  },
-  {
-    id: 'exam-ready',
-    name: 'Exam Ready',
-    description: 'Pass a full 100-question practice exam with at least 80%',
-    acquired: false
-  }
-];
-
 const initialProgress: LearningProgress = {
+  // Quiz progress
   completedQuizzes: 0,
   totalCorrect: 0,
   totalQuestions: 0,
-  quizzesByCategory: {
-    all: { completed: 0, correct: 0, total: 0, lastScore: 0 },
-    technical: { completed: 0, correct: 0, total: 0, lastScore: 0 },
-    regulations: { completed: 0, correct: 0, total: 0, lastScore: 0 },
-    operating: { completed: 0, correct: 0, total: 0, lastScore: 0 }
-  },
+  quizzesByCategory: {},
   
+  // Flashcard progress
   flashcardsReviewed: 0,
   flashcardMastery: {},
-  flashcardsByCategory: {
-    technical: { reviewed: 0, mastered: 0 },
-    regulations: { reviewed: 0, mastered: 0 },
-    operating: { reviewed: 0, mastered: 0 }
-  },
+  flashcardsByCategory: {},
   
+  // Morse Code progress
   morseHighestWPM: 0,
   morseAccuracy: 0,
   morseLessonsCompleted: 0,
   
-  badges: initialBadges,
+  // Achievement badges
+  badges: [
+    {
+      id: 'first-quiz',
+      name: 'First Quiz',
+      description: 'Complete your first quiz',
+      acquired: false
+    },
+    {
+      id: 'perfect-score',
+      name: 'Perfect Score',
+      description: 'Score 100% on a quiz',
+      acquired: false
+    },
+    {
+      id: 'flashcard-master',
+      name: 'Flashcard Master',
+      description: 'Master 50 flashcards',
+      acquired: false
+    },
+    {
+      id: 'morse-beginner',
+      name: 'Morse Beginner',
+      description: 'Complete your first Morse code lesson',
+      acquired: false
+    },
+    {
+      id: 'morse-expert',
+      name: 'Morse Expert',
+      description: 'Reach 15 WPM with 90% accuracy',
+      acquired: false
+    },
+    {
+      id: 'circuit-builder',
+      name: 'Circuit Builder',
+      description: 'Successfully build a working circuit',
+      acquired: false
+    },
+    {
+      id: 'study-streak',
+      name: 'Study Streak',
+      description: 'Maintain a 7-day study streak',
+      acquired: false
+    }
+  ],
   
+  // Study streak
   currentStreak: 0,
   longestStreak: 0,
   lastStudyDate: null
@@ -148,317 +112,250 @@ const initialProgress: LearningProgress = {
 
 export function useLearningProgress() {
   const [progress, setProgress] = useLocalStorage<LearningProgress>(
-    'ham-radio-learning-progress',
+    'ham-app-learning-progress', 
     initialProgress
   );
   
-  // Check and update streak on component mount
+  // Check and update streak on mount
   useEffect(() => {
     updateStreak();
   }, []);
   
-  // Record that studying occurred today and update streak
+  // Update streak based on last study date
   const updateStreak = () => {
-    const today = new Date().toISOString().split('T')[0]; // YYYY-MM-DD
+    const today = new Date();
+    const todayString = today.toISOString().split('T')[0];
     
-    if (progress.lastStudyDate === today) {
-      // Already recorded today's activity
+    // If already studied today, do nothing
+    if (progress.lastStudyDate === todayString) {
       return;
     }
     
-    setProgress(prev => {
-      // Check if last study date was yesterday
-      let newStreak = prev.currentStreak;
-      const yesterday = new Date();
-      yesterday.setDate(yesterday.getDate() - 1);
-      const yesterdayString = yesterday.toISOString().split('T')[0];
+    // Check if yesterday was the last study day
+    if (progress.lastStudyDate) {
+      const lastDate = new Date(progress.lastStudyDate);
+      const dayDifference = Math.floor(
+        (today.getTime() - lastDate.getTime()) / (1000 * 60 * 60 * 24)
+      );
       
-      if (prev.lastStudyDate === yesterdayString) {
-        // Continue streak
-        newStreak += 1;
-      } else if (prev.lastStudyDate !== today) {
-        // Broke streak, start over
-        newStreak = 1;
+      if (dayDifference === 1) {
+        // Consecutive day - increment streak
+        setProgress(prev => ({
+          ...prev,
+          currentStreak: prev.currentStreak + 1,
+          longestStreak: Math.max(prev.longestStreak, prev.currentStreak + 1),
+          lastStudyDate: todayString
+        }));
+        
+        // Check for streak badge
+        if (!progress.badges.find(b => b.id === 'study-streak')?.acquired && 
+            progress.currentStreak + 1 >= 7) {
+          updateBadge('study-streak');
+        }
+      } else if (dayDifference > 1) {
+        // Streak broken
+        setProgress(prev => ({
+          ...prev,
+          currentStreak: 1,
+          lastStudyDate: todayString
+        }));
       }
-      
-      // Update longest streak if current streak is longer
-      const newLongestStreak = Math.max(newStreak, prev.longestStreak);
-      
-      // Check badge for streak
-      const updatedBadges = [...prev.badges];
-      const streakBadge = updatedBadges.find(b => b.id === 'ham-dedication');
-      if (streakBadge && !streakBadge.acquired && newStreak >= 5) {
-        const badgeIndex = updatedBadges.findIndex(b => b.id === 'ham-dedication');
-        updatedBadges[badgeIndex] = {
-          ...streakBadge,
-          acquired: true,
-          date: today
-        };
-      }
-      
-      return {
+    } else {
+      // First study day
+      setProgress(prev => ({
         ...prev,
-        currentStreak: newStreak,
-        longestStreak: newLongestStreak,
-        lastStudyDate: today,
-        badges: updatedBadges
-      };
-    });
+        currentStreak: 1,
+        lastStudyDate: todayString
+      }));
+    }
   };
   
   // Record quiz completion
-  const recordQuizCompletion = (category: string, correct: number, total: number) => {
-    updateStreak(); // Count this as a study day
+  const recordQuizCompletion = (
+    category: string, 
+    correct: number, 
+    total: number
+  ) => {
+    updateStreak();
+    
+    // Calculate score as percentage
+    const score = total > 0 ? Math.round((correct / total) * 100) : 0;
     
     setProgress(prev => {
-      // Normalize category string
-      const normCategory = category.toLowerCase();
-      
-      // Get existing category stats or create new ones
-      const allCatStats = prev.quizzesByCategory.all || { 
-        completed: 0, correct: 0, total: 0, lastScore: 0 
-      };
-      const catStats = prev.quizzesByCategory[normCategory] || { 
-        completed: 0, correct: 0, total: 0, lastScore: 0 
+      // Get or initialize category data
+      const categoryData = prev.quizzesByCategory[category] || {
+        completed: 0,
+        correct: 0,
+        total: 0,
+        lastScore: 0
       };
       
-      // Calculate percentage for badge purposes
-      const percentage = (correct / total) * 100;
-      
-      // Update badges based on quiz performance
-      const updatedBadges = [...prev.badges];
-      const today = new Date().toISOString().split('T')[0];
+      // Update category data
+      const updatedCategoryData = {
+        completed: categoryData.completed + 1,
+        correct: categoryData.correct + correct,
+        total: categoryData.total + total,
+        lastScore: score
+      };
       
       // First quiz badge
-      if (prev.completedQuizzes === 0) {
-        const badgeIndex = updatedBadges.findIndex(b => b.id === 'first-quiz');
-        if (badgeIndex !== -1 && !updatedBadges[badgeIndex].acquired) {
-          updatedBadges[badgeIndex] = {
-            ...updatedBadges[badgeIndex],
-            acquired: true,
-            date: today
-          };
-        }
+      let updatedBadges = [...prev.badges];
+      if (!prev.badges.find(b => b.id === 'first-quiz')?.acquired) {
+        updatedBadges = updatedBadges.map(b => 
+          b.id === 'first-quiz' 
+            ? { ...b, acquired: true, date: new Date().toISOString() } 
+            : b
+        );
       }
       
       // Perfect score badge
-      if (percentage === 100 && total >= 10) {
-        const badgeIndex = updatedBadges.findIndex(b => b.id === 'quiz-master');
-        if (badgeIndex !== -1 && !updatedBadges[badgeIndex].acquired) {
-          updatedBadges[badgeIndex] = {
-            ...updatedBadges[badgeIndex],
-            acquired: true,
-            date: today
-          };
-        }
+      if (score === 100 && total >= 5 && !prev.badges.find(b => b.id === 'perfect-score')?.acquired) {
+        updatedBadges = updatedBadges.map(b => 
+          b.id === 'perfect-score' 
+            ? { ...b, acquired: true, date: new Date().toISOString() } 
+            : b
+        );
       }
-      
-      // Category expert badges
-      if (percentage >= 80 && total >= 5) {
-        if (normCategory === 'technical') {
-          const badgeIndex = updatedBadges.findIndex(b => b.id === 'technical-expert');
-          if (badgeIndex !== -1 && !updatedBadges[badgeIndex].acquired) {
-            updatedBadges[badgeIndex] = {
-              ...updatedBadges[badgeIndex],
-              acquired: true,
-              date: today
-            };
-          }
-        } else if (normCategory === 'regulations') {
-          const badgeIndex = updatedBadges.findIndex(b => b.id === 'regulations-expert');
-          if (badgeIndex !== -1 && !updatedBadges[badgeIndex].acquired) {
-            updatedBadges[badgeIndex] = {
-              ...updatedBadges[badgeIndex],
-              acquired: true,
-              date: today
-            };
-          }
-        } else if (normCategory === 'operating') {
-          const badgeIndex = updatedBadges.findIndex(b => b.id === 'operating-expert');
-          if (badgeIndex !== -1 && !updatedBadges[badgeIndex].acquired) {
-            updatedBadges[badgeIndex] = {
-              ...updatedBadges[badgeIndex],
-              acquired: true,
-              date: today
-            };
-          }
-        }
-      }
-      
-      // Full exam badge
-      if (total === 100 && percentage >= 80) {
-        const badgeIndex = updatedBadges.findIndex(b => b.id === 'exam-ready');
-        if (badgeIndex !== -1 && !updatedBadges[badgeIndex].acquired) {
-          updatedBadges[badgeIndex] = {
-            ...updatedBadges[badgeIndex],
-            acquired: true,
-            date: today
-          };
-        }
-      }
-      
-      // Update quiz category stats
-      const updatedCategoryStats = {
-        ...prev.quizzesByCategory,
-        [normCategory]: {
-          completed: catStats.completed + 1,
-          correct: catStats.correct + correct,
-          total: catStats.total + total,
-          lastScore: percentage
-        },
-        all: {
-          completed: allCatStats.completed + 1,
-          correct: allCatStats.correct + correct,
-          total: allCatStats.total + total,
-          lastScore: percentage
-        }
-      };
       
       return {
         ...prev,
         completedQuizzes: prev.completedQuizzes + 1,
         totalCorrect: prev.totalCorrect + correct,
         totalQuestions: prev.totalQuestions + total,
-        quizzesByCategory: updatedCategoryStats,
+        quizzesByCategory: {
+          ...prev.quizzesByCategory,
+          [category]: updatedCategoryData
+        },
         badges: updatedBadges
       };
     });
   };
   
   // Record flashcard review
-  const recordFlashcardReview = (cardId: string, status: 'new' | 'learning' | 'review' | 'mastered', category: string) => {
-    updateStreak(); // Count this as a study day
+  const recordFlashcardReview = (
+    cardId: string, 
+    status: 'new' | 'learning' | 'review' | 'mastered',
+    category: string
+  ) => {
+    updateStreak();
     
     setProgress(prev => {
-      // Check if this is the first time we've seen this card
-      const isNewReview = !prev.flashcardMastery[cardId];
-      
       // Update flashcard mastery status
-      const updatedMastery = {
-        ...prev.flashcardMastery,
-        [cardId]: status
+      const wasAlreadyMastered = prev.flashcardMastery[cardId] === 'mastered';
+      const isMasteredNow = status === 'mastered';
+      
+      // Get or initialize category data
+      const categoryData = prev.flashcardsByCategory[category] || {
+        reviewed: 0,
+        mastered: 0
       };
-      
-      // Get existing category stats
-      const normCategory = category.toLowerCase();
-      const categoryStats = prev.flashcardsByCategory[normCategory] || { reviewed: 0, mastered: 0 };
-      
-      // Count new mastered cards for category
-      const wasMastered = prev.flashcardMastery[cardId] === 'mastered';
-      const isMastered = status === 'mastered';
-      const masteredChange = isMastered && !wasMastered ? 1 : 0;
       
       // Update category stats
-      const updatedCategoryStats = {
-        ...prev.flashcardsByCategory,
-        [normCategory]: {
-          reviewed: isNewReview ? categoryStats.reviewed + 1 : categoryStats.reviewed,
-          mastered: categoryStats.mastered + masteredChange
-        }
+      const updatedCategoryData = {
+        reviewed: status === 'new' ? categoryData.reviewed : categoryData.reviewed + 1,
+        mastered: categoryData.mastered + (isMasteredNow && !wasAlreadyMastered ? 1 : 0)
       };
       
-      // Count total mastered cards
-      const totalMastered = Object.values(updatedMastery).filter(s => s === 'mastered').length;
+      // Check for flashcard master badge
+      let updatedBadges = [...prev.badges];
+      const totalMastered = Object.values(prev.flashcardMastery).filter(s => s === 'mastered').length;
       
-      // Update badges
-      const updatedBadges = [...prev.badges];
-      const today = new Date().toISOString().split('T')[0];
-      
-      // Flashcard starter badge
-      if (prev.flashcardsReviewed === 9 && isNewReview) {
-        const badgeIndex = updatedBadges.findIndex(b => b.id === 'flashcard-starter');
-        if (badgeIndex !== -1 && !updatedBadges[badgeIndex].acquired) {
-          updatedBadges[badgeIndex] = {
-            ...updatedBadges[badgeIndex],
-            acquired: true,
-            date: today
-          };
-        }
-      }
-      
-      // Memory master badge
-      if (totalMastered >= 20 && prev.badges.find(b => b.id === 'memory-master' && !b.acquired)) {
-        const badgeIndex = updatedBadges.findIndex(b => b.id === 'memory-master');
-        if (badgeIndex !== -1) {
-          updatedBadges[badgeIndex] = {
-            ...updatedBadges[badgeIndex],
-            acquired: true,
-            date: today
-          };
-        }
+      if (totalMastered + (isMasteredNow && !wasAlreadyMastered ? 1 : 0) >= 50 && 
+          !prev.badges.find(b => b.id === 'flashcard-master')?.acquired) {
+        updatedBadges = updatedBadges.map(b => 
+          b.id === 'flashcard-master' 
+            ? { ...b, acquired: true, date: new Date().toISOString() } 
+            : b
+        );
       }
       
       return {
         ...prev,
-        flashcardsReviewed: isNewReview ? prev.flashcardsReviewed + 1 : prev.flashcardsReviewed,
-        flashcardMastery: updatedMastery,
-        flashcardsByCategory: updatedCategoryStats,
+        flashcardsReviewed: status === 'new' ? prev.flashcardsReviewed : prev.flashcardsReviewed + 1,
+        flashcardMastery: {
+          ...prev.flashcardMastery,
+          [cardId]: status
+        },
+        flashcardsByCategory: {
+          ...prev.flashcardsByCategory,
+          [category]: updatedCategoryData
+        },
         badges: updatedBadges
       };
     });
   };
   
   // Record Morse code practice
-  const recordMorsePractice = (wpm: number, accuracy: number, isLessonComplete: boolean) => {
-    updateStreak(); // Count this as a study day
+  const recordMorsePractice = (
+    wpm: number, 
+    accuracy: number, 
+    isLessonComplete = false
+  ) => {
+    updateStreak();
     
     setProgress(prev => {
-      const updatedBadges = [...prev.badges];
-      const today = new Date().toISOString().split('T')[0];
+      // Check for badges
+      let updatedBadges = [...prev.badges];
       
-      // Morse beginner badge for first lesson completion
-      if (isLessonComplete && prev.morseLessonsCompleted === 0) {
-        const badgeIndex = updatedBadges.findIndex(b => b.id === 'morse-beginner');
-        if (badgeIndex !== -1 && !updatedBadges[badgeIndex].acquired) {
-          updatedBadges[badgeIndex] = {
-            ...updatedBadges[badgeIndex],
-            acquired: true,
-            date: today
-          };
-        }
+      // Morse beginner badge
+      if (isLessonComplete && !prev.badges.find(b => b.id === 'morse-beginner')?.acquired) {
+        updatedBadges = updatedBadges.map(b => 
+          b.id === 'morse-beginner' 
+            ? { ...b, acquired: true, date: new Date().toISOString() } 
+            : b
+        );
       }
       
       // Morse expert badge
-      if (wpm >= 10 && accuracy >= 90) {
-        const badgeIndex = updatedBadges.findIndex(b => b.id === 'morse-expert');
-        if (badgeIndex !== -1 && !updatedBadges[badgeIndex].acquired) {
-          updatedBadges[badgeIndex] = {
-            ...updatedBadges[badgeIndex],
-            acquired: true,
-            date: today
-          };
-        }
+      if (wpm >= 15 && accuracy >= 90 && !prev.badges.find(b => b.id === 'morse-expert')?.acquired) {
+        updatedBadges = updatedBadges.map(b => 
+          b.id === 'morse-expert' 
+            ? { ...b, acquired: true, date: new Date().toISOString() } 
+            : b
+        );
       }
       
       return {
         ...prev,
         morseHighestWPM: Math.max(prev.morseHighestWPM, wpm),
-        morseAccuracy: Math.max(prev.morseAccuracy, accuracy),
-        morseLessonsCompleted: isLessonComplete 
-          ? prev.morseLessonsCompleted + 1 
-          : prev.morseLessonsCompleted,
+        morseAccuracy: accuracy, // Store most recent accuracy
+        morseLessonsCompleted: isLessonComplete ? prev.morseLessonsCompleted + 1 : prev.morseLessonsCompleted,
         badges: updatedBadges
       };
     });
   };
   
-  // Record circuit simulator usage
+  // Record circuit simulator success
   const recordCircuitSuccess = () => {
-    updateStreak(); // Count this as a study day
+    updateStreak();
     
     setProgress(prev => {
-      const updatedBadges = [...prev.badges];
-      const today = new Date().toISOString().split('T')[0];
-      
-      // Circuit builder badge
-      const badgeIndex = updatedBadges.findIndex(b => b.id === 'circuit-builder');
-      if (badgeIndex !== -1 && !updatedBadges[badgeIndex].acquired) {
-        updatedBadges[badgeIndex] = {
-          ...updatedBadges[badgeIndex],
-          acquired: true,
-          date: today
-        };
+      // Check for circuit builder badge
+      if (prev.badges.find(b => b.id === 'circuit-builder')?.acquired) {
+        return prev; // Badge already acquired
       }
+      
+      const updatedBadges = prev.badges.map(b => 
+        b.id === 'circuit-builder' 
+          ? { ...b, acquired: true, date: new Date().toISOString() } 
+          : b
+      );
+      
+      return {
+        ...prev,
+        badges: updatedBadges
+      };
+    });
+  };
+  
+  // Update a specific badge
+  const updateBadge = (badgeId: string) => {
+    setProgress(prev => {
+      const updatedBadges = prev.badges.map(b => 
+        b.id === badgeId 
+          ? { ...b, acquired: true, date: new Date().toISOString() } 
+          : b
+      );
       
       return {
         ...prev,
@@ -473,6 +370,6 @@ export function useLearningProgress() {
     recordFlashcardReview,
     recordMorsePractice,
     recordCircuitSuccess,
-    updateStreak
+    updateBadge
   };
 }

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useLocalStorage } from './use-local-storage';
+import { v4 as uuidv4 } from 'uuid';
 
-// Interface for card review data (using SM-2 algorithm)
+// Card review data (SM-2 algorithm)
 interface CardReview {
   id: string;
   nextReviewDate: string; // ISO date string
@@ -12,6 +13,7 @@ interface CardReview {
   category: string;
 }
 
+// A flashcard with metadata
 export interface FlashcardWithMetadata {
   id: string;
   question: string;
@@ -24,221 +26,328 @@ export interface FlashcardWithMetadata {
   status: 'new' | 'learning' | 'review' | 'mastered';
 }
 
-export function useSpacedRepetition() {
-  // Store card review history
+// Basic flashcard information
+export interface Flashcard {
+  id?: string;
+  question: string;
+  answer: string;
+  category: string;
+}
+
+// Predefined flashcards for amateur radio
+const RADIO_FLASHCARDS: Flashcard[] = [
+  { question: "What is QRP?", answer: "Low-power operation, typically 5 watts or less", category: "Q-Codes" },
+  { question: "What is QSL?", answer: "Confirmation of contact or receipt", category: "Q-Codes" },
+  { question: "What is QTH?", answer: "Location or position", category: "Q-Codes" },
+  { question: "What is QSO?", answer: "A contact or conversation between amateur radio operators", category: "Q-Codes" },
+  { question: "What is QRZ?", answer: "Who is calling me?", category: "Q-Codes" },
+  { question: "What is QRN?", answer: "Natural noise or static", category: "Q-Codes" },
+  { question: "What is QRM?", answer: "Man-made interference", category: "Q-Codes" },
+  { question: "What is QSY?", answer: "Change frequency", category: "Q-Codes" },
+  { question: "What is QRX?", answer: "Stand by", category: "Q-Codes" },
+  
+  { question: "What does VHF stand for?", answer: "Very High Frequency (30-300 MHz)", category: "Terminology" },
+  { question: "What does UHF stand for?", answer: "Ultra High Frequency (300-3000 MHz)", category: "Terminology" },
+  { question: "What does HF stand for?", answer: "High Frequency (3-30 MHz)", category: "Terminology" },
+  { question: "What does CW stand for?", answer: "Continuous Wave (Morse code)", category: "Terminology" },
+  { question: "What does DX stand for?", answer: "Distance (typically long-distance communication)", category: "Terminology" },
+  { question: "What is a repeater?", answer: "A station that receives and retransmits signals to extend range", category: "Terminology" },
+  { question: "What is SSB?", answer: "Single Side Band - a form of amplitude modulation with suppressed carrier", category: "Terminology" },
+  { question: "What is an ARRL?", answer: "American Radio Relay League - national association for amateur radio in the USA", category: "Terminology" },
+  { question: "What is RAC?", answer: "Radio Amateurs of Canada - national association for amateur radio in Canada", category: "Terminology" },
+  
+  { question: "What is the calling frequency for VHF FM?", answer: "146.52 MHz", category: "Frequencies" },
+  { question: "What band does 14.200 MHz belong to?", answer: "20 meter band", category: "Frequencies" },
+  { question: "What band does 7.200 MHz belong to?", answer: "40 meter band", category: "Frequencies" },
+  { question: "What band does 28.400 MHz belong to?", answer: "10 meter band", category: "Frequencies" },
+  { question: "What band does 3.850 MHz belong to?", answer: "80 meter band", category: "Frequencies" },
+  
+  { question: "What is a dipole antenna?", answer: "A straight electrical conductor with a feed point at the center", category: "Antennas" },
+  { question: "What is a Yagi antenna?", answer: "A directional antenna with a driven element and parasitic elements", category: "Antennas" },
+  { question: "What is a J-pole antenna?", answer: "A vertical antenna made from a half-wave element with a quarter-wave matching stub", category: "Antennas" },
+  { question: "What is a balun?", answer: "A device that transforms between balanced and unbalanced lines", category: "Antennas" },
+  { question: "What is an SWR meter?", answer: "A device that measures standing wave ratio to indicate antenna match", category: "Antennas" },
+  
+  { question: "What is a capacitor?", answer: "An electronic component that stores electrical energy in an electric field", category: "Electronics" },
+  { question: "What is an inductor?", answer: "An electronic component that stores energy in a magnetic field when current flows through it", category: "Electronics" },
+  { question: "What is Ohm's Law?", answer: "V = IR (Voltage equals current multiplied by resistance)", category: "Electronics" },
+  { question: "What is a diode?", answer: "An electronic component that allows current to flow in one direction only", category: "Electronics" },
+  { question: "What is a transistor?", answer: "A semiconductor device used to amplify or switch electronic signals", category: "Electronics" }
+];
+
+export function useSpacedRepetition(initialCards: Flashcard[] = RADIO_FLASHCARDS) {
+  // Store card review data persistently
   const [cardReviews, setCardReviews] = useLocalStorage<Record<string, CardReview>>(
-    'ham-radio-card-reviews',
+    'ham-app-flashcard-reviews',
     {}
   );
   
-  // Get all cards that are due for review today
-  const getDueCards = (allCards: FlashcardWithMetadata[], maxCount = 20): FlashcardWithMetadata[] => {
+  // Keep flashcards in state
+  const [flashcards, setFlashcards] = useState<FlashcardWithMetadata[]>([]);
+  const [initialized, setInitialized] = useState(false);
+  
+  // Initialize flashcards on mount
+  useEffect(() => {
+    if (initialized) return;
+    
     const today = new Date();
+    const todayStr = today.toISOString();
     
-    // Filter cards that are due for review (nextReviewDate <= today)
-    const dueCards = allCards.filter(card => {
-      if (!cardReviews[card.id]) {
-        // New card that has never been reviewed
-        return true;
-      }
+    // Convert plain flashcards to flashcards with metadata
+    const flashcardsWithMetadata: FlashcardWithMetadata[] = initialCards.map(card => {
+      const id = card.id || uuidv4();
+      const review = cardReviews[id];
       
-      const reviewDate = new Date(cardReviews[card.id].nextReviewDate);
-      return reviewDate <= today;
-    });
-    
-    // Sort by priority: new cards first, then by due date (oldest first)
-    dueCards.sort((a, b) => {
-      // New cards have highest priority
-      const aIsNew = !cardReviews[a.id];
-      const bIsNew = !cardReviews[b.id];
-      
-      if (aIsNew && !bIsNew) return -1;
-      if (!aIsNew && bIsNew) return 1;
-      
-      if (!aIsNew && !bIsNew) {
-        // Both are review cards, sort by due date (oldest first)
-        const aDate = new Date(cardReviews[a.id].nextReviewDate);
-        const bDate = new Date(cardReviews[b.id].nextReviewDate);
-        return aDate.getTime() - bDate.getTime();
-      }
-      
-      return 0;
-    });
-    
-    // Return up to maxCount cards
-    return dueCards.slice(0, maxCount);
-  };
-  
-  // Get cards that are considered "mastered" (interval > 30 days)
-  const getMasteredCards = (allCards: FlashcardWithMetadata[]): FlashcardWithMetadata[] => {
-    return allCards.filter(card => {
-      const review = cardReviews[card.id];
-      return review && review.interval > 30;
-    });
-  };
-  
-  // Rate a card from 0-5 (SM-2 algorithm)
-  // 0 - Complete blackout, wrong answer
-  // 1 - Wrong answer but recognized
-  // 2 - Correct answer but with difficulty
-  // 3 - Correct answer with some effort
-  // 4 - Correct answer with little difficulty
-  // 5 - Perfect response
-  const rateCard = (cardId: string, quality: number, category: string) => {
-    setCardReviews(prev => {
-      const today = new Date();
-      const todayStr = today.toISOString();
-      
-      // Get existing review or create new one
-      const existingReview = prev[cardId];
-      
-      // Initialize values for new cards
-      let ease = existingReview ? existingReview.ease : 2.5;
-      let interval = existingReview ? existingReview.interval : 0;
-      let repetitions = existingReview ? existingReview.repetitions : 0;
-      
-      // Apply SM-2 algorithm
-      if (quality < 3) {
-        // Failed response, reset repetitions
-        repetitions = 0;
-        interval = 1;
-      } else {
-        // Successful response
-        if (repetitions === 0) {
-          interval = 1;
-        } else if (repetitions === 1) {
-          interval = 6;
-        } else {
-          interval = Math.round(interval * ease);
-        }
-        
-        repetitions += 1;
-      }
-      
-      // Update ease factor based on response quality
-      ease = Math.max(1.3, ease + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02)));
-      
-      // Calculate next review date
-      const nextReview = new Date(today);
-      nextReview.setDate(nextReview.getDate() + interval);
-      
-      // Create updated review
-      const updatedReview: CardReview = {
-        id: cardId,
-        nextReviewDate: nextReview.toISOString(),
-        ease,
-        interval,
-        repetitions,
-        lastReviewDate: todayStr,
-        category,
-      };
-      
-      // Update the reviews map
-      return {
-        ...prev,
-        [cardId]: updatedReview
-      };
-    });
-  };
-  
-  // Determine the current status of a card
-  const getCardStatus = (cardId: string): 'new' | 'learning' | 'review' | 'mastered' => {
-    const review = cardReviews[cardId];
-    
-    if (!review) {
-      return 'new';
-    }
-    
-    if (review.repetitions < 2) {
-      return 'learning';
-    }
-    
-    if (review.interval > 30) {
-      return 'mastered';
-    }
-    
-    return 'review';
-  };
-  
-  // Enrich cards with their spaced repetition metadata
-  const getCardsWithMetadata = (cards: { id: string, question: string, answer: string, category: string }[]): FlashcardWithMetadata[] => {
-    return cards.map(card => {
-      const review = cardReviews[card.id];
-      
-      // Default values for new cards
-      const defaultValues = {
-        nextReviewDate: new Date().toISOString(),
-        ease: 2.5,
-        interval: 0,
-        repetitions: 0,
-        status: 'new' as const
-      };
-      
-      // Use existing review data if available, otherwise defaults
       if (review) {
+        // Already has review data
+        const status = getCardStatus(review);
         return {
-          ...card,
+          id,
+          question: card.question,
+          answer: card.answer,
+          category: card.category,
           nextReviewDate: review.nextReviewDate,
           ease: review.ease,
           interval: review.interval,
           repetitions: review.repetitions,
-          status: getCardStatus(card.id)
+          status
         };
       } else {
-        return { ...card, ...defaultValues };
+        // New card
+        return {
+          id,
+          question: card.question,
+          answer: card.answer,
+          category: card.category,
+          nextReviewDate: todayStr,
+          ease: 2.5, // Initial ease factor
+          interval: 0,
+          repetitions: 0,
+          status: 'new'
+        };
       }
     });
+    
+    setFlashcards(flashcardsWithMetadata);
+    setInitialized(true);
+  }, [initialCards, cardReviews, initialized]);
+  
+  // Determine card status based on review data
+  const getCardStatus = (review: CardReview): 'new' | 'learning' | 'review' | 'mastered' => {
+    if (review.repetitions === 0) {
+      return 'new';
+    } else if (review.repetitions < 3) {
+      return 'learning';
+    } else if (review.interval >= 21) {
+      return 'mastered';
+    } else {
+      return 'review';
+    }
   };
   
-  // Get statistics about card progress
-  const getStats = () => {
-    const now = new Date();
-    const reviewValues = Object.values(cardReviews);
+  // Add a new flashcard
+  const addFlashcard = (card: Flashcard) => {
+    const id = card.id || uuidv4();
+    const today = new Date().toISOString();
     
-    // Count by status
-    const newCount = 0; // We don't track cards that haven't been reviewed yet
-    const learningCount = reviewValues.filter(r => r.repetitions < 2).length;
-    const reviewCount = reviewValues.filter(r => r.repetitions >= 2 && r.interval <= 30).length;
-    const masteredCount = reviewValues.filter(r => r.interval > 30).length;
+    const newCard: FlashcardWithMetadata = {
+      id,
+      question: card.question,
+      answer: card.answer,
+      category: card.category,
+      nextReviewDate: today,
+      ease: 2.5,
+      interval: 0,
+      repetitions: 0,
+      status: 'new'
+    };
     
-    // Count by due date
-    const dueTodayCount = reviewValues.filter(r => {
-      const reviewDate = new Date(r.nextReviewDate);
-      return reviewDate <= now;
-    }).length;
+    setFlashcards(prev => [...prev, newCard]);
+  };
+  
+  // Get due cards for review
+  const getDueCards = (maxCards = 20, category?: string): FlashcardWithMetadata[] => {
+    const today = new Date();
     
-    // Count by category
-    const categoryStats: Record<string, { count: number, mastered: number }> = {};
-    reviewValues.forEach(review => {
-      const cat = review.category.toLowerCase();
-      if (!categoryStats[cat]) {
-        categoryStats[cat] = { count: 0, mastered: 0 };
-      }
-      
-      categoryStats[cat].count += 1;
-      if (review.interval > 30) {
-        categoryStats[cat].mastered += 1;
-      }
+    // Filter cards by due date and optionally by category
+    const dueCards = flashcards.filter(card => {
+      const nextReviewDate = new Date(card.nextReviewDate);
+      const isDue = nextReviewDate <= today;
+      const isCorrectCategory = !category || card.category === category;
+      return isDue && isCorrectCategory;
     });
     
+    // Sort by interval (shorter intervals first)
+    const sortedCards = [...dueCards].sort((a, b) => a.interval - b.interval);
+    
+    // Return limited number of cards
+    return sortedCards.slice(0, maxCards);
+  };
+  
+  // Get all cards by category
+  const getCardsByCategory = (category: string): FlashcardWithMetadata[] => {
+    return flashcards.filter(card => card.category === category);
+  };
+  
+  // Get a specific card by ID
+  const getCardById = (id: string): FlashcardWithMetadata | undefined => {
+    return flashcards.find(card => card.id === id);
+  };
+  
+  // Record a card review using SM-2 algorithm
+  const reviewCard = (cardId: string, quality: 0 | 1 | 2 | 3 | 4 | 5) => {
+    const card = flashcards.find(c => c.id === cardId);
+    if (!card) return;
+    
+    const today = new Date();
+    const todayStr = today.toISOString();
+    
+    // Apply SM-2 algorithm
+    let { ease, interval, repetitions } = card;
+    
+    // If quality is less than 3, reset repetitions
+    if (quality < 3) {
+      repetitions = 0;
+      interval = 1;
+    } else {
+      // Calculate new interval
+      if (repetitions === 0) {
+        interval = 1;
+      } else if (repetitions === 1) {
+        interval = 6;
+      } else {
+        interval = Math.round(interval * ease);
+      }
+      
+      // Increment repetitions
+      repetitions += 1;
+      
+      // Adjust ease factor (min 1.3)
+      ease = Math.max(1.3, ease + (0.1 - (5 - quality) * (0.08 + (5 - quality) * 0.02)));
+    }
+    
+    // Calculate next review date
+    const nextReviewDate = new Date();
+    nextReviewDate.setDate(today.getDate() + interval);
+    
+    // Update card review data
+    const updatedReview: CardReview = {
+      id: cardId,
+      nextReviewDate: nextReviewDate.toISOString(),
+      ease,
+      interval,
+      repetitions,
+      lastReviewDate: todayStr,
+      category: card.category
+    };
+    
+    // Update state
+    setCardReviews(prev => ({
+      ...prev,
+      [cardId]: updatedReview
+    }));
+    
+    // Update flashcards state
+    setFlashcards(prev => 
+      prev.map(c => 
+        c.id === cardId 
+          ? {
+              ...c,
+              nextReviewDate: updatedReview.nextReviewDate,
+              ease,
+              interval,
+              repetitions,
+              status: getCardStatus(updatedReview)
+            }
+          : c
+      )
+    );
+    
+    return getCardStatus(updatedReview);
+  };
+  
+  // Reset a card back to new status
+  const resetCard = (cardId: string) => {
+    const card = flashcards.find(c => c.id === cardId);
+    if (!card) return;
+    
+    const today = new Date().toISOString();
+    
+    // Create a reset review
+    const resetReview: CardReview = {
+      id: cardId,
+      nextReviewDate: today,
+      ease: 2.5,
+      interval: 0,
+      repetitions: 0,
+      lastReviewDate: today,
+      category: card.category
+    };
+    
+    // Update state
+    setCardReviews(prev => ({
+      ...prev,
+      [cardId]: resetReview
+    }));
+    
+    // Update flashcards state
+    setFlashcards(prev => 
+      prev.map(c => 
+        c.id === cardId 
+          ? {
+              ...c,
+              nextReviewDate: today,
+              ease: 2.5,
+              interval: 0,
+              repetitions: 0,
+              status: 'new'
+            }
+          : c
+      )
+    );
+  };
+  
+  // Get statistics about the flashcards
+  const getStats = () => {
+    const total = flashcards.length;
+    const newCards = flashcards.filter(c => c.status === 'new').length;
+    const learning = flashcards.filter(c => c.status === 'learning').length;
+    const review = flashcards.filter(c => c.status === 'review').length;
+    const mastered = flashcards.filter(c => c.status === 'mastered').length;
+    
+    const categories = [...new Set(flashcards.map(c => c.category))];
+    const categoryStats = categories.map(category => {
+      const cardsInCategory = flashcards.filter(c => c.category === category);
+      return {
+        category,
+        total: cardsInCategory.length,
+        mastered: cardsInCategory.filter(c => c.status === 'mastered').length,
+        learning: cardsInCategory.filter(c => c.status === 'learning' || c.status === 'review').length,
+        new: cardsInCategory.filter(c => c.status === 'new').length
+      };
+    });
+    
+    const dueToday = getDueCards(1000).length;
+    
     return {
-      total: reviewValues.length,
-      new: newCount,
-      learning: learningCount,
-      review: reviewCount,
-      mastered: masteredCount,
-      dueToday: dueTodayCount,
+      total,
+      newCards,
+      learning,
+      review,
+      mastered,
+      dueToday,
       categories: categoryStats
     };
   };
   
   return {
-    cardReviews,
+    flashcards,
+    addFlashcard,
     getDueCards,
-    getMasteredCards,
-    rateCard,
-    getCardStatus,
-    getCardsWithMetadata,
+    getCardsByCategory,
+    getCardById,
+    reviewCard,
+    resetCard,
     getStats
   };
 }
