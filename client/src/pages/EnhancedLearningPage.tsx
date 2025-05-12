@@ -15,7 +15,11 @@ import {
   GraduationCap,
   BarChart4,
   Home as HomeIcon,
-  Zap
+  Zap,
+  CalendarDays,
+  CheckCircle,
+  Clock,
+  Trophy
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 
