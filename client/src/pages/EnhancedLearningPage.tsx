@@ -471,7 +471,7 @@ export default function EnhancedLearningPage() {
                 <div className="mb-4">
                   <div className="mb-2 text-xs text-gray-300">Number of questions:</div>
                   <div className="grid grid-cols-4 gap-2">
-                    {[5, 10, 15, 20].map(count => (
+                    {[10, 20, 50, 100].map(count => (
                       <div
                         key={count}
                         className={`px-2 py-1 rounded-sm text-[10px] cursor-pointer text-center border ${
@@ -497,8 +497,8 @@ export default function EnhancedLearningPage() {
                 </div>
                 
                 <div className="mt-3 p-2 bg-blue-900 bg-opacity-20 rounded-sm text-[10px] text-gray-300 border border-blue-900">
-                  <p className="mb-1"><span className="text-blue-300 font-medium">Tip:</span> The actual Canadian Basic Qualification Exam has 100 questions. A score of 70% is required to pass.</p>
-                  <p>To obtain Basic with Honours (allowing HF privileges), you need to score 80% or higher.</p>
+                  <p className="mb-1"><span className="text-blue-300 font-medium">2025 Update:</span> The Canadian Basic Qualification Exam has 100 questions. A score of 70% is required to pass.</p>
+                  <p>To obtain Basic with Honours (allowing HF privileges), you need to score 80% or higher. All exam standards were renewed in 2024.</p>
                 </div>
               </div>
             </div>

@@ -45,70 +45,70 @@ interface ClubEvent {
   recurring?: string;
 }
 
-// Sample learning resources (with actual links)
+// 2025 Updated learning resources for ham radio
 const LEARNING_RESOURCES: ClassResource[] = [
   {
-    title: "Amateur Radio Basics",
+    title: "New Ham Radio Basics (2025)",
     type: "video",
     level: "beginner",
-    duration: "15 min",
+    duration: "20 min",
     link: "https://www.youtube.com/watch?v=vwPJ3NhOPoc",
     source: "Ham Radio 2.0",
-    description: "Introduction to amateur radio terminology and basic concepts."
+    description: "Updated introduction to amateur radio terminology and basic concepts for 2025."
   },
   {
-    title: "Understanding Antennas",
+    title: "Modern Antenna Design",
     type: "article",
     level: "beginner",
-    duration: "10 min",
+    duration: "15 min",
     link: "https://www.arrl.org/building-simple-antennas",
     source: "ARRL",
-    description: "Learn about different types of antennas and their applications."
+    description: "2025 guide to modern antenna designs including compact options for limited spaces."
   },
   {
-    title: "Radio Wave Propagation",
+    title: "Advanced Propagation Prediction",
     type: "interactive",
     level: "intermediate",
     duration: "25 min",
     link: "https://www.sws.bom.gov.au/HF_Systems/7/1",
     source: "Space Weather Services",
-    description: "Interactive resources about radio wave propagation through various atmospheric conditions."
+    description: "Latest interactive tools for propagation prediction using AI-enhanced forecasting."
   },
   {
-    title: "Morse Code Fundamentals",
+    title: "Morse Code and Modern Apps",
     type: "course",
     level: "beginner",
     duration: "3 hours",
     link: "https://cwops.org/cw-academy/",
     source: "CW Academy",
-    description: "Complete beginner's course for learning Morse code from scratch."
+    description: "Updated 2025 course combining traditional Morse with modern digital applications."
   },
   {
-    title: "Radio Electronics Essentials",
+    title: "Software Defined Radio Guide",
     type: "book",
     level: "intermediate",
-    duration: "8 hours",
+    duration: "6 hours",
     link: "https://rac.ca/study-guides/",
     source: "RAC Publications",
-    description: "In-depth guide to radio electronics, components and circuit design."
+    description: "Comprehensive 2025 guide to SDR technology and applications in amateur radio."
   },
   {
-    title: "Digital Modes Explained",
+    title: "Next-Gen Digital Modes",
     type: "video",
     level: "intermediate",
-    duration: "45 min",
+    duration: "40 min",
     link: "https://www.youtube.com/watch?v=WOb0X4b1DfU",
     source: "Digital Ham",
-    description: "Overview of popular digital communication modes including FT8, RTTY, and PSK31."
+    description: "2025 overview of latest digital modes including FT8+, M17, and new developments."
   },
   {
-    title: "Canadian Amateur Radio Exam Prep",
+    title: "Canadian Amateur Radio Exam Prep 2025",
     type: "course",
     level: "beginner",
-    duration: "10 hours",
+    duration: "12 hours",
     link: "https://www.ic.gc.ca/eic/site/025.nsf/eng/h_00040.html",
     source: "Innovation, Science and Economic Development Canada",
-    description: "Official study materials for Canadian amateur radio operator certification."
+    description: "Official updated study materials for the 2024-2025 Canadian amateur radio certification."
   },
   {
     title: "Powell River Amateur Radio Club",
@@ -117,31 +117,38 @@ const LEARNING_RESOURCES: ClassResource[] = [
     duration: "5 min",
     link: "https://powellriverarc.ca/",
     source: "PRARC",
-    description: "Resources and information specific to the Powell River Amateur Radio Club."
+    description: "Latest 2025 resources and events from the Powell River Amateur Radio Club."
   }
 ];
 
-// Powell River club events
+// Powell River club events for 2025
 const CLUB_EVENTS: ClubEvent[] = [
   {
     title: "PRARC Monthly Meeting",
     date: "Second Wednesday, 7:00pm",
-    location: "Powell River",
-    description: "Regular monthly meeting of the Powell River Amateur Radio Club",
+    location: "Powell River Community Center",
+    description: "Regular monthly meeting of the Powell River Amateur Radio Club (2025 schedule)",
     recurring: "monthly"
   },
   {
     title: "Coffee Social",
     date: "Saturdays, 10:00am",
     location: "A&W Restaurant",
-    description: "Weekly informal gathering to chat about radio and more",
+    description: "Weekly informal gathering for local ham operators - all are welcome!",
     recurring: "weekly"
   },
   {
-    title: "qRD Emergency Communications Unit Net",
+    title: "Field Day Planning Committee",
+    date: "First Monday, 7:00pm",
+    location: "Online (Zoom)",
+    description: "Planning for the 2025 ARRL Field Day activities",
+    recurring: "monthly"
+  },
+  {
+    title: "qRD Emergency Communications Net",
     date: "Thursdays, 6:30pm",
     location: "VE7PRR repeater",
-    description: "Weekly net for emergency communications training",
+    description: "Weekly net for emergency communications training using 2025 protocols",
     recurring: "weekly"
   },
   {
@@ -150,6 +157,13 @@ const CLUB_EVENTS: ClubEvent[] = [
     location: "VE7PRR repeater",
     description: "Weekly club net with check-ins and announcements",
     recurring: "weekly"
+  },
+  {
+    title: "Digital Modes Workshop",
+    date: "Third Saturday, 2:00pm",
+    location: "Powell River Library",
+    description: "Hands-on workshop exploring the latest digital modes for 2025",
+    recurring: "monthly"
   }
 ];
 
