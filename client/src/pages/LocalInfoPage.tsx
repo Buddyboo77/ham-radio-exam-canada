@@ -3,7 +3,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { RadioTower, Radio, Calendar, Users, Satellite, Share2, MapPin, Coffee } from 'lucide-react';
+import { RadioTower, Radio, Calendar, Users, Satellite, Share2, MapPin } from 'lucide-react';
 
 // Local Powell River Area Information
 const AREA_INFO = {
@@ -181,8 +181,8 @@ export default function LocalInfoPage() {
           <div className="text-[10px] text-gray-400">Powell River, BC, Canada</div>
         </div>
         <div className="bg-gray-900 rounded-md px-2 py-1 text-center border border-gray-700 flex items-center justify-center gap-1">
-          <Coffee className="h-3 w-3 text-yellow-400" />
-          <div className="text-[10px] text-gray-400">A&W Saturdays @ 10am</div>
+          <Radio className="h-3 w-3 text-yellow-400" />
+          <div className="text-[10px] text-gray-400">VE7PRR 147.200 MHz</div>
         </div>
       </div>
       
@@ -204,8 +204,8 @@ export default function LocalInfoPage() {
             </TabsTrigger>
             <TabsTrigger value="club" className="text-[10px] py-1 h-auto data-[state=active]:bg-purple-900">
               <div className="flex flex-col items-center gap-0.5">
-                <Users className="h-3 w-3" />
-                <span>Club Info</span>
+                <MapPin className="h-3 w-3" />
+                <span>Area Info</span>
               </div>
             </TabsTrigger>
             <TabsTrigger value="events" className="text-[10px] py-1 h-auto data-[state=active]:bg-amber-900">
