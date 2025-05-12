@@ -9,8 +9,6 @@ import {
   BookOpen,
   Brain,
   Cpu,
-  CalendarDays,
-  MapPin,
   BarChart3,
   Radio,
   AlertCircle,
@@ -34,15 +32,6 @@ interface ClassResource {
   link: string;
   source: string;
   description: string;
-}
-
-// Club events
-interface ClubEvent {
-  title: string;
-  date: string;
-  location: string;
-  description: string;
-  recurring?: string;
 }
 
 // 2025 Updated learning resources for ham radio
@@ -121,51 +110,7 @@ const LEARNING_RESOURCES: ClassResource[] = [
   }
 ];
 
-// Powell River club events for 2025
-const CLUB_EVENTS: ClubEvent[] = [
-  {
-    title: "PRARC Monthly Meeting",
-    date: "Second Wednesday, 7:00pm",
-    location: "Powell River Community Center",
-    description: "Regular monthly meeting of the Powell River Amateur Radio Club (2025 schedule)",
-    recurring: "monthly"
-  },
-  {
-    title: "Coffee Social",
-    date: "Saturdays, 10:00am",
-    location: "A&W Restaurant",
-    description: "Weekly informal gathering for local ham operators - all are welcome!",
-    recurring: "weekly"
-  },
-  {
-    title: "Field Day Planning Committee",
-    date: "First Monday, 7:00pm",
-    location: "Online (Zoom)",
-    description: "Planning for the 2025 ARRL Field Day activities",
-    recurring: "monthly"
-  },
-  {
-    title: "qRD Emergency Communications Net",
-    date: "Thursdays, 6:30pm",
-    location: "VE7PRR repeater",
-    description: "Weekly net for emergency communications training using 2025 protocols",
-    recurring: "weekly"
-  },
-  {
-    title: "PRARC Sunday Evening Net",
-    date: "Sundays, 8:00pm",
-    location: "VE7PRR repeater",
-    description: "Weekly club net with check-ins and announcements",
-    recurring: "weekly"
-  },
-  {
-    title: "Digital Modes Workshop",
-    date: "Third Saturday, 2:00pm",
-    location: "Powell River Library",
-    description: "Hands-on workshop exploring the latest digital modes for 2025",
-    recurring: "monthly"
-  }
-];
+
 
 export default function LearningDashboard() {
   // Hooks for progress data
@@ -308,28 +253,7 @@ export default function LearningDashboard() {
     </a>
   );
   
-  // Component for event cards
-  const EventCard = ({ event }: { event: ClubEvent }) => (
-    <div className="bg-gray-900 p-3 rounded-md border border-gray-800">
-      <div className="text-sm font-medium text-gray-200 mb-1">{event.title}</div>
-      <div className="flex flex-col space-y-1 mb-2">
-        <div className="flex items-center gap-1 text-[10px] text-gray-400">
-          <CalendarDays className="h-3 w-3 text-blue-400" />
-          <span>{event.date}</span>
-          {event.recurring && (
-            <Badge variant="outline" className="text-[8px] h-4 ml-1">
-              {event.recurring}
-            </Badge>
-          )}
-        </div>
-        <div className="flex items-center gap-1 text-[10px] text-gray-400">
-          <MapPin className="h-3 w-3 text-red-400" />
-          <span>{event.location}</span>
-        </div>
-      </div>
-      <p className="text-xs text-gray-400">{event.description}</p>
-    </div>
-  );
+
   
   // Progress recommendation component
   const Recommendation = () => {
