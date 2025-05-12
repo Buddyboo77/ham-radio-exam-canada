@@ -1,17 +1,14 @@
-import { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { 
   Play, 
   Pause, 
   Volume2, 
-  SkipForward, 
-  Timer, 
   Award, 
   Radio, 
   Settings, 
   Heart, 
   RefreshCw, 
-  VolumeX,
-  Volume1
+  VolumeX 
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -53,7 +50,7 @@ import {
 } from "@/components/ui/select";
 import { useLearningProgress } from "@/hooks/use-learning-progress";
 
-// Morse code dictionary
+// Define the Morse code dictionary
 const MORSE_CODE_DICT: Record<string, string> = {
   'A': '.-', 'B': '-...', 'C': '-.-.', 'D': '-..', 'E': '.', 'F': '..-.', 
   'G': '--.', 'H': '....', 'I': '..', 'J': '.---', 'K': '-.-', 'L': '.-..', 
@@ -68,10 +65,10 @@ const MORSE_CODE_DICT: Record<string, string> = {
   'SOS': '...---...'
 };
 
-// Convert keys to array for random selection
+// Get array of characters
 const CHARACTERS = Object.keys(MORSE_CODE_DICT);
 
-// Audio context for Morse code playback
+// Define audio context variables (outside component to persist)
 let audioContext: AudioContext | null = null;
 let oscillator: OscillatorNode | null = null;
 let gainNode: GainNode | null = null;
@@ -79,27 +76,21 @@ let gainNode: GainNode | null = null;
 // Question types
 type QuestionType = 'morse-to-char' | 'char-to-morse' | 'hear-to-char' | 'word-to-morse' | 'hear-to-word';
 
-// Word lists for different difficulty levels
+// Common ham radio terms for practice
 const COMMON_WORDS = [
   'CQ', 'DE', 'RST', 'ANT', 'RIG', 'WX', 'ES', 'SIG', 'RPT', 'OP', 'HI', 'NAME',
-  'QTH', 'QRM', 'QRN', 'QRP', 'QSO', 'QSL', 'QRZ', 'QSY', 'TNX', '73', '88', 'DX',
-  'CUL', 'PSE', 'TEST', 'HAM'
+  'QTH', 'QRM', 'QRN', 'QRP', 'QSO', 'QSL', 'QRZ', 'QSY', 'TNX', '73', '88', 'DX'
 ];
 
-const BEGINNER_SENTENCES = [
-  'CQ CQ CQ DE [CALLSIGN]',
-  'RST 599',
-  'NAME IS [NAME]',
-  'QTH IS [CITY]',
-  'RIG IS [RIG]',
-  'ANT IS [ANT]',
-  'WX IS [WX]',
-  'TNX QSO 73',
-  'QRZ?',
-  'PSE K'
-];
+// Character categories for organization
+const CHARACTER_CATEGORIES = {
+  'Letters': CHARACTERS.filter(char => /^[A-Z]$/.test(char)),
+  'Numbers': CHARACTERS.filter(char => /^[0-9]$/.test(char)),
+  'Punctuation': CHARACTERS.filter(char => /^[^A-Z0-9]$/.test(char)),
+  'Special': CHARACTERS.filter(char => char.length > 1)
+};
 
-// Challenge types
+// Define question interface
 interface Question {
   id: string;
   type: QuestionType;
@@ -111,6 +102,7 @@ interface Question {
   category: string;
 }
 
+// Game statistics interface
 interface GameStats {
   correct: number;
   total: number;
@@ -122,6 +114,7 @@ interface GameStats {
   charactersLearned: string[];
 }
 
+// Settings interface
 interface SettingsType {
   wpm: number;
   volume: number;
@@ -132,22 +125,51 @@ interface SettingsType {
   questionTypes: QuestionType[];
 }
 
-// Character categories for the quiz
-const CHARACTER_CATEGORIES = {
-  'Letters (A-Z)': CHARACTERS.filter(char => /^[A-Z]$/.test(char)),
-  'Numbers (0-9)': CHARACTERS.filter(char => /^[0-9]$/.test(char)),
-  'Punctuation': CHARACTERS.filter(char => /^[^A-Z0-9]$/.test(char)),
-  'Special/Prosigns': CHARACTERS.filter(char => char.length > 1)
+// Default settings
+const DEFAULT_SETTINGS: SettingsType = {
+  wpm: 12,
+  volume: 70,
+  difficulty: 'beginner',
+  enableSound: true,
+  enableAnimation: true,
+  charactersToInclude: [],
+  questionTypes: ['morse-to-char', 'char-to-morse', 'hear-to-char']
 };
 
-// Generate a large bank of questions
+// Helper to categorize a character
+const getCharacterCategory = (char: string): string => {
+  if (/^[A-Z]$/.test(char)) return 'Letters';
+  if (/^[0-9]$/.test(char)) return 'Numbers';
+  if (char.length > 1) return 'Special';
+  return 'Punctuation';
+};
+
+// Helper to convert a word to Morse code
+const wordToMorse = (word: string): string => {
+  return word.split('').map(char => {
+    const upperChar = char.toUpperCase();
+    return MORSE_CODE_DICT[upperChar] || ' ';
+  }).join(' ');
+};
+
+// Helper to shuffle an array
+function shuffleArray<T>(array: T[]): T[] {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+}
+
+// Generate questions based on settings
 const generateQuestions = (settings: SettingsType): Question[] => {
   const questions: Question[] = [];
   const charactersToUse = settings.charactersToInclude.length > 0 
     ? settings.charactersToInclude 
     : CHARACTERS;
   
-  // Function to generate incorrect options that are somewhat similar
+  // Generate options for multiple choice questions
   const generateOptions = (correctAnswer: string, type: 'char' | 'morse'): string[] => {
     const allOptions = type === 'char' ? CHARACTERS : Object.values(MORSE_CODE_DICT);
     const similarOptions = allOptions.filter(option => 
@@ -157,12 +179,14 @@ const generateQuestions = (settings: SettingsType): Question[] => {
         : true)
     );
     
-    // Shuffle and take 3 options
+    // Shuffle and take 3 options plus correct answer
     return shuffleArray([...similarOptions])
       .slice(0, 3)
       .concat(correctAnswer)
       .sort(() => Math.random() - 0.5);
   };
+  
+  // Generate different question types
   
   // 1. Morse to Character questions
   if (settings.questionTypes.includes('morse-to-char')) {
@@ -248,48 +272,11 @@ const generateQuestions = (settings: SettingsType): Question[] => {
   return shuffleArray(questions);
 };
 
-// Helper to categorize a character
-const getCharacterCategory = (char: string): string => {
-  if (/^[A-Z]$/.test(char)) return 'Letters';
-  if (/^[0-9]$/.test(char)) return 'Numbers';
-  if (char.length > 1) return 'Special/Prosigns';
-  return 'Punctuation';
-};
-
-// Helper to convert a word to Morse code
-const wordToMorse = (word: string): string => {
-  return word.split('').map(char => {
-    const upperChar = char.toUpperCase();
-    return MORSE_CODE_DICT[upperChar] || ' ';
-  }).join(' ');
-};
-
-// Helper to shuffle an array
-function shuffleArray<T>(array: T[]): T[] {
-  const newArray = [...array];
-  for (let i = newArray.length - 1; i > 0; i--) {
-    const j = Math.floor(Math.random() * (i + 1));
-    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
-  }
-  return newArray;
-}
-
-// Default settings
-const DEFAULT_SETTINGS: SettingsType = {
-  wpm: 12,
-  volume: 70,
-  difficulty: 'beginner',
-  enableSound: true,
-  enableAnimation: true,
-  charactersToInclude: [],
-  questionTypes: ['morse-to-char', 'char-to-morse', 'hear-to-char']
-};
-
-// Create 30 placeholder stats with incremental difficulty
+// Create progressive drills for the learning mode
 const generateProgressiveDrills = (): Question[] => {
   const drills: Question[] = [];
   
-  // Group 1: Single letters (A-Z)
+  // Group 1: Single letters (A-Z) - ordered by Koch method popularity
   const letters = 'ETIANMSURWDKGOHVFLPJBXCYZQ'.split('');
   letters.forEach((letter, index) => {
     drills.push({
@@ -339,8 +326,7 @@ const generateProgressiveDrills = (): Question[] => {
 
 const PROGRESSIVE_DRILLS = generateProgressiveDrills();
 
-// Main component
-const MorseCodeGame: React.FC = () => {
+export const MorseCodeGame: React.FC = () => {
   // Game state
   const [gameMode, setGameMode] = useState<'quiz' | 'practice' | 'challenge' | 'learn'>('learn');
   const [currentQuestion, setCurrentQuestion] = useState<Question | null>(null);
@@ -372,13 +358,13 @@ const MorseCodeGame: React.FC = () => {
   const [showLearnDialog, setShowLearnDialog] = useState(false);
   const [learningChar, setLearningChar] = useState<string | null>(null);
   
-  // Refs
+  // Timer ref
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   
-  // Learning progress hooks
+  // Learning progress hook
   const { progress, recordMorsePractice } = useLearningProgress();
   
-  // Prepare questions
+  // Initialize questions
   useEffect(() => {
     const allQuestions = generateQuestions(settings);
     setQuestions(shuffleArray(allQuestions));
@@ -387,8 +373,8 @@ const MorseCodeGame: React.FC = () => {
       setCurrentQuestion(allQuestions[0]);
     }
     
+    // Clean up audio on unmount
     return () => {
-      // Clean up audio context
       if (oscillator) {
         oscillator.stop();
         oscillator.disconnect();
@@ -412,7 +398,7 @@ const MorseCodeGame: React.FC = () => {
     }
   }, [currentQuestionIndex, gameMode, questions]);
   
-  // Initialize or clean up timer
+  // Clean up timer on unmount
   useEffect(() => {
     return () => {
       if (timerRef.current) {
@@ -421,6 +407,7 @@ const MorseCodeGame: React.FC = () => {
     };
   }, []);
   
+  // Handle answer selection
   const handleAnswerSelect = (answer: string) => {
     if (isCorrect !== null || !currentQuestion) return; // Already answered
     
@@ -438,6 +425,7 @@ const MorseCodeGame: React.FC = () => {
     }, 1500);
   };
   
+  // Handle text input answers
   const handleTextInputAnswer = () => {
     if (isCorrect !== null || !currentQuestion) return; // Already answered
     
@@ -454,6 +442,7 @@ const MorseCodeGame: React.FC = () => {
     }, 1500);
   };
   
+  // Update game statistics
   const updateStats = (correct: boolean) => {
     setStats(prevStats => {
       const newStats = { 
@@ -505,6 +494,7 @@ const MorseCodeGame: React.FC = () => {
     }
   };
   
+  // Move to the next question
   const handleNextQuestion = () => {
     setIsCorrect(null);
     setShowFeedback(false);
@@ -522,6 +512,7 @@ const MorseCodeGame: React.FC = () => {
     }
   };
   
+  // Start challenge mode with timer and lives
   const startChallengeMode = () => {
     setLives(3);
     setIsGameOver(false);
@@ -551,6 +542,7 @@ const MorseCodeGame: React.FC = () => {
     }, 1000);
   };
   
+  // Reset the game
   const resetGame = () => {
     setCurrentQuestionIndex(0);
     setIsCorrect(null);
@@ -568,6 +560,7 @@ const MorseCodeGame: React.FC = () => {
     setQuestions(shuffleArray([...questions]));
   };
   
+  // Play morse code audio
   const playMorseCode = (morse: string) => {
     if (!settings.enableSound) return;
     
@@ -644,6 +637,7 @@ const MorseCodeGame: React.FC = () => {
     }, (currentTime - audioContext.currentTime) * 1000);
   };
   
+  // Handle play button click
   const handlePlayButtonClick = () => {
     if (!currentQuestion) return;
     
@@ -658,6 +652,7 @@ const MorseCodeGame: React.FC = () => {
     }
   };
   
+  // Learn a specific character
   const handleLearnChar = (char: string) => {
     setLearningChar(char);
     setShowLearnDialog(true);
@@ -671,8 +666,8 @@ const MorseCodeGame: React.FC = () => {
     }
   };
   
-  // Get the correct game content based on the mode
-  const renderGameContent = () => {
+  // Render the quiz mode content
+  const renderQuizContent = () => {
     if (!currentQuestion) {
       return (
         <div className="flex flex-col items-center justify-center p-8">
@@ -687,21 +682,217 @@ const MorseCodeGame: React.FC = () => {
       );
     }
     
-    // Quiz Mode
-    if (gameMode === 'quiz') {
-      return (
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
+    return (
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <Badge variant="outline" className="bg-gray-800">
+            Question {currentQuestionIndex + 1} of {questions.length}
+          </Badge>
+          <Badge variant="outline" className={currentQuestion.difficulty === 'easy' ? 'bg-green-900 text-green-100' : 
+            currentQuestion.difficulty === 'medium' ? 'bg-yellow-900 text-yellow-100' : 
+            'bg-red-900 text-red-100'}>
+            {currentQuestion.difficulty}
+          </Badge>
+        </div>
+        
+        <Card className="bg-gray-850 border-gray-700">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center justify-between">
+              <div className="flex items-center gap-2">
+                {currentQuestion.type === 'hear-to-char' || currentQuestion.type === 'hear-to-word' ? (
+                  <Button 
+                    variant="outline" 
+                    size="sm"
+                    className={`${isPlaying ? 'bg-blue-900 text-blue-100' : 'bg-gray-800'}`}
+                    onClick={handlePlayButtonClick}
+                  >
+                    {isPlaying ? <Pause className="h-4 w-4 mr-1" /> : <Play className="h-4 w-4 mr-1" />}
+                    Listen
+                  </Button>
+                ) : (
+                  <>
+                    {currentQuestion.type === 'morse-to-char' ? (
+                      <span className="font-mono text-blue-300">
+                        {currentQuestion.question}
+                      </span>
+                    ) : (
+                      <span>
+                        {currentQuestion.question}
+                      </span>
+                    )}
+                    <Button 
+                      variant="ghost" 
+                      size="sm"
+                      onClick={handlePlayButtonClick}
+                    >
+                      <Volume2 className="h-4 w-4" />
+                    </Button>
+                  </>
+                )}
+              </div>
+              <Badge>{currentQuestion.category}</Badge>
+            </CardTitle>
+            <CardDescription>
+              {currentQuestion.type === 'morse-to-char' ? "Convert Morse to character" : 
+               currentQuestion.type === 'char-to-morse' ? "Convert character to Morse" :
+               currentQuestion.type === 'hear-to-char' ? "Listen and identify the character" :
+               currentQuestion.type === 'word-to-morse' ? "Convert word to Morse" :
+               "Listen and identify the word"}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {/* For questions with options */}
+            {(currentQuestion.type === 'morse-to-char' || 
+              currentQuestion.type === 'hear-to-char' ||
+              currentQuestion.type === 'char-to-morse') && (
+              <div className="grid grid-cols-2 gap-2 mt-4">
+                {currentQuestion.options.map((option) => (
+                  <Button
+                    key={option}
+                    className={`h-12 text-lg ${
+                      selectedAnswer === option
+                        ? isCorrect
+                          ? 'bg-green-700 hover:bg-green-800 border-green-600'
+                          : 'bg-red-700 hover:bg-red-800 border-red-600'
+                        : 'bg-gray-800 hover:bg-gray-700'
+                    }`}
+                    disabled={isCorrect !== null}
+                    onClick={() => handleAnswerSelect(option)}
+                  >
+                    {option}
+                  </Button>
+                ))}
+              </div>
+            )}
+            
+            {/* For questions requiring text input */}
+            {(currentQuestion.type === 'word-to-morse' || 
+              currentQuestion.type === 'hear-to-word') && (
+              <div className="mt-4">
+                <input
+                  type="text"
+                  value={textInput}
+                  onChange={(e) => setTextInput(e.target.value)}
+                  className={`w-full p-3 text-lg bg-gray-900 border ${
+                    isCorrect === null
+                      ? 'border-gray-700'
+                      : isCorrect
+                      ? 'border-green-600'
+                      : 'border-red-600'
+                  } rounded-md font-mono focus:outline-none focus:ring-2 focus:ring-blue-500`}
+                  placeholder="Type your answer here..."
+                  disabled={isCorrect !== null}
+                />
+                <Button
+                  className="w-full mt-2"
+                  onClick={handleTextInputAnswer}
+                  disabled={isCorrect !== null || textInput.trim() === ''}
+                >
+                  Submit Answer
+                </Button>
+              </div>
+            )}
+            
+            {showFeedback && (
+              <div className={`mt-4 p-3 rounded-md ${
+                isCorrect ? 'bg-green-900 border border-green-700' : 'bg-red-900 border border-red-700'
+              }`}>
+                <p className="text-sm font-medium">
+                  {isCorrect 
+                    ? "Correct! Well done." 
+                    : `Incorrect. The correct answer is: ${currentQuestion.correctAnswer}`}
+                </p>
+              </div>
+            )}
+          </CardContent>
+          <CardFooter className="justify-between">
+            <Button variant="ghost" onClick={() => setGameMode('learn')}>
+              Back to Learning
+            </Button>
+            <Button onClick={handleNextQuestion}>
+              Next Question
+            </Button>
+          </CardFooter>
+        </Card>
+      </div>
+    );
+  };
+  
+  // Render the challenge mode content
+  const renderChallengeContent = () => {
+    if (!currentQuestion) return null;
+    
+    return (
+      <div className="space-y-4">
+        <div className="flex justify-between items-center">
+          <div className="flex gap-2">
+            {Array(3).fill(0).map((_, idx) => (
+              <Heart 
+                key={idx} 
+                className={`h-5 w-5 ${idx < lives ? 'text-red-500 fill-red-500' : 'text-gray-600'}`} 
+              />
+            ))}
+          </div>
+          <div className="flex items-center gap-2">
             <Badge variant="outline" className="bg-gray-800">
-              Question {currentQuestionIndex + 1} of {questions.length}
-            </Badge>
-            <Badge variant="outline" className={currentQuestion.difficulty === 'easy' ? 'bg-green-900 text-green-100' : 
-              currentQuestion.difficulty === 'medium' ? 'bg-yellow-900 text-yellow-100' : 
-              'bg-red-900 text-red-100'}>
-              {currentQuestion.difficulty}
+              Time: {timeLeft}s
             </Badge>
           </div>
-          
+          <Badge variant="outline" className="bg-blue-900 text-blue-100">
+            Score: {stats.lastSessionScore}
+          </Badge>
+        </div>
+        
+        {isGameOver ? (
+          <Card className="bg-gray-850 border-gray-700">
+            <CardHeader>
+              <CardTitle>Challenge Complete!</CardTitle>
+              <CardDescription>
+                {timeLeft === 0 
+                  ? "Time's up!" 
+                  : lives <= 0 
+                  ? "You've run out of lives." 
+                  : "Challenge complete!"}
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="text-center py-4">
+                <div className="text-4xl font-bold text-yellow-400 mb-2">
+                  {stats.lastSessionScore}
+                </div>
+                <div className="text-gray-400">points</div>
+                
+                <div className="grid grid-cols-3 gap-4 mt-6">
+                  <div className="bg-gray-800 p-3 rounded-md">
+                    <div className="text-gray-400 text-xs">Accuracy</div>
+                    <div className="text-xl font-bold">
+                      {stats.total > 0 
+                        ? Math.round((stats.correct / stats.total) * 100) 
+                        : 0}%
+                    </div>
+                  </div>
+                  <div className="bg-gray-800 p-3 rounded-md">
+                    <div className="text-gray-400 text-xs">Longest Streak</div>
+                    <div className="text-xl font-bold">{stats.longestStreak}</div>
+                  </div>
+                  <div className="bg-gray-800 p-3 rounded-md">
+                    <div className="text-gray-400 text-xs">WPM</div>
+                    <div className="text-xl font-bold">{settings.wpm}</div>
+                  </div>
+                </div>
+              </div>
+            </CardContent>
+            <CardFooter className="justify-between">
+              <Button variant="ghost" onClick={() => setGameMode('learn')}>
+                Back to Learning
+              </Button>
+              <Button onClick={startChallengeMode}>
+                <RefreshCw className="h-4 w-4 mr-1" />
+                Try Again
+              </Button>
+            </CardFooter>
+          </Card>
+        ) : (
           <Card className="bg-gray-850 border-gray-700">
             <CardHeader className="pb-2">
               <CardTitle className="text-lg flex items-center justify-between">
@@ -739,23 +930,16 @@ const MorseCodeGame: React.FC = () => {
                 </div>
                 <Badge>{currentQuestion.category}</Badge>
               </CardTitle>
-              <CardDescription>
-                {currentQuestion.type === 'morse-to-char' ? "Convert Morse to character" : 
-                 currentQuestion.type === 'char-to-morse' ? "Convert character to Morse" :
-                 currentQuestion.type === 'hear-to-char' ? "Listen and identify the character" :
-                 currentQuestion.type === 'word-to-morse' ? "Convert word to Morse" :
-                 "Listen and identify the word"}
-              </CardDescription>
             </CardHeader>
             <CardContent>
-              {/* For questions with options */}
+              {/* Multiple choice options */}
               {(currentQuestion.type === 'morse-to-char' || 
                 currentQuestion.type === 'hear-to-char' ||
                 currentQuestion.type === 'char-to-morse') && (
                 <div className="grid grid-cols-2 gap-2 mt-4">
-                  {currentQuestion.options.map((option, idx) => (
+                  {currentQuestion.options.map((option) => (
                     <Button
-                      key={`${option}-${idx}`}
+                      key={option}
                       className={`h-12 text-lg ${
                         selectedAnswer === option
                           ? isCorrect
@@ -772,7 +956,7 @@ const MorseCodeGame: React.FC = () => {
                 </div>
               )}
               
-              {/* For questions requiring text input */}
+              {/* Text input questions */}
               {(currentQuestion.type === 'word-to-morse' || 
                 currentQuestion.type === 'hear-to-word') && (
                 <div className="mt-4">
@@ -800,6 +984,7 @@ const MorseCodeGame: React.FC = () => {
                 </div>
               )}
               
+              {/* Feedback after answering */}
               {showFeedback && (
                 <div className={`mt-4 p-3 rounded-md ${
                   isCorrect ? 'bg-green-900 border border-green-700' : 'bg-red-900 border border-red-700'
@@ -812,368 +997,179 @@ const MorseCodeGame: React.FC = () => {
                 </div>
               )}
             </CardContent>
-            <CardFooter className="justify-between">
-              <Button variant="ghost" onClick={() => setGameMode('learn')}>
-                Back to Learning
-              </Button>
+            <CardFooter className="justify-end">
               <Button onClick={handleNextQuestion}>
-                Next Question
+                Next
               </Button>
             </CardFooter>
           </Card>
-        </div>
-      );
-    }
+        )}
+      </div>
+    );
+  };
+  
+  // Render the learning mode content
+  const renderLearnContent = () => {
+    const drillQuestion = PROGRESSIVE_DRILLS[currentDrillIndex];
+    const progress = Math.round((drillCompleted.filter(Boolean).length / PROGRESSIVE_DRILLS.length) * 100);
     
-    // Challenge Mode
-    if (gameMode === 'challenge') {
-      return (
-        <div className="space-y-4">
-          <div className="flex justify-between items-center">
-            <div className="flex gap-2">
-              {Array(3).fill(0).map((_, idx) => (
-                <Heart 
-                  key={idx} 
-                  className={`h-5 w-5 ${idx < lives ? 'text-red-500 fill-red-500' : 'text-gray-600'}`} 
-                />
-              ))}
-            </div>
-            <div className="flex items-center gap-2">
-              <Timer className="h-4 w-4 text-yellow-400" />
-              <span className="font-mono text-sm">{timeLeft}s</span>
-            </div>
-            <Badge variant="outline" className="bg-blue-900 text-blue-100">
-              Score: {stats.lastSessionScore}
-            </Badge>
-          </div>
-          
-          {isGameOver ? (
-            <Card className="bg-gray-850 border-gray-700">
-              <CardHeader>
-                <CardTitle>Challenge Complete!</CardTitle>
-                <CardDescription>
-                  {timeLeft === 0 
-                    ? "Time's up!" 
-                    : lives <= 0 
-                    ? "You've run out of lives." 
-                    : "Challenge complete!"}
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="text-center py-4">
-                  <div className="text-4xl font-bold text-yellow-400 mb-2">
-                    {stats.lastSessionScore}
-                  </div>
-                  <div className="text-gray-400">points</div>
-                  
-                  <div className="grid grid-cols-3 gap-4 mt-6">
-                    <div className="bg-gray-800 p-3 rounded-md">
-                      <div className="text-gray-400 text-xs">Accuracy</div>
-                      <div className="text-xl font-bold">
-                        {stats.total > 0 
-                          ? Math.round((stats.correct / stats.total) * 100) 
-                          : 0}%
-                      </div>
-                    </div>
-                    <div className="bg-gray-800 p-3 rounded-md">
-                      <div className="text-gray-400 text-xs">Longest Streak</div>
-                      <div className="text-xl font-bold">{stats.longestStreak}</div>
-                    </div>
-                    <div className="bg-gray-800 p-3 rounded-md">
-                      <div className="text-gray-400 text-xs">WPM</div>
-                      <div className="text-xl font-bold">{settings.wpm}</div>
-                    </div>
-                  </div>
-                </div>
-              </CardContent>
-              <CardFooter className="justify-between">
-                <Button variant="ghost" onClick={() => setGameMode('learn')}>
-                  Back to Learning
-                </Button>
-                <Button onClick={startChallengeMode}>
-                  <RefreshCw className="h-4 w-4 mr-1" />
-                  Try Again
-                </Button>
-              </CardFooter>
-            </Card>
-          ) : (
-            <Card className="bg-gray-850 border-gray-700">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    {currentQuestion.type === 'hear-to-char' || currentQuestion.type === 'hear-to-word' ? (
-                      <Button 
-                        variant="outline" 
-                        size="sm"
-                        className={`${isPlaying ? 'bg-blue-900 text-blue-100' : 'bg-gray-800'}`}
-                        onClick={handlePlayButtonClick}
-                      >
-                        {isPlaying ? <Pause className="h-4 w-4 mr-1" /> : <Play className="h-4 w-4 mr-1" />}
-                        Listen
-                      </Button>
-                    ) : (
-                      <>
-                        {currentQuestion.type === 'morse-to-char' ? (
-                          <span className="font-mono text-blue-300">
-                            {currentQuestion.question}
-                          </span>
-                        ) : (
-                          <span>
-                            {currentQuestion.question}
-                          </span>
-                        )}
-                        <Button 
-                          variant="ghost" 
-                          size="sm"
-                          onClick={handlePlayButtonClick}
-                        >
-                          <Volume2 className="h-4 w-4" />
-                        </Button>
-                      </>
-                    )}
-                  </div>
-                  <Badge>{currentQuestion.category}</Badge>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                {/* For questions with options */}
-                {(currentQuestion.type === 'morse-to-char' || 
-                  currentQuestion.type === 'hear-to-char' ||
-                  currentQuestion.type === 'char-to-morse') && (
-                  <div className="grid grid-cols-2 gap-2 mt-4">
-                    {currentQuestion.options.map((option, idx) => (
-                      <Button
-                        key={`${option}-${idx}`}
-                        className={`h-12 text-lg ${
-                          selectedAnswer === option
-                            ? isCorrect
-                              ? 'bg-green-700 hover:bg-green-800 border-green-600'
-                              : 'bg-red-700 hover:bg-red-800 border-red-600'
-                            : 'bg-gray-800 hover:bg-gray-700'
-                        }`}
-                        disabled={isCorrect !== null}
-                        onClick={() => handleAnswerSelect(option)}
-                      >
-                        {option}
-                      </Button>
-                    ))}
-                  </div>
-                )}
-                
-                {/* For questions requiring text input */}
-                {(currentQuestion.type === 'word-to-morse' || 
-                  currentQuestion.type === 'hear-to-word') && (
-                  <div className="mt-4">
-                    <input
-                      type="text"
-                      value={textInput}
-                      onChange={(e) => setTextInput(e.target.value)}
-                      className={`w-full p-3 text-lg bg-gray-900 border ${
-                        isCorrect === null
-                          ? 'border-gray-700'
-                          : isCorrect
-                          ? 'border-green-600'
-                          : 'border-red-600'
-                      } rounded-md font-mono focus:outline-none focus:ring-2 focus:ring-blue-500`}
-                      placeholder="Type your answer here..."
-                      disabled={isCorrect !== null}
-                    />
-                    <Button
-                      className="w-full mt-2"
-                      onClick={handleTextInputAnswer}
-                      disabled={isCorrect !== null || textInput.trim() === ''}
-                    >
-                      Submit Answer
-                    </Button>
-                  </div>
-                )}
-                
-                {showFeedback && (
-                  <div className={`mt-4 p-3 rounded-md ${
-                    isCorrect ? 'bg-green-900 border border-green-700' : 'bg-red-900 border border-red-700'
-                  }`}>
-                    <p className="text-sm font-medium">
-                      {isCorrect 
-                        ? "Correct! Well done." 
-                        : `Incorrect. The correct answer is: ${currentQuestion.correctAnswer}`}
-                    </p>
-                  </div>
-                )}
-              </CardContent>
-              <CardFooter className="justify-end">
-                <Button onClick={handleNextQuestion}>
-                  Next
-                </Button>
-              </CardFooter>
-            </Card>
-          )}
-        </div>
-      );
-    }
+    if (!drillQuestion) return null;
     
-    // Learn Mode - progressive drill-based learning
-    if (gameMode === 'learn') {
-      const drillQuestion = PROGRESSIVE_DRILLS[currentDrillIndex];
-      const progress = Math.round((drillCompleted.filter(Boolean).length / PROGRESSIVE_DRILLS.length) * 100);
-      
-      return (
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-base font-semibold">Learning Progress</h3>
-            <Badge variant="outline" className="bg-gray-800">
-              {drillCompleted.filter(Boolean).length} / {PROGRESSIVE_DRILLS.length} Completed
-            </Badge>
-          </div>
-          
-          <Progress value={progress} className="h-2" />
-          
-          <Card className="bg-gray-850 border-gray-700">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-lg flex items-center justify-between">
-                <div>Drill {currentDrillIndex + 1}: {drillQuestion.correctAnswer}</div>
-                <Badge>{drillQuestion.category}</Badge>
-              </CardTitle>
-              <CardDescription>
-                {drillQuestion.hint || "Practice recognizing this character in Morse code"}
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex items-center justify-center gap-4 py-6">
-                <div className="text-5xl font-bold text-blue-300">
-                  {drillQuestion.correctAnswer}
-                </div>
-                <div className="text-xl font-mono text-gray-300">
-                  {MORSE_CODE_DICT[drillQuestion.correctAnswer] || wordToMorse(drillQuestion.correctAnswer)}
-                </div>
+    return (
+      <div className="space-y-4">
+        <div className="flex items-center justify-between">
+          <h3 className="text-base font-semibold">Learning Progress</h3>
+          <Badge variant="outline" className="bg-gray-800">
+            {drillCompleted.filter(Boolean).length} / {PROGRESSIVE_DRILLS.length} Completed
+          </Badge>
+        </div>
+        
+        <Progress value={progress} className="h-2" />
+        
+        <Card className="bg-gray-850 border-gray-700">
+          <CardHeader className="pb-2">
+            <CardTitle className="text-lg flex items-center justify-between">
+              <div>Drill {currentDrillIndex + 1}: {drillQuestion.correctAnswer}</div>
+              <Badge>{drillQuestion.category}</Badge>
+            </CardTitle>
+            <CardDescription>
+              {drillQuestion.hint || "Practice recognizing this character in Morse code"}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="flex items-center justify-center gap-4 py-6">
+              <div className="text-5xl font-bold text-blue-300">
+                {drillQuestion.correctAnswer}
               </div>
-              
-              <div className="flex justify-center mb-4">
-                <Button 
-                  variant="outline" 
-                  size="lg"
-                  className={`${isPlaying ? 'bg-blue-900 text-blue-100' : 'bg-gray-800'}`}
-                  onClick={() => playMorseCode(MORSE_CODE_DICT[drillQuestion.correctAnswer] || wordToMorse(drillQuestion.correctAnswer))}
-                >
-                  {isPlaying ? <Pause className="h-5 w-5 mr-2" /> : <Play className="h-5 w-5 mr-2" />}
-                  Listen to Morse Code
-                </Button>
+              <div className="text-xl font-mono text-gray-300">
+                {MORSE_CODE_DICT[drillQuestion.correctAnswer] || wordToMorse(drillQuestion.correctAnswer)}
               </div>
-              
-              <div className="grid grid-cols-2 gap-3 mt-4">
-                <Button 
-                  variant={drillCompleted[currentDrillIndex] ? "outline" : "default"}
-                  className={drillCompleted[currentDrillIndex] ? "bg-green-900 text-green-100" : ""}
-                  onClick={() => {
-                    if (!drillCompleted[currentDrillIndex]) {
-                      const newDrillCompleted = [...drillCompleted];
-                      newDrillCompleted[currentDrillIndex] = true;
-                      setDrillCompleted(newDrillCompleted);
-                      
-                      // Update global progress
-                      recordMorsePractice(
-                        settings.wpm,
-                        (stats.correct / Math.max(stats.total, 1)) * 100,
-                        newDrillCompleted.filter(Boolean).length > 0
-                      );
-                    }
+            </div>
+            
+            <div className="flex justify-center mb-4">
+              <Button 
+                variant="outline" 
+                size="lg"
+                className={`${isPlaying ? 'bg-blue-900 text-blue-100' : 'bg-gray-800'}`}
+                onClick={() => playMorseCode(MORSE_CODE_DICT[drillQuestion.correctAnswer] || wordToMorse(drillQuestion.correctAnswer))}
+              >
+                {isPlaying ? <Pause className="h-5 w-5 mr-2" /> : <Play className="h-5 w-5 mr-2" />}
+                Listen to Morse Code
+              </Button>
+            </div>
+            
+            <div className="grid grid-cols-2 gap-3 mt-4">
+              <Button 
+                variant={drillCompleted[currentDrillIndex] ? "outline" : "default"}
+                className={drillCompleted[currentDrillIndex] ? "bg-green-900 text-green-100" : ""}
+                onClick={() => {
+                  if (!drillCompleted[currentDrillIndex]) {
+                    const newDrillCompleted = [...drillCompleted];
+                    newDrillCompleted[currentDrillIndex] = true;
+                    setDrillCompleted(newDrillCompleted);
                     
-                    // Move to next drill if there is one
-                    if (currentDrillIndex < PROGRESSIVE_DRILLS.length - 1) {
-                      setCurrentDrillIndex(prev => prev + 1);
-                    }
-                  }}
-                >
-                  {drillCompleted[currentDrillIndex] ? "Completed ✓" : "Mark as Completed"}
-                </Button>
-                
-                <Button 
-                  variant="secondary"
-                  onClick={() => setGameMode('quiz')}
-                >
-                  Practice in Quiz Mode
-                </Button>
-              </div>
-            </CardContent>
-            <CardFooter className="justify-between">
-              <div className="flex gap-2">
-                <Button
-                  variant="ghost"
-                  disabled={currentDrillIndex === 0}
-                  onClick={() => setCurrentDrillIndex(prev => Math.max(0, prev - 1))}
-                >
-                  Previous
-                </Button>
-                <Button
-                  variant="ghost"
-                  disabled={currentDrillIndex >= PROGRESSIVE_DRILLS.length - 1}
-                  onClick={() => setCurrentDrillIndex(prev => Math.min(prev + 1, PROGRESSIVE_DRILLS.length - 1))}
-                >
-                  Next
-                </Button>
-              </div>
+                    // Update global progress
+                    recordMorsePractice(
+                      settings.wpm,
+                      (stats.correct / Math.max(stats.total, 1)) * 100,
+                      true
+                    );
+                  }
+                  
+                  // Move to next drill if there is one
+                  if (currentDrillIndex < PROGRESSIVE_DRILLS.length - 1) {
+                    setCurrentDrillIndex(prev => prev + 1);
+                  }
+                }}
+              >
+                {drillCompleted[currentDrillIndex] ? "Completed ✓" : "Mark as Completed"}
+              </Button>
               
               <Button 
-                variant="default"
-                onClick={startChallengeMode}
+                variant="secondary"
+                onClick={() => setGameMode('quiz')}
               >
-                <Award className="h-4 w-4 mr-1" />
-                Start Challenge
+                Practice in Quiz Mode
               </Button>
-            </CardFooter>
-          </Card>
-          
-          {/* Character Explorer for quick reference */}
-          <div className="mt-6">
-            <h3 className="text-base font-semibold mb-3">Character Explorer</h3>
-            <Tabs defaultValue="Letters">
-              <TabsList className="grid grid-cols-4">
-                <TabsTrigger value="Letters">Letters</TabsTrigger>
-                <TabsTrigger value="Numbers">Numbers</TabsTrigger>
-                <TabsTrigger value="Punctuation">Punctuation</TabsTrigger>
-                <TabsTrigger value="Special/Prosigns">Prosigns</TabsTrigger>
-              </TabsList>
-              
-              {Object.entries(CHARACTER_CATEGORIES).map(([categoryName, chars]) => (
-                <TabsContent key={categoryName} value={categoryName} className="mt-2">
-                  <div className="bg-gray-900 rounded-md border border-gray-800 p-3">
-                    <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-2">
-                      {chars.map((char) => (
-                        <TooltipProvider key={char}>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
-                              <button
-                                className={`p-2 rounded-md ${
-                                  stats.charactersLearned.includes(char)
-                                    ? 'bg-blue-900 border border-blue-700'
-                                    : 'bg-gray-800 border border-gray-700'
-                                } hover:bg-gray-700 transition-colors`}
-                                onClick={() => handleLearnChar(char)}
-                              >
-                                <div className="text-lg font-bold">
-                                  {char}
-                                </div>
-                                <div className="text-xs text-gray-400 font-mono">
-                                  {MORSE_CODE_DICT[char]}
-                                </div>
-                              </button>
-                            </TooltipTrigger>
-                            <TooltipContent>
-                              Click to practice
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      ))}
-                    </div>
+            </div>
+          </CardContent>
+          <CardFooter className="justify-between">
+            <div className="flex gap-2">
+              <Button
+                variant="ghost"
+                disabled={currentDrillIndex === 0}
+                onClick={() => setCurrentDrillIndex(prev => Math.max(0, prev - 1))}
+              >
+                Previous
+              </Button>
+              <Button
+                variant="ghost"
+                disabled={currentDrillIndex >= PROGRESSIVE_DRILLS.length - 1}
+                onClick={() => setCurrentDrillIndex(prev => Math.min(prev + 1, PROGRESSIVE_DRILLS.length - 1))}
+              >
+                Next
+              </Button>
+            </div>
+            
+            <Button 
+              variant="default"
+              onClick={startChallengeMode}
+            >
+              <Award className="h-4 w-4 mr-1" />
+              Start Challenge
+            </Button>
+          </CardFooter>
+        </Card>
+        
+        {/* Character Explorer for quick reference */}
+        <div className="mt-6">
+          <h3 className="text-base font-semibold mb-3">Character Explorer</h3>
+          <Tabs defaultValue="Letters">
+            <TabsList className="grid grid-cols-4">
+              <TabsTrigger value="Letters">Letters</TabsTrigger>
+              <TabsTrigger value="Numbers">Numbers</TabsTrigger>
+              <TabsTrigger value="Punctuation">Punctuation</TabsTrigger>
+              <TabsTrigger value="Special">Prosigns</TabsTrigger>
+            </TabsList>
+            
+            {Object.entries(CHARACTER_CATEGORIES).map(([categoryName, chars]) => (
+              <TabsContent key={categoryName} value={categoryName} className="mt-2">
+                <div className="bg-gray-900 rounded-md border border-gray-800 p-3">
+                  <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-2">
+                    {chars.map((char) => (
+                      <TooltipProvider key={char}>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
+                              className={`p-2 rounded-md ${
+                                stats.charactersLearned.includes(char)
+                                  ? 'bg-blue-900 border border-blue-700'
+                                  : 'bg-gray-800 border border-gray-700'
+                              } hover:bg-gray-700 transition-colors`}
+                              onClick={() => handleLearnChar(char)}
+                            >
+                              <div className="text-lg font-bold">
+                                {char}
+                              </div>
+                              <div className="text-xs text-gray-400 font-mono">
+                                {MORSE_CODE_DICT[char]}
+                              </div>
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            Click to practice
+                          </TooltipContent>
+                        </Tooltip>
+                      </TooltipProvider>
+                    ))}
                   </div>
-                </TabsContent>
-              ))}
-            </Tabs>
-          </div>
+                </div>
+              </TabsContent>
+            ))}
+          </Tabs>
         </div>
-      );
-    }
-    
-    return null;
+      </div>
+    );
   };
   
   // Character learning dialog
@@ -1372,6 +1368,19 @@ const MorseCodeGame: React.FC = () => {
     );
   };
   
+  // Main render based on game mode
+  const renderGameContent = () => {
+    switch (gameMode) {
+      case 'quiz':
+        return renderQuizContent();
+      case 'challenge':
+        return renderChallengeContent();
+      case 'learn':
+      default:
+        return renderLearnContent();
+    }
+  };
+  
   return (
     <div className="space-y-5">
       {/* Game header with stats */}
@@ -1441,5 +1450,4 @@ const MorseCodeGame: React.FC = () => {
   );
 };
 
-export { MorseCodeGame };
 export default MorseCodeGame;
