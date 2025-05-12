@@ -93,13 +93,13 @@ const LEARNING_RESOURCES: ClassResource[] = [
     description: "Comprehensive 2025 guide to SDR technology and applications in amateur radio."
   },
   {
-    title: "Next-Gen Digital Modes",
-    type: "video",
+    title: "Digital Modes Guide (2025)",
+    type: "article",
     level: "intermediate",
-    duration: "40 min",
-    link: "https://www.youtube.com/watch?v=RLLKAokYAZA",
-    source: "HamRadioConcepts",
-    description: "2025 overview of latest digital modes including FT8+, M17, and new developments."
+    duration: "25 min",
+    link: "https://www.arrl.org/digital-data-modes",
+    source: "ARRL",
+    description: "Comprehensive 2025 guide to all digital modes including FT8, JS8Call, and emerging protocols."
   },
   {
     title: "Canadian Amateur Radio Exam Prep 2025",
