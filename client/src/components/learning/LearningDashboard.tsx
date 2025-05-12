@@ -423,14 +423,14 @@ export default function LearningDashboard() {
       {/* Recommendation */}
       <Recommendation />
       
-      {/* Tabs for resources and events */}
-      <Tabs defaultValue="resources" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 bg-gray-800">
-          <TabsTrigger value="resources" className="text-sm">Learning Resources</TabsTrigger>
-          <TabsTrigger value="events" className="text-sm">Local Club Events</TabsTrigger>
-        </TabsList>
+      {/* Learning Resources */}
+      <div className="w-full">
+        <h3 className="text-base font-medium text-gray-100 mb-4 flex items-center gap-2">
+          <BookOpen className="h-4 w-4 text-blue-400" />
+          Learning Resources
+        </h3>
         
-        <TabsContent value="resources" className="space-y-4 mt-4">
+        <div className="space-y-4">
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {LEARNING_RESOURCES.map((resource, index) => (
               <ResourceCard key={index} resource={resource} />
@@ -449,26 +449,8 @@ export default function LearningDashboard() {
               </Button>
             </a>
           </div>
-        </TabsContent>
-        
-        <TabsContent value="events" className="space-y-4 mt-4">
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-            {CLUB_EVENTS.map((event, index) => (
-              <EventCard key={index} event={event} />
-            ))}
-          </div>
-          
-          <div className="bg-amber-900 bg-opacity-20 p-3 rounded-md border border-amber-800">
-            <div className="flex items-start gap-2">
-              <InfoIcon className="h-5 w-5 text-amber-400 shrink-0 mt-0.5" />
-              <div>
-                <h4 className="text-sm font-medium text-amber-300 mb-1">Radio Gatherings</h4>
-                <p className="text-xs text-amber-200">For the most up-to-date information on club events, please call on the VE7PRR repeater or contact a club member directly at (604) 485-6916.</p>
-              </div>
-            </div>
-          </div>
-        </TabsContent>
-      </Tabs>
+        </div>
+      </div>
     </div>
   );
 }
