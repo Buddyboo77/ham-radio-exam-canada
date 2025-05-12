@@ -29,7 +29,7 @@ import ProgressBadges from "@/components/learning/ProgressBadges";
 // Import hooks
 import { useLearningProgress } from '@/hooks/use-learning-progress';
 
-// Define 2025 Canadian Amateur Radio Exam quiz questions data
+// Define Canadian Amateur Radio Exam quiz questions data
 const QUIZ_QUESTIONS = [
   {
     question: "What does APRS stand for?",
@@ -497,8 +497,8 @@ export default function EnhancedLearningPage() {
                 </div>
                 
                 <div className="mt-3 p-2 bg-blue-900 bg-opacity-20 rounded-sm text-[10px] text-gray-300 border border-blue-900">
-                  <p className="mb-1"><span className="text-blue-300 font-medium">2025 Update:</span> The Canadian Basic Qualification Exam has 100 questions. A score of 70% is required to pass.</p>
-                  <p>To obtain Basic with Honours (allowing HF privileges), you need to score 80% or higher. All exam standards were renewed in 2024.</p>
+                  <p className="mb-1"><span className="text-blue-300 font-medium">Note:</span> The Canadian Basic Qualification Exam has 100 questions. A score of 70% is required to pass.</p>
+                  <p>To obtain Basic with Honours (allowing HF privileges), you need to score 80% or higher.</p>
                 </div>
               </div>
             </div>

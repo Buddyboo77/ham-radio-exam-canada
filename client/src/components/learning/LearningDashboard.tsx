@@ -35,79 +35,79 @@ interface ClassResource {
   description: string;
 }
 
-// 2025 Updated learning resources for ham radio
+// Current learning resources for ham radio
 const LEARNING_RESOURCES: ClassResource[] = [
   {
-    title: "New Ham Radio Basics (2025)",
+    title: "Ham Radio Basics",
     type: "video",
     level: "beginner",
     duration: "20 min",
-    link: "https://www.youtube.com/watch?v=UHULrq4GpCg",
+    link: "https://www.youtube.com/watch?v=1uClHuGG_WU",
     source: "Dave Casler KE0OG",
-    description: "Updated introduction to amateur radio terminology and basic concepts for 2025."
+    description: "Introduction to amateur radio terminology and basic concepts."
   },
   {
-    title: "Modern Antenna Design",
+    title: "Antenna Design Guide",
     type: "article",
     level: "beginner",
     duration: "15 min",
     link: "https://www.arrl.org/building-simple-antennas",
     source: "ARRL",
-    description: "2025 guide to modern antenna designs including compact options for limited spaces."
+    description: "Guide to modern antenna designs including compact options for limited spaces."
   },
   {
-    title: "Advanced Propagation Prediction",
+    title: "Radio Wave Propagation",
     type: "interactive",
     level: "intermediate",
     duration: "25 min",
     link: "https://www.sws.bom.gov.au/HF_Systems/7/1",
     source: "Space Weather Services",
-    description: "Latest interactive tools for propagation prediction using AI-enhanced forecasting."
+    description: "Interactive tools for propagation prediction and forecasting."
   },
   {
-    title: "Morse Code and Modern Apps",
+    title: "Morse Code Training",
     type: "course",
     level: "beginner",
     duration: "3 hours",
     link: "https://cwops.org/cw-academy/",
     source: "CW Academy",
-    description: "Updated 2025 course combining traditional Morse with modern digital applications."
+    description: "Complete course for learning Morse code from scratch."
   },
   {
     title: "Software Defined Radio Guide",
     type: "book",
     level: "intermediate",
     duration: "6 hours",
-    link: "https://rac.ca/study-guides/",
-    source: "RAC Publications",
-    description: "Comprehensive 2025 guide to SDR technology and applications in amateur radio."
+    link: "https://www.arrl.org/software-defined-radio",
+    source: "ARRL",
+    description: "Comprehensive guide to SDR technology and applications in amateur radio."
   },
   {
-    title: "Digital Modes Guide (2025)",
+    title: "Digital Modes Guide",
     type: "article",
     level: "intermediate",
     duration: "25 min",
     link: "https://www.arrl.org/digital-data-modes",
     source: "ARRL",
-    description: "Comprehensive 2025 guide to all digital modes including FT8, JS8Call, and emerging protocols."
+    description: "Overview of digital modes including FT8, JS8Call, and other protocols."
   },
   {
-    title: "Canadian Amateur Radio Exam Prep 2025",
+    title: "Canadian Amateur Radio Exam Prep",
     type: "course",
     level: "beginner",
     duration: "12 hours",
     link: "https://www.ic.gc.ca/eic/site/025.nsf/eng/h_00040.html",
     source: "Innovation, Science and Economic Development Canada",
-    description: "Official updated study materials for the 2024-2025 Canadian amateur radio certification."
+    description: "Official study materials for the Canadian amateur radio certification."
   },
   {
-    title: "Powell River Amateur Radio Club",
+    title: "Ham Radio Resources",
     type: "article",
     level: "beginner",
     duration: "5 min",
-    link: "https://powellriverarc.ca/",
-    source: "PRARC",
-    description: "Latest 2025 resources and events from the Powell River Amateur Radio Club."
+    link: "https://www.arrl.org/what-is-ham-radio",
+    source: "ARRL",
+    description: "General resources for ham radio operators and enthusiasts."
   }
 ];
 
