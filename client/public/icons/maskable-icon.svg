@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Background - no rounded corners for maskable icon -->
+  <rect width="512" height="512" fill="#0A192F" />
+  
+  <!-- Radio elements - centered in safe zone (central 60% is the safe zone for maskable icons) -->
+  <!-- Move all elements slightly inward to ensure visibility in circular/rounded icon masks -->
+  
+  <!-- Radio waves - placed in the safe zone -->
+  <path d="M256,190 a65,65 0 0 1 0,130 a65,65 0 0 1 0,-130" stroke="#4FD1C5" stroke-width="14" fill="none" stroke-linecap="round" />
+  <path d="M256,160 a95,95 0 0 1 0,190 a95,95 0 0 1 0,-190" stroke="#4FD1C5" stroke-width="14" fill="none" stroke-linecap="round" />
+  <path d="M256,130 a125,125 0 0 1 0,250 a125,125 0 0 1 0,-250" stroke="#4FD1C5" stroke-width="14" fill="none" stroke-linecap="round" />
+  
+  <!-- Center circle -->
+  <circle cx="256" cy="256" r="20" fill="#0A192F" stroke="#4FD1C5" stroke-width="8" />
+  
+  <!-- Radio antenna rays - kept within the safe zone -->
+  <line x1="256" y1="290" x2="256" y2="340" stroke="#4FD1C5" stroke-width="14" stroke-linecap="round" />
+  <line x1="220" y1="320" x2="195" y2="360" stroke="#4FD1C5" stroke-width="14" stroke-linecap="round" />
+  <line x1="292" y1="320" x2="317" y2="360" stroke="#4FD1C5" stroke-width="14" stroke-linecap="round" />
+  
+  <!-- Small dots - moved inside safe zone -->
+  <circle cx="170" cy="300" r="8" fill="#4FD1C5" />
+  <circle cx="342" cy="300" r="8" fill="#4FD1C5" />
+  
+  <!-- Text for identification -->
+  <text x="256" y="410" text-anchor="middle" font-family="Arial, sans-serif" font-weight="bold" font-size="32" fill="#4FD1C5">PR RADIO</text>
+</svg>

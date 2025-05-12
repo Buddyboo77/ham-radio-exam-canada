@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512">
+  <!-- Background -->
+  <rect width="512" height="512" fill="#0A192F" rx="100" ry="100" />
+  
+  <!-- Outer glow -->
+  <circle cx="256" cy="256" r="200" fill="#0A192F" filter="url(#glow)" />
+  
+  <!-- Radio waves -->
+  <path d="M256,180 a75,75 0 0 1 0,150 a75,75 0 0 1 0,-150" stroke="#4FD1C5" stroke-width="14" fill="none" stroke-linecap="round" />
+  <path d="M256,140 a115,115 0 0 1 0,230 a115,115 0 0 1 0,-230" stroke="#4FD1C5" stroke-width="14" fill="none" stroke-linecap="round" />
+  <path d="M256,100 a155,155 0 0 1 0,310 a155,155 0 0 1 0,-310" stroke="#4FD1C5" stroke-width="14" fill="none" stroke-linecap="round" />
+  
+  <!-- Center circle -->
+  <circle cx="256" cy="256" r="25" fill="#0A192F" stroke="#4FD1C5" stroke-width="8" />
+  
+  <!-- Radio antenna rays -->
+  <line x1="256" y1="300" x2="256" y2="370" stroke="#4FD1C5" stroke-width="14" stroke-linecap="round" />
+  <line x1="210" y1="330" x2="180" y2="380" stroke="#4FD1C5" stroke-width="14" stroke-linecap="round" />
+  <line x1="302" y1="330" x2="332" y2="380" stroke="#4FD1C5" stroke-width="14" stroke-linecap="round" />
+  
+  <!-- Small dots -->
+  <circle cx="150" cy="320" r="8" fill="#4FD1C5" />
+  <circle cx="362" cy="320" r="8" fill="#4FD1C5" />
+  
+  <!-- Filters for glow effect -->
+  <defs>
+    <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="15" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+</svg>

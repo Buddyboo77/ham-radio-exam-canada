@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+  <!-- Background -->
+  <rect width="96" height="96" fill="#0A192F" rx="20" ry="20" />
+  
+  <!-- Map icon with radio stations -->
+  <!-- Map outline -->
+  <rect x="20" y="20" width="56" height="56" rx="2" ry="2" fill="#0A192F" stroke="#4FD1C5" stroke-width="2" />
+  
+  <!-- Map details -->
+  <path d="M20,48 L76,48" stroke="#4FD1C5" stroke-width="1" opacity="0.5" />
+  <path d="M48,20 L48,76" stroke="#4FD1C5" stroke-width="1" opacity="0.5" />
+  <path d="M30,30 C40,36 50,24 60,30 C70,36 80,24 90,30" stroke="#4FD1C5" stroke-width="1" opacity="0.5" transform="scale(0.8) translate(0, 20)" />
+  <path d="M30,30 C40,36 50,24 60,30 C70,36 80,24 90,30" stroke="#4FD1C5" stroke-width="1" opacity="0.5" transform="scale(0.8) translate(-10, 40)" />
+  
+  <!-- Radio towers/repeaters -->
+  <!-- Center tower -->
+  <circle cx="48" cy="48" r="5" fill="#4FD1C5" />
+  <circle cx="48" cy="48" r="10" fill="none" stroke="#4FD1C5" stroke-width="1.5" opacity="0.7" />
+  <circle cx="48" cy="48" r="16" fill="none" stroke="#4FD1C5" stroke-width="1" opacity="0.4" />
+  
+  <!-- Secondary towers -->
+  <circle cx="32" cy="36" r="3" fill="#4FD1C5" opacity="0.8" />
+  <circle cx="32" cy="36" r="7" fill="none" stroke="#4FD1C5" stroke-width="1" opacity="0.4" />
+  
+  <circle cx="60" cy="64" r="3" fill="#4FD1C5" opacity="0.8" />
+  <circle cx="60" cy="64" r="7" fill="none" stroke="#4FD1C5" stroke-width="1" opacity="0.4" />
+  
+  <circle cx="68" cy="32" r="3" fill="#4FD1C5" opacity="0.8" />
+  <circle cx="68" cy="32" r="7" fill="none" stroke="#4FD1C5" stroke-width="1" opacity="0.4" />
+</svg>
