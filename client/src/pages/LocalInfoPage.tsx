@@ -5,14 +5,10 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { RadioTower, Radio, Calendar, Users, Satellite, Share2, MapPin, Coffee } from 'lucide-react';
 
-// Local Powell River Amateur Radio Club Information
-const CLUB_INFO = {
-  name: "Powell River Amateur Radio Club",
-  meetings: "September-June on the second Wednesday at 7:00pm",
-  location: "Powell River Recreation Complex",
-  access: "Call on the repeater or 604-485-6916 to gain access",
-  socialGatherings: "Coffee on Saturday mornings at 10am at the newly renovated A&W in Powell River",
-  description: "The Powell River Amateur Radio Club is a vibrant community that offers plenty of opportunities for learning, networking, and enjoyment. They regularly organize workshops, training sessions, field days, and participate in emergency preparedness events. Everyone is welcome to bring friends and family to informal coffee gatherings."
+// Local Powell River Area Information
+const AREA_INFO = {
+  name: "Powell River Area",
+  description: "Powell River is located on British Columbia's Sunshine Coast. The area offers diverse terrain for radio operation, from coastal areas to mountain peaks, providing interesting propagation effects for amateur radio operators."
 };
 
 // Local Nets Schedule
@@ -111,55 +107,19 @@ const LOCAL_FREQUENCIES = [
   }
 ];
 
-// Club Member Information (Public information only)
-const CLUB_MEMBERS = [
+// Local Amateur Radio Operators (fictional - for reference only)
+const LOCAL_OPERATORS = [
   {
     callsign: "VE7ABC",
     name: "John Smith",
-    role: "Club President",
-    interests: "Emergency communications, digital modes"
+    interests: "Emergency communications, digital modes",
+    location: "Powell River"
   },
   {
     callsign: "VE7XYZ",
     name: "Alice Johnson",
-    role: "Vice President",
-    interests: "DX, contesting, CW"
-  },
-  {
-    callsign: "VE7DEF",
-    name: "Bob Wilson",
-    role: "Secretary",
-    interests: "Antenna building, POTA activations"
-  },
-  {
-    callsign: "VE7GHI",
-    name: "Carol Brown",
-    role: "Treasurer",
-    interests: "VHF/UHF, satellite communications"
-  },
-  {
-    callsign: "VE7JKL",
-    name: "Dave Miller",
-    role: "Technical Officer",
-    interests: "Repeater maintenance, digital voice modes"
-  },
-  {
-    callsign: "VE7MNO",
-    name: "Emma Davis",
-    role: "Member",
-    interests: "QRP operations, portable field operations"
-  },
-  {
-    callsign: "VE7PQR",
-    name: "Frank White",
-    role: "Member",
-    interests: "HF operations, FT8"
-  },
-  {
-    callsign: "VE7STU",
-    name: "Grace Chen",
-    role: "Emergency Coordinator",
-    interests: "EmComm, mesh networks"
+    interests: "DX, contesting, CW",
+    location: "Westview"
   }
 ];
 
@@ -325,39 +285,31 @@ export default function LocalInfoPage() {
             </div>
           </TabsContent>
           
-          {/* Club Info Tab */}
+          {/* Area Info Tab */}
           <TabsContent value="club" className="space-y-2">
             <div className="bg-gray-900 p-2 rounded-md border border-gray-800">
               <div className="text-sm font-medium text-purple-300 mb-2 flex items-center">
-                <Users className="h-3.5 w-3.5 mr-1.5" />
-                {CLUB_INFO.name}
+                <MapPin className="h-3.5 w-3.5 mr-1.5" />
+                {AREA_INFO.name}
               </div>
               
               <div className="p-2 border border-gray-800 rounded-md bg-gray-850 mb-2">
-                <div className="text-[10px] text-gray-300 mb-1">{CLUB_INFO.description}</div>
+                <div className="text-[10px] text-gray-300 mb-1">{AREA_INFO.description}</div>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mt-2">
                   <div className="flex items-center gap-1">
-                    <Calendar className="h-3 w-3 text-purple-400" />
-                    <div className="text-[10px] text-gray-400">Meetings: {CLUB_INFO.meetings}</div>
+                    <Radio className="h-3 w-3 text-purple-400" />
+                    <div className="text-[10px] text-gray-400">VHF/UHF Coverage: Excellent coastal propagation</div>
                   </div>
                   <div className="flex items-center gap-1">
                     <MapPin className="h-3 w-3 text-purple-400" />
-                    <div className="text-[10px] text-gray-400">Location: {CLUB_INFO.location}</div>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Radio className="h-3 w-3 text-purple-400" />
-                    <div className="text-[10px] text-gray-400">Access: {CLUB_INFO.access}</div>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <Coffee className="h-3 w-3 text-purple-400" />
-                    <div className="text-[10px] text-gray-400">Social: {CLUB_INFO.socialGatherings}</div>
+                    <div className="text-[10px] text-gray-400">Terrain: Coastal and mountainous</div>
                   </div>
                 </div>
               </div>
               
               <div className="text-sm font-medium text-purple-300 mb-2 flex items-center">
                 <Users className="h-3.5 w-3.5 mr-1.5" />
-                Club Members
+                Local Operators
               </div>
               
               <div className="rounded-md border border-gray-800 overflow-hidden">
@@ -366,17 +318,17 @@ export default function LocalInfoPage() {
                     <TableRow>
                       <TableHead className="text-[10px] text-purple-300 font-medium">Callsign</TableHead>
                       <TableHead className="text-[10px] text-purple-300 font-medium">Name</TableHead>
-                      <TableHead className="text-[10px] text-purple-300 font-medium">Role</TableHead>
+                      <TableHead className="text-[10px] text-purple-300 font-medium">Location</TableHead>
                       <TableHead className="text-[10px] text-purple-300 font-medium hidden sm:table-cell">Interests</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
-                    {CLUB_MEMBERS.map((member, index) => (
+                    {LOCAL_OPERATORS.map((operator, index) => (
                       <TableRow key={index} className={index % 2 === 0 ? "bg-gray-900" : "bg-gray-850"}>
-                        <TableCell className="text-[10px] py-1 font-mono font-medium text-yellow-300">{member.callsign}</TableCell>
-                        <TableCell className="text-[10px] py-1 text-gray-300">{member.name}</TableCell>
-                        <TableCell className="text-[10px] py-1 text-gray-400">{member.role}</TableCell>
-                        <TableCell className="text-[10px] py-1 text-gray-400 hidden sm:table-cell">{member.interests}</TableCell>
+                        <TableCell className="text-[10px] py-1 font-mono font-medium text-yellow-300">{operator.callsign}</TableCell>
+                        <TableCell className="text-[10px] py-1 text-gray-300">{operator.name}</TableCell>
+                        <TableCell className="text-[10px] py-1 text-gray-400">{operator.location}</TableCell>
+                        <TableCell className="text-[10px] py-1 text-gray-400 hidden sm:table-cell">{operator.interests}</TableCell>
                       </TableRow>
                     ))}
                   </TableBody>
