@@ -18,6 +18,7 @@ import DXClusterPage from "@/pages/DXClusterPage";
 import EnhancedMapPage from "@/pages/EnhancedMapPage";
 import ARViewPage from "@/pages/ARViewPage";
 import CommunicationPage from "@/pages/CommunicationPage";
+import MorseCodePage from "@/pages/MorseCodePage";
 import AuthPage from "@/pages/AuthPage";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
