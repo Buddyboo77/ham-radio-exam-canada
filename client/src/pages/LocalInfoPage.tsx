@@ -19,7 +19,7 @@ const LOCAL_NETS = [
     day: "Daily",
     time: "8:00 AM",
     description: "Daily check-in and local announcements",
-    netController: "Various club members"
+    netController: "Various operators"
   },
   {
     name: "PRARC Sunday Evening Net",
@@ -126,10 +126,10 @@ const LOCAL_OPERATORS = [
 // Local Special Events
 const LOCAL_EVENTS = [
   {
-    name: "Coffee Meetup",
+    name: "VHF Net on Simplex",
     date: "Every Saturday",
-    location: "Newly renovated A&W in Powell River",
-    description: "Informal coffee meetings at 10:00am. Everyone's welcome to bring friends and family."
+    location: "146.520 MHz (Simplex)",
+    description: "Informal simplex net to test equipment and improve emergency communications capabilities."
   },
   {
     name: "Field Day",
@@ -150,10 +150,10 @@ const LOCAL_EVENTS = [
     description: "Annual British Columbia QSO Party contest"
   },
   {
-    name: "Annual Club Picnic",
+    name: "Annual Radio Festival",
     date: "Second Saturday in August",
     location: "Willingdon Beach Park",
-    description: "Social gathering with food, demonstrations, and activities"
+    description: "Public event with radio demonstrations and equipment displays"
   }
 ];
 
@@ -202,7 +202,7 @@ export default function LocalInfoPage() {
                 <span>Nets</span>
               </div>
             </TabsTrigger>
-            <TabsTrigger value="club" className="text-[10px] py-1 h-auto data-[state=active]:bg-purple-900">
+            <TabsTrigger value="area" className="text-[10px] py-1 h-auto data-[state=active]:bg-purple-900">
               <div className="flex flex-col items-center gap-0.5">
                 <MapPin className="h-3 w-3" />
                 <span>Area Info</span>
@@ -286,7 +286,7 @@ export default function LocalInfoPage() {
           </TabsContent>
           
           {/* Area Info Tab */}
-          <TabsContent value="club" className="space-y-2">
+          <TabsContent value="area" className="space-y-2">
             <div className="bg-gray-900 p-2 rounded-md border border-gray-800">
               <div className="text-sm font-medium text-purple-300 mb-2 flex items-center">
                 <MapPin className="h-3.5 w-3.5 mr-1.5" />

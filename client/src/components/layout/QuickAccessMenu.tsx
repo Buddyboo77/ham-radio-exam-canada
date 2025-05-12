@@ -12,7 +12,7 @@ export function QuickAccessMenu() {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <RadioTower className="h-5 w-5 text-blue-300 mr-2" />
-            <h1 className="text-sm font-semibold text-white">Powell River Radio Club</h1>
+            <h1 className="text-sm font-semibold text-white">Powell River Amateur Radio</h1>
           </div>
           
           <div className="flex gap-1">

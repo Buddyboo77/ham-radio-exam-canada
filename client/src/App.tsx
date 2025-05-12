@@ -264,9 +264,9 @@ function Router() {
           
           {/* Quick access buttons */}
           <div className={`flex justify-between items-center gap-2 mt-2 transition-all duration-300 ${!isMenuOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none absolute'}`}>
-            <div className="radio-frequency-display flex-1">
+            <Link href="/local-info" className="radio-frequency-display flex-1 hover:bg-gray-800 hover:border-gray-600">
               Powell River Amateur Radio <Radio className="inline-block ml-1 mr-1" size={14} /> VA7HAM
-            </div>
+            </Link>
             
             <div className="flex items-center gap-2">
               {/* Quick map button */}
