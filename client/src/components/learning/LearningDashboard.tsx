@@ -9,6 +9,7 @@ import {
   BookOpen,
   Brain,
   Cpu,
+  CalendarDays,
   BarChart3,
   Radio,
   AlertCircle,
