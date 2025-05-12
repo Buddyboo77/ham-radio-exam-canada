@@ -52,8 +52,8 @@ const LEARNING_RESOURCES: ClassResource[] = [
     type: "video",
     level: "beginner",
     duration: "20 min",
-    link: "https://www.youtube.com/watch?v=vwPJ3NhOPoc",
-    source: "Ham Radio 2.0",
+    link: "https://www.youtube.com/watch?v=UHULrq4GpCg",
+    source: "Dave Casler KE0OG",
     description: "Updated introduction to amateur radio terminology and basic concepts for 2025."
   },
   {
@@ -97,8 +97,8 @@ const LEARNING_RESOURCES: ClassResource[] = [
     type: "video",
     level: "intermediate",
     duration: "40 min",
-    link: "https://www.youtube.com/watch?v=WOb0X4b1DfU",
-    source: "Digital Ham",
+    link: "https://www.youtube.com/watch?v=RLLKAokYAZA",
+    source: "HamRadioConcepts",
     description: "2025 overview of latest digital modes including FT8+, M17, and new developments."
   },
   {

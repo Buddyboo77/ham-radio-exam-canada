@@ -29,7 +29,7 @@ import ProgressBadges from "@/components/learning/ProgressBadges";
 // Import hooks
 import { useLearningProgress } from '@/hooks/use-learning-progress';
 
-// Define quiz questions data
+// Define 2025 Canadian Amateur Radio Exam quiz questions data
 const QUIZ_QUESTIONS = [
   {
     question: "What does APRS stand for?",
