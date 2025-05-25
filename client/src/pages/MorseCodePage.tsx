@@ -1,6 +1,7 @@
-import { Radio, Music, Award } from "lucide-react";
+import { Radio, Music, Award, CheckCircle, Headphones } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MorseCodeGame } from "@/components/games/MorseCodeGame";
+import MorseCodeExam from "@/components/games/MorseCodeExam";
 import EnhancedMorseCode from "@/components/reference/EnhancedMorseCode";
 
 const MorseCodePage = () => {
@@ -20,21 +21,32 @@ const MorseCodePage = () => {
       
       {/* Main content area with radio styling */}
       <div className="bg-gray-800 bg-opacity-50 rounded-md p-2 border border-gray-700">
-        <Tabs defaultValue="game" className="space-y-2">
-          <TabsList className="grid grid-cols-2 h-auto p-1 bg-gray-900">
-            <TabsTrigger value="game" className="text-xs py-1 h-auto data-[state=active]:bg-green-900">
+        <Tabs defaultValue="exam" className="space-y-2">
+          <TabsList className="grid grid-cols-3 h-auto p-1 bg-gray-900">
+            <TabsTrigger value="exam" className="text-xs py-1 h-auto data-[state=active]:bg-blue-900">
               <div className="flex flex-col items-center gap-0.5">
-                <Award className="h-3 w-3" />
-                <span>Training & Games</span>
+                <CheckCircle className="h-3 w-3" />
+                <span>Official Exam</span>
               </div>
             </TabsTrigger>
-            <TabsTrigger value="reference" className="text-xs py-1 h-auto data-[state=active]:bg-blue-900">
+            <TabsTrigger value="game" className="text-xs py-1 h-auto data-[state=active]:bg-green-900">
+              <div className="flex flex-col items-center gap-0.5">
+                <Headphones className="h-3 w-3" />
+                <span>Training</span>
+              </div>
+            </TabsTrigger>
+            <TabsTrigger value="reference" className="text-xs py-1 h-auto data-[state=active]:bg-purple-900">
               <div className="flex flex-col items-center gap-0.5">
                 <Music className="h-3 w-3" />
                 <span>Reference</span>
               </div>
             </TabsTrigger>
           </TabsList>
+          
+          {/* Exam tab */}
+          <TabsContent value="exam" className="space-y-4">
+            <MorseCodeExam />
+          </TabsContent>
           
           {/* Game tab */}
           <TabsContent value="game" className="space-y-4">
