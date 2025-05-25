@@ -135,7 +135,7 @@ function Router() {
             <Switch>
               <Route path="/auth" component={AuthPage} />
               
-              <ProtectedRoute path="/" exact>
+              <ProtectedRoute path="/">
                 <EnhancedLearningPage />
               </ProtectedRoute>
               
