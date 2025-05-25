@@ -227,8 +227,9 @@ export default function EnhancedLearningPage() {
   // Quiz state
   const [showQuizConfig, setShowQuizConfig] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>('all');
-  const [questionsCount, setQuestionsCount] = useState<number>(10);
+  const [questionsCount, setQuestionsCount] = useState<number>(25);
   const [questionsToUse, setQuestionsToUse] = useState<typeof QUIZ_QUESTIONS>([]);
+  const [examMode, setExamMode] = useState<'practice' | 'simulation'>('practice');
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -393,8 +394,8 @@ export default function EnhancedLearningPage() {
               <div className="bg-blue-900 p-2 rounded-full">
                 <BookOpenCheck size={24} className="text-blue-200" />
               </div>
-              <span className="text-sm font-medium text-gray-200">Practice Exam</span>
-              <span className="text-xs text-gray-400 text-center">Test your knowledge with practice questions</span>
+              <span className="text-sm font-medium text-gray-200">License Exam</span>
+              <span className="text-xs text-gray-400 text-center">Practice with official Canadian exam questions</span>
             </button>
             
             <button 
@@ -404,31 +405,31 @@ export default function EnhancedLearningPage() {
               <div className="bg-green-900 p-2 rounded-full">
                 <BookOpen size={24} className="text-green-200" />
               </div>
-              <span className="text-sm font-medium text-gray-200">Flashcards</span>
-              <span className="text-xs text-gray-400 text-center">Learn concepts with adaptive flashcards</span>
+              <span className="text-sm font-medium text-gray-200">Study Cards</span>
+              <span className="text-xs text-gray-400 text-center">Master license concepts with spaced repetition</span>
             </button>
             
-            <button 
+            <Link 
+              href="/morse-code" 
               className="flex flex-col items-center justify-center p-4 bg-gray-900 rounded-md gap-2 border border-gray-800 hover:bg-gray-800 transition-colors"
-              onClick={() => setActiveView('morse')}
             >
               <div className="bg-amber-900 p-2 rounded-full">
                 <Radio size={24} className="text-amber-200" />
               </div>
               <span className="text-sm font-medium text-gray-200">Morse Code</span>
-              <span className="text-xs text-gray-400 text-center">Interactive Morse code training</span>
-            </button>
+              <span className="text-xs text-gray-400 text-center">Master Morse code for ham radio operations</span>
+            </Link>
             
-            <button 
+            <Link 
+              href="/reference" 
               className="flex flex-col items-center justify-center p-4 bg-gray-900 rounded-md gap-2 border border-gray-800 hover:bg-gray-800 transition-colors"
-              onClick={() => setActiveView('circuit')}
             >
               <div className="bg-purple-900 p-2 rounded-full">
-                <Cpu size={24} className="text-purple-200" />
+                <BookOpen size={24} className="text-purple-200" />
               </div>
-              <span className="text-sm font-medium text-gray-200">Circuit Simulator</span>
-              <span className="text-xs text-gray-400 text-center">Experiment with interactive circuits</span>
-            </button>
+              <span className="text-sm font-medium text-gray-200">Reference Guide</span>
+              <span className="text-xs text-gray-400 text-center">Essential reference materials for your exam</span>
+            </Link>
           </div>
           
           {/* View badges summary */}
@@ -441,46 +442,90 @@ export default function EnhancedLearningPage() {
           {showQuizConfig ? (
             <div className="bg-gray-800 bg-opacity-70 rounded-md p-3 border border-gray-700">
               <div className="mb-4">
-                <h3 className="text-sm font-medium text-gray-200 mb-3 flex items-center gap-2">
-                  <BookOpenCheck className="h-4 w-4 text-blue-400" />
-                  Practice Exam Settings
+                <h3 className="text-lg font-medium text-blue-200 mb-3 flex items-center gap-2">
+                  <GraduationCap className="h-5 w-5 text-blue-400" />
+                  Canadian Amateur Radio Exam Preparation
                 </h3>
                 
+                <div className="bg-blue-950 bg-opacity-40 rounded-md p-3 mb-4 border border-blue-900">
+                  <p className="text-xs text-blue-200">
+                    The Basic Qualification exam consists of 100 multiple-choice questions, drawn from the Basic Question Bank.
+                    You must score at least 70% to pass. Practice with different sections to build your knowledge.
+                  </p>
+                </div>
+                
                 <div className="mb-4">
-                  <div className="mb-2 text-xs text-gray-300">Select a question category:</div>
+                  <div className="mb-2 text-xs text-gray-300 font-semibold">Select Exam Section:</div>
                   <div className="grid grid-cols-2 gap-2">
                     {['all', 'technical', 'regulations', 'operating'].map(category => (
                       <div 
                         key={category}
-                        className={`px-2 py-1 rounded-sm text-xs cursor-pointer border ${
+                        className={`px-2 py-2 rounded-md text-xs cursor-pointer border ${
                           activeCategory === category 
                             ? "bg-blue-900 border-blue-600 text-blue-100" 
                             : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
-                        }`}
+                        } flex flex-col items-center justify-center`}
                         onClick={() => setActiveCategory(category)}
                       >
-                        {category.charAt(0).toUpperCase() + category.slice(1)} ({getCategoryCount(category)})
+                        <span className="font-medium">{category === 'all' ? 'Full Exam' : category.charAt(0).toUpperCase() + category.slice(1)}</span>
+                        <span className="text-[10px] mt-1">({getCategoryCount(category)} Questions)</span>
                       </div>
                     ))}
                   </div>
                 </div>
                 
                 <div className="mb-4">
-                  <div className="mb-2 text-xs text-gray-300">Number of questions:</div>
-                  <div className="grid grid-cols-4 gap-2">
-                    {[10, 20, 50, 100].map(count => (
+                  <div className="mb-2 text-xs text-gray-300 font-semibold">Number of Questions:</div>
+                  <div className="grid grid-cols-5 gap-2">
+                    {[10, 25, 50, 75, 100].map(count => (
                       <div
                         key={count}
-                        className={`px-2 py-1 rounded-sm text-[10px] cursor-pointer text-center border ${
+                        className={`px-2 py-2 rounded-md text-xs cursor-pointer text-center border ${
                           questionsCount === count 
                             ? "bg-blue-900 border-blue-600 text-blue-100" 
                             : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
                         }`}
                         onClick={() => setQuestionsCount(count)}
                       >
-                        {count} Q
+                        {count}
+                        {count === 100 && <span className="ml-1 text-[10px] bg-green-700 px-1 rounded">Official</span>}
                       </div>
                     ))}
+                  </div>
+                </div>
+                
+                <div className="mb-4">
+                  <div className="mb-2 text-xs text-gray-300 font-semibold">Exam Mode:</div>
+                  <div className="grid grid-cols-2 gap-2">
+                    <div 
+                      className={`px-2 py-2 rounded-md text-xs cursor-pointer border ${
+                        examMode === 'practice' 
+                          ? "bg-green-800 border-green-600 text-green-100" 
+                          : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
+                      } flex flex-col items-center`}
+                      onClick={() => setExamMode('practice')}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <BookOpenCheck size={14} className="text-green-400" />
+                        <span className="font-medium">Practice Mode</span>
+                      </div>
+                      <span className="text-[10px] mt-1">See explanations & instant feedback</span>
+                    </div>
+                    
+                    <div 
+                      className={`px-2 py-2 rounded-md text-xs cursor-pointer border ${
+                        examMode === 'simulation' 
+                          ? "bg-amber-800 border-amber-600 text-amber-100" 
+                          : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
+                      } flex flex-col items-center`}
+                      onClick={() => setExamMode('simulation')}
+                    >
+                      <div className="flex items-center gap-1.5">
+                        <GraduationCap size={14} className="text-amber-400" />
+                        <span className="font-medium">Exam Simulation</span>
+                      </div>
+                      <span className="text-[10px] mt-1">Timed, results at end (realistic)</span>
+                    </div>
                   </div>
                 </div>
                 
