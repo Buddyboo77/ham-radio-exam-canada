@@ -230,6 +230,7 @@ export default function EnhancedLearningPage() {
   const [questionsCount, setQuestionsCount] = useState<number>(25);
   const [questionsToUse, setQuestionsToUse] = useState<typeof QUIZ_QUESTIONS>([]);
   const [examMode, setExamMode] = useState<'practice' | 'simulation'>('practice');
+  const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<number | null>(null);
   const [score, setScore] = useState(0);
@@ -269,6 +270,35 @@ export default function EnhancedLearningPage() {
     setShowQuizConfig(false);
     setSelectedAnswer(null);
     setShowExplanation(false);
+    
+    // Set timer for simulation mode (time in seconds)
+    if (examMode === 'simulation') {
+      // For simulation mode, allow 1 minute per 10 questions
+      const examTime = Math.max(questionsCount * 6, 300); // Min 5 minutes, 6 sec per question
+      setTimeLeft(examTime);
+      
+      // Start timer countdown
+      const timer = setInterval(() => {
+        setTimeLeft(prevTime => {
+          if (prevTime && prevTime > 0) {
+            return prevTime - 1;
+          } else {
+            clearInterval(timer);
+            // Auto-submit the exam when time runs out
+            if (!quizCompleted) {
+              setQuizCompleted(true);
+            }
+            return 0;
+          }
+        });
+      }, 1000);
+      
+      // Clear timer on unmount
+      return () => clearInterval(timer);
+    } else {
+      // No timer for practice mode
+      setTimeLeft(null);
+    }
   };
   
   // Handle selecting an answer
@@ -532,9 +562,20 @@ export default function EnhancedLearningPage() {
                 <div className="flex justify-center">
                   <Button 
                     onClick={startQuiz} 
-                    className="bg-green-800 hover:bg-green-700 text-xs w-full"
+                    className={`text-sm w-full py-3 flex items-center justify-center gap-2 ${
+                      examMode === 'practice' 
+                        ? 'bg-green-800 hover:bg-green-700 text-white'
+                        : 'bg-amber-800 hover:bg-amber-700 text-white'
+                    }`}
                   >
-                    Start {activeCategory !== "all" ? activeCategory : ""} Practice Exam ({questionsCount} questions)
+                    {examMode === 'practice' 
+                      ? <BookOpenCheck className="h-4 w-4" />
+                      : <GraduationCap className="h-4 w-4" />
+                    }
+                    {examMode === 'practice' 
+                      ? `Start ${activeCategory !== "all" ? activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1) : "Full"} Practice Exam (${questionsCount} Q)` 
+                      : `Begin Official Exam Simulation (${questionsCount} Questions)`
+                    }
                   </Button>
                 </div>
                 
@@ -548,45 +589,67 @@ export default function EnhancedLearningPage() {
             <div className="bg-gray-800 bg-opacity-70 rounded-md p-3 border border-gray-700">
               <div className="mb-3 flex justify-between items-center">
                 <div className="flex items-center gap-2">
-                  <Badge variant="outline" className="text-[10px] border-green-700 text-green-300">
-                    {questionsToUse[currentQuestion].category}
+                  <Badge variant={examMode === 'practice' ? "outline" : "default"} 
+                    className={`text-xs ${examMode === 'practice' 
+                      ? 'border-green-700 text-green-300' 
+                      : 'bg-amber-800 text-amber-100'
+                    }`}
+                  >
+                    {questionsToUse[currentQuestion].category} Section
                   </Badge>
-                  <span className="text-xs text-gray-400 font-mono">
-                    Q {currentQuestion + 1}/{questionsToUse.length}
-                  </span>
+                  {examMode === 'simulation' && timeLeft && (
+                    <Badge variant="default" className="bg-red-800 text-red-100 text-xs">
+                      <Clock className="h-3 w-3 mr-1" />
+                      {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
+                    </Badge>
+                  )}
                 </div>
-                <div className="text-xs font-mono text-gray-300">
-                  {Math.floor((userAnswers.length / questionsToUse.length) * 100)}% complete
+                <div className="flex items-center gap-2">
+                  <span className="text-xs text-gray-300 font-mono">
+                    Question {currentQuestion + 1} of {questionsToUse.length}
+                  </span>
+                  <Badge variant="secondary" className="text-xs bg-gray-700">
+                    {Math.floor((userAnswers.length / questionsToUse.length) * 100)}% complete
+                  </Badge>
                 </div>
               </div>
               
               <Progress 
                 value={(userAnswers.length / questionsToUse.length) * 100} 
-                className="h-1 mb-3" 
+                className="h-1.5 mb-4" 
               />
               
-              <div className="bg-gray-900 p-3 rounded-md mb-3">
-                <p className="text-sm text-gray-200">{questionsToUse[currentQuestion].question}</p>
+              <div className="bg-gradient-to-r from-gray-900 to-gray-850 p-4 rounded-md mb-4 border border-gray-700 shadow-sm">
+                <p className="text-sm text-gray-100 font-medium">{questionsToUse[currentQuestion].question}</p>
               </div>
               
-              <div className="space-y-2">
+              <div className="space-y-3">
                 {questionsToUse[currentQuestion].options.map((option, idx) => (
                   <button
                     key={idx}
-                    className={`w-full text-left px-3 py-2 rounded-md border ${
+                    className={`w-full text-left px-4 py-3 rounded-md border ${
                       selectedAnswer === idx
                         ? showExplanation
                           ? idx === questionsToUse[currentQuestion].correctAnswer
                             ? "bg-green-900 border-green-700 text-green-100"
                             : "bg-red-900 border-red-700 text-red-100"
                           : "bg-blue-900 border-blue-700 text-blue-100"
-                        : "bg-gray-800 hover:bg-gray-700 border-gray-700 text-gray-300"
+                        : examMode === 'simulation'
+                          ? "bg-gray-900 hover:bg-gray-800 border-gray-800 text-gray-200"
+                          : "bg-gray-800 hover:bg-gray-700 border-gray-700 text-gray-200"
                     }`}
                     onClick={() => !showExplanation && selectAnswer(idx)}
                     disabled={showExplanation}
                   >
-                    <span className="font-mono mr-2">{String.fromCharCode(65 + idx)}.</span>
-                    {option}
+                    <div className="flex">
+                      <div className="w-6 font-mono font-bold mr-2">{String.fromCharCode(65 + idx)})</div>
+                      <div>{option}</div>
+                    </div>
+                    {showExplanation && idx === questionsToUse[currentQuestion].correctAnswer && (
+                      <div className="mt-2 text-xs text-green-300 border-t border-green-800 pt-2">
+                        ✓ Correct Answer
+                      </div>
+                    )}
                   </button>
                 ))}
               </div>
@@ -623,12 +686,25 @@ export default function EnhancedLearningPage() {
           ) : (
             <div className="bg-gray-800 bg-opacity-70 rounded-md p-3 border border-gray-700">
               <div className="text-center mb-4">
-                <h2 className="text-lg font-bold text-gray-200 mb-2">Quiz Complete!</h2>
-                <div className="text-3xl font-bold text-blue-400 mb-2">
-                  {Math.round((score / questionsToUse.length) * 100)}%
+                <h2 className="text-lg font-bold text-gray-200 mb-2">
+                  {examMode === 'simulation' ? 'Exam Results' : 'Practice Results'}
+                </h2>
+                <div className="text-4xl font-bold mb-2 flex items-center justify-center gap-2">
+                  <span className={`${
+                    Math.round((score / questionsToUse.length) * 100) >= 80 
+                      ? 'text-green-400' 
+                      : Math.round((score / questionsToUse.length) * 100) >= 70 
+                        ? 'text-blue-400' 
+                        : 'text-red-400'
+                  }`}>
+                    {Math.round((score / questionsToUse.length) * 100)}%
+                  </span>
+                  {Math.round((score / questionsToUse.length) * 100) >= 80 && (
+                    <Badge className="bg-green-700 text-green-100">Honours</Badge>
+                  )}
                 </div>
                 <p className="text-sm text-gray-300">
-                  You scored {score} out of {questionsToUse.length} questions correct.
+                  You answered {score} out of {questionsToUse.length} questions correctly.
                 </p>
               </div>
               
