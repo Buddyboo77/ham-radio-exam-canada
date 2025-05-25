@@ -365,7 +365,7 @@ export default function EnhancedLearningPage() {
     <div className="p-2">
       {/* Fixed Home Button at bottom */}
       <div className="fixed bottom-4 right-4 z-50">
-        <Link href="/frequencies">
+        <Link href="/learning">
           <button className="bg-green-600 hover:bg-green-500 p-3 rounded-full shadow-lg border-2 border-green-400 shadow-glow-green">
             <HomeIcon size={24} className="text-white" />
           </button>
@@ -391,7 +391,7 @@ export default function EnhancedLearningPage() {
                 RETURN
               </button>
             )}
-            <Link href="/frequencies">
+            <Link href="/learning">
               <button className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1">
                 <HomeIcon size={10} /> HOME
               </button>
