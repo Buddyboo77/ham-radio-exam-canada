@@ -412,10 +412,7 @@ export default function EnhancedLearningPage() {
       {/* Main content area */}
       {activeView === 'dashboard' ? (
         <div>
-          {/* Display learning dashboard with progress */}
-          <LearningDashboard />
-          
-          {/* Tests section at the top */}
+          {/* Exam practice tests at the very top */}
           <div className="mb-6">
             <h3 className="text-sm font-semibold text-gray-200 mb-3 flex items-center gap-2">
               <BookOpenCheck size={18} className="text-blue-300" />
@@ -423,28 +420,31 @@ export default function EnhancedLearningPage() {
             </h3>
             <div className="grid grid-cols-2 gap-3">
               <button 
-                className="flex flex-col items-center justify-center p-4 bg-gray-900 rounded-md gap-2 border border-gray-800 hover:bg-gray-800 transition-colors"
+                className="flex flex-col items-center justify-center p-4 bg-blue-900 rounded-md gap-2 border border-blue-700 hover:bg-blue-800 transition-colors"
                 onClick={() => setActiveView('quiz')}
               >
-                <div className="bg-blue-900 p-2 rounded-full">
-                  <BookOpenCheck size={24} className="text-blue-200" />
+                <div className="bg-blue-800 p-2 rounded-full">
+                  <BookOpenCheck size={24} className="text-blue-100" />
                 </div>
-                <span className="text-sm font-medium text-gray-200">License Exam</span>
-                <span className="text-xs text-gray-400 text-center">Practice with official Canadian exam questions</span>
+                <span className="text-sm font-medium text-blue-100">License Exam</span>
+                <span className="text-xs text-blue-300 text-center">Practice with official Canadian exam questions</span>
               </button>
               
               <button 
-                className="flex flex-col items-center justify-center p-4 bg-gray-900 rounded-md gap-2 border border-gray-800 hover:bg-gray-800 transition-colors"
+                className="flex flex-col items-center justify-center p-4 bg-green-900 rounded-md gap-2 border border-green-700 hover:bg-green-800 transition-colors"
                 onClick={() => setActiveView('flashcards')}
               >
-                <div className="bg-green-900 p-2 rounded-full">
-                  <BookOpen size={24} className="text-green-200" />
+                <div className="bg-green-800 p-2 rounded-full">
+                  <BookOpen size={24} className="text-green-100" />
                 </div>
-                <span className="text-sm font-medium text-gray-200">Study Cards</span>
-                <span className="text-xs text-gray-400 text-center">Master license concepts with spaced repetition</span>
+                <span className="text-sm font-medium text-green-100">Study Cards</span>
+                <span className="text-xs text-green-300 text-center">Master license concepts with spaced repetition</span>
               </button>
             </div>
           </div>
+          
+          {/* Display learning dashboard with progress */}
+          <LearningDashboard />
           
           {/* Learning Resources section at the bottom */}
           <div className="mb-4">
