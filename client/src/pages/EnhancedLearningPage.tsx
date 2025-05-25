@@ -369,20 +369,13 @@ export default function EnhancedLearningPage() {
         </div>
       </div>
       
-      {/* Radio code shortcuts */}
-      <div className="grid grid-cols-3 gap-2 mb-3">
-        <div className="bg-gray-900 rounded-md px-2 py-1 text-center border border-gray-700">
-          <div className="text-sm font-mono text-yellow-300">CQ</div>
-          <div className="text-[10px] text-gray-400">Calling All</div>
+      {/* Exam info banner */}
+      <div className="bg-gradient-to-r from-blue-950 to-indigo-950 rounded-md p-3 mb-3 border border-blue-800">
+        <div className="flex items-center gap-2 mb-2">
+          <GraduationCap className="text-blue-300" size={18} />
+          <h3 className="text-sm font-medium text-blue-100">Canadian Amateur Radio Exam Preparation</h3>
         </div>
-        <div className="bg-gray-900 rounded-md px-2 py-1 text-center border border-gray-700">
-          <div className="text-sm font-mono text-yellow-300">73</div>
-          <div className="text-[10px] text-gray-400">Best Wishes</div>
-        </div>
-        <div className="bg-gray-900 rounded-md px-2 py-1 text-center border border-gray-700">
-          <div className="text-sm font-mono text-yellow-300">88</div>
-          <div className="text-[10px] text-gray-400">Love & Kisses</div>
-        </div>
+        <p className="text-xs text-gray-300">Study the material, take practice tests, and master Morse code to prepare for your ham radio license exam. Complete all modules to be fully prepared.</p>
       </div>
       
       {/* Main content area */}

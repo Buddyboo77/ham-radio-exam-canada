@@ -71,32 +71,21 @@ function Router() {
     return () => clearInterval(interval);
   }, []);
   
-  // Routes mapping
+  // Routes mapping - focusing only on learning modules
   const routes = [
-    { path: "/frequencies", label: "Frequencies", icon: <Layers size={18} /> },
-    { path: "/scanner", label: "Scanner", icon: <BarChart4 size={18} /> },
-    { path: "/repeaters", label: "Repeaters", icon: <Map size={18} /> },
-    { path: "/callsign", label: "Callsign", icon: <User size={18} /> },
-    { path: "/propagation", label: "Propagation", icon: <Sun size={18} /> }, 
-    { path: "/dxcluster", label: "DX Cluster", icon: <Globe size={18} /> },
-    { path: "/communication", label: "Chat", icon: <MessageSquare size={18} /> },
-    { path: "/enhanced-map", label: "Maps", icon: <Map size={18} /> },
-    { path: "/ar-view", label: "AR View", icon: <Compass size={18} /> },
-    { path: "/logbook", label: "Logbook", icon: <FileText size={18} /> },
-    { path: "/reference", label: "Reference", icon: <BookOpen size={18} /> },
     { path: "/learning", label: "Learning", icon: <BookOpenCheck size={18} /> },
     { path: "/morse-code", label: "Morse Code", icon: <Radio size={18} /> },
-    { path: "/local-info", label: "Powell River", icon: <RadioTower size={18} /> },
+    { path: "/reference", label: "Reference", icon: <BookOpen size={18} /> },
   ];
   
   // Auth-aware routing
   const { isAuthenticated, logout } = useAuth();
   
-  // If at root, redirect to frequencies if authenticated, otherwise to auth page
+  // If at root, redirect to learning page if authenticated, otherwise to auth page
   useEffect(() => {
     if (location === "/") {
       if (isAuthenticated) {
-        setLocation("/frequencies");
+        setLocation("/learning");
       } else {
         setLocation("/auth");
       }
@@ -159,60 +148,16 @@ function Router() {
             <Switch>
               <Route path="/auth" component={AuthPage} />
               
-              <ProtectedRoute path="/frequencies">
-                <FrequenciesPage />
-              </ProtectedRoute>
-              
-              <ProtectedRoute path="/scanner">
-                <ScannerPage />
-              </ProtectedRoute>
-              
-              <ProtectedRoute path="/repeaters">
-                <RepeatersPage />
-              </ProtectedRoute>
-              
-              <ProtectedRoute path="/callsign">
-                <CallsignLookupPage />
-              </ProtectedRoute>
-              
-              <ProtectedRoute path="/propagation">
-                <PropagationPage />
-              </ProtectedRoute>
-              
-              <ProtectedRoute path="/dxcluster">
-                <DXClusterPage />
-              </ProtectedRoute>
-              
-              <ProtectedRoute path="/communication">
-                <CommunicationPage />
-              </ProtectedRoute>
-              
-              <ProtectedRoute path="/enhanced-map">
-                <EnhancedMapPage />
-              </ProtectedRoute>
-              
-              <ProtectedRoute path="/ar-view">
-                <ARViewPage />
-              </ProtectedRoute>
-              
-              <ProtectedRoute path="/logbook">
-                <LogbookPage />
-              </ProtectedRoute>
-              
-              <ProtectedRoute path="/reference">
-                <ReferencePage />
-              </ProtectedRoute>
-              
               <ProtectedRoute path="/learning">
                 <EnhancedLearningPage />
               </ProtectedRoute>
               
-              <ProtectedRoute path="/local-info">
-                <LocalInfoPage />
-              </ProtectedRoute>
-              
               <ProtectedRoute path="/morse-code">
                 <MorseCodePage />
+              </ProtectedRoute>
+              
+              <ProtectedRoute path="/reference">
+                <ReferencePage />
               </ProtectedRoute>
               
               <Route component={NotFound} />
