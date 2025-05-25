@@ -464,7 +464,7 @@ export default function EnhancedLearningPage() {
           
           {/* View badges summary */}
           <div className="mt-6">
-            <ProgressBadges collapsed={true} onToggleCollapsed={() => setActiveView('badges')} />
+            {/* Achievement badges removed */}
           </div>
         </div>
       ) : activeView === 'quiz' ? (
@@ -791,7 +791,15 @@ export default function EnhancedLearningPage() {
       ) : activeView === 'circuit' ? (
         <CircuitSimulator initialTemplate="Basic LED Circuit" />
       ) : activeView === 'badges' ? (
-        <ProgressBadges collapsed={false} onToggleCollapsed={() => setActiveView('dashboard')} />
+        <div className="text-center p-4">
+          <p className="text-gray-300">Achievement badges have been removed to focus on exam preparation.</p>
+          <button 
+            onClick={() => setActiveView('dashboard')}
+            className="mt-3 px-4 py-1 bg-blue-800 hover:bg-blue-700 rounded-md text-sm text-white"
+          >
+            Back to Dashboard
+          </button>
+        </div>
       ) : null}
     </div>
   );
