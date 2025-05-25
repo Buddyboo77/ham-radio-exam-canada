@@ -2,14 +2,15 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Book, Radio, AlertTriangle, Search, Bookmark, Users, Shield, Music } from "lucide-react";
+import { Book, Radio, AlertTriangle, Search, Bookmark, Users, Shield, Music, GraduationCap } from "lucide-react";
 import ReferenceItem from "@/components/reference/ReferenceItem";
 import ClubInfoCard from "@/components/reference/ClubInfoCard";
 import EnhancedMorseCode from "@/components/reference/EnhancedMorseCode";
+import HamLicenseGuide from "@/components/reference/HamLicenseGuide";
 import { ReferenceItem as ReferenceItemType } from "@shared/schema";
 
 const ReferencePage = () => {
-  const [activeTab, setActiveTab] = useState<string>("morse");
+  const [activeTab, setActiveTab] = useState<string>("license");
   const [searchTerm, setSearchTerm] = useState("");
   
   const { data: referenceItems = [], isLoading } = useQuery<ReferenceItemType[]>({
@@ -60,22 +61,22 @@ const ReferencePage = () => {
       {/* Tab Navigation as Radio Buttons */}
       <div className="grid grid-cols-4 gap-2 mb-3">
         <button
-          className={`radio-channel ${activeTab === 'reference' ? 'active' : ''}`}
-          onClick={() => setActiveTab('reference')}
+          className={`radio-channel ${activeTab === 'license' ? 'active' : ''}`}
+          onClick={() => setActiveTab('license')}
         >
-          <Book size={12} className="mr-1" /> Reference
+          <GraduationCap size={12} className="mr-1" /> License Guide
         </button>
         <button
           className={`radio-channel ${activeTab === 'morse' ? 'active' : ''}`}
           onClick={() => setActiveTab('morse')}
         >
-          <Music size={12} className="mr-1" /> Morse
+          <Music size={12} className="mr-1" /> Morse Code
         </button>
         <button
-          className={`radio-channel ${activeTab === 'club' ? 'active' : ''}`}
-          onClick={() => setActiveTab('club')}
+          className={`radio-channel ${activeTab === 'reference' ? 'active' : ''}`}
+          onClick={() => setActiveTab('reference')}
         >
-          <Users size={12} className="mr-1" /> Club Info
+          <Book size={12} className="mr-1" /> References
         </button>
         <button
           className={`radio-channel ${activeTab === 'emergency' ? 'active' : ''}`}
@@ -184,6 +185,11 @@ const ReferencePage = () => {
               </div>
             </div>
           </div>
+        )}
+        
+        {/* License Guide Tab */}
+        {activeTab === 'license' && (
+          <HamLicenseGuide />
         )}
         
         {/* Morse Code Tab */}
