@@ -127,21 +127,8 @@ function Router() {
         
         {/* Radio screen */}
         <div className="radio-screen relative">
-          {/* Display header with blue glow */}
-          <div className="bg-blue-900 bg-opacity-30 rounded-t-md p-2 mb-2 border-b border-blue-800">
-            <div className="flex justify-between items-center">
-              <div className="flex items-center gap-1">
-                <div className="radio-led green"></div>
-                <span className="text-blue-100 font-semibold text-sm uppercase tracking-wider">
-                  {activeRoute.label}
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <SignalHigh size={14} className="text-blue-400" />
-                <span className="font-mono text-blue-300 text-xs">VA7HAM</span>
-              </div>
-            </div>
-          </div>
+          {/* Hidden display header - keeping blank space for layout consistency */}
+          <div className="p-1"></div>
           
           {/* Main content area */}
           <div className="flex-1 overflow-y-auto max-h-[70vh]">
@@ -206,37 +193,12 @@ function Router() {
             </div>
           </div>
           
-          {/* Radio title message */}
-          <div className="flex justify-center mt-2 mb-2 text-center">
-            <div className="text-xs text-blue-300 font-mono px-2 py-1 bg-black rounded-sm">
-              Press the blue LEARNING CENTER button at top ⬆️
-            </div>
-          </div>
+          {/* No guidance message needed with simplified interface */}
           
-          {/* Quick access buttons */}
-          <div className={`flex justify-between items-center gap-2 mt-2 transition-all duration-300 ${!isMenuOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none absolute'}`}>
-            <Link href="/local-info" className="radio-frequency-display flex-1 hover:bg-gray-800 hover:border-gray-600">
-              Powell River Amateur Radio <Radio className="inline-block ml-1 mr-1" size={14} /> VA7HAM
-            </Link>
-            
-            <div className="flex items-center gap-2">
-              {/* Quick map button */}
-              <Link href="/enhanced-map" className="flex items-center gap-2 bg-blue-800 hover:bg-blue-700 px-2 py-1 rounded-md border border-blue-600">
-                <Map size={16} className="text-blue-100" />
-                <span className="text-xs text-white">Maps</span>
-              </Link>
-              
-              {/* Quick AR button */}
-              <Link href="/ar-view" className="flex items-center gap-2 bg-green-800 hover:bg-green-700 px-2 py-1 rounded-md border border-green-600">
-                <Compass size={16} className="text-green-100" />
-                <span className="text-xs text-white">AR View</span>
-              </Link>
-              
-              {/* Quick local info button */}
-              <Link href="/local-info" className="flex items-center gap-2 bg-purple-800 hover:bg-purple-700 px-2 py-1 rounded-md border border-purple-600">
-                <RadioTower size={16} className="text-purple-100" />
-                <span className="text-xs text-white">Powell River</span>
-              </Link>
+          {/* Radio station identifier - simplified, no quick access buttons */}
+          <div className={`flex justify-center items-center mt-2 transition-all duration-300 ${!isMenuOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none absolute'}`}>
+            <div className="radio-frequency-display flex-1 text-center">
+              Ham Radio License Exam Prep <Radio className="inline-block ml-1 mr-1" size={14} /> VA7HAM
             </div>
           </div>
         </div>
@@ -251,7 +213,6 @@ function App() {
       <TooltipProvider>
         <Toaster />
         <AuthProvider>
-          <QuickAccessMenu />
           <Router />
         </AuthProvider>
       </TooltipProvider>
