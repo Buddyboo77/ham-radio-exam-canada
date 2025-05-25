@@ -237,13 +237,13 @@ const HamLicenseGuide: React.FC = () => {
                   The official Basic Question Bank contains all possible questions that can appear on the exam.
                 </p>
                 <a 
-                  href="https://www.ic.gc.ca/eic/site/025.nsf/eng/h_00040.html" 
+                  href="https://www.ic.gc.ca/eic/site/025.nsf/eng/home" 
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1"
                 >
                   <Info className="h-3 w-3" />
-                  Access on Innovation, Science and Economic Development Canada website
+                  Access Amateur Radio resources on ISED Canada website
                 </a>
               </div>
               
@@ -253,13 +253,13 @@ const HamLicenseGuide: React.FC = () => {
                   The national association for amateur radio in Canada provides study guides and resources.
                 </p>
                 <a 
-                  href="https://www.rac.ca/amateur-radio-courses/" 
+                  href="https://www.rac.ca/amateur-radio-resources/" 
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1"
                 >
                   <Info className="h-3 w-3" />
-                  Find courses and study materials on RAC website
+                  Find resources and guides on RAC website
                 </a>
               </div>
               
