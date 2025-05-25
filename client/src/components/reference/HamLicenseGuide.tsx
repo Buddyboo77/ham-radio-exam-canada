@@ -284,11 +284,18 @@ const HamLicenseGuide: React.FC = () => {
               Once you feel prepared, contact an accredited examiner to schedule your test.
               You'll need government-issued photo ID for the exam.
             </p>
-            <Link href="/learning">
-              <Button className="w-full text-xs bg-amber-800 hover:bg-amber-700 text-white">
-                Continue Practicing with Sample Exams
-              </Button>
-            </Link>
+            <div className="grid grid-cols-2 gap-2">
+              <Link href="/learning">
+                <Button className="w-full text-xs bg-amber-800 hover:bg-amber-700 text-white">
+                  Practice Exams
+                </Button>
+              </Link>
+              <Link href="/morse-code">
+                <Button variant="outline" className="w-full text-xs border-amber-700 text-amber-300 hover:bg-amber-900">
+                  Morse Practice
+                </Button>
+              </Link>
+            </div>
           </div>
         </TabsContent>
       </Tabs>
