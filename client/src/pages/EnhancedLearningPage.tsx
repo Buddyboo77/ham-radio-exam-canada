@@ -415,51 +415,66 @@ export default function EnhancedLearningPage() {
           {/* Display learning dashboard with progress */}
           <LearningDashboard />
           
-          {/* Main menu */}
-          <div className="grid grid-cols-2 gap-3 mb-4 mt-4">
-            <button 
-              className="flex flex-col items-center justify-center p-4 bg-gray-900 rounded-md gap-2 border border-gray-800 hover:bg-gray-800 transition-colors"
-              onClick={() => setActiveView('quiz')}
-            >
-              <div className="bg-blue-900 p-2 rounded-full">
-                <BookOpenCheck size={24} className="text-blue-200" />
-              </div>
-              <span className="text-sm font-medium text-gray-200">License Exam</span>
-              <span className="text-xs text-gray-400 text-center">Practice with official Canadian exam questions</span>
-            </button>
-            
-            <button 
-              className="flex flex-col items-center justify-center p-4 bg-gray-900 rounded-md gap-2 border border-gray-800 hover:bg-gray-800 transition-colors"
-              onClick={() => setActiveView('flashcards')}
-            >
-              <div className="bg-green-900 p-2 rounded-full">
-                <BookOpen size={24} className="text-green-200" />
-              </div>
-              <span className="text-sm font-medium text-gray-200">Study Cards</span>
-              <span className="text-xs text-gray-400 text-center">Master license concepts with spaced repetition</span>
-            </button>
-            
-            <Link 
-              href="/morse-code" 
-              className="flex flex-col items-center justify-center p-4 bg-gray-900 rounded-md gap-2 border border-gray-800 hover:bg-gray-800 transition-colors"
-            >
-              <div className="bg-amber-900 p-2 rounded-full">
-                <Radio size={24} className="text-amber-200" />
-              </div>
-              <span className="text-sm font-medium text-gray-200">Morse Code</span>
-              <span className="text-xs text-gray-400 text-center">Master Morse code for ham radio operations</span>
-            </Link>
-            
-            <Link 
-              href="/reference" 
-              className="flex flex-col items-center justify-center p-4 bg-gray-900 rounded-md gap-2 border border-gray-800 hover:bg-gray-800 transition-colors"
-            >
-              <div className="bg-purple-900 p-2 rounded-full">
-                <BookOpen size={24} className="text-purple-200" />
-              </div>
-              <span className="text-sm font-medium text-gray-200">Reference Guide</span>
-              <span className="text-xs text-gray-400 text-center">Essential reference materials for your exam</span>
-            </Link>
+          {/* Tests section at the top */}
+          <div className="mb-6">
+            <h3 className="text-sm font-semibold text-gray-200 mb-3 flex items-center gap-2">
+              <BookOpenCheck size={18} className="text-blue-300" />
+              Exam Practice Tests
+            </h3>
+            <div className="grid grid-cols-2 gap-3">
+              <button 
+                className="flex flex-col items-center justify-center p-4 bg-gray-900 rounded-md gap-2 border border-gray-800 hover:bg-gray-800 transition-colors"
+                onClick={() => setActiveView('quiz')}
+              >
+                <div className="bg-blue-900 p-2 rounded-full">
+                  <BookOpenCheck size={24} className="text-blue-200" />
+                </div>
+                <span className="text-sm font-medium text-gray-200">License Exam</span>
+                <span className="text-xs text-gray-400 text-center">Practice with official Canadian exam questions</span>
+              </button>
+              
+              <button 
+                className="flex flex-col items-center justify-center p-4 bg-gray-900 rounded-md gap-2 border border-gray-800 hover:bg-gray-800 transition-colors"
+                onClick={() => setActiveView('flashcards')}
+              >
+                <div className="bg-green-900 p-2 rounded-full">
+                  <BookOpen size={24} className="text-green-200" />
+                </div>
+                <span className="text-sm font-medium text-gray-200">Study Cards</span>
+                <span className="text-xs text-gray-400 text-center">Master license concepts with spaced repetition</span>
+              </button>
+            </div>
+          </div>
+          
+          {/* Learning Resources section at the bottom */}
+          <div className="mb-4">
+            <h3 className="text-sm font-semibold text-gray-200 mb-3 flex items-center gap-2">
+              <BookOpen size={18} className="text-purple-300" />
+              Learning Resources
+            </h3>
+            <div className="grid grid-cols-2 gap-3">
+              <Link 
+                href="/morse-code" 
+                className="flex flex-col items-center justify-center p-4 bg-gray-900 rounded-md gap-2 border border-gray-800 hover:bg-gray-800 transition-colors"
+              >
+                <div className="bg-amber-900 p-2 rounded-full">
+                  <Radio size={24} className="text-amber-200" />
+                </div>
+                <span className="text-sm font-medium text-gray-200">Morse Code</span>
+                <span className="text-xs text-gray-400 text-center">Master Morse code for ham radio operations</span>
+              </Link>
+              
+              <Link 
+                href="/reference" 
+                className="flex flex-col items-center justify-center p-4 bg-gray-900 rounded-md gap-2 border border-gray-800 hover:bg-gray-800 transition-colors"
+              >
+                <div className="bg-purple-900 p-2 rounded-full">
+                  <BookOpen size={24} className="text-purple-200" />
+                </div>
+                <span className="text-sm font-medium text-gray-200">Reference Guide</span>
+                <span className="text-xs text-gray-400 text-center">Essential reference materials for your exam</span>
+              </Link>
+            </div>
           </div>
           
           {/* View badges summary */}
