@@ -1,242 +1,1862 @@
 [
   {
-    "question": "What is the maximum power level for an amateur station operating in the 2 metre band?",
+    "question": "According to Ohm's law, if the voltage across a resistor is 12 V and the current through it is 2 A, what is the resistance?",
+    "options": [
+      "6 Ω",
+      "24 Ω",
+      "14 Ω",
+      "10 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 12 V ÷ 2 A = 6 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 12 V and the current through it is 3 A, what is the resistance?",
+    "options": [
+      "4 Ω",
+      "8 Ω",
+      "15 Ω",
+      "36 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 12 V ÷ 3 A = 4 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 12 V and the current through it is 5 A, what is the resistance?",
+    "options": [
+      "2.4 Ω",
+      "4.8 Ω",
+      "17 Ω",
+      "60 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 12 V ÷ 5 A = 2.4 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 12 V and the current through it is 8 A, what is the resistance?",
+    "options": [
+      "1.5 Ω",
+      "3 Ω",
+      "20 Ω",
+      "96 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 12 V ÷ 8 A = 1.5 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 15 V and the current through it is 1.5 A, what is the resistance?",
+    "options": [
+      "10 Ω",
+      "20 Ω",
+      "16.5 Ω",
+      "22.5 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 15 V ÷ 1.5 A = 10 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 15 V and the current through it is 5 A, what is the resistance?",
+    "options": [
+      "3 Ω",
+      "75 Ω",
+      "20 Ω",
+      "10 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 15 V ÷ 5 A = 3 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 18 V and the current through it is 0.5 A, what is the resistance?",
+    "options": [
+      "36 Ω",
+      "72 Ω",
+      "18.5 Ω",
+      "9 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 18 V ÷ 0.5 A = 36 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 18 V and the current through it is 1.5 A, what is the resistance?",
+    "options": [
+      "12 Ω",
+      "24 Ω",
+      "19.5 Ω",
+      "27 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 18 V ÷ 1.5 A = 12 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 18 V and the current through it is 2.5 A, what is the resistance?",
+    "options": [
+      "7.2 Ω",
+      "14.4 Ω",
+      "20.5 Ω",
+      "45 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 18 V ÷ 2.5 A = 7.2 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 18 V and the current through it is 3 A, what is the resistance?",
+    "options": [
+      "6 Ω",
+      "12 Ω",
+      "21 Ω",
+      "54 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 18 V ÷ 3 A = 6 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 18 V and the current through it is 8 A, what is the resistance?",
+    "options": [
+      "2.25 Ω",
+      "4.5 Ω",
+      "26 Ω",
+      "144 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 18 V ÷ 8 A = 2.25 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 24 V and the current through it is 1.5 A, what is the resistance?",
+    "options": [
+      "16 Ω",
+      "32 Ω",
+      "25.5 Ω",
+      "36 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 24 V ÷ 1.5 A = 16 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 24 V and the current through it is 2 A, what is the resistance?",
+    "options": [
+      "12 Ω",
+      "24 Ω",
+      "26 Ω",
+      "48 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 24 V ÷ 2 A = 12 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 24 V and the current through it is 4 A, what is the resistance?",
+    "options": [
+      "6 Ω",
+      "96 Ω",
+      "28 Ω",
+      "20 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 24 V ÷ 4 A = 6 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 24 V and the current through it is 5 A, what is the resistance?",
+    "options": [
+      "4.8 Ω",
+      "9.6 Ω",
+      "29 Ω",
+      "120 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 24 V ÷ 5 A = 4.8 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 24 V and the current through it is 8 A, what is the resistance?",
+    "options": [
+      "3 Ω",
+      "6 Ω",
+      "32 Ω",
+      "192 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 24 V ÷ 8 A = 3 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 3 V and the current through it is 1 A, what is the resistance?",
+    "options": [
+      "3 Ω",
+      "6 Ω",
+      "4 Ω",
+      "3 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 3 V ÷ 1 A = 3 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 3 V and the current through it is 2.5 A, what is the resistance?",
+    "options": [
+      "1.2 Ω",
+      "2.4 Ω",
+      "5.5 Ω",
+      "7.5 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 3 V ÷ 2.5 A = 1.2 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 3 V and the current through it is 3 A, what is the resistance?",
+    "options": [
+      "1 Ω",
+      "2 Ω",
+      "6 Ω",
+      "9 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 3 V ÷ 3 A = 1 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 3 V and the current through it is 6 A, what is the resistance?",
+    "options": [
+      "0.5 Ω",
+      "1 Ω",
+      "9 Ω",
+      "18 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 3 V ÷ 6 A = 0.5 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 3 V and the current through it is 8 A, what is the resistance?",
+    "options": [
+      "0.375 Ω",
+      "0.75 Ω",
+      "11 Ω",
+      "24 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 3 V ÷ 8 A = 0.375 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 36 V and the current through it is 3 A, what is the resistance?",
+    "options": [
+      "12 Ω",
+      "24 Ω",
+      "39 Ω",
+      "108 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 36 V ÷ 3 A = 12 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 36 V and the current through it is 8 A, what is the resistance?",
+    "options": [
+      "4.5 Ω",
+      "9 Ω",
+      "44 Ω",
+      "288 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 36 V ÷ 8 A = 4.5 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 48 V and the current through it is 0.5 A, what is the resistance?",
+    "options": [
+      "96 Ω",
+      "192 Ω",
+      "48.5 Ω",
+      "24 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 48 V ÷ 0.5 A = 96 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 48 V and the current through it is 1.5 A, what is the resistance?",
+    "options": [
+      "32 Ω",
+      "64 Ω",
+      "49.5 Ω",
+      "72 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 48 V ÷ 1.5 A = 32 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 48 V and the current through it is 2 A, what is the resistance?",
+    "options": [
+      "24 Ω",
+      "48 Ω",
+      "50 Ω",
+      "96 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 48 V ÷ 2 A = 24 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 48 V and the current through it is 4 A, what is the resistance?",
+    "options": [
+      "12 Ω",
+      "24 Ω",
+      "52 Ω",
+      "192 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 48 V ÷ 4 A = 12 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 48 V and the current through it is 5 A, what is the resistance?",
+    "options": [
+      "9.6 Ω",
+      "19.2 Ω",
+      "53 Ω",
+      "240 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 48 V ÷ 5 A = 9.6 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 48 V and the current through it is 6 A, what is the resistance?",
+    "options": [
+      "8 Ω",
+      "16 Ω",
+      "54 Ω",
+      "288 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 48 V ÷ 6 A = 8 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 5 V and the current through it is 0.5 A, what is the resistance?",
+    "options": [
+      "10 Ω",
+      "20 Ω",
+      "5.5 Ω",
+      "2.5 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 5 V ÷ 0.5 A = 10 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 5 V and the current through it is 1 A, what is the resistance?",
+    "options": [
+      "5 Ω",
+      "5 kΩ",
+      "6 Ω",
+      "4 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 5 V ÷ 1 A = 5 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 5 V and the current through it is 2 A, what is the resistance?",
+    "options": [
+      "2.5 Ω",
+      "5 Ω",
+      "7 Ω",
+      "10 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 5 V ÷ 2 A = 2.5 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 5 V and the current through it is 8 A, what is the resistance?",
+    "options": [
+      "0.625 Ω",
+      "1.25 Ω",
+      "13 Ω",
+      "40 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 5 V ÷ 8 A = 0.625 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 6 V and the current through it is 4 A, what is the resistance?",
+    "options": [
+      "1.5 Ω",
+      "3 Ω",
+      "10 Ω",
+      "24 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 6 V ÷ 4 A = 1.5 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 6 V and the current through it is 8 A, what is the resistance?",
+    "options": [
+      "0.75 Ω",
+      "1.5 Ω",
+      "14 Ω",
+      "48 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 6 V ÷ 8 A = 0.75 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 9 V and the current through it is 2 A, what is the resistance?",
+    "options": [
+      "4.5 Ω",
+      "9 Ω",
+      "11 Ω",
+      "18 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 9 V ÷ 2 A = 4.5 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 9 V and the current through it is 3 A, what is the resistance?",
+    "options": [
+      "3 Ω",
+      "27 Ω",
+      "12 Ω",
+      "6 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 9 V ÷ 3 A = 3 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 9 V and the current through it is 6 A, what is the resistance?",
+    "options": [
+      "1.5 Ω",
+      "3 Ω",
+      "15 Ω",
+      "54 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 9 V ÷ 6 A = 1.5 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "According to Ohm's law, if the voltage across a resistor is 9 V and the current through it is 8 A, what is the resistance?",
+    "options": [
+      "1.125 Ω",
+      "2.25 Ω",
+      "17 Ω",
+      "72 Ω"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using Ohm's law (R = V/I), the resistance is 9 V ÷ 8 A = 1.125 Ω.",
+    "category": "technical"
+  },
+  {
+    "question": "As a Canadian amateur, what prefix would you use for portable operation in Australia?",
+    "options": [
+      "VK/VE7XXX",
+      "VE7XXX/VK",
+      "VE7XXX/VK",
+      "VK7XXX"
+    ],
+    "correctAnswer": 0,
+    "explanation": "When operating in Australia, Canadian amateurs should use the format VK/VE7XXX, indicating the Australia prefix followed by your Canadian call sign.",
+    "category": "regulations"
+  },
+  {
+    "question": "As a Canadian amateur, what prefix would you use for portable operation in New Zealand?",
+    "options": [
+      "ZL/VE7XXX",
+      "VE7XXX/ZL",
+      "VE7XXX/ZL",
+      "ZL7XXX"
+    ],
+    "correctAnswer": 0,
+    "explanation": "When operating in New Zealand, Canadian amateurs should use the format ZL/VE7XXX, indicating the New Zealand prefix followed by your Canadian call sign.",
+    "category": "regulations"
+  },
+  {
+    "question": "As a Canadian amateur, what prefix would you use for portable operation in the U.K.?",
+    "options": [
+      "M/VE7XXX",
+      "G/VE7XXX",
+      "VE7XXX/M",
+      "VE7XXX/G"
+    ],
+    "correctAnswer": 0,
+    "explanation": "When operating in the U.K., Canadian amateurs should use the format M/VE7XXX, indicating the the U.K. prefix followed by your Canadian call sign.",
+    "category": "regulations"
+  },
+  {
+    "question": "As a Canadian amateur, what prefix would you use for portable operation in the U.S.?",
+    "options": [
+      "W/VE7XXX",
+      "K/VE7XXX",
+      "VE7XXX/W",
+      "VE7XXX/K"
+    ],
+    "correctAnswer": 0,
+    "explanation": "When operating in the U.S., Canadian amateurs should use the format W/VE7XXX, indicating the the U.S. prefix followed by your Canadian call sign.",
+    "category": "regulations"
+  },
+  {
+    "question": "At what power level does an amateur station require an RF exposure evaluation?",
     "options": [
       "25 watts",
-      "50 watts", 
+      "5 watts",
       "100 watts",
       "250 watts"
     ],
-    "correctAnswer": 3,
-    "explanation": "The maximum power for amateur stations in the 2 metre band (144-148 MHz) is 250 watts ERP in Canada.",
-    "category": "Regulations"
+    "correctAnswer": 0,
+    "explanation": "An amateur station requires an RF exposure evaluation when transmitting at 25 watts or more.",
+    "category": "safety"
+  },
+  {
+    "question": "In emergency communications, what does the term 'health and welfare traffic' refer to?",
+    "options": [
+      "Non-emergency messages about personal well-being",
+      "Medical emergency reports",
+      "Emergency shelter requests",
+      "First aid instructions"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Health and welfare traffic refers to non-emergency messages that allow people to communicate their personal well-being to family and friends.",
+    "category": "emergency"
+  },
+  {
+    "question": "In the RST signal reporting system, what does the 'R' stand for?",
+    "options": [
+      "Readability",
+      "Reliability",
+      "Reception",
+      "Radio"
+    ],
+    "correctAnswer": 0,
+    "explanation": "In the RST (Readability, Strength, Tone) signal reporting system, 'R' stands for Readability.",
+    "category": "operating"
+  },
+  {
+    "question": "In the RST signal reporting system, what does the 'S' stand for?",
+    "options": [
+      "Strength",
+      "Signal",
+      "Sound",
+      "Station"
+    ],
+    "correctAnswer": 0,
+    "explanation": "In the RST (Readability, Strength, Tone) signal reporting system, 'S' stands for Strength.",
+    "category": "operating"
+  },
+  {
+    "question": "In the RST signal reporting system, what does the 'T' stand for?",
+    "options": [
+      "Tone",
+      "Time",
+      "Transmitter",
+      "Throughput"
+    ],
+    "correctAnswer": 0,
+    "explanation": "In the RST (Readability, Strength, Tone) signal reporting system, 'T' stands for Tone.",
+    "category": "operating"
   },
   {
     "question": "What does APRS stand for?",
     "options": [
-      "Amateur Position Reporting System",
       "Automatic Packet Reporting System",
-      "Automated Position Radio Service", 
+      "Amateur Position Reporting System",
+      "Automated Position Radio Service",
       "Amateur Packet Radio Service"
     ],
-    "correctAnswer": 1,
-    "explanation": "APRS stands for Automatic Packet Reporting System, used for real-time digital communications and position reporting.",
-    "category": "Operating"
+    "correctAnswer": 0,
+    "explanation": "APRS stands for Automatic Packet Reporting System, which is used for real-time digital communications for local situational awareness.",
+    "category": "digital"
   },
   {
-    "question": "What is the frequency range of the 20 metre amateur band?",
+    "question": "What does DMR stand for in amateur radio?",
     "options": [
-      "14.000 - 14.350 MHz",
-      "14.070 - 14.230 MHz",
-      "14.000 - 14.230 MHz",
-      "14.070 - 14.350 MHz"
+      "Digital Mobile Radio",
+      "Digital Mode Radio",
+      "Direct Mode Radio",
+      "Digital Message Radio"
     ],
     "correctAnswer": 0,
-    "explanation": "The 20 metre amateur band in Canada spans from 14.000 MHz to 14.350 MHz.",
-    "category": "Regulations"
+    "explanation": "DMR stands for Digital Mobile Radio, a digital voice protocol used in amateur radio repeater systems.",
+    "category": "digital"
   },
   {
-    "question": "What is the purpose of a dummy load in amateur radio?",
+    "question": "What does an SWR reading of 1.0:1 indicate?",
     "options": [
-      "To increase transmitter power",
-      "To provide a non-radiating test load",
-      "To improve antenna radiation pattern",
-      "To reduce harmonics"
-    ],
-    "correctAnswer": 1,
-    "explanation": "A dummy load provides a non-radiating resistive load for testing transmitters without radiating RF energy.",
-    "category": "Technical"
-  },
-  {
-    "question": "What is the standard ITU phonetic alphabet word for the letter 'Q'?",
-    "options": [
-      "Queen",
-      "Quebec",
-      "Quiet",
-      "Quick"
-    ],
-    "correctAnswer": 1,
-    "explanation": "The standard ITU phonetic alphabet word for 'Q' is 'Quebec'.",
-    "category": "Operating"
-  },
-  {
-    "question": "What is the minimum age requirement to obtain an amateur radio licence in Canada?",
-    "options": [
-      "No minimum age",
-      "12 years old",
-      "16 years old", 
-      "18 years old"
+      "Perfect impedance match",
+      "High reflection",
+      "No power transfer",
+      "Antenna damage"
     ],
     "correctAnswer": 0,
-    "explanation": "There is no minimum age requirement to obtain an amateur radio licence in Canada.",
-    "category": "Regulations"
+    "explanation": "An SWR of 1.0:1 indicates Perfect impedance match.",
+    "category": "antenna"
   },
   {
-    "question": "What does SWR stand for?",
+    "question": "What does an SWR reading of 1.5:1 indicate?",
     "options": [
-      "Standing Wave Ratio",
-      "Short Wave Radio",
-      "Signal Wave Reflection",
-      "System Wave Response"
+      "Acceptable impedance match",
+      "Perfect impedance match",
+      "Poor impedance match",
+      "High reflection"
     ],
     "correctAnswer": 0,
-    "explanation": "SWR stands for Standing Wave Ratio, which measures impedance matching between transmission line and antenna.",
-    "category": "Technical"
+    "explanation": "An SWR of 1.5:1 indicates Acceptable impedance match.",
+    "category": "antenna"
   },
   {
-    "question": "What is the maximum permitted frequency deviation for FM transmissions in the VHF amateur bands?",
+    "question": "What does an SWR reading of 3.0:1 indicate?",
     "options": [
-      "±2.5 kHz",
-      "±5.0 kHz",
-      "±7.5 kHz",
-      "±15.0 kHz"
+      "Poor impedance match requiring attention",
+      "Acceptable impedance match",
+      "Perfect impedance match",
+      "Good impedance match"
     ],
-    "correctAnswer": 1,
-    "explanation": "The maximum permitted frequency deviation for FM in VHF amateur bands is ±5.0 kHz.",
-    "category": "Technical"
+    "correctAnswer": 0,
+    "explanation": "An SWR of 3.0:1 indicates Poor impedance match requiring attention.",
+    "category": "antenna"
   },
   {
-    "question": "What is the international distress frequency for maritime mobile stations?",
+    "question": "What does an SWR reading of ∞:1 indicate?",
     "options": [
-      "121.5 MHz",
-      "2182 kHz",
-      "14.300 MHz",
-      "146.52 MHz"
+      "Complete impedance mismatch",
+      "Good impedance match",
+      "Partial impedance match",
+      "No impedance mismatch"
     ],
-    "correctAnswer": 1,
-    "explanation": "2182 kHz is the international distress frequency for maritime mobile stations on HF.",
-    "category": "Operating"
+    "correctAnswer": 0,
+    "explanation": "An SWR of ∞:1 indicates Complete impedance mismatch.",
+    "category": "antenna"
   },
   {
-    "question": "How often must an amateur station identify itself?",
+    "question": "What does the Q-signal QRM mean?",
     "options": [
-      "Every 5 minutes",
-      "Every 10 minutes",
-      "Every 15 minutes",
-      "Every 30 minutes"
+      "Man-made interference",
+      "Atmospheric noise",
+      "Clear signal",
+      "Weak signal"
     ],
-    "correctAnswer": 1,
-    "explanation": "Amateur stations must identify themselves at least every 10 minutes during a communication.",
-    "category": "Regulations"
+    "correctAnswer": 0,
+    "explanation": "QRM means 'Man-made interference'. Q-signals are shorthand codes used in radio communications.",
+    "category": "operating"
   },
   {
-    "question": "What is the impedance of most coaxial cables used for amateur radio?",
+    "question": "What does the Q-signal QRN mean?",
     "options": [
-      "25 ohms",
+      "Atmospheric noise",
+      "Man-made interference",
+      "Weak signal",
+      "Fading signal"
+    ],
+    "correctAnswer": 0,
+    "explanation": "QRN means 'Atmospheric noise'. Q-signals are shorthand codes used in radio communications.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the Q-signal QRP mean?",
+    "options": [
+      "Low power operation",
+      "High power operation",
+      "Medium power",
+      "Full power"
+    ],
+    "correctAnswer": 0,
+    "explanation": "QRP means 'Low power operation'. Q-signals are shorthand codes used in radio communications.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the Q-signal QRT mean?",
+    "options": [
+      "Stop transmitting",
+      "I am calling",
+      "Please wait",
+      "Call again"
+    ],
+    "correctAnswer": 0,
+    "explanation": "QRT means 'Stop transmitting'. Q-signals are shorthand codes used in radio communications.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the Q-signal QRZ mean?",
+    "options": [
+      "Who is calling me?",
+      "Change frequency",
+      "Please respond",
+      "I am busy"
+    ],
+    "correctAnswer": 0,
+    "explanation": "QRZ means 'Who is calling me?'. Q-signals are shorthand codes used in radio communications.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the Q-signal QSB mean?",
+    "options": [
+      "Fading signal",
+      "Clear signal",
+      "Strong signal",
+      "No signal"
+    ],
+    "correctAnswer": 0,
+    "explanation": "QSB means 'Fading signal'. Q-signals are shorthand codes used in radio communications.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the Q-signal QSL mean?",
+    "options": [
+      "Confirmation received",
+      "Please confirm",
+      "Message received",
+      "Negative"
+    ],
+    "correctAnswer": 0,
+    "explanation": "QSL means 'Confirmation received'. Q-signals are shorthand codes used in radio communications.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the Q-signal QSO mean?",
+    "options": [
+      "Communication",
+      "Emergency traffic",
+      "End of transmission",
+      "Frequency change"
+    ],
+    "correctAnswer": 0,
+    "explanation": "QSO means 'Communication'. Q-signals are shorthand codes used in radio communications.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the Q-signal QSY mean?",
+    "options": [
+      "I am changing frequency",
+      "I am listening",
+      "Please repeat",
+      "Emergency traffic"
+    ],
+    "correctAnswer": 0,
+    "explanation": "QSY means 'I am changing frequency'. Q-signals are shorthand codes used in radio communications.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the Q-signal QTH mean?",
+    "options": [
+      "My location is",
+      "What time is it?",
+      "Who are you?",
+      "Weather report"
+    ],
+    "correctAnswer": 0,
+    "explanation": "QTH means 'My location is'. Q-signals are shorthand codes used in radio communications.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the term 'APRS' refer to?",
+    "options": [
+      "Automatic Packet Reporting System",
+      "Amateur Position Radio Service",
+      "Automated Position Reporting Service",
+      "Automatic Position Radio System"
+    ],
+    "correctAnswer": 0,
+    "explanation": "APRS refers to Automatic Packet Reporting System.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the term 'EchoLink' refer to?",
+    "options": [
+      "Voice over Internet Protocol for amateur radio",
+      "Emergency Communication Link",
+      "Electronic Communication Link",
+      "Emergency Communication Hub Link"
+    ],
+    "correctAnswer": 0,
+    "explanation": "EchoLink refers to Voice over Internet Protocol for amateur radio.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the term 'IRLP' refer to?",
+    "options": [
+      "Internet Radio Linking Project",
+      "International Radio Link Protocol",
+      "Internet Relay Link Protocol",
+      "Internet Radio Link Protocol"
+    ],
+    "correctAnswer": 0,
+    "explanation": "IRLP refers to Internet Radio Linking Project.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the term 'QRM' refer to?",
+    "options": [
+      "Man-made interference",
+      "Atmospheric noise",
+      "Fading signals",
+      "A good readable signal"
+    ],
+    "correctAnswer": 0,
+    "explanation": "QRM refers to Man-made interference.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the term 'QRN' refer to?",
+    "options": [
+      "Atmospheric noise",
+      "Man-made interference",
+      "Weak signals",
+      "Strong signals"
+    ],
+    "correctAnswer": 0,
+    "explanation": "QRN refers to Atmospheric noise.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the term 'QRP' refer to?",
+    "options": [
+      "Low power operation",
+      "High power operation",
+      "Medium power",
+      "Emergency power"
+    ],
+    "correctAnswer": 0,
+    "explanation": "QRP refers to Low power operation.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the term 'QSB' refer to?",
+    "options": [
+      "Signal fading",
+      "Signal strength",
+      "Clear signals",
+      "Stable signals"
+    ],
+    "correctAnswer": 0,
+    "explanation": "QSB refers to Signal fading.",
+    "category": "operating"
+  },
+  {
+    "question": "What does the term 'Winlink' refer to?",
+    "options": [
+      "Email over radio system",
+      "Wireless Internet Link",
+      "Weather Information Network Link",
+      "Worldwide Information Network Link"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Winlink refers to Email over radio system.",
+    "category": "operating"
+  },
+  {
+    "question": "What happens to the reactance of a capacitor as frequency increases?",
+    "options": [
+      "It decreases",
+      "It increases",
+      "It remains constant",
+      "It becomes zero"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Capacitive reactance (Xc = 1/(2πfC)) is inversely proportional to frequency, so it decreases as frequency increases.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the approximate length of a half-wave dipole for 14.0 MHz?",
+    "options": [
+      "33.4 feet",
+      "66.9 feet",
+      "16.7 feet",
+      "126.5 feet"
+    ],
+    "correctAnswer": 0,
+    "explanation": "A half-wave dipole for 14.0 MHz is approximately 33.4 feet long, calculated using the formula 468/frequency in MHz.",
+    "category": "antenna"
+  },
+  {
+    "question": "What is the approximate length of a half-wave dipole for 146 MHz?",
+    "options": [
+      "3.2 feet",
+      "6.4 feet",
+      "1.6 feet",
+      "12.8 feet"
+    ],
+    "correctAnswer": 0,
+    "explanation": "A half-wave dipole for 146 MHz is approximately 3.2 feet long, calculated using the formula 468/frequency in MHz.",
+    "category": "antenna"
+  },
+  {
+    "question": "What is the approximate length of a half-wave dipole for 21.0 MHz?",
+    "options": [
+      "22.3 feet",
+      "44.6 feet",
+      "11.1 feet",
+      "66.9 feet"
+    ],
+    "correctAnswer": 0,
+    "explanation": "A half-wave dipole for 21.0 MHz is approximately 22.3 feet long, calculated using the formula 468/frequency in MHz.",
+    "category": "antenna"
+  },
+  {
+    "question": "What is the approximate length of a half-wave dipole for 28.0 MHz?",
+    "options": [
+      "16.7 feet",
+      "33.4 feet",
+      "8.3 feet",
+      "66.9 feet"
+    ],
+    "correctAnswer": 0,
+    "explanation": "A half-wave dipole for 28.0 MHz is approximately 16.7 feet long, calculated using the formula 468/frequency in MHz.",
+    "category": "antenna"
+  },
+  {
+    "question": "What is the approximate length of a half-wave dipole for 3.7 MHz?",
+    "options": [
+      "126.5 feet",
+      "63.2 feet",
+      "253 feet",
+      "42.1 feet"
+    ],
+    "correctAnswer": 0,
+    "explanation": "A half-wave dipole for 3.7 MHz is approximately 126.5 feet long, calculated using the formula 468/frequency in MHz.",
+    "category": "antenna"
+  },
+  {
+    "question": "What is the approximate length of a half-wave dipole for 446 MHz?",
+    "options": [
+      "1.05 feet",
+      "2.1 feet",
+      "0.52 feet",
+      "4.2 feet"
+    ],
+    "correctAnswer": 0,
+    "explanation": "A half-wave dipole for 446 MHz is approximately 1.05 feet long, calculated using the formula 468/frequency in MHz.",
+    "category": "antenna"
+  },
+  {
+    "question": "What is the approximate length of a half-wave dipole for 7.0 MHz?",
+    "options": [
+      "66.9 feet",
+      "33.4 feet",
+      "133.8 feet",
+      "22.3 feet"
+    ],
+    "correctAnswer": 0,
+    "explanation": "A half-wave dipole for 7.0 MHz is approximately 66.9 feet long, calculated using the formula 468/frequency in MHz.",
+    "category": "antenna"
+  },
+  {
+    "question": "What is the characteristic impedance of most amateur radio coaxial cables?",
+    "options": [
       "50 ohms",
       "75 ohms",
-      "300 ohms"
-    ],
-    "correctAnswer": 1,
-    "explanation": "Most coaxial cables used in amateur radio have a characteristic impedance of 50 ohms.",
-    "category": "Technical"
-  },
-  {
-    "question": "What does CQ mean in amateur radio?",
-    "options": [
-      "Calling Quebec",
-      "Close Quarters",
-      "Calling any station",
-      "Clear and Quiet"
-    ],
-    "correctAnswer": 2,
-    "explanation": "CQ is a general call meaning 'calling any station' - it invites any station to respond.",
-    "category": "Operating"
-  },
-  {
-    "question": "What is the maximum bandwidth permitted for SSB transmissions on HF bands?",
-    "options": [
-      "2.8 kHz",
-      "3.0 kHz",
-      "6.0 kHz",
-      "20.0 kHz"
+      "300 ohms",
+      "600 ohms"
     ],
     "correctAnswer": 0,
-    "explanation": "The maximum bandwidth for SSB transmissions on HF amateur bands is 2.8 kHz.",
-    "category": "Regulations"
+    "explanation": "Most amateur radio coaxial cables have a characteristic impedance of 50 ohms, which matches typical amateur radio equipment.",
+    "category": "antenna"
   },
   {
-    "question": "What does RF stand for?",
+    "question": "What is the correct way to call CQ on a repeater?",
     "options": [
-      "Radio Frequency",
-      "Radio Field",
-      "Reflected Force",
-      "Resonant Filter"
+      "This is VE9VWX, anyone around for a chat?",
+      "CQ CQ CQ, this is VE9VWX calling CQ and listening",
+      "VE9VWX listening",
+      "CQ DX, CQ DX, this is VE9VWX"
     ],
     "correctAnswer": 0,
-    "explanation": "RF stands for Radio Frequency, referring to electromagnetic energy in the radio spectrum.",
-    "category": "Technical"
+    "explanation": "On a repeater, it's customary to simply announce your callsign and that you're listening or available for a chat. 'CQ' calls are typically used on HF bands.",
+    "category": "operating"
   },
   {
-    "question": "What is the proper procedure when joining a conversation already in progress?",
+    "question": "What is the first priority in emergency communications?",
     "options": [
-      "Say your call sign",
-      "Wait for a pause and say 'Break'",
-      "Immediately give your call sign and location",
-      "Wait for the conversation to end"
-    ],
-    "correctAnswer": 1,
-    "explanation": "When joining a conversation in progress, wait for a pause and say 'Break' followed by your call sign.",
-    "category": "Operating"
-  },
-  {
-    "question": "What is the minimum power level that should be used for amateur communications?",
-    "options": [
-      "5 watts",
-      "10 watts",
-      "The minimum necessary for communication",
-      "100 watts"
-    ],
-    "correctAnswer": 2,
-    "explanation": "Amateur stations should use the minimum power necessary to carry out the desired communication.",
-    "category": "Regulations"
-  },
-  {
-    "question": "What is a balun used for?",
-    "options": [
-      "Matching balanced and unbalanced transmission lines",
-      "Reducing RF noise",
-      "Increasing antenna gain",
-      "Filtering harmonics"
+      "Life safety communications",
+      "Health and welfare traffic",
+      "Equipment damage reports",
+      "Logistics coordination"
     ],
     "correctAnswer": 0,
-    "explanation": "A balun (balanced-unbalanced) is used to match balanced and unbalanced transmission lines.",
-    "category": "Technical"
+    "explanation": "In emergency communications, life safety communications always takes first priority over all other traffic.",
+    "category": "emergency"
   },
   {
-    "question": "What does '73' mean in amateur radio?",
+    "question": "What is the frequency range of the 10 meters amateur band in Canada?",
     "options": [
-      "Goodbye",
-      "Best wishes",
-      "Thank you",
-      "See you later"
+      "28-29.7 MHz",
+      "146-148 MHz",
+      "28-29.7 MHz",
+      "420-450 MHz"
     ],
-    "correctAnswer": 1,
-    "explanation": "'73' is a traditional amateur radio greeting meaning 'best wishes' or 'regards'.",
-    "category": "Operating"
+    "correctAnswer": 0,
+    "explanation": "The 10 meters amateur band in Canada operates on 28-29.7 MHz.",
+    "category": "regulations"
   },
   {
-    "question": "What is the maximum power permitted for a repeater station?",
+    "question": "What is the frequency range of the 15 meters amateur band in Canada?",
     "options": [
-      "50 watts",
-      "100 watts",
+      "21.0-21.45 MHz",
+      "146-148 MHz",
+      "28-29.7 MHz",
+      "420-450 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 15 meters amateur band in Canada operates on 21.0-21.45 MHz.",
+    "category": "regulations"
+  },
+  {
+    "question": "What is the frequency range of the 2 meters amateur band in Canada?",
+    "options": [
+      "144-148 MHz",
+      "146-148 MHz",
+      "28-29.7 MHz",
+      "420-450 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 2 meters amateur band in Canada operates on 144-148 MHz.",
+    "category": "regulations"
+  },
+  {
+    "question": "What is the frequency range of the 20 meters amateur band in Canada?",
+    "options": [
+      "14.0-14.35 MHz",
+      "146-148 MHz",
+      "28-29.7 MHz",
+      "420-450 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 20 meters amateur band in Canada operates on 14.0-14.35 MHz.",
+    "category": "regulations"
+  },
+  {
+    "question": "What is the frequency range of the 40 meters amateur band in Canada?",
+    "options": [
+      "7.0-7.3 MHz",
+      "146-148 MHz",
+      "28-29.7 MHz",
+      "420-450 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 40 meters amateur band in Canada operates on 7.0-7.3 MHz.",
+    "category": "regulations"
+  },
+  {
+    "question": "What is the frequency range of the 6 meters amateur band in Canada?",
+    "options": [
+      "50-54 MHz",
+      "146-148 MHz",
+      "28-29.7 MHz",
+      "420-450 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 6 meters amateur band in Canada operates on 50-54 MHz.",
+    "category": "regulations"
+  },
+  {
+    "question": "What is the frequency range of the 70 cm amateur band in Canada?",
+    "options": [
+      "420-450 MHz",
+      "146-148 MHz",
+      "28-29.7 MHz",
+      "420-450 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 70 cm amateur band in Canada operates on 420-450 MHz.",
+    "category": "regulations"
+  },
+  {
+    "question": "What is the frequency range of the 80 meters amateur band in Canada?",
+    "options": [
+      "3.5-4.0 MHz",
+      "146-148 MHz",
+      "28-29.7 MHz",
+      "420-450 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 80 meters amateur band in Canada operates on 3.5-4.0 MHz.",
+    "category": "regulations"
+  },
+  {
+    "question": "What is the maximum DC power input allowed for Canadian amateur operators with Advanced qualification?",
+    "options": [
+      "1000 watts",
       "250 watts",
-      "No specific limit if properly coordinated"
-    ],
-    "correctAnswer": 3,
-    "explanation": "There is no specific power limit for repeater stations if they are properly coordinated and do not cause interference.",
-    "category": "Regulations"
-  },
-  {
-    "question": "What is the typical frequency offset for VHF repeaters?",
-    "options": [
-      "±600 kHz",
-      "±6 MHz",
-      "±5 MHz",
-      "±1.6 MHz"
+      "500 watts",
+      "1500 watts"
     ],
     "correctAnswer": 0,
-    "explanation": "VHF repeaters typically use a frequency offset of ±600 kHz between input and output frequencies.",
-    "category": "Technical"
+    "explanation": "Amateur operators with Advanced qualification in Canada are limited to 1000 watts DC power input according to ISED regulations.",
+    "category": "regulations"
+  },
+  {
+    "question": "What is the maximum DC power input allowed for Canadian amateur operators with Basic qualification?",
+    "options": [
+      "250 watts",
+      "100 watts",
+      "500 watts",
+      "1500 watts"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Amateur operators with Basic qualification in Canada are limited to 250 watts DC power input according to ISED regulations.",
+    "category": "regulations"
+  },
+  {
+    "question": "What is the maximum DC power input allowed for Canadian amateur operators with Basic with Honours qualification?",
+    "options": [
+      "1000 watts",
+      "250 watts",
+      "500 watts",
+      "1500 watts"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Amateur operators with Basic with Honours qualification in Canada are limited to 1000 watts DC power input according to ISED regulations.",
+    "category": "regulations"
+  },
+  {
+    "question": "What is the maximum permissible exposure (MPE) limit for the general public in the HF band?",
+    "options": [
+      "10 mW/cm²",
+      "1 mW/cm²",
+      "5 mW/cm²",
+      "100 mW/cm²"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The MPE limit for the general public in the HF band is 10 mW/cm² according to Health Canada Safety Code 6.",
+    "category": "safety"
+  },
+  {
+    "question": "What is the maximum permissible exposure (MPE) limit for the general public in the UHF band?",
+    "options": [
+      "5 mW/cm²",
+      "1 mW/cm²",
+      "10 mW/cm²",
+      "100 mW/cm²"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The MPE limit for the general public in the UHF band is 5 mW/cm² according to Health Canada Safety Code 6.",
+    "category": "safety"
+  },
+  {
+    "question": "What is the maximum permissible exposure (MPE) limit for the general public in the VHF band?",
+    "options": [
+      "1 mW/cm²",
+      "5 mW/cm²",
+      "10 mW/cm²",
+      "100 mW/cm²"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The MPE limit for the general public in the VHF band is 1 mW/cm² according to Health Canada Safety Code 6.",
+    "category": "safety"
+  },
+  {
+    "question": "What is the primary purpose of station grounding?",
+    "options": [
+      "Safety and RF interference reduction",
+      "Reducing transmitter power consumption",
+      "Improving antenna radiation efficiency",
+      "Meeting building code requirements"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The primary purpose of station grounding is safety (protection from electrical shock) and RF interference reduction.",
+    "category": "safety"
+  },
+  {
+    "question": "What is the purpose of an RF choke in an antenna system?",
+    "options": [
+      "To block RF current on the outside of a coaxial cable",
+      "To match impedances",
+      "To filter DC power",
+      "To reduce harmonic radiation"
+    ],
+    "correctAnswer": 0,
+    "explanation": "An RF choke in an antenna system is used to block unwanted RF current from flowing on the outside of a coaxial cable shield.",
+    "category": "antenna"
+  },
+  {
+    "question": "What is the required station identification interval for Canadian amateur stations?",
+    "options": [
+      "Every 10 minutes",
+      "Every 30 minutes",
+      "Every 5 minutes",
+      "Every 15 minutes"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Canadian amateur stations must identify every 10 minutes during transmission and at the end of each communication.",
+    "category": "regulations"
+  },
+  {
+    "question": "What is the resonant frequency of a circuit with a 1 mH inductor and a 1 nF capacitor?",
+    "options": [
+      "5.03 kHz",
+      "1.59 kHz",
+      "15.9 kHz",
+      "50.3 kHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using the formula f = 1/(2π√LC), the resonant frequency is 5.03 kHz.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the resonant frequency of a circuit with a 1 µH inductor and a 1000 pF capacitor?",
+    "options": [
+      "5.03 MHz",
+      "1.59 MHz",
+      "15.9 MHz",
+      "50.3 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using the formula f = 1/(2π√LC), the resonant frequency is 5.03 MHz.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the resonant frequency of a circuit with a 10 mH inductor and a 100 nF capacitor?",
+    "options": [
+      "503 Hz",
+      "159 Hz",
+      "1.59 kHz",
+      "5.03 kHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using the formula f = 1/(2π√LC), the resonant frequency is 503 Hz.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the resonant frequency of a circuit with a 10 µH inductor and a 100 pF capacitor?",
+    "options": [
+      "5.03 MHz",
+      "1.59 MHz",
+      "15.9 MHz",
+      "50.3 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using the formula f = 1/(2π√LC), the resonant frequency is 5.03 MHz.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the resonant frequency of a circuit with a 100 µH inductor and a 10 pF capacitor?",
+    "options": [
+      "15.9 MHz",
+      "5.03 MHz",
+      "50.3 MHz",
+      "159 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using the formula f = 1/(2π√LC), the resonant frequency is 15.9 MHz.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the typical baud rate for APRS?",
+    "options": [
+      "1200 baud",
+      "300 baud",
+      "9600 baud",
+      "19200 baud"
+    ],
+    "correctAnswer": 0,
+    "explanation": "APRS typically operates at 1200 baud.",
+    "category": "digital"
+  },
+  {
+    "question": "What is the typical baud rate for PSK31?",
+    "options": [
+      "31.25 baud",
+      "45.45 baud",
+      "1200 baud",
+      "9600 baud"
+    ],
+    "correctAnswer": 0,
+    "explanation": "PSK31 typically operates at 31.25 baud.",
+    "category": "digital"
+  },
+  {
+    "question": "What is the typical baud rate for Packet radio?",
+    "options": [
+      "1200 baud",
+      "300 baud",
+      "9600 baud",
+      "19200 baud"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Packet radio typically operates at 1200 baud.",
+    "category": "digital"
+  },
+  {
+    "question": "What is the typical baud rate for RTTY?",
+    "options": [
+      "45.45 baud",
+      "31.25 baud",
+      "1200 baud",
+      "9600 baud"
+    ],
+    "correctAnswer": 0,
+    "explanation": "RTTY typically operates at 45.45 baud.",
+    "category": "digital"
+  },
+  {
+    "question": "What is the velocity factor of a typical coaxial cable?",
+    "options": [
+      "0.66",
+      "1.0",
+      "0.1",
+      "2.0"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The velocity factor of a typical coaxial cable is 0.66, meaning radio waves travel at about 66% of the speed of light through the cable.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the velocity factor of a typical hardline coax?",
+    "options": [
+      "0.88",
+      "0.66",
+      "1.0",
+      "0.1"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The velocity factor of a typical hardline coax is 0.88, meaning radio waves travel at about 88% of the speed of light through the cable.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the velocity factor of a typical ladder line?",
+    "options": [
+      "0.95",
+      "0.82",
+      "0.66",
+      "1.0"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The velocity factor of a typical ladder line is 0.95, meaning radio waves travel at about 95% of the speed of light through the cable.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the velocity factor of a typical twin-lead cable?",
+    "options": [
+      "0.82",
+      "0.66",
+      "1.0",
+      "0.1"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The velocity factor of a typical twin-lead cable is 0.82, meaning radio waves travel at about 82% of the speed of light through the cable.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the wavelength of a 14 MHz signal?",
+    "options": [
+      "21.4 meters",
+      "10.71 meters",
+      "42.9 meters",
+      "0.047 meters"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using the formula λ = c/f, where c = 300,000,000 m/s and f = 14000000 Hz, the wavelength is 21.4 meters.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the wavelength of a 146 MHz signal?",
+    "options": [
+      "2.05 meters",
+      "1.03 meters",
+      "4.1 meters",
+      "0.487 meters"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using the formula λ = c/f, where c = 300,000,000 m/s and f = 146000000 Hz, the wavelength is 2.05 meters.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the wavelength of a 21 MHz signal?",
+    "options": [
+      "14.3 meters",
+      "7.14 meters",
+      "28.6 meters",
+      "0.070 meters"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using the formula λ = c/f, where c = 300,000,000 m/s and f = 21000000 Hz, the wavelength is 14.3 meters.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the wavelength of a 28 MHz signal?",
+    "options": [
+      "10.7 meters",
+      "5.36 meters",
+      "21.4 meters",
+      "0.093 meters"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using the formula λ = c/f, where c = 300,000,000 m/s and f = 28000000 Hz, the wavelength is 10.7 meters.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the wavelength of a 3.7 MHz signal?",
+    "options": [
+      "81.1 meters",
+      "40.54 meters",
+      "162.2 meters",
+      "0.012 meters"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using the formula λ = c/f, where c = 300,000,000 m/s and f = 3700000 Hz, the wavelength is 81.1 meters.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the wavelength of a 446 MHz signal?",
+    "options": [
+      "0.67 meters",
+      "0.34 meters",
+      "1.3 meters",
+      "1.487 meters"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using the formula λ = c/f, where c = 300,000,000 m/s and f = 446000000 Hz, the wavelength is 0.67 meters.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the wavelength of a 50 MHz signal?",
+    "options": [
+      "6.00 meters",
+      "3.00 meters",
+      "12.0 meters",
+      "0.167 meters"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using the formula λ = c/f, where c = 300,000,000 m/s and f = 50000000 Hz, the wavelength is 6.00 meters.",
+    "category": "technical"
+  },
+  {
+    "question": "What is the wavelength of a 7 MHz signal?",
+    "options": [
+      "42.9 meters",
+      "21.43 meters",
+      "85.7 meters",
+      "0.023 meters"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Using the formula λ = c/f, where c = 300,000,000 m/s and f = 7000000 Hz, the wavelength is 42.9 meters.",
+    "category": "technical"
+  },
+  {
+    "question": "What should be included in a basic amateur radio emergency 'go kit'?",
+    "options": [
+      "Handheld radio, spare batteries, emergency power source, notebook",
+      "Base station radio, AC power supply, computer",
+      "Mobile radio, vehicle charger only",
+      "Repeater equipment, high-gain antenna"
+    ],
+    "correctAnswer": 0,
+    "explanation": "A basic emergency 'go kit' should include portable equipment that can operate independently: handheld radio, spare batteries, emergency power source, and materials for logging communications.",
+    "category": "emergency"
+  },
+  {
+    "question": "What type of modulation is used in AM broadcast radio?",
+    "options": [
+      "Amplitude modulation",
+      "Frequency modulation",
+      "Phase modulation",
+      "Single sideband"
+    ],
+    "correctAnswer": 0,
+    "explanation": "AM broadcast radio uses Amplitude modulation modulation.",
+    "category": "technical"
+  },
+  {
+    "question": "What type of modulation is used in CW transmission?",
+    "options": [
+      "On-off keying",
+      "Frequency modulation",
+      "Amplitude modulation",
+      "Phase modulation"
+    ],
+    "correctAnswer": 0,
+    "explanation": "CW transmission uses On-off keying modulation.",
+    "category": "technical"
+  },
+  {
+    "question": "What type of modulation is used in FM voice communications?",
+    "options": [
+      "Frequency modulation",
+      "Amplitude modulation",
+      "Phase modulation",
+      "Pulse modulation"
+    ],
+    "correctAnswer": 0,
+    "explanation": "FM voice communications uses Frequency modulation modulation.",
+    "category": "technical"
+  },
+  {
+    "question": "What type of modulation is used in FT8 digital mode?",
+    "options": [
+      "Frequency shift keying",
+      "Amplitude modulation",
+      "Phase modulation",
+      "Pulse modulation"
+    ],
+    "correctAnswer": 0,
+    "explanation": "FT8 digital mode uses Frequency shift keying modulation.",
+    "category": "technical"
+  },
+  {
+    "question": "What type of modulation is used in SSB voice?",
+    "options": [
+      "Single sideband",
+      "Amplitude modulation",
+      "Frequency modulation",
+      "Phase modulation"
+    ],
+    "correctAnswer": 0,
+    "explanation": "SSB voice uses Single sideband modulation.",
+    "category": "technical"
+  },
+  {
+    "question": "When should an amateur operator declare an emergency on the air?",
+    "options": [
+      "When there is immediate danger to life or property",
+      "When unable to contact a repeater",
+      "When experiencing equipment failure",
+      "When wanting priority access to a frequency"
+    ],
+    "correctAnswer": 0,
+    "explanation": "An amateur operator should only declare an emergency when there is immediate danger to life or property requiring urgent assistance.",
+    "category": "emergency"
+  },
+  {
+    "question": "Which component is used to store electrical energy in an electric field?",
+    "options": [
+      "Capacitor",
+      "Inductor",
+      "Resistor",
+      "Diode"
+    ],
+    "correctAnswer": 0,
+    "explanation": "A capacitor stores electrical energy in an electric field between its plates.",
+    "category": "technical"
+  },
+  {
+    "question": "Which digital mode is designed for weak signal communication?",
+    "options": [
+      "FT8",
+      "RTTY",
+      "Packet",
+      "PSK31"
+    ],
+    "correctAnswer": 0,
+    "explanation": "FT8 is specifically designed for weak signal communication, using advanced error correction and signal processing techniques.",
+    "category": "digital"
+  },
+  {
+    "question": "Which frequency is designated as the national emergency frequency in Canada?",
+    "options": [
+      "146.520 MHz",
+      "145.500 MHz",
+      "147.420 MHz",
+      "144.390 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "146.520 MHz is designated as the national emergency frequency in Canada for VHF communications.",
+    "category": "emergency"
+  },
+  {
+    "question": "Which frequency range is allocated to the Canadian 10-meter amateur band?",
+    "options": [
+      "28-29.7 MHz",
+      "21-21.45 MHz",
+      "24.89-24.99 MHz",
+      "18.068-18.168 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 10-meter amateur band in Canada is allocated to 28-29.7 MHz.",
+    "category": "regulations"
+  },
+  {
+    "question": "Which frequency range is allocated to the Canadian 2-meter amateur band?",
+    "options": [
+      "144-148 MHz",
+      "136-144 MHz",
+      "148-152 MHz",
+      "138-146 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 2-meter amateur band in Canada is allocated to 144-148 MHz.",
+    "category": "regulations"
+  },
+  {
+    "question": "Which frequency range is allocated to the Canadian 20-meter amateur band?",
+    "options": [
+      "14.0-14.35 MHz",
+      "21.0-21.45 MHz",
+      "28-29.7 MHz",
+      "7.0-7.3 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 20-meter amateur band in Canada is allocated to 14.0-14.35 MHz.",
+    "category": "regulations"
+  },
+  {
+    "question": "Which frequency range is allocated to the Canadian 40-meter amateur band?",
+    "options": [
+      "7.0-7.3 MHz",
+      "3.5-4.0 MHz",
+      "14.0-14.35 MHz",
+      "1.8-2.0 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 40-meter amateur band in Canada is allocated to 7.0-7.3 MHz.",
+    "category": "regulations"
+  },
+  {
+    "question": "Which frequency range is allocated to the Canadian 6-meter amateur band?",
+    "options": [
+      "50-54 MHz",
+      "28-29.7 MHz",
+      "144-148 MHz",
+      "420-450 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 6-meter amateur band in Canada is allocated to 50-54 MHz.",
+    "category": "regulations"
+  },
+  {
+    "question": "Which frequency range is allocated to the Canadian 70 cm amateur band?",
+    "options": [
+      "420-450 MHz",
+      "430-440 MHz",
+      "440-470 MHz",
+      "410-430 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 70 cm amateur band in Canada is allocated to 420-450 MHz.",
+    "category": "regulations"
+  },
+  {
+    "question": "Which frequency range is allocated to the Canadian 80-meter amateur band?",
+    "options": [
+      "3.5-4.0 MHz",
+      "7.0-7.3 MHz",
+      "1.8-2.0 MHz",
+      "14.0-14.35 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 80-meter amateur band in Canada is allocated to 3.5-4.0 MHz.",
+    "category": "regulations"
+  },
+  {
+    "question": "Which of the following bands requires special authorization in Canada?",
+    "options": [
+      "60 m (5 MHz channels)",
+      "70 cm (430-450 MHz)",
+      "2 m (144-148 MHz)",
+      "80 m (3.5-4.0 MHz)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "In Canada, the 60 m (5 MHz channels) requires special authorization and has specific restrictions on power and modes.",
+    "category": "regulations"
+  },
+  {
+    "question": "Which of the following best describes propagation characteristics of the 10 meters band?",
+    "options": [
+      "Long distance propagation, varies with solar cycle",
+      "Line of sight propagation only",
+      "Ground wave propagation only",
+      "Satellite communication only"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 10 meters band is an HF band with long distance propagation that varies with solar activity and ionospheric conditions.",
+    "category": "technical"
+  },
+  {
+    "question": "Which of the following best describes propagation characteristics of the 15 meters band?",
+    "options": [
+      "Long distance propagation, varies with solar cycle",
+      "Line of sight propagation only",
+      "Ground wave propagation only",
+      "Satellite communication only"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 15 meters band is an HF band with long distance propagation that varies with solar activity and ionospheric conditions.",
+    "category": "technical"
+  },
+  {
+    "question": "Which of the following best describes propagation characteristics of the 2 meters band?",
+    "options": [
+      "Line of sight and local repeater coverage",
+      "Worldwide propagation",
+      "Ground wave propagation",
+      "Ionospheric skip propagation"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 2 meters band is a VHF/UHF band with primarily line of sight propagation and local repeater coverage.",
+    "category": "technical"
+  },
+  {
+    "question": "Which of the following best describes propagation characteristics of the 20 meters band?",
+    "options": [
+      "Long distance propagation, varies with solar cycle",
+      "Line of sight propagation only",
+      "Ground wave propagation only",
+      "Satellite communication only"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 20 meters band is an HF band with long distance propagation that varies with solar activity and ionospheric conditions.",
+    "category": "technical"
+  },
+  {
+    "question": "Which of the following best describes propagation characteristics of the 40 meters band?",
+    "options": [
+      "Long distance propagation, varies with solar cycle",
+      "Line of sight propagation only",
+      "Ground wave propagation only",
+      "Satellite communication only"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 40 meters band is an HF band with long distance propagation that varies with solar activity and ionospheric conditions.",
+    "category": "technical"
+  },
+  {
+    "question": "Which of the following best describes propagation characteristics of the 6 meters band?",
+    "options": [
+      "Line of sight and local repeater coverage",
+      "Worldwide propagation",
+      "Ground wave propagation",
+      "Ionospheric skip propagation"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 6 meters band is a VHF/UHF band with primarily line of sight propagation and local repeater coverage.",
+    "category": "technical"
+  },
+  {
+    "question": "Which of the following best describes propagation characteristics of the 70 cm band?",
+    "options": [
+      "Line of sight and local repeater coverage",
+      "Worldwide propagation",
+      "Ground wave propagation",
+      "Ionospheric skip propagation"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 70 cm band is a VHF/UHF band with primarily line of sight propagation and local repeater coverage.",
+    "category": "technical"
+  },
+  {
+    "question": "Which of the following best describes propagation characteristics of the 80 meters band?",
+    "options": [
+      "Long distance propagation, varies with solar cycle",
+      "Line of sight propagation only",
+      "Ground wave propagation only",
+      "Satellite communication only"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 80 meters band is an HF band with long distance propagation that varies with solar activity and ionospheric conditions.",
+    "category": "technical"
+  },
+  {
+    "question": "Which of the following is NOT a digital mode used in amateur radio?",
+    "options": [
+      "CDMA",
+      "PSK31",
+      "RTTY",
+      "FT8"
+    ],
+    "correctAnswer": 0,
+    "explanation": "CDMA (Code Division Multiple Access) is a commercial cellular technology, not an amateur radio digital mode.",
+    "category": "digital"
+  },
+  {
+    "question": "Which of the following is the most important safety consideration when installing outdoor antennas?",
+    "options": [
+      "Avoiding contact with power lines",
+      "Using corrosion-resistant materials",
+      "Minimizing visual impact",
+      "Reducing wind loading"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The most important safety consideration when installing outdoor antennas is avoiding contact with power lines, which can be fatal.",
+    "category": "safety"
+  },
+  {
+    "question": "Which organization is responsible for licensing amateur radio operators in Canada?",
+    "options": [
+      "ISED (Innovation, Science and Economic Development Canada)",
+      "RAC (Radio Amateurs of Canada)",
+      "ARRL (American Radio Relay League)",
+      "CRTC (Canadian Radio-television and Telecommunications Commission)"
+    ],
+    "correctAnswer": 0,
+    "explanation": "Innovation, Science and Economic Development Canada (ISED), formerly Industry Canada, administers amateur radio regulations in Canada.",
+    "category": "regulations"
+  },
+  {
+    "question": "Which type of antenna has the highest gain?",
+    "options": [
+      "Yagi array",
+      "Dipole",
+      "Quarter-wave vertical",
+      "Loop antenna"
+    ],
+    "correctAnswer": 0,
+    "explanation": "A Yagi array antenna typically has the highest gain among these options, providing directional characteristics and signal focusing.",
+    "category": "antenna"
+  },
+  {
+    "question": "Why should you never work alone when climbing towers?",
+    "options": [
+      "Safety requires having someone to assist in case of emergency",
+      "It violates amateur radio regulations",
+      "It reduces work efficiency",
+      "It prevents proper grounding"
+    ],
+    "correctAnswer": 0,
+    "explanation": "When climbing towers, you should never work alone because safety requires having someone to assist in case of emergency, injury, or equipment failure.",
+    "category": "safety"
+  },
+  {
+    "question": "Why should you never work alone when installing outdoor antennas?",
+    "options": [
+      "Safety requires having someone to assist in case of emergency",
+      "It violates amateur radio regulations",
+      "It reduces work efficiency",
+      "It prevents proper grounding"
+    ],
+    "correctAnswer": 0,
+    "explanation": "When installing outdoor antennas, you should never work alone because safety requires having someone to assist in case of emergency, injury, or equipment failure.",
+    "category": "safety"
+  },
+  {
+    "question": "Why should you never work alone when working on high-voltage equipment?",
+    "options": [
+      "Safety requires having someone to assist in case of emergency",
+      "It violates amateur radio regulations",
+      "It reduces work efficiency",
+      "It prevents proper grounding"
+    ],
+    "correctAnswer": 0,
+    "explanation": "When working on high-voltage equipment, you should never work alone because safety requires having someone to assist in case of emergency, injury, or equipment failure.",
+    "category": "safety"
+  },
+  {
+    "question": "Why should you never work alone when working with RF amplifiers?",
+    "options": [
+      "Safety requires having someone to assist in case of emergency",
+      "It violates amateur radio regulations",
+      "It reduces work efficiency",
+      "It prevents proper grounding"
+    ],
+    "correctAnswer": 0,
+    "explanation": "When working with RF amplifiers, you should never work alone because safety requires having someone to assist in case of emergency, injury, or equipment failure.",
+    "category": "safety"
   }
 ]
