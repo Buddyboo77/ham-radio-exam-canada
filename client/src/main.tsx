@@ -2,8 +2,8 @@ import { createRoot } from "react-dom/client";
 import App from "./App";
 import "./index.css";
 
-// Register the service worker for PWA functionality
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
+// Register the service worker for PWA functionality (but not in Capacitor)
+if ('serviceWorker' in navigator && import.meta.env.PROD && !(window as any).Capacitor?.isNativePlatform) {
   window.addEventListener('load', () => {
     navigator.serviceWorker.register('/service-worker.js')
       .then(registration => {
