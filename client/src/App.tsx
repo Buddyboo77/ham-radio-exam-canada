@@ -20,6 +20,8 @@ import ARViewPage from "@/pages/ARViewPage";
 import CommunicationPage from "@/pages/CommunicationPage";
 import MorseCodePage from "@/pages/MorseCodePage";
 import AuthPage from "@/pages/AuthPage";
+import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
+import TermsOfServicePage from "@/pages/TermsOfServicePage";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
@@ -146,6 +148,9 @@ function Router() {
               <ProtectedRoute path="/reference">
                 <ReferencePage />
               </ProtectedRoute>
+              
+              <Route path="/privacy" component={PrivacyPolicyPage} />
+              <Route path="/terms" component={TermsOfServicePage} />
               
               <Route component={NotFound} />
             </Switch>

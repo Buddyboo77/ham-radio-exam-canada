@@ -1003,6 +1003,24 @@ export default function EnhancedLearningPage() {
           )}
         </div>
       ) : null}
+      
+      {/* Legal links footer - only show on dashboard */}
+      {activeView === 'dashboard' && (
+        <div className="mt-6 pt-4 border-t border-gray-700">
+          <div className="flex justify-center gap-4 text-xs">
+            <Link href="/privacy" className="text-gray-400 hover:text-gray-200">
+              Privacy Policy
+            </Link>
+            <span className="text-gray-600">•</span>
+            <Link href="/terms" className="text-gray-400 hover:text-gray-200">
+              Terms of Service
+            </Link>
+          </div>
+          <div className="text-center text-[10px] text-gray-500 mt-2">
+            v1.0.0 • Canadian Amateur Radio License Preparation
+          </div>
+        </div>
+      )}
     </div>
   );
 }
