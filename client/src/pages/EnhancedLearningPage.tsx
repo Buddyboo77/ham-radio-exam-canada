@@ -289,6 +289,21 @@ export default function EnhancedLearningPage() {
   // Learning progress
   const { recordQuizCompletion } = useLearningProgress();
 
+  // Reset to dashboard view when navigating to home route
+  useEffect(() => {
+    if (location === '/') {
+      console.log('Navigated to home, resetting to dashboard view');
+      setActiveView('dashboard');
+      setShowQuizConfig(true);
+      setQuizCompleted(false);
+      setCurrentQuestion(0);
+      setSelectedAnswer(null);
+      setUserAnswers([]);
+      setQuestionsToUse([]);
+      setTimeLeft(null);
+    }
+  }, [location]);
+
   // Fetch questions for quiz (only when starting a quiz)
   const { data: quizQuestions, isLoading: isLoadingQuestions, error: questionsError } = useQuery<DatabaseQuestion[]>({
     queryKey: ['/api/exam-questions', 'quiz', activeCategory, questionsCount],

@@ -81,14 +81,10 @@ function Router() {
   // Auth-aware routing
   const { isAuthenticated, logout } = useAuth();
   
-  // If at root, redirect to learning page if authenticated, otherwise to auth page
+  // Redirect only unauthenticated users from root to auth page
   useEffect(() => {
-    if (location === "/") {
-      if (isAuthenticated) {
-        setLocation("/learning");
-      } else {
-        setLocation("/auth");
-      }
+    if (location === "/" && !isAuthenticated) {
+      setLocation("/auth");
     }
   }, [location, setLocation, isAuthenticated]);
   

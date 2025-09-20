@@ -1,8 +1,9 @@
-import { Radio, Music, Award, CheckCircle, Headphones } from "lucide-react";
+import { Radio, Music, Award, CheckCircle, Headphones, Home } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MorseCodeGame } from "@/components/games/MorseCodeGame";
 import MorseCodeExam from "@/components/games/MorseCodeExam";
 import EnhancedMorseCode from "@/components/reference/EnhancedMorseCode";
+import { Link } from "wouter";
 
 const MorseCodePage = () => {
   return (
@@ -16,6 +17,14 @@ const MorseCodePage = () => {
               Morse Code Training
             </h2>
           </div>
+          <Link href="/">
+            <button 
+              className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1"
+              data-testid="button-home"
+            >
+              <Home size={10} /> HOME
+            </button>
+          </Link>
         </div>
       </div>
       
