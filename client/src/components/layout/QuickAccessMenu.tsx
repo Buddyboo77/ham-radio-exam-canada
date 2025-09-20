@@ -12,13 +12,13 @@ export function QuickAccessMenu() {
         <div className="flex items-center justify-between">
           <div className="flex items-center">
             <RadioTower className="h-5 w-5 text-blue-300 mr-2" />
-            <h1 className="text-sm font-semibold text-white">Powell River Amateur Radio</h1>
+            <h1 className="text-sm font-semibold text-white">Ham Radio Study</h1>
           </div>
           
           <div className="flex gap-1">
-            <Link href="/frequencies">
+            <Link href="/">
               <button 
-                className={`h-7 rounded-md ${isActive('/frequencies') ? 'bg-green-700' : 'bg-gray-800/70'} hover:bg-green-700 flex items-center justify-center border ${isActive('/frequencies') ? 'border-green-500' : 'border-gray-700'} shadow-sm px-2 py-1`}
+                className={`h-7 rounded-md ${isActive('/') ? 'bg-green-700' : 'bg-gray-800/70'} hover:bg-green-700 flex items-center justify-center border ${isActive('/') ? 'border-green-500' : 'border-gray-700'} shadow-sm px-2 py-1`}
                 title="Home"
               >
                 <Home size={12} className="text-gray-100" />

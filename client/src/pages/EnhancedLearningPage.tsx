@@ -498,7 +498,7 @@ export default function EnhancedLearningPage() {
     <div className="p-2">
       {/* Fixed Home Button at bottom */}
       <div className="fixed bottom-4 right-4 z-50">
-        <Link href="/learning">
+        <Link href="/">
           <button className="bg-green-600 hover:bg-green-500 p-3 rounded-full shadow-lg border-2 border-green-400 shadow-glow-green">
             <HomeIcon size={24} className="text-white" />
           </button>
@@ -529,10 +529,10 @@ export default function EnhancedLearningPage() {
                 RETURN
               </button>
             )}
-            <Link href="/learning">
+            <Link href="/">
               <button 
                 className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1"
-                onClick={() => console.log('HOME button clicked - navigating to /learning')}
+                onClick={() => console.log('HOME button clicked - navigating to /')}
               >
                 <HomeIcon size={10} /> HOME
               </button>
@@ -545,9 +545,9 @@ export default function EnhancedLearningPage() {
       <div className="bg-gradient-to-r from-blue-950 to-indigo-950 rounded-md p-3 mb-3 border border-blue-800">
         <div className="flex items-center gap-2 mb-2">
           <GraduationCap className="text-blue-300" size={18} />
-          <h3 className="text-sm font-medium text-blue-100">Canadian Amateur Radio Exam Preparation</h3>
+          <h3 className="text-sm font-medium text-blue-100">Canadian Amateur Radio License Study</h3>
         </div>
-        <p className="text-xs text-gray-300">Study the material, take practice tests, and master Morse code to prepare for your ham radio license exam. Complete all modules to be fully prepared.</p>
+        <p className="text-xs text-gray-300">Study for your Canadian amateur radio license exam with practice tests and Morse code training.</p>
       </div>
       
       {/* Main content area */}

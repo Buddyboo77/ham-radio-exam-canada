@@ -269,7 +269,7 @@ const HamLicenseGuide: React.FC = () => {
                   Many local clubs offer courses, study sessions, and exam opportunities.
                 </p>
                 <p className="text-xs text-gray-400">
-                  The Powell River Amateur Radio Club can provide local resources and exam sessions.
+                  Contact your local amateur radio club for resources and exam sessions.
                 </p>
               </div>
             </div>

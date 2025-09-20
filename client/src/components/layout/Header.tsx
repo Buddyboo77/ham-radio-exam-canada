@@ -16,7 +16,7 @@ const Header = () => {
   return (
     <header className="bg-primary text-white p-4 shadow-md">
       <div className="flex justify-between items-center">
-        <h1 className="text-xl font-bold">Powell River Ham Radio</h1>
+        <h1 className="text-xl font-bold">Ham Radio Study</h1>
         <div className="flex items-center space-x-2">
           <span 
             id="connection-status" 
@@ -39,7 +39,7 @@ const Header = () => {
               <SheetHeader>
                 <SheetTitle>Settings</SheetTitle>
                 <SheetDescription>
-                  Configure your ham radio companion app preferences.
+                  Configure your ham radio study app preferences.
                 </SheetDescription>
               </SheetHeader>
               <div className="py-4">
@@ -52,7 +52,7 @@ const Header = () => {
                   <div>
                     <h3 className="text-sm font-medium leading-none mb-3">Data Storage</h3>
                     <p className="text-sm text-muted-foreground mb-2">
-                      Your log entries and frequency preferences are stored locally on this device.
+                      Your progress and preferences are stored locally on this device.
                     </p>
                     <button 
                       className="text-sm text-destructive"
@@ -71,8 +71,8 @@ const Header = () => {
                   <div>
                     <h3 className="text-sm font-medium leading-none mb-3">About</h3>
                     <p className="text-sm text-muted-foreground">
-                      Powell River Ham Radio Companion is designed for amateur radio operators
-                      in the Powell River area of British Columbia, Canada.
+                      Ham Radio Study is designed to help Canadian amateur radio operators
+                      prepare for their license examinations.
                     </p>
                   </div>
                 </div>

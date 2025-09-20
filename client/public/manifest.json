@@ -1,7 +1,7 @@
 {
-  "name": "Powell River Amateur Radio Companion",
-  "short_name": "PR Radio",
-  "description": "Ham radio companion app for Powell River amateur radio operators",
+  "name": "Ham Radio License Study App",
+  "short_name": "Ham Study",
+  "description": "Canadian amateur radio license preparation with practice exams and Morse code training",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#121212",
@@ -29,24 +29,24 @@
   ],
   "shortcuts": [
     {
-      "name": "Frequencies",
-      "short_name": "Freq",
-      "description": "View frequency list",
-      "url": "/frequencies",
+      "name": "Practice Exam",
+      "short_name": "Exam",
+      "description": "Take practice exam",
+      "url": "/learning",
       "icons": [{ "src": "/icons/frequencies.svg", "sizes": "96x96", "type": "image/svg+xml" }]
     },
     {
-      "name": "Log Entry",
-      "short_name": "Log",
-      "description": "Add a new log entry",
-      "url": "/logbook?new=true",
+      "name": "Morse Code",
+      "short_name": "Morse",
+      "description": "Practice Morse code",
+      "url": "/morse-code",
       "icons": [{ "src": "/icons/logbook.svg", "sizes": "96x96", "type": "image/svg+xml" }]
     },
     {
-      "name": "Map",
-      "short_name": "Map",
-      "description": "View repeater map",
-      "url": "/enhanced-map",
+      "name": "Study Guide",
+      "short_name": "Study",
+      "description": "Reference materials",
+      "url": "/reference",
       "icons": [{ "src": "/icons/map.svg", "sizes": "96x96", "type": "image/svg+xml" }]
     }
   ],
