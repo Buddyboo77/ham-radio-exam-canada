@@ -511,14 +511,16 @@ export default function EnhancedLearningPage() {
   
   return (
     <div className="p-2">
-      {/* Fixed Home Button at bottom */}
-      <div className="fixed bottom-4 right-4 z-50">
-        <Link href="/">
-          <button className="bg-green-600 hover:bg-green-500 p-3 rounded-full shadow-lg border-2 border-green-400 shadow-glow-green">
-            <HomeIcon size={24} className="text-white" />
-          </button>
-        </Link>
-      </div>
+      {/* Fixed Home Button at bottom - only show when not on dashboard */}
+      {activeView !== 'dashboard' && (
+        <div className="fixed bottom-4 right-4 z-50">
+          <Link href="/">
+            <button className="bg-green-600 hover:bg-green-500 p-3 rounded-full shadow-lg border-2 border-green-400 shadow-glow-green">
+              <HomeIcon size={24} className="text-white" />
+            </button>
+          </Link>
+        </div>
+      )}
       
       {/* Radio display header */}
       <div className="bg-gradient-to-r from-blue-900 to-blue-950 rounded-md p-2 mb-3 border border-blue-800">
@@ -544,14 +546,16 @@ export default function EnhancedLearningPage() {
                 RETURN
               </button>
             )}
-            <Link href="/">
-              <button 
-                className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1"
-                onClick={() => console.log('HOME button clicked - navigating to /')}
-              >
-                <HomeIcon size={10} /> HOME
-              </button>
-            </Link>
+            {activeView !== 'dashboard' && (
+              <Link href="/">
+                <button 
+                  className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1"
+                  onClick={() => console.log('HOME button clicked - navigating to /')}
+                >
+                  <HomeIcon size={10} /> HOME
+                </button>
+              </Link>
+            )}
           </div>
         </div>
       </div>
