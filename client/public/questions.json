@@ -1,0 +1,242 @@
+[
+  {
+    "question": "What is the maximum power level for an amateur station operating in the 2 metre band?",
+    "options": [
+      "25 watts",
+      "50 watts", 
+      "100 watts",
+      "250 watts"
+    ],
+    "correctAnswer": 3,
+    "explanation": "The maximum power for amateur stations in the 2 metre band (144-148 MHz) is 250 watts ERP in Canada.",
+    "category": "Regulations"
+  },
+  {
+    "question": "What does APRS stand for?",
+    "options": [
+      "Amateur Position Reporting System",
+      "Automatic Packet Reporting System",
+      "Automated Position Radio Service", 
+      "Amateur Packet Radio Service"
+    ],
+    "correctAnswer": 1,
+    "explanation": "APRS stands for Automatic Packet Reporting System, used for real-time digital communications and position reporting.",
+    "category": "Operating"
+  },
+  {
+    "question": "What is the frequency range of the 20 metre amateur band?",
+    "options": [
+      "14.000 - 14.350 MHz",
+      "14.070 - 14.230 MHz",
+      "14.000 - 14.230 MHz",
+      "14.070 - 14.350 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The 20 metre amateur band in Canada spans from 14.000 MHz to 14.350 MHz.",
+    "category": "Regulations"
+  },
+  {
+    "question": "What is the purpose of a dummy load in amateur radio?",
+    "options": [
+      "To increase transmitter power",
+      "To provide a non-radiating test load",
+      "To improve antenna radiation pattern",
+      "To reduce harmonics"
+    ],
+    "correctAnswer": 1,
+    "explanation": "A dummy load provides a non-radiating resistive load for testing transmitters without radiating RF energy.",
+    "category": "Technical"
+  },
+  {
+    "question": "What is the standard ITU phonetic alphabet word for the letter 'Q'?",
+    "options": [
+      "Queen",
+      "Quebec",
+      "Quiet",
+      "Quick"
+    ],
+    "correctAnswer": 1,
+    "explanation": "The standard ITU phonetic alphabet word for 'Q' is 'Quebec'.",
+    "category": "Operating"
+  },
+  {
+    "question": "What is the minimum age requirement to obtain an amateur radio licence in Canada?",
+    "options": [
+      "No minimum age",
+      "12 years old",
+      "16 years old", 
+      "18 years old"
+    ],
+    "correctAnswer": 0,
+    "explanation": "There is no minimum age requirement to obtain an amateur radio licence in Canada.",
+    "category": "Regulations"
+  },
+  {
+    "question": "What does SWR stand for?",
+    "options": [
+      "Standing Wave Ratio",
+      "Short Wave Radio",
+      "Signal Wave Reflection",
+      "System Wave Response"
+    ],
+    "correctAnswer": 0,
+    "explanation": "SWR stands for Standing Wave Ratio, which measures impedance matching between transmission line and antenna.",
+    "category": "Technical"
+  },
+  {
+    "question": "What is the maximum permitted frequency deviation for FM transmissions in the VHF amateur bands?",
+    "options": [
+      "±2.5 kHz",
+      "±5.0 kHz",
+      "±7.5 kHz",
+      "±15.0 kHz"
+    ],
+    "correctAnswer": 1,
+    "explanation": "The maximum permitted frequency deviation for FM in VHF amateur bands is ±5.0 kHz.",
+    "category": "Technical"
+  },
+  {
+    "question": "What is the international distress frequency for maritime mobile stations?",
+    "options": [
+      "121.5 MHz",
+      "2182 kHz",
+      "14.300 MHz",
+      "146.52 MHz"
+    ],
+    "correctAnswer": 1,
+    "explanation": "2182 kHz is the international distress frequency for maritime mobile stations on HF.",
+    "category": "Operating"
+  },
+  {
+    "question": "How often must an amateur station identify itself?",
+    "options": [
+      "Every 5 minutes",
+      "Every 10 minutes",
+      "Every 15 minutes",
+      "Every 30 minutes"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Amateur stations must identify themselves at least every 10 minutes during a communication.",
+    "category": "Regulations"
+  },
+  {
+    "question": "What is the impedance of most coaxial cables used for amateur radio?",
+    "options": [
+      "25 ohms",
+      "50 ohms",
+      "75 ohms",
+      "300 ohms"
+    ],
+    "correctAnswer": 1,
+    "explanation": "Most coaxial cables used in amateur radio have a characteristic impedance of 50 ohms.",
+    "category": "Technical"
+  },
+  {
+    "question": "What does CQ mean in amateur radio?",
+    "options": [
+      "Calling Quebec",
+      "Close Quarters",
+      "Calling any station",
+      "Clear and Quiet"
+    ],
+    "correctAnswer": 2,
+    "explanation": "CQ is a general call meaning 'calling any station' - it invites any station to respond.",
+    "category": "Operating"
+  },
+  {
+    "question": "What is the maximum bandwidth permitted for SSB transmissions on HF bands?",
+    "options": [
+      "2.8 kHz",
+      "3.0 kHz",
+      "6.0 kHz",
+      "20.0 kHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "The maximum bandwidth for SSB transmissions on HF amateur bands is 2.8 kHz.",
+    "category": "Regulations"
+  },
+  {
+    "question": "What does RF stand for?",
+    "options": [
+      "Radio Frequency",
+      "Radio Field",
+      "Reflected Force",
+      "Resonant Filter"
+    ],
+    "correctAnswer": 0,
+    "explanation": "RF stands for Radio Frequency, referring to electromagnetic energy in the radio spectrum.",
+    "category": "Technical"
+  },
+  {
+    "question": "What is the proper procedure when joining a conversation already in progress?",
+    "options": [
+      "Say your call sign",
+      "Wait for a pause and say 'Break'",
+      "Immediately give your call sign and location",
+      "Wait for the conversation to end"
+    ],
+    "correctAnswer": 1,
+    "explanation": "When joining a conversation in progress, wait for a pause and say 'Break' followed by your call sign.",
+    "category": "Operating"
+  },
+  {
+    "question": "What is the minimum power level that should be used for amateur communications?",
+    "options": [
+      "5 watts",
+      "10 watts",
+      "The minimum necessary for communication",
+      "100 watts"
+    ],
+    "correctAnswer": 2,
+    "explanation": "Amateur stations should use the minimum power necessary to carry out the desired communication.",
+    "category": "Regulations"
+  },
+  {
+    "question": "What is a balun used for?",
+    "options": [
+      "Matching balanced and unbalanced transmission lines",
+      "Reducing RF noise",
+      "Increasing antenna gain",
+      "Filtering harmonics"
+    ],
+    "correctAnswer": 0,
+    "explanation": "A balun (balanced-unbalanced) is used to match balanced and unbalanced transmission lines.",
+    "category": "Technical"
+  },
+  {
+    "question": "What does '73' mean in amateur radio?",
+    "options": [
+      "Goodbye",
+      "Best wishes",
+      "Thank you",
+      "See you later"
+    ],
+    "correctAnswer": 1,
+    "explanation": "'73' is a traditional amateur radio greeting meaning 'best wishes' or 'regards'.",
+    "category": "Operating"
+  },
+  {
+    "question": "What is the maximum power permitted for a repeater station?",
+    "options": [
+      "50 watts",
+      "100 watts",
+      "250 watts",
+      "No specific limit if properly coordinated"
+    ],
+    "correctAnswer": 3,
+    "explanation": "There is no specific power limit for repeater stations if they are properly coordinated and do not cause interference.",
+    "category": "Regulations"
+  },
+  {
+    "question": "What is the typical frequency offset for VHF repeaters?",
+    "options": [
+      "±600 kHz",
+      "±6 MHz",
+      "±5 MHz",
+      "±1.6 MHz"
+    ],
+    "correctAnswer": 0,
+    "explanation": "VHF repeaters typically use a frequency offset of ±600 kHz between input and output frequencies.",
+    "category": "Technical"
+  }
+]
