@@ -9,7 +9,7 @@ import {
   type ExamQuestion, type InsertExamQuestion
 } from "@shared/schema";
 import { db } from "./db";
-import { eq, desc, and, asc } from "drizzle-orm";
+import { eq, desc, and, asc, sql } from "drizzle-orm";
 import { EMERGENCY_FREQUENCY } from "@/lib/constants";
 
 export interface IStorage {
@@ -256,15 +256,12 @@ export class DatabaseStorage implements IStorage {
       conditions.push(eq(examQuestions.examType, examType));
     }
     
-    // Note: This is a simplified random selection. For better randomization in production,
-    // consider using SQL's RANDOM() function with proper ORM support
-    const allQuestions = await db.select().from(examQuestions)
+    // Use database-level random sampling for much better performance
+    // This avoids loading all questions into memory and does the randomization in PostgreSQL
+    return await db.select().from(examQuestions)
       .where(and(...conditions))
-      .orderBy(asc(examQuestions.id));
-    
-    // Shuffle and take the required count
-    const shuffled = allQuestions.sort(() => Math.random() - 0.5);
-    return shuffled.slice(0, count);
+      .orderBy(sql`RANDOM()`)
+      .limit(count);
   }
 
   async createExamQuestion(insertExamQuestion: InsertExamQuestion): Promise<ExamQuestion> {
