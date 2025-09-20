@@ -1,10 +1,57 @@
-import type { Express } from "express";
+import type { Express, Request, Response, NextFunction } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { z } from "zod";
 import { insertFrequencySchema, insertLogEntrySchema, insertRepeaterSchema, insertExamQuestionSchema } from "@shared/schema";
 import axios from "axios";
 import { WebSocketServer, WebSocket } from 'ws';
+
+// Simple rate limiting store
+const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
+
+// Admin authentication middleware
+function requireAdmin(req: Request, res: Response, next: NextFunction) {
+  const authHeader = req.headers.authorization;
+  const adminToken = process.env.ADMIN_TOKEN || 'admin-dev-token-123';
+  
+  if (!authHeader || !authHeader.startsWith('Bearer ')) {
+    return res.status(401).json({ message: 'Admin authentication required' });
+  }
+  
+  const token = authHeader.substring(7);
+  if (token !== adminToken) {
+    return res.status(403).json({ message: 'Invalid admin token' });
+  }
+  
+  next();
+}
+
+// Rate limiting middleware for admin operations
+function rateLimit(maxRequests: number, windowMs: number) {
+  return (req: Request, res: Response, next: NextFunction) => {
+    const clientId = req.ip || 'unknown';
+    const now = Date.now();
+    
+    const clientData = rateLimitStore.get(clientId);
+    
+    if (!clientData || now > clientData.resetTime) {
+      // Reset the counter
+      rateLimitStore.set(clientId, { count: 1, resetTime: now + windowMs });
+      return next();
+    }
+    
+    if (clientData.count >= maxRequests) {
+      return res.status(429).json({ 
+        message: 'Rate limit exceeded', 
+        retryAfter: Math.ceil((clientData.resetTime - now) / 1000) 
+      });
+    }
+    
+    clientData.count++;
+    rateLimitStore.set(clientId, clientData);
+    next();
+  };
+}
 
 export async function registerRoutes(app: Express): Promise<Server> {
   // Get frequency by value
@@ -375,7 +422,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/exam-questions", async (req, res) => {
+  app.post("/api/exam-questions", requireAdmin, rateLimit(10, 60000), async (req, res) => {
     try {
       const result = insertExamQuestionSchema.safeParse(req.body);
       if (!result.success) {
@@ -393,7 +440,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.post("/api/exam-questions/bulk", async (req, res) => {
+  app.post("/api/exam-questions/bulk", requireAdmin, rateLimit(5, 300000), async (req, res) => {
     try {
       const { questions } = req.body;
       
@@ -447,7 +494,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.put("/api/exam-questions/:id", async (req, res) => {
+  app.put("/api/exam-questions/:id", requireAdmin, rateLimit(20, 60000), async (req, res) => {
     try {
       const id = parseInt(req.params.id);
       if (isNaN(id)) {
@@ -474,7 +521,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
     }
   });
 
-  app.delete("/api/exam-questions/:id", async (req, res) => {
+  app.delete("/api/exam-questions/:id", requireAdmin, rateLimit(10, 60000), async (req, res) => {
     try {
       const id = parseInt(req.params.id);
       if (isNaN(id)) {
