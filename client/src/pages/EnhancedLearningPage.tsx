@@ -19,9 +19,11 @@ import {
   CalendarDays,
   CheckCircle,
   Clock,
-  Trophy
+  Trophy,
+  Loader2
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
+import { useQuery } from "@tanstack/react-query";
 
 // Import enhanced learning components
 import LearningDashboard from "@/components/learning/LearningDashboard";
@@ -33,8 +35,44 @@ import ProgressBadges from "@/components/learning/ProgressBadges";
 // Import hooks
 import { useLearningProgress } from '@/hooks/use-learning-progress';
 
-// Define Canadian Amateur Radio Exam quiz questions data
-const QUIZ_QUESTIONS = [
+// Define types for questions
+interface QuizQuestion {
+  question: string;
+  options: string[];
+  correctAnswer: number;
+  explanation: string;
+  category: string;
+}
+
+interface DatabaseQuestion {
+  id: number;
+  question: string;
+  optionA: string;
+  optionB: string;
+  optionC: string;
+  optionD: string;
+  correctAnswer: number;
+  explanation: string;
+  category: string;
+  subcategory: string | null;
+  difficulty: string;
+  examType: string;
+  questionNumber: string | null;
+  isActive: boolean;
+  createdAt: string;
+}
+
+// Convert database question to quiz question format
+const convertDatabaseQuestion = (dbQuestion: DatabaseQuestion): QuizQuestion => ({
+  question: dbQuestion.question,
+  options: [dbQuestion.optionA, dbQuestion.optionB, dbQuestion.optionC, dbQuestion.optionD],
+  correctAnswer: dbQuestion.correctAnswer,
+  explanation: dbQuestion.explanation,
+  category: dbQuestion.category
+});
+
+// Fallback questions for when database is unavailable
+const FALLBACK_QUIZ_QUESTIONS = [
   {
     question: "What does APRS stand for?",
     options: [
@@ -228,7 +266,7 @@ export default function EnhancedLearningPage() {
   const [showQuizConfig, setShowQuizConfig] = useState(true);
   const [activeCategory, setActiveCategory] = useState<string>('all');
   const [questionsCount, setQuestionsCount] = useState<number>(25);
-  const [questionsToUse, setQuestionsToUse] = useState<typeof QUIZ_QUESTIONS>([]);
+  const [questionsToUse, setQuestionsToUse] = useState<QuizQuestion[]>([]);
   const [examMode, setExamMode] = useState<'practice' | 'simulation'>('practice');
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -238,13 +276,38 @@ export default function EnhancedLearningPage() {
   const [showExplanation, setShowExplanation] = useState(false);
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
   
+  // Debug state changes
+  // useEffect(() => {
+  //   console.log('activeView changed to:', activeView);
+  // }, [activeView]);
+  
+  // useEffect(() => {
+  //   console.log('showQuizConfig changed to:', showQuizConfig);
+  // }, [showQuizConfig]);
+  
+  // useEffect(() => {
+  //   console.log('quizCompleted changed to:', quizCompleted);
+  // }, [quizCompleted]);
+  
   // Learning progress
   const { recordQuizCompletion } = useLearningProgress();
+
+  // Fetch questions from database
+  const { data: databaseQuestions, isLoading: isLoadingQuestions, error: questionsError } = useQuery<DatabaseQuestion[]>({
+    queryKey: ['/api/exam-questions'],
+    staleTime: 5 * 60 * 1000, // 5 minutes
+    retry: 1
+  });
+
+  // Convert database questions to quiz format
+  const allQuestions: QuizQuestion[] = databaseQuestions 
+    ? databaseQuestions.map(convertDatabaseQuestion)
+    : FALLBACK_QUIZ_QUESTIONS;
   
   // Filter questions by category
-  const filterQuestions = (category: string) => {
-    if (category === 'all') return QUIZ_QUESTIONS;
-    return QUIZ_QUESTIONS.filter(q => q.category.toLowerCase() === category.toLowerCase());
+  const filterQuestions = (category: string): QuizQuestion[] => {
+    if (category === 'all') return allQuestions;
+    return allQuestions.filter(q => q.category.toLowerCase() === category.toLowerCase());
   };
   
   // Get category count
@@ -276,30 +339,37 @@ export default function EnhancedLearningPage() {
       // For simulation mode, allow 1 minute per 10 questions
       const examTime = Math.max(questionsCount * 6, 300); // Min 5 minutes, 6 sec per question
       setTimeLeft(examTime);
-      
-      // Start timer countdown
-      const timer = setInterval(() => {
-        setTimeLeft(prevTime => {
-          if (prevTime && prevTime > 0) {
-            return prevTime - 1;
-          } else {
-            clearInterval(timer);
-            // Auto-submit the exam when time runs out
-            if (!quizCompleted) {
-              setQuizCompleted(true);
-            }
-            return 0;
-          }
-        });
-      }, 1000);
-      
-      // Clear timer on unmount
-      return () => clearInterval(timer);
     } else {
       // No timer for practice mode
       setTimeLeft(null);
     }
   };
+
+  // Timer effect for simulation mode
+  useEffect(() => {
+    let timer: NodeJS.Timeout | null = null;
+    
+    if (examMode === 'simulation' && timeLeft !== null && timeLeft > 0 && !quizCompleted && !showQuizConfig) {
+      timer = setInterval(() => {
+        setTimeLeft(prevTime => {
+          if (prevTime && prevTime > 1) {
+            return prevTime - 1;
+          } else {
+            // Auto-submit the exam when time runs out
+            console.log('Timer expired, completing quiz');
+            setQuizCompleted(true);
+            return 0;
+          }
+        });
+      }, 1000);
+    }
+    
+    return () => {
+      if (timer) {
+        clearInterval(timer);
+      }
+    };
+  }, [examMode, quizCompleted, showQuizConfig]); // Removed timeLeft from dependencies
   
   // Handle selecting an answer
   const selectAnswer = (answerIndex: number) => {
@@ -314,17 +384,30 @@ export default function EnhancedLearningPage() {
   
   // Go to next question or finish quiz
   const handleNextQuestion = () => {
-    if (selectedAnswer === null) return;
+    console.log('handleNextQuestion called', {
+      selectedAnswer,
+      currentQuestion,
+      questionsLength: questionsToUse.length,
+      showQuizConfig,
+      quizCompleted
+    });
+    
+    if (selectedAnswer === null) {
+      console.log('No answer selected, returning early');
+      return;
+    }
     
     // Store the selected answer
     setUserAnswers(prev => [...prev, selectedAnswer]);
     
     // Move to next question or finish
     if (currentQuestion < questionsToUse.length - 1) {
+      console.log('Moving to next question:', currentQuestion + 1);
       setCurrentQuestion(prev => prev + 1);
       setSelectedAnswer(null);
       setShowExplanation(false);
     } else {
+      console.log('Quiz completed!');
       // Quiz is complete
       setQuizCompleted(true);
       
@@ -339,12 +422,16 @@ export default function EnhancedLearningPage() {
   
   // Exit quiz back to configuration
   const exitQuiz = () => {
+    console.log('exitQuiz called - showing quiz config');
+    console.trace('exitQuiz stack trace');
     setShowQuizConfig(true);
     setQuizCompleted(false);
   };
   
   // Reset all quiz state
   const resetQuiz = () => {
+    console.log('resetQuiz called - resetting all state');
+    console.trace('resetQuiz stack trace');
     setShowQuizConfig(true);
     setQuestionsToUse([]);
     setCurrentQuestion(0);
@@ -357,6 +444,8 @@ export default function EnhancedLearningPage() {
   
   // Return to dashboard
   const returnToDashboard = () => {
+    console.log('returnToDashboard called');
+    console.trace('returnToDashboard stack trace');
     setActiveView('dashboard');
     resetQuiz();
   };
@@ -386,13 +475,21 @@ export default function EnhancedLearningPage() {
             {activeView !== 'dashboard' && (
               <button 
                 className="text-xs text-blue-300 hover:text-blue-100 font-mono bg-blue-950 px-2 py-0.5 rounded border border-blue-800"
-                onClick={returnToDashboard}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  console.log('RETURN button clicked - calling returnToDashboard');
+                  returnToDashboard();
+                }}
               >
                 RETURN
               </button>
             )}
             <Link href="/learning">
-              <button className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1">
+              <button 
+                className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1"
+                onClick={() => console.log('HOME button clicked - navigating to /learning')}
+              >
                 <HomeIcon size={10} /> HOME
               </button>
             </Link>
@@ -484,7 +581,29 @@ export default function EnhancedLearningPage() {
         </div>
       ) : activeView === 'quiz' ? (
         <div>
-          {showQuizConfig ? (
+          {/* Loading state for questions */}
+          {isLoadingQuestions ? (
+            <div className="bg-gray-800 bg-opacity-70 rounded-md p-6 border border-gray-700 text-center">
+              <div className="flex flex-col items-center gap-3">
+                <Loader2 className="h-8 w-8 animate-spin text-blue-400" />
+                <h3 className="text-lg font-medium text-blue-200">Loading Exam Questions</h3>
+                <p className="text-sm text-gray-300">Fetching thousands of practice questions from our database...</p>
+              </div>
+            </div>
+          ) : questionsError ? (
+            <div className="bg-gray-800 bg-opacity-70 rounded-md p-6 border border-gray-700">
+              <div className="flex flex-col items-center gap-3 text-center">
+                <AlertCircle className="h-8 w-8 text-red-400" />
+                <h3 className="text-lg font-medium text-red-200">Unable to Load Questions</h3>
+                <p className="text-sm text-gray-300">
+                  There was an error loading the exam questions from our database. Using fallback questions for now.
+                </p>
+                <p className="text-xs text-gray-400">
+                  Questions loaded: {allQuestions.length} available
+                </p>
+              </div>
+            </div>
+          ) : showQuizConfig ? (
             <div className="bg-gray-800 bg-opacity-70 rounded-md p-3 border border-gray-700">
               <div className="mb-4">
                 <h3 className="text-lg font-medium text-blue-200 mb-3 flex items-center gap-2">
@@ -601,17 +720,32 @@ export default function EnhancedLearningPage() {
               </div>
             </div>
           ) : !quizCompleted ? (
-            <div className="bg-gray-800 bg-opacity-70 rounded-md p-3 border border-gray-700">
-              <div className="mb-3 flex justify-between items-center">
-                <div className="flex items-center gap-2">
-                  <Badge variant={examMode === 'practice' ? "outline" : "default"} 
-                    className={`text-xs ${examMode === 'practice' 
-                      ? 'border-green-700 text-green-300' 
-                      : 'bg-amber-800 text-amber-100'
-                    }`}
-                  >
-                    {questionsToUse[currentQuestion].category} Section
-                  </Badge>
+            (() => {
+              console.log('Rendering quiz question', {
+                currentQuestion,
+                questionsToUseLength: questionsToUse.length,
+                showQuizConfig,
+                quizCompleted,
+                questionExists: !!questionsToUse[currentQuestion]
+              });
+              
+              if (!questionsToUse[currentQuestion]) {
+                console.error('Question not found at index', currentQuestion, 'Array length:', questionsToUse.length);
+                return <div>Error: Question not found</div>;
+              }
+              
+              return (
+                <div className="bg-gray-800 bg-opacity-70 rounded-md p-3 border border-gray-700">
+                  <div className="mb-3 flex justify-between items-center">
+                    <div className="flex items-center gap-2">
+                      <Badge variant={examMode === 'practice' ? "outline" : "default"} 
+                        className={`text-xs ${examMode === 'practice' 
+                          ? 'border-green-700 text-green-300' 
+                          : 'bg-amber-800 text-amber-100'
+                        }`}
+                      >
+                        {questionsToUse[currentQuestion].category} Section
+                      </Badge>
                   {examMode === 'simulation' && timeLeft && (
                     <Badge variant="default" className="bg-red-800 text-red-100 text-xs">
                       <Clock className="h-3 w-3 mr-1" />
@@ -681,7 +815,12 @@ export default function EnhancedLearningPage() {
               
               <div className="flex justify-between mt-4">
                 <Button
-                  onClick={exitQuiz}
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    console.log('Exit button clicked in quiz - calling exitQuiz');
+                    exitQuiz();
+                  }}
                   size="sm"
                   variant="outline"
                   className="px-3 py-0 h-7 text-xs font-medium border-gray-700 text-gray-300 hover:bg-gray-700">
@@ -698,6 +837,8 @@ export default function EnhancedLearningPage() {
                 )}
               </div>
             </div>
+              );
+            })()
           ) : (
             <div className="bg-gray-800 bg-opacity-70 rounded-md p-3 border border-gray-700">
               <div className="text-center mb-4">

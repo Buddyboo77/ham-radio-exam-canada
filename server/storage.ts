@@ -1,11 +1,12 @@
 import { 
-  users, frequencies, repeaters, logEntries, referenceItems, weatherCache,
+  users, frequencies, repeaters, logEntries, referenceItems, weatherCache, examQuestions,
   type User, type InsertUser, 
   type Frequency, type InsertFrequency,
   type Repeater, type InsertRepeater,
   type LogEntry, type InsertLogEntry,
   type ReferenceItem, type InsertReferenceItem,
-  type WeatherCache, type InsertWeatherCache
+  type WeatherCache, type InsertWeatherCache,
+  type ExamQuestion, type InsertExamQuestion
 } from "@shared/schema";
 import { db } from "./db";
 import { eq, desc, and, asc } from "drizzle-orm";
@@ -48,6 +49,17 @@ export interface IStorage {
   // Weather operations
   getWeatherByLocation(location: string): Promise<WeatherCache | undefined>;
   updateWeatherCache(weatherData: InsertWeatherCache): Promise<WeatherCache>;
+  
+  // Exam question operations
+  getAllExamQuestions(): Promise<ExamQuestion[]>;
+  getExamQuestionsByCategory(category: string): Promise<ExamQuestion[]>;
+  getExamQuestionsByType(examType: string): Promise<ExamQuestion[]>;
+  getExamQuestionsByDifficulty(difficulty: string): Promise<ExamQuestion[]>;
+  getRandomExamQuestions(count: number, category?: string, examType?: string): Promise<ExamQuestion[]>;
+  createExamQuestion(question: InsertExamQuestion): Promise<ExamQuestion>;
+  createExamQuestions(questions: InsertExamQuestion[]): Promise<ExamQuestion[]>;
+  updateExamQuestion(id: number, question: Partial<InsertExamQuestion>): Promise<ExamQuestion | undefined>;
+  deleteExamQuestion(id: number): Promise<boolean>;
 }
 
 export class DatabaseStorage implements IStorage {
@@ -205,6 +217,80 @@ export class DatabaseStorage implements IStorage {
       const results = await db.insert(weatherCache).values(insertWeatherCache).returning();
       return results[0];
     }
+  }
+
+  // Exam question operations
+  async getAllExamQuestions(): Promise<ExamQuestion[]> {
+    return await db.select().from(examQuestions)
+      .where(eq(examQuestions.isActive, true))
+      .orderBy(asc(examQuestions.category), asc(examQuestions.id));
+  }
+
+  async getExamQuestionsByCategory(category: string): Promise<ExamQuestion[]> {
+    return await db.select().from(examQuestions)
+      .where(and(eq(examQuestions.category, category), eq(examQuestions.isActive, true)))
+      .orderBy(asc(examQuestions.id));
+  }
+
+  async getExamQuestionsByType(examType: string): Promise<ExamQuestion[]> {
+    return await db.select().from(examQuestions)
+      .where(and(eq(examQuestions.examType, examType), eq(examQuestions.isActive, true)))
+      .orderBy(asc(examQuestions.category), asc(examQuestions.id));
+  }
+
+  async getExamQuestionsByDifficulty(difficulty: string): Promise<ExamQuestion[]> {
+    return await db.select().from(examQuestions)
+      .where(and(eq(examQuestions.difficulty, difficulty), eq(examQuestions.isActive, true)))
+      .orderBy(asc(examQuestions.category), asc(examQuestions.id));
+  }
+
+  async getRandomExamQuestions(count: number, category?: string, examType?: string): Promise<ExamQuestion[]> {
+    // Build conditions array
+    const conditions = [eq(examQuestions.isActive, true)];
+    
+    if (category) {
+      conditions.push(eq(examQuestions.category, category));
+    }
+    
+    if (examType) {
+      conditions.push(eq(examQuestions.examType, examType));
+    }
+    
+    // Note: This is a simplified random selection. For better randomization in production,
+    // consider using SQL's RANDOM() function with proper ORM support
+    const allQuestions = await db.select().from(examQuestions)
+      .where(and(...conditions))
+      .orderBy(asc(examQuestions.id));
+    
+    // Shuffle and take the required count
+    const shuffled = allQuestions.sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, count);
+  }
+
+  async createExamQuestion(insertExamQuestion: InsertExamQuestion): Promise<ExamQuestion> {
+    const results = await db.insert(examQuestions).values(insertExamQuestion).returning();
+    return results[0];
+  }
+
+  async createExamQuestions(insertExamQuestions: InsertExamQuestion[]): Promise<ExamQuestion[]> {
+    const results = await db.insert(examQuestions).values(insertExamQuestions).returning();
+    return results;
+  }
+
+  async updateExamQuestion(id: number, questionUpdate: Partial<InsertExamQuestion>): Promise<ExamQuestion | undefined> {
+    const results = await db.update(examQuestions)
+      .set(questionUpdate)
+      .where(eq(examQuestions.id, id))
+      .returning();
+    return results[0];
+  }
+
+  async deleteExamQuestion(id: number): Promise<boolean> {
+    const results = await db.update(examQuestions)
+      .set({ isActive: false })
+      .where(eq(examQuestions.id, id))
+      .returning();
+    return results.length > 0;
   }
 
   // Initialize the database with sample data if it's empty

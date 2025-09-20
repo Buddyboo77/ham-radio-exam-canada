@@ -2,7 +2,7 @@ import type { Express } from "express";
 import { createServer, type Server } from "http";
 import { storage } from "./storage";
 import { z } from "zod";
-import { insertFrequencySchema, insertLogEntrySchema, insertRepeaterSchema } from "@shared/schema";
+import { insertFrequencySchema, insertLogEntrySchema, insertRepeaterSchema, insertExamQuestionSchema } from "@shared/schema";
 import axios from "axios";
 import { WebSocketServer, WebSocket } from 'ws';
 
@@ -339,6 +339,157 @@ export async function registerRoutes(app: Express): Promise<Server> {
     } catch (error) {
       console.error("Error fetching weather data:", error);
       res.status(500).json({ message: "Failed to fetch weather data" });
+    }
+  });
+
+  // Exam Questions endpoints
+  app.get("/api/exam-questions", async (req, res) => {
+    try {
+      const { category, examType, difficulty, count } = req.query;
+      
+      if (count) {
+        // Get random questions
+        const questions = await storage.getRandomExamQuestions(
+          parseInt(count as string),
+          category as string,
+          examType as string
+        );
+        return res.json(questions);
+      }
+      
+      let questions;
+      if (category) {
+        questions = await storage.getExamQuestionsByCategory(category as string);
+      } else if (examType) {
+        questions = await storage.getExamQuestionsByType(examType as string);
+      } else if (difficulty) {
+        questions = await storage.getExamQuestionsByDifficulty(difficulty as string);
+      } else {
+        questions = await storage.getAllExamQuestions();
+      }
+      
+      res.json(questions);
+    } catch (error) {
+      console.error("Error fetching exam questions:", error);
+      res.status(500).json({ message: "Failed to fetch exam questions" });
+    }
+  });
+
+  app.post("/api/exam-questions", async (req, res) => {
+    try {
+      const result = insertExamQuestionSchema.safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ 
+          message: "Invalid exam question data", 
+          errors: result.error.issues 
+        });
+      }
+
+      const question = await storage.createExamQuestion(result.data);
+      res.status(201).json(question);
+    } catch (error) {
+      console.error("Error creating exam question:", error);
+      res.status(500).json({ message: "Failed to create exam question" });
+    }
+  });
+
+  app.post("/api/exam-questions/bulk", async (req, res) => {
+    try {
+      const { questions } = req.body;
+      
+      if (!Array.isArray(questions)) {
+        return res.status(400).json({ message: "Questions must be an array" });
+      }
+
+      // Validate each question
+      const validatedQuestions = [];
+      for (const question of questions) {
+        const result = insertExamQuestionSchema.safeParse(question);
+        if (!result.success) {
+          return res.status(400).json({ 
+            message: "Invalid question data", 
+            errors: result.error.issues 
+          });
+        }
+        validatedQuestions.push(result.data);
+      }
+
+      const createdQuestions = await storage.createExamQuestions(validatedQuestions);
+      res.status(201).json({ 
+        message: `Successfully created ${createdQuestions.length} questions`,
+        questions: createdQuestions 
+      });
+    } catch (error) {
+      console.error("Error creating exam questions in bulk:", error);
+      res.status(500).json({ message: "Failed to create exam questions" });
+    }
+  });
+
+  app.get("/api/exam-questions/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid question ID" });
+      }
+
+      // We'll need to add a getExamQuestionById method to storage
+      const questions = await storage.getAllExamQuestions();
+      const question = questions.find(q => q.id === id);
+      
+      if (!question) {
+        return res.status(404).json({ message: "Question not found" });
+      }
+
+      res.json(question);
+    } catch (error) {
+      console.error("Error fetching exam question:", error);
+      res.status(500).json({ message: "Failed to fetch exam question" });
+    }
+  });
+
+  app.put("/api/exam-questions/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid question ID" });
+      }
+
+      const result = insertExamQuestionSchema.partial().safeParse(req.body);
+      if (!result.success) {
+        return res.status(400).json({ 
+          message: "Invalid exam question data", 
+          errors: result.error.issues 
+        });
+      }
+
+      const question = await storage.updateExamQuestion(id, result.data);
+      if (!question) {
+        return res.status(404).json({ message: "Question not found" });
+      }
+
+      res.json(question);
+    } catch (error) {
+      console.error("Error updating exam question:", error);
+      res.status(500).json({ message: "Failed to update exam question" });
+    }
+  });
+
+  app.delete("/api/exam-questions/:id", async (req, res) => {
+    try {
+      const id = parseInt(req.params.id);
+      if (isNaN(id)) {
+        return res.status(400).json({ message: "Invalid question ID" });
+      }
+
+      const success = await storage.deleteExamQuestion(id);
+      if (!success) {
+        return res.status(404).json({ message: "Question not found" });
+      }
+
+      res.json({ message: "Question deleted successfully" });
+    } catch (error) {
+      console.error("Error deleting exam question:", error);
+      res.status(500).json({ message: "Failed to delete exam question" });
     }
   });
 

@@ -124,3 +124,30 @@ export const insertWeatherCacheSchema = createInsertSchema(weatherCache).omit({
 
 export type InsertWeatherCache = z.infer<typeof insertWeatherCacheSchema>;
 export type WeatherCache = typeof weatherCache.$inferSelect;
+
+// Exam questions table
+export const examQuestions = pgTable("exam_questions", {
+  id: serial("id").primaryKey(),
+  question: text("question").notNull(),
+  optionA: text("option_a").notNull(),
+  optionB: text("option_b").notNull(),
+  optionC: text("option_c").notNull(),
+  optionD: text("option_d").notNull(),
+  correctAnswer: integer("correct_answer").notNull(), // 0=A, 1=B, 2=C, 3=D
+  explanation: text("explanation").notNull(),
+  category: text("category").notNull(), // "regulations", "operating", "technical", "antenna", "safety", "digital", "emergency"
+  subcategory: text("subcategory"), // More specific categorization
+  difficulty: text("difficulty").default("basic"), // "basic", "intermediate", "advanced"
+  examType: text("exam_type").default("basic"), // "basic", "advanced"
+  questionNumber: text("question_number"), // Official question reference if applicable
+  isActive: boolean("is_active").default(true),
+  createdAt: timestamp("created_at").notNull().defaultNow(),
+});
+
+export const insertExamQuestionSchema = createInsertSchema(examQuestions).omit({
+  id: true,
+  createdAt: true,
+});
+
+export type InsertExamQuestion = z.infer<typeof insertExamQuestionSchema>;
+export type ExamQuestion = typeof examQuestions.$inferSelect;
