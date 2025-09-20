@@ -373,15 +373,24 @@ export default function EnhancedLearningPage() {
   
   // Update questions when they arrive from the API
   useEffect(() => {
+    console.log('Questions useEffect triggered', {
+      quizQuestions: quizQuestions?.length || 0,
+      isLoadingQuestions,
+      showQuizConfig,
+      questionsCount
+    });
+    
     if (quizQuestions && quizQuestions.length > 0 && !showQuizConfig) {
+      console.log('Setting questions from API:', quizQuestions.length);
       const convertedQuestions = quizQuestions.map(convertDatabaseQuestion);
       setQuestionsToUse(convertedQuestions);
-    } else if (!quizQuestions && !isLoadingQuestions && !showQuizConfig) {
+    } else if (!quizQuestions && !isLoadingQuestions && !showQuizConfig && questionsError) {
+      console.log('API failed, using fallback questions');
       // Fallback to sample questions if API fails
       const fallbackQuestions = FALLBACK_QUIZ_QUESTIONS.slice(0, Math.min(questionsCount, FALLBACK_QUIZ_QUESTIONS.length));
       setQuestionsToUse(fallbackQuestions);
     }
-  }, [quizQuestions, isLoadingQuestions, showQuizConfig, questionsCount]);
+  }, [quizQuestions, isLoadingQuestions, showQuizConfig, questionsCount, questionsError]);
 
   // Timer effect for simulation mode
   useEffect(() => {
@@ -757,6 +766,26 @@ export default function EnhancedLearningPage() {
                 </div>
               </div>
             </div>
+          ) : isLoadingQuestions ? (
+            <div className="text-center py-8">
+              <Loader2 className="w-8 h-8 animate-spin text-blue-400 mx-auto mb-4" />
+              <p className="text-gray-300">Loading practice questions...</p>
+              <p className="text-xs text-gray-400 mt-2">
+                Fetching {questionsCount} questions for {activeCategory === 'all' ? 'all categories' : activeCategory}
+              </p>
+            </div>
+          ) : questionsToUse.length === 0 ? (
+            <div className="text-center py-8">
+              <AlertCircle className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
+              <p className="text-gray-300 mb-2">Questions not available</p>
+              <p className="text-xs text-gray-400 mb-4">
+                Debug: Questions received: {quizQuestions?.length || 0}, Error: {questionsError ? 'yes' : 'no'}
+              </p>
+              <Button onClick={() => setShowQuizConfig(true)} className="mt-4">
+                <RotateCw className="w-4 h-4 mr-2" />
+                Back to Quiz Settings
+              </Button>
+            </div>
           ) : !quizCompleted ? (
             (() => {
               console.log('Rendering quiz question', {
@@ -769,7 +798,19 @@ export default function EnhancedLearningPage() {
               
               if (!questionsToUse[currentQuestion]) {
                 console.error('Question not found at index', currentQuestion, 'Array length:', questionsToUse.length);
-                return <div>Error: Question not found</div>;
+                return (
+                  <div className="text-center py-8">
+                    <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
+                    <p className="text-gray-300 mb-2">Question not found</p>
+                    <p className="text-xs text-gray-400 mb-4">
+                      Trying to access question {currentQuestion + 1} but only {questionsToUse.length} questions loaded
+                    </p>
+                    <Button onClick={() => setShowQuizConfig(true)}>
+                      <RotateCw className="w-4 h-4 mr-2" />
+                      Restart Quiz
+                    </Button>
+                  </div>
+                );
               }
               
               return (
