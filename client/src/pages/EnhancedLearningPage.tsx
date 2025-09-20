@@ -292,58 +292,96 @@ export default function EnhancedLearningPage() {
   // Learning progress
   const { recordQuizCompletion } = useLearningProgress();
 
-  // Fetch questions from database
-  const { data: databaseQuestions, isLoading: isLoadingQuestions, error: questionsError } = useQuery<DatabaseQuestion[]>({
-    queryKey: ['/api/exam-questions'],
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    retry: 1
+  // Fetch questions for quiz (only when starting a quiz)
+  const { data: quizQuestions, isLoading: isLoadingQuestions, error: questionsError } = useQuery<DatabaseQuestion[]>({
+    queryKey: ['/api/exam-questions', 'quiz', activeCategory, questionsCount],
+    queryFn: async () => {
+      const params = new URLSearchParams();
+      if (activeCategory !== 'all') {
+        params.append('category', activeCategory);
+      }
+      params.append('count', questionsCount.toString());
+      
+      const response = await fetch(`/api/exam-questions?${params}`);
+      if (!response.ok) {
+        throw new Error('Failed to fetch questions');
+      }
+      return response.json();
+    },
+    staleTime: 2 * 60 * 1000, // 2 minutes
+    retry: 1,
+    enabled: !showQuizConfig // Only fetch when starting quiz
   });
 
-  // Convert database questions to quiz format
-  const allQuestions: QuizQuestion[] = databaseQuestions 
-    ? databaseQuestions.map(convertDatabaseQuestion)
-    : FALLBACK_QUIZ_QUESTIONS;
+  // Fetch category counts for dashboard (lightweight)
+  const { data: categoryCounts } = useQuery<Record<string, number>>({
+    queryKey: ['/api/exam-questions', 'counts'],
+    queryFn: async () => {
+      // Fetch just the counts for each category
+      const categories = ['regulations', 'operating', 'technical', 'antenna', 'safety', 'digital', 'emergency'];
+      const counts: Record<string, number> = {};
+      
+      // Get total count
+      const totalResponse = await fetch('/api/exam-questions');
+      if (totalResponse.ok) {
+        const allQuestions = await totalResponse.json();
+        counts['all'] = allQuestions.length;
+        
+        // Count by category
+        categories.forEach(cat => {
+          counts[cat] = allQuestions.filter((q: DatabaseQuestion) => 
+            q.category.toLowerCase() === cat.toLowerCase()
+          ).length;
+        });
+      }
+      
+      return counts;
+    },
+    staleTime: 10 * 60 * 1000, // 10 minutes - counts don't change often
+    retry: 1,
+    enabled: showQuizConfig // Only fetch for dashboard
+  });
   
-  // Filter questions by category
-  const filterQuestions = (category: string): QuizQuestion[] => {
-    if (category === 'all') return allQuestions;
-    return allQuestions.filter(q => q.category.toLowerCase() === category.toLowerCase());
-  };
-  
-  // Get category count
+  // Get category count for dashboard display
   const getCategoryCount = (category: string) => {
-    return filterQuestions(category).length;
+    return categoryCounts?.[category] || 0;
   };
   
   // Start a quiz
   const startQuiz = () => {
-    // Get appropriate questions for the selected category
-    const categoryQuestions = filterQuestions(activeCategory);
-    
-    // Limit to the selected number and shuffle
-    const shuffled = [...categoryQuestions].sort(() => 0.5 - Math.random());
-    const selected = shuffled.slice(0, Math.min(questionsCount, shuffled.length));
+    // Questions will be fetched by the query when showQuizConfig becomes false
+    setShowQuizConfig(false);
     
     // Set up quiz state
-    setQuestionsToUse(selected);
     setCurrentQuestion(0);
     setScore(0);
     setUserAnswers([]);
     setQuizCompleted(false);
-    setShowQuizConfig(false);
     setSelectedAnswer(null);
     setShowExplanation(false);
     
     // Set timer for simulation mode (time in seconds)
     if (examMode === 'simulation') {
-      // For simulation mode, allow 1 minute per 10 questions
-      const examTime = Math.max(questionsCount * 6, 300); // Min 5 minutes, 6 sec per question
+      // For official exam simulation: 3 hours for 100 questions = 108 seconds per question
+      const examTime = questionsCount === 100 ? 10800 : Math.max(questionsCount * 108, 300);
       setTimeLeft(examTime);
     } else {
       // No timer for practice mode
       setTimeLeft(null);
     }
   };
+  
+  // Update questions when they arrive from the API
+  useEffect(() => {
+    if (quizQuestions && quizQuestions.length > 0 && !showQuizConfig) {
+      const convertedQuestions = quizQuestions.map(convertDatabaseQuestion);
+      setQuestionsToUse(convertedQuestions);
+    } else if (!quizQuestions && !isLoadingQuestions && !showQuizConfig) {
+      // Fallback to sample questions if API fails
+      const fallbackQuestions = FALLBACK_QUIZ_QUESTIONS.slice(0, Math.min(questionsCount, FALLBACK_QUIZ_QUESTIONS.length));
+      setQuestionsToUse(fallbackQuestions);
+    }
+  }, [quizQuestions, isLoadingQuestions, showQuizConfig, questionsCount]);
 
   // Timer effect for simulation mode
   useEffect(() => {
@@ -599,7 +637,7 @@ export default function EnhancedLearningPage() {
                   There was an error loading the exam questions from our database. Using fallback questions for now.
                 </p>
                 <p className="text-xs text-gray-400">
-                  Questions loaded: {allQuestions.length} available
+                  Questions loaded: {FALLBACK_QUIZ_QUESTIONS.length} available (fallback)
                 </p>
               </div>
             </div>
