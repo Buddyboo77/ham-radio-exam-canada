@@ -13,7 +13,7 @@ import {
   RotateCw, 
   Cpu,
   GraduationCap,
-  BarChart4,
+  BarChart3,
   Home as HomeIcon,
   Zap,
   CalendarDays,
@@ -25,15 +25,9 @@ import {
 import { Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 
-// Import enhanced learning components
-import LearningDashboard from "@/components/learning/LearningDashboard";
-import EnhancedFlashcards from "@/components/learning/EnhancedFlashcards";
-import EnhancedMorseCodeGame from "@/components/games/EnhancedMorseCodeGame";
-import CircuitSimulator from "@/components/learning/CircuitSimulator";
-import ProgressBadges from "@/components/learning/ProgressBadges";
-
-// Import hooks
+// Import hooks for progress tracking
 import { useLearningProgress } from '@/hooks/use-learning-progress';
+
 
 // Define types for questions
 interface QuizQuestion {
@@ -259,8 +253,11 @@ export default function EnhancedLearningPage() {
   // Navigation state
   const [location, setLocation] = useLocation();
   
+  // Progress tracking
+  const { progress } = useLearningProgress();
+  
   // Main view state
-  const [activeView, setActiveView] = useState<'dashboard' | 'quiz' | 'flashcards' | 'morse' | 'circuit' | 'badges'>('dashboard');
+  const [activeView, setActiveView] = useState<'dashboard' | 'quiz'>('dashboard');
   
   // Quiz state
   const [showQuizConfig, setShowQuizConfig] = useState(true);
@@ -556,74 +553,76 @@ export default function EnhancedLearningPage() {
       {/* Main content area */}
       {activeView === 'dashboard' ? (
         <div>
-          {/* Exam practice tests at the very top */}
+          {/* Primary study tools - focused on test preparation */}
           <div className="mb-6">
             <h3 className="text-sm font-semibold text-gray-200 mb-3 flex items-center gap-2">
-              <BookOpenCheck size={18} className="text-blue-300" />
-              Exam Practice Tests
+              <GraduationCap size={18} className="text-blue-300" />
+              Study for Your Ham Radio Exam
             </h3>
-            <div className="grid grid-cols-2 gap-3">
-              <button 
-                className="flex flex-col items-center justify-center p-4 bg-blue-900 rounded-md gap-2 border border-blue-700 hover:bg-blue-800 transition-colors"
-                onClick={() => setActiveView('quiz')}
-              >
-                <div className="bg-blue-800 p-2 rounded-full">
-                  <BookOpenCheck size={24} className="text-blue-100" />
-                </div>
-                <span className="text-sm font-medium text-blue-100">License Exam</span>
-                <span className="text-xs text-blue-300 text-center">Practice with official Canadian exam questions</span>
-              </button>
-              
-              <button 
-                className="flex flex-col items-center justify-center p-4 bg-green-900 rounded-md gap-2 border border-green-700 hover:bg-green-800 transition-colors"
-                onClick={() => setActiveView('flashcards')}
-              >
-                <div className="bg-green-800 p-2 rounded-full">
-                  <BookOpen size={24} className="text-green-100" />
-                </div>
-                <span className="text-sm font-medium text-green-100">Study Cards</span>
-                <span className="text-xs text-green-300 text-center">Master license concepts with spaced repetition</span>
-              </button>
-            </div>
-          </div>
-          
-          {/* Display learning dashboard with progress */}
-          <LearningDashboard />
-          
-          {/* Learning Resources section at the bottom */}
-          <div className="mb-4">
-            <h3 className="text-sm font-semibold text-gray-200 mb-3 flex items-center gap-2">
-              <BookOpen size={18} className="text-purple-300" />
-              Learning Resources
-            </h3>
+            
+            {/* Main practice exam button - featured prominently */}
+            <button 
+              className="w-full flex flex-col items-center justify-center p-6 bg-gradient-to-r from-blue-900 to-blue-800 rounded-md gap-3 border border-blue-700 hover:from-blue-800 hover:to-blue-700 transition-all mb-4"
+              onClick={() => setActiveView('quiz')}
+            >
+              <div className="bg-blue-700 p-3 rounded-full">
+                <BookOpenCheck size={32} className="text-blue-100" />
+              </div>
+              <div className="text-center">
+                <div className="text-lg font-semibold text-blue-100 mb-1">Practice Exam</div>
+                <div className="text-sm text-blue-200">Take official Canadian amateur radio exam questions</div>
+                <div className="text-xs text-blue-300 mt-1">25, 50, or 100 questions • Practice or Timed Mode</div>
+              </div>
+            </button>
+            
+            {/* Secondary study tools */}
             <div className="grid grid-cols-2 gap-3">
               <Link 
                 href="/morse-code" 
-                className="flex flex-col items-center justify-center p-4 bg-gray-900 rounded-md gap-2 border border-gray-800 hover:bg-gray-800 transition-colors"
+                className="flex flex-col items-center justify-center p-4 bg-amber-900 rounded-md gap-2 border border-amber-700 hover:bg-amber-800 transition-colors"
               >
-                <div className="bg-amber-900 p-2 rounded-full">
-                  <Radio size={24} className="text-amber-200" />
+                <div className="bg-amber-800 p-2 rounded-full">
+                  <Radio size={20} className="text-amber-200" />
                 </div>
-                <span className="text-sm font-medium text-gray-200">Morse Code</span>
-                <span className="text-xs text-gray-400 text-center">Master Morse code for ham radio operations</span>
+                <span className="text-sm font-medium text-amber-100">Morse Code</span>
+                <span className="text-xs text-amber-200 text-center">Practice CW for 5 WPM requirement</span>
               </Link>
               
               <Link 
                 href="/reference" 
-                className="flex flex-col items-center justify-center p-4 bg-gray-900 rounded-md gap-2 border border-gray-800 hover:bg-gray-800 transition-colors"
+                className="flex flex-col items-center justify-center p-4 bg-purple-900 rounded-md gap-2 border border-purple-700 hover:bg-purple-800 transition-colors"
               >
-                <div className="bg-purple-900 p-2 rounded-full">
-                  <BookOpen size={24} className="text-purple-200" />
+                <div className="bg-purple-800 p-2 rounded-full">
+                  <BookOpen size={20} className="text-purple-200" />
                 </div>
-                <span className="text-sm font-medium text-gray-200">Reference Guide</span>
-                <span className="text-xs text-gray-400 text-center">Essential reference materials for your exam</span>
+                <span className="text-sm font-medium text-purple-100">Study Guide</span>
+                <span className="text-xs text-purple-200 text-center">Quick reference for exam topics</span>
               </Link>
             </div>
           </div>
           
-          {/* View badges summary */}
-          <div className="mt-6">
-            {/* Achievement badges removed */}
+          {/* Simple progress tracking */}
+          <div className="bg-gray-800 bg-opacity-50 rounded-md p-4 border border-gray-700">
+            <h4 className="text-sm font-medium text-gray-200 mb-3 flex items-center gap-2">
+              <BarChart3 size={16} className="text-green-400" />
+              Your Progress
+            </h4>
+            <div className="grid grid-cols-3 gap-4 text-center">
+              <div>
+                <div className="text-lg font-bold text-blue-400">{progress?.completedQuizzes || 0}</div>
+                <div className="text-xs text-gray-400">Practice Exams</div>
+              </div>
+              <div>
+                <div className="text-lg font-bold text-green-400">
+                  {progress?.totalQuestions > 0 ? Math.round((progress.totalCorrect / progress.totalQuestions) * 100) : 0}%
+                </div>
+                <div className="text-xs text-gray-400">Accuracy</div>
+              </div>
+              <div>
+                <div className="text-lg font-bold text-amber-400">{progress?.morseHighestWPM || 0}</div>
+                <div className="text-xs text-gray-400">WPM Morse</div>
+              </div>
+            </div>
           </div>
         </div>
       ) : activeView === 'quiz' ? (
@@ -1018,22 +1017,6 @@ export default function EnhancedLearningPage() {
               </div>
             </div>
           )}
-        </div>
-      ) : activeView === 'flashcards' ? (
-        <EnhancedFlashcards />
-      ) : activeView === 'morse' ? (
-        <EnhancedMorseCodeGame />
-      ) : activeView === 'circuit' ? (
-        <CircuitSimulator initialTemplate="Basic LED Circuit" />
-      ) : activeView === 'badges' ? (
-        <div className="text-center p-4">
-          <p className="text-gray-300">Achievement badges have been removed to focus on exam preparation.</p>
-          <button 
-            onClick={() => setActiveView('dashboard')}
-            className="mt-3 px-4 py-1 bg-blue-800 hover:bg-blue-700 rounded-md text-sm text-white"
-          >
-            Back to Dashboard
-          </button>
         </div>
       ) : null}
     </div>
