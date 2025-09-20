@@ -292,7 +292,6 @@ export default function EnhancedLearningPage() {
   // Reset to dashboard view when navigating to home route
   useEffect(() => {
     if (location === '/') {
-      console.log('Navigated to home, resetting to dashboard view');
       setActiveView('dashboard');
       setShowQuizConfig(true);
       setQuizCompleted(false);
@@ -385,19 +384,11 @@ export default function EnhancedLearningPage() {
   
   // Update questions when they arrive from the API
   useEffect(() => {
-    console.log('Questions useEffect triggered', {
-      quizQuestions: quizQuestions?.length || 0,
-      isLoadingQuestions,
-      showQuizConfig,
-      questionsCount
-    });
     
     if (quizQuestions && quizQuestions.length > 0 && !showQuizConfig) {
-      console.log('Setting questions from API:', quizQuestions.length);
       const convertedQuestions = quizQuestions.map(convertDatabaseQuestion);
       setQuestionsToUse(convertedQuestions);
     } else if (!quizQuestions && !isLoadingQuestions && !showQuizConfig && questionsError) {
-      console.log('API failed, using fallback questions');
       // Fallback to sample questions if API fails
       const fallbackQuestions = FALLBACK_QUIZ_QUESTIONS.slice(0, Math.min(questionsCount, FALLBACK_QUIZ_QUESTIONS.length));
       setQuestionsToUse(fallbackQuestions);
@@ -415,7 +406,6 @@ export default function EnhancedLearningPage() {
             return prevTime - 1;
           } else {
             // Auto-submit the exam when time runs out
-            console.log('Timer expired, completing quiz');
             setQuizCompleted(true);
             return 0;
           }
@@ -443,16 +433,8 @@ export default function EnhancedLearningPage() {
   
   // Go to next question or finish quiz
   const handleNextQuestion = () => {
-    console.log('handleNextQuestion called', {
-      selectedAnswer,
-      currentQuestion,
-      questionsLength: questionsToUse.length,
-      showQuizConfig,
-      quizCompleted
-    });
     
     if (selectedAnswer === null) {
-      console.log('No answer selected, returning early');
       return;
     }
     
@@ -461,12 +443,10 @@ export default function EnhancedLearningPage() {
     
     // Move to next question or finish
     if (currentQuestion < questionsToUse.length - 1) {
-      console.log('Moving to next question:', currentQuestion + 1);
       setCurrentQuestion(prev => prev + 1);
       setSelectedAnswer(null);
       setShowExplanation(false);
     } else {
-      console.log('Quiz completed!');
       // Quiz is complete
       setQuizCompleted(true);
       
@@ -481,16 +461,12 @@ export default function EnhancedLearningPage() {
   
   // Exit quiz back to configuration
   const exitQuiz = () => {
-    console.log('exitQuiz called - showing quiz config');
-    console.trace('exitQuiz stack trace');
     setShowQuizConfig(true);
     setQuizCompleted(false);
   };
   
   // Reset all quiz state
   const resetQuiz = () => {
-    console.log('resetQuiz called - resetting all state');
-    console.trace('resetQuiz stack trace');
     setShowQuizConfig(true);
     setQuestionsToUse([]);
     setCurrentQuestion(0);
@@ -503,7 +479,6 @@ export default function EnhancedLearningPage() {
   
   // Return to dashboard
   const returnToDashboard = () => {
-    console.log('returnToDashboard called');
     console.trace('returnToDashboard stack trace');
     setActiveView('dashboard');
     resetQuiz();
@@ -539,7 +514,6 @@ export default function EnhancedLearningPage() {
                 onClick={(e) => {
                   e.preventDefault();
                   e.stopPropagation();
-                  console.log('RETURN button clicked - calling returnToDashboard');
                   returnToDashboard();
                 }}
               >
@@ -550,7 +524,7 @@ export default function EnhancedLearningPage() {
               <Link href="/">
                 <button 
                   className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1"
-                  onClick={() => console.log('HOME button clicked - navigating to /')}
+                  onClick={() => {}}
                 >
                   <HomeIcon size={10} /> HOME
                 </button>
@@ -806,16 +780,8 @@ export default function EnhancedLearningPage() {
             </div>
           ) : !quizCompleted ? (
             (() => {
-              console.log('Rendering quiz question', {
-                currentQuestion,
-                questionsToUseLength: questionsToUse.length,
-                showQuizConfig,
-                quizCompleted,
-                questionExists: !!questionsToUse[currentQuestion]
-              });
               
               if (!questionsToUse[currentQuestion]) {
-                console.error('Question not found at index', currentQuestion, 'Array length:', questionsToUse.length);
                 return (
                   <div className="text-center py-8">
                     <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
@@ -915,7 +881,6 @@ export default function EnhancedLearningPage() {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    console.log('Exit button clicked in quiz - calling exitQuiz');
                     exitQuiz();
                   }}
                   size="sm"
