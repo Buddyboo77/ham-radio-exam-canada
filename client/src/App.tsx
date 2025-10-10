@@ -22,6 +22,7 @@ import MorseCodePage from "@/pages/MorseCodePage";
 import AuthPage from "@/pages/AuthPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import TermsOfServicePage from "@/pages/TermsOfServicePage";
+import TestGamification from "@/pages/TestGamification";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
@@ -151,6 +152,7 @@ function Router() {
               
               <Route path="/privacy" component={PrivacyPolicyPage} />
               <Route path="/terms" component={TermsOfServicePage} />
+              <Route path="/test-gamification" component={TestGamification} />
               
               <Route component={NotFound} />
             </Switch>
