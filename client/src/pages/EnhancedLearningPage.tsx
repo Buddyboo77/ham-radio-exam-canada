@@ -27,6 +27,9 @@ import { useQuery } from "@tanstack/react-query";
 
 // Import hooks for progress tracking
 import { useLearningProgress } from '@/hooks/use-learning-progress';
+import { DailyChallenge } from "@/components/learning/DailyChallenge";
+import { LevelProgress } from "@/components/learning/LevelProgress";
+import { DailyLoginBonus } from "@/components/learning/DailyLoginBonus";
 
 
 // Define types for questions
@@ -546,6 +549,19 @@ export default function EnhancedLearningPage() {
       {/* Main content area */}
       {activeView === 'dashboard' ? (
         <div>
+          {/* Daily Login Bonus Modal */}
+          <DailyLoginBonus />
+          
+          {/* Level Progress - First thing users see */}
+          <div className="mb-4">
+            <LevelProgress />
+          </div>
+          
+          {/* Daily Challenges */}
+          <div className="mb-6">
+            <DailyChallenge />
+          </div>
+          
           {/* Primary study tools - focused on test preparation */}
           <div className="mb-6">
             <h3 className="text-sm font-semibold text-gray-200 mb-3 flex items-center gap-2">
