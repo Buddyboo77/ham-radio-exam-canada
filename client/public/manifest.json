@@ -1,7 +1,7 @@
 {
-  "name": "Canadian Ham Radio License Exam Prep",
-  "short_name": "Ham Radio Canada",
-  "description": "Official Canadian amateur radio license preparation app with 4000+ practice questions, Morse code training, and study materials. Pass your Basic Qualification exam.",
+  "name": "SignalAce Canada - Ham Radio Exam Prep",
+  "short_name": "SignalAce",
+  "description": "Master your Canadian ham radio license exam! 150+ practice questions, Morse code training, and complete study materials. Pass your Basic Qualification with confidence.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0A192F",
