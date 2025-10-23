@@ -100,13 +100,13 @@ function Router() {
       {/* Our QuickAccessMenu is now our main navigation */}
       
       <div className="radio-body relative overflow-hidden">
-        {/* Antenna */}
-        <div className="antenna"></div>
-        
         {/* Pro upgrade button at very top */}
-        <div className="flex justify-center mb-2 px-2">
+        <div className="flex justify-center mb-2 px-2 relative z-50">
           <ProBadge />
         </div>
+        
+        {/* Antenna - moved below button */}
+        <div className="antenna"></div>
         
         {/* Top status bar with time and battery */}
         <div className="flex justify-between items-center mb-2 px-2">
