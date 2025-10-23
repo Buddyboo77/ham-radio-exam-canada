@@ -65,7 +65,7 @@ export function AdSquare({ className = '' }: { className?: string }) {
             const event = new CustomEvent('open-pro-upgrade');
             window.dispatchEvent(event);
           }}
-          className="text-blue-400 hover:text-blue-300 underline"
+          className="text-blue-400 hover:text-blue-300 font-medium"
         >
           Remove ads with Pro
         </button>
