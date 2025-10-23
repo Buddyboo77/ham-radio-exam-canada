@@ -21,9 +21,9 @@ export function ProBadge() {
         const event = new CustomEvent('open-pro-upgrade');
         window.dispatchEvent(event);
       }}
-      className="bg-gradient-to-r from-purple-600 to-blue-600 hover:from-purple-700 hover:to-blue-700 text-xs h-7 px-3"
+      className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-semibold text-xs h-8 px-4 shadow-lg border-0"
     >
-      <Crown className="h-3 w-3 mr-1" />
+      <Crown className="h-4 w-4 mr-1.5" />
       Upgrade to Pro
     </Button>
   );
