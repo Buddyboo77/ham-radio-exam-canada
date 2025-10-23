@@ -55,7 +55,7 @@ export function ProUpgradeModal() {
           </div>
 
           <div className="space-y-3 bg-gray-800/50 rounded-lg p-4">
-            <h3 className="font-semibold text-sm text-gray-200 mb-3">Pro Features:</h3>
+            <h3 className="font-semibold text-sm text-gray-200 mb-3">What You Get:</h3>
             
             <div className="flex items-start gap-3">
               <div className="mt-0.5">
@@ -63,27 +63,7 @@ export function ProUpgradeModal() {
               </div>
               <div>
                 <p className="font-medium text-sm">No Advertisements</p>
-                <p className="text-xs text-gray-400">Clean, distraction-free studying</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="mt-0.5">
-                <Zap className="h-5 w-5 text-blue-400" />
-              </div>
-              <div>
-                <p className="font-medium text-sm">Offline Mode</p>
-                <p className="text-xs text-gray-400">Study anywhere, even without internet</p>
-              </div>
-            </div>
-
-            <div className="flex items-start gap-3">
-              <div className="mt-0.5">
-                <Award className="h-5 w-5 text-purple-400" />
-              </div>
-              <div>
-                <p className="font-medium text-sm">Priority Support</p>
-                <p className="text-xs text-gray-400">Get help when you need it</p>
+                <p className="text-xs text-gray-400">Clean, distraction-free studying experience</p>
               </div>
             </div>
 
@@ -92,15 +72,25 @@ export function ProUpgradeModal() {
                 <Sparkles className="h-5 w-5 text-yellow-400" />
               </div>
               <div>
-                <p className="font-medium text-sm">Future Updates</p>
-                <p className="text-xs text-gray-400">All new features included forever</p>
+                <p className="font-medium text-sm">Support Development</p>
+                <p className="text-xs text-gray-400">Help keep SignalAce improving and ad-free</p>
+              </div>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <div className="mt-0.5">
+                <Award className="h-5 w-5 text-purple-400" />
+              </div>
+              <div>
+                <p className="font-medium text-sm">Future Premium Features</p>
+                <p className="text-xs text-gray-400">Get access to new Pro features as they're added</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-blue-900/20 border border-blue-500/30 rounded-lg p-3">
-            <p className="text-xs text-blue-200 text-center">
-              🎯 <strong>Limited Time:</strong> 88 users already upgraded today!
+          <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-3">
+            <p className="text-xs text-green-200 text-center">
+              💚 One-time payment • No subscription • Yours forever
             </p>
           </div>
         </div>
@@ -125,7 +115,7 @@ export function ProUpgradeModal() {
         </div>
 
         <p className="text-xs text-center text-gray-500 mt-2">
-          Secure payment • 30-day money-back guarantee
+          Thank you for supporting SignalAce Canada! 🇨🇦
         </p>
       </DialogContent>
     </Dialog>
