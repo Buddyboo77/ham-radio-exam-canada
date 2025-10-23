@@ -7,25 +7,25 @@ export function ProBadge() {
 
   if (isPro) {
     return (
-      <Badge className="bg-gradient-to-r from-yellow-600 to-orange-600 border-yellow-500/30">
-        <Crown className="h-3 w-3 mr-1" />
-        Pro
-      </Badge>
+      <div className="flex justify-center">
+        <Badge className="bg-gradient-to-r from-yellow-600 to-orange-600 border-yellow-500/30">
+          <Crown className="h-3 w-3 mr-1" />
+          Pro Member
+        </Badge>
+      </div>
     );
   }
 
   return (
     <Button
-      size="sm"
       onClick={() => {
         const event = new CustomEvent('open-pro-upgrade');
         window.dispatchEvent(event);
       }}
-      className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-semibold text-[10px] h-7 px-2.5 shadow-lg border-0 flex items-center gap-1 whitespace-nowrap overflow-visible"
-      style={{ minWidth: 'fit-content' }}
+      className="w-full bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-semibold text-xs h-8 shadow-lg border-0"
     >
-      <Crown className="h-3.5 w-3.5 flex-shrink-0" />
-      <span className="inline-block">Upgrade</span>
+      <Crown className="h-4 w-4 mr-2" />
+      Upgrade to Pro - $8.88
     </Button>
   );
 }

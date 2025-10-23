@@ -110,8 +110,6 @@ function Router() {
             <span>{currentTime}</span>
           </div>
           
-          <ProBadge />
-          
           <div className="flex items-center gap-2">
             <div className="flex">
               {[1, 2, 3, 4].map(bar => (
@@ -126,6 +124,11 @@ function Router() {
               <span>{batteryLevel}%</span>
             </div>
           </div>
+        </div>
+        
+        {/* Pro upgrade button - full width below status bar */}
+        <div className="px-2 mb-2">
+          <ProBadge />
         </div>
         
         {/* Radio screen */}
