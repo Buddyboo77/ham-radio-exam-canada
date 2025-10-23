@@ -30,6 +30,7 @@ import { useLearningProgress } from '@/hooks/use-learning-progress';
 import { DailyChallenge } from "@/components/learning/DailyChallenge";
 import { LevelProgress } from "@/components/learning/LevelProgress";
 import { DailyLoginBonus } from "@/components/learning/DailyLoginBonus";
+import { AdSquare } from "@/components/ads/AdBanner";
 
 
 // Define types for questions
@@ -610,6 +611,9 @@ export default function EnhancedLearningPage() {
             </div>
           </div>
           
+          {/* Ad placement between sections */}
+          <AdSquare />
+          
           {/* Simple progress tracking */}
           <div className="bg-gray-800 bg-opacity-50 rounded-md p-4 border border-gray-700">
             <h4 className="text-sm font-medium text-gray-200 mb-3 flex items-center gap-2">
@@ -961,6 +965,9 @@ export default function EnhancedLearningPage() {
                   <p className="text-xs text-amber-400 mt-1">Aim for at least 70% to pass the Basic Qualification exam.</p>
                 </div>
               )}
+              
+              {/* Ad after quiz completion */}
+              <AdSquare className="mb-4" />
               
               <div className="mb-4">
                 <Button

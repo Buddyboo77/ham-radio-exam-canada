@@ -25,6 +25,8 @@ import TermsOfServicePage from "@/pages/TermsOfServicePage";
 import TestGamification from "@/pages/TestGamification";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
+import { ProUpgradeModal } from "@/components/ads/ProUpgradeModal";
+import { ProBadge } from "@/components/ads/ProBadge";
 
 import { useState, useEffect } from "react";
 import { 
@@ -107,6 +109,8 @@ function Router() {
             <Power size={12} className={isOnline ? "text-green-500" : "text-red-500"} />
             <span>{currentTime}</span>
           </div>
+          
+          <ProBadge />
           
           <div className="flex items-center gap-2">
             <div className="flex">
@@ -219,6 +223,7 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
+        <ProUpgradeModal />
         <AuthProvider>
           <Router />
         </AuthProvider>
