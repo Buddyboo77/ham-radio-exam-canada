@@ -104,7 +104,7 @@ function Router() {
         <div className="antenna"></div>
         
         {/* Top status bar with time and battery */}
-        <div className="flex justify-between items-center mb-2 px-2">
+        <div className="flex justify-between items-center mb-2 px-2 relative">
           <div className="text-gray-400 font-mono text-xs flex items-center gap-2">
             <Power size={12} className={isOnline ? "text-green-500" : "text-red-500"} />
             <span>{currentTime}</span>
@@ -124,11 +124,11 @@ function Router() {
               <span>{batteryLevel}%</span>
             </div>
           </div>
-        </div>
-        
-        {/* Pro upgrade button - full width below status bar */}
-        <div className="px-2 mb-2">
-          <ProBadge />
+          
+          {/* Pro upgrade button - floating over status bar */}
+          <div className="absolute left-1/2 -translate-x-1/2 top-6 z-50 w-11/12">
+            <ProBadge />
+          </div>
         </div>
         
         {/* Radio screen */}
