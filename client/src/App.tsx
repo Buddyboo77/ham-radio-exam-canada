@@ -126,7 +126,7 @@ function Router() {
           </div>
           
           {/* Pro upgrade button - floating over status bar */}
-          <div className="absolute left-1/2 -translate-x-1/2 top-6 z-50 w-11/12">
+          <div className="absolute left-1/2 -translate-x-1/2 top-6 z-50 flex justify-center">
             <ProBadge />
           </div>
         </div>
