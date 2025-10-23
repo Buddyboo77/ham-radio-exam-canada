@@ -21,10 +21,11 @@ export function ProBadge() {
         const event = new CustomEvent('open-pro-upgrade');
         window.dispatchEvent(event);
       }}
-      className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-semibold text-xs h-8 px-4 shadow-lg border-0 flex items-center gap-1.5 whitespace-nowrap"
+      className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 text-white font-semibold text-[10px] h-7 px-2.5 shadow-lg border-0 flex items-center gap-1 whitespace-nowrap overflow-visible"
+      style={{ minWidth: 'fit-content' }}
     >
-      <Crown className="h-4 w-4 flex-shrink-0" />
-      <span>Upgrade to Pro</span>
+      <Crown className="h-3.5 w-3.5 flex-shrink-0" />
+      <span className="inline-block">Upgrade</span>
     </Button>
   );
 }
