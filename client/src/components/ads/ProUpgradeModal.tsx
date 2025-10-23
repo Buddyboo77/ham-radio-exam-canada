@@ -50,7 +50,7 @@ export function ProUpgradeModal() {
             
             <div className="mb-4">
               <span className="text-5xl font-bold text-yellow-400">$8.88</span>
-              <p className="text-sm text-gray-400 mt-1">One-time purchase • Lifetime access</p>
+              <p className="text-sm text-gray-400 mt-1">One-time upgrade • Remove all ads</p>
             </div>
           </div>
 
@@ -90,7 +90,7 @@ export function ProUpgradeModal() {
 
           <div className="bg-green-900/20 border border-green-500/30 rounded-lg p-3">
             <p className="text-xs text-green-200 text-center">
-              💚 One-time payment • No subscription • Yours forever
+              💚 One-time upgrade • No recurring charges
             </p>
           </div>
         </div>
