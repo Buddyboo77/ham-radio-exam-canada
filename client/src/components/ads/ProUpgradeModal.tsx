@@ -49,7 +49,7 @@ export function ProUpgradeModal() {
             </div>
             
             <div className="mb-4">
-              <span className="text-5xl font-bold text-yellow-400">$18.88</span>
+              <span className="text-5xl font-bold text-yellow-400">$8.88</span>
               <p className="text-sm text-gray-400 mt-1">One-time purchase • Lifetime access</p>
             </div>
           </div>
@@ -112,7 +112,7 @@ export function ProUpgradeModal() {
             size="lg"
           >
             <Crown className="h-5 w-5 mr-2" />
-            Upgrade Now - $18.88
+            Upgrade Now - $8.88
           </Button>
           
           <Button 
