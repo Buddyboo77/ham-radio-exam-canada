@@ -333,18 +333,20 @@ export const MorseCodeExam: React.FC = () => {
     setUserAnswers(newAnswers);
     
     // Check if answer is correct
-    if (userInput.toUpperCase() === examContent[currentQuestion]) {
+    const isCorrect = userInput.toUpperCase() === examContent[currentQuestion];
+    if (isCorrect) {
       setCorrectAnswers(prev => prev + 1);
     }
     
-    // Clear input for next question
-    setUserInput("");
-    
     // Move to next question or complete the exam
     if (currentQuestion < totalQuestions - 1) {
+      // Clear input for next question
+      setUserInput("");
       setCurrentQuestion(prev => prev + 1);
     } else {
-      completeExam();
+      // Complete the exam - don't clear input yet so it shows in results
+      setExamCompleted(true);
+      setExamMode(false);
     }
   };
   
