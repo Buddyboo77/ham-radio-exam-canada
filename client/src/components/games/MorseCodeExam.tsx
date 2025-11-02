@@ -611,7 +611,7 @@ export const MorseCodeExam: React.FC = () => {
           <Progress value={audioProgress} className="h-1 mb-4" />
           
           <Input
-            className="bg-gray-850 border-gray-700 text-center"
+            className="bg-gray-900 border-gray-700 text-center text-white font-mono text-lg placeholder:text-gray-500"
             placeholder="Type what you hear"
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
