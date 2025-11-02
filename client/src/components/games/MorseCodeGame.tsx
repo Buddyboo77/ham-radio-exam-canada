@@ -1180,7 +1180,10 @@ export const MorseCodeGame: React.FC = () => {
     
     return (
       <Dialog open={showLearnDialog} onOpenChange={setShowLearnDialog}>
-        <DialogContent className="bg-gray-850 border-gray-700 sm:max-w-md">
+        <DialogContent 
+          className="bg-gray-850 border-gray-700 sm:max-w-md"
+          onInteractOutside={(e) => e.preventDefault()}
+        >
           <DialogHeader>
             <DialogTitle className="flex items-center justify-between">
               <span>Learn: {learningChar}</span>
@@ -1240,7 +1243,10 @@ export const MorseCodeGame: React.FC = () => {
   const renderSettingsDialog = () => {
     return (
       <Dialog open={showSettings} onOpenChange={setShowSettings}>
-        <DialogContent className="bg-gray-850 border-gray-700 sm:max-w-lg">
+        <DialogContent 
+          className="bg-gray-850 border-gray-700 sm:max-w-lg"
+          onInteractOutside={(e) => e.preventDefault()}
+        >
           <DialogHeader>
             <DialogTitle>Game Settings</DialogTitle>
             <DialogDescription>
