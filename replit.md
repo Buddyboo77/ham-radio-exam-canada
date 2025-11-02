@@ -1,10 +1,10 @@
-# Powell River Amateur Radio Companion
+# SignalAce Canada
 
 ## Overview
 
-The Powell River Amateur Radio Companion is a comprehensive web application designed specifically for amateur radio operators in the Powell River, BC area. This PWA (Progressive Web App) serves as a complete toolkit for ham radio operators, providing essential features like frequency monitoring, repeater information, logbook management, morse code training, and community resources. The application is built to work both online and offline, making it reliable for field use.
+SignalAce Canada is a comprehensive Canadian amateur radio license exam preparation Progressive Web App. This FREE app with an optional $8.88 Pro upgrade (removes ads) provides essential study tools including Practice Exams, Morse Code training, and Study Guides with gamification elements like daily challenges, XP/level system, and achievement badges. The application is built to work both online and offline, making it reliable for studying anywhere.
 
-The app targets the local Powell River Amateur Radio Club community while providing educational resources for new operators and advanced tools for experienced hams. It combines practical radio operation tools with learning features, maps, and real-time communication capabilities.
+The app targets Canadian amateur radio license exam candidates, providing educational resources for new operators preparing for their Basic or Advanced qualification exams. It combines practical exam preparation tools with learning features and progress tracking.
 
 ## User Preferences
 
@@ -75,7 +75,6 @@ The app is designed as a Progressive Web App with:
 ### Data Fetching and State
 - **@tanstack/react-query**: Server state management with caching and synchronization
 - **Axios**: HTTP client for API requests
-- **WebSocket (ws)**: Real-time communication support
 
 ### Development and Build Tools
 - **tsx**: TypeScript execution for development
@@ -87,11 +86,11 @@ The app is designed as a Progressive Web App with:
 - **canvas-confetti**: Celebratory animations for gamification features
 - **@types packages**: TypeScript definitions for various libraries
 
-### Maps and Geolocation
-- **@types/leaflet**: TypeScript support for mapping functionality (Leaflet integration planned)
-
 ### Form Handling
 - **@hookform/resolvers**: Form validation integration
-- **React Hook Form**: Efficient form state management (implied by resolvers dependency)
+- **React Hook Form**: Efficient form state management
 
-The application is designed to work with external services for weather data, callsign lookups, and DX cluster information, though these integrations use mock data in the current implementation for demonstration purposes.
+### Monetization
+- **Google AdSense**: Ad integration for free tier (requires user approval and publisher ID replacement)
+
+The application uses the official ISED Canada exam question bank and supports offline functionality through service worker caching and localStorage.

@@ -302,9 +302,9 @@ export class DatabaseStorage implements IStorage {
     // VHF Repeaters
     await this.createFrequency({
       frequency: 146.84,
-      name: "Powell River Amateur Radio Club",
+      name: "VE7ABC VHF Repeater",
       tone: "103.5 Hz",
-      description: "Main repeater for Powell River, wide coverage of local area and parts of Vancouver Island",
+      description: "VHF repeater with wide coverage, excellent for regional communications",
       isEmergency: false,
       isActive: true,
       status: "active",
@@ -314,9 +314,9 @@ export class DatabaseStorage implements IStorage {
     
     await this.createFrequency({
       frequency: 147.2,
-      name: "Texada Island Repeater",
+      name: "VE7XYZ Repeater",
       tone: "123.0 Hz",
-      description: "Repeater on Texada Island with excellent coverage of Strait of Georgia",
+      description: "High-altitude VHF repeater with excellent coverage",
       isEmergency: false,
       isActive: true,
       status: "active",
@@ -326,9 +326,9 @@ export class DatabaseStorage implements IStorage {
     
     await this.createFrequency({
       frequency: 145.47,
-      name: "Savary Island Repeater",
+      name: "Coastal VHF Repeater",
       tone: "100.0 Hz",
-      description: "Located on Savary Island, good for coastal communications",
+      description: "Coastal repeater, good for maritime communications",
       isEmergency: false,
       isActive: true,
       status: "active",
@@ -338,9 +338,9 @@ export class DatabaseStorage implements IStorage {
     
     await this.createFrequency({
       frequency: 145.15,
-      name: "Lund Area Repeater",
+      name: "Northern BC Repeater",
       tone: "103.5 Hz",
-      description: "Covers northern Sunshine Coast and Desolation Sound",
+      description: "Covers northern region with good propagation",
       isEmergency: false,
       isActive: true,
       status: "active",
@@ -351,9 +351,9 @@ export class DatabaseStorage implements IStorage {
     // UHF Repeaters
     await this.createFrequency({
       frequency: 443.125,
-      name: "Powell River UHF Repeater",
+      name: "VE7UHF Repeater",
       tone: "103.5 Hz",
-      description: "UHF repeater for Powell River area, good for local communications",
+      description: "UHF repeater, good for local communications",
       isEmergency: false,
       isActive: true,
       status: "active",
@@ -363,9 +363,9 @@ export class DatabaseStorage implements IStorage {
     
     await this.createFrequency({
       frequency: 444.925,
-      name: "Texada Island UHF",
+      name: "IRLP Connected UHF",
       tone: "103.5 Hz",
-      description: "UHF repeater with IRLP connection (Node 1540), linked to Island VHF",
+      description: "UHF repeater with IRLP connection, worldwide linking capability",
       isEmergency: false,
       isActive: true,
       status: "active",
@@ -375,9 +375,9 @@ export class DatabaseStorage implements IStorage {
     
     await this.createFrequency({
       frequency: 442.1,
-      name: "Lang Bay Digital Voice",
+      name: "DMR Digital Voice",
       tone: "DMR",
-      description: "DMR repeater covering southern Powell River region, TimeslotTS 1: Local, TS 2: Worldwide",
+      description: "DMR repeater, Timeslot 1: Local, Timeslot 2: Worldwide",
       isEmergency: false,
       isActive: true,
       status: "active",
@@ -485,134 +485,134 @@ export class DatabaseStorage implements IStorage {
       isMonitored: false
     });
     
-    // Add repeaters
+    // Add repeaters (using generic BC coordinates)
     await this.createRepeater({
-      name: "Powell River Amateur Radio Club",
+      name: "VE7ABC VHF Repeater",
       frequency: 146.84,
       offset: -0.6,
       tone: "103.5 Hz",
       status: "operational",
-      location: "Myrtle Rock Lookout, Powell River",
-      latitude: 49.8268,
-      longitude: -124.5248,
-      coverage: "Powell River, Texada Island, portions of Vancouver Island",
-      notes: "Main repeater for the Powell River area. 24/7 emergency power backup. Weekly net Thursday 7:00 PM."
+      location: "Mountain Peak, BC",
+      latitude: 49.2827,
+      longitude: -123.1207,
+      coverage: "Wide regional coverage",
+      notes: "Main VHF repeater with 24/7 emergency power backup. Weekly net Thursday 7:00 PM."
     });
     
     await this.createRepeater({
-      name: "Texada Island Repeater",
+      name: "VE7XYZ VHF Repeater",
       frequency: 147.2,
       offset: 0.6,
       tone: "123.0 Hz",
       status: "operational",
-      location: "Mt. Pocahontas, Texada Island",
-      latitude: 49.6952,
-      longitude: -124.4039,
-      coverage: "Texada Island, Powell River, Comox, Campbell River",
-      notes: "Excellent coverage of northern Strait of Georgia. Solar powered with battery backup."
+      location: "High Elevation Site, BC",
+      latitude: 48.4284,
+      longitude: -123.3656,
+      coverage: "Excellent regional coverage",
+      notes: "High-altitude repeater. Solar powered with battery backup."
     });
     
     await this.createRepeater({
-      name: "Powell River UHF",
+      name: "VE7UHF Repeater",
       frequency: 443.125,
       offset: 5.0,
       tone: "103.5 Hz",
       status: "operational",
-      location: "Powell River Hospital",
-      latitude: 49.8352,
-      longitude: -124.5247,
-      coverage: "Powell River city area",
+      location: "Urban Site, BC",
+      latitude: 49.2500,
+      longitude: -123.1000,
+      coverage: "Local city area",
       notes: "Primarily for local communications. Good in-building penetration."
     });
     
     await this.createRepeater({
-      name: "Savary Island VHF",
+      name: "Coastal VHF Repeater",
       frequency: 145.47,
       offset: -0.6,
       tone: "100.0 Hz",
       status: "operational",
-      location: "North Savary Island",
-      latitude: 49.9486,
-      longitude: -124.8243,
-      coverage: "Savary Island, Lund, Hernando Island, Cortes Island",
-      notes: "Solar powered system. Excellent for marine mobile stations in northern area."
+      location: "Coastal Location, BC",
+      latitude: 49.1642,
+      longitude: -125.9073,
+      coverage: "Coastal and maritime coverage",
+      notes: "Solar powered system. Excellent for marine mobile stations."
     });
     
     await this.createRepeater({
-      name: "Lund Harbour VHF",
+      name: "Northern BC VHF",
       frequency: 145.15,
       offset: -0.6,
       tone: "103.5 Hz",
       status: "operational",
-      location: "Finn Bay, Lund, BC",
-      latitude: 50.0022,
-      longitude: -124.7637,
-      coverage: "Desolation Sound, Okeover Inlet, northern Sunshine Coast",
-      notes: "Important for boater communications in Desolation Sound. Linked to Courtenay system during emergencies."
+      location: "Northern Site, BC",
+      latitude: 54.0000,
+      longitude: -122.0000,
+      coverage: "Northern regional coverage",
+      notes: "Important for northern communications. Linked during emergencies."
     });
     
     await this.createRepeater({
-      name: "Texada Island UHF/IRLP",
+      name: "UHF/IRLP Repeater",
       frequency: 444.925,
       offset: 5.0,
       tone: "103.5 Hz",
       status: "operational",
-      location: "Mt. Pocahontas, Texada Island",
-      latitude: 49.6952,
-      longitude: -124.4039,
-      coverage: "Texada Island, Powell River, parts of Vancouver Island",
-      notes: "Features IRLP Node 1540 for worldwide linking. Can connect to reflectors and other IRLP nodes."
+      location: "Mountain Site, BC",
+      latitude: 49.3000,
+      longitude: -123.0000,
+      coverage: "Wide regional coverage",
+      notes: "Features IRLP node for worldwide linking. Can connect to reflectors and other IRLP nodes."
     });
     
     await this.createRepeater({
-      name: "Lang Bay DMR",
+      name: "DMR Digital Repeater",
       frequency: 442.1,
       offset: 5.0,
       tone: "DMR",
       status: "operational",
-      location: "Lang Bay, BC",
-      latitude: 49.7463,
-      longitude: -124.4039,
-      coverage: "Southern Powell River region, northern Texada Island",
+      location: "Regional Site, BC",
+      latitude: 49.1000,
+      longitude: -123.5000,
+      coverage: "Regional digital coverage",
       notes: "Digital Mode Repeater. Timeslot 1: Local/Regional, Timeslot 2: Worldwide. Color Code 1."
     });
     
     await this.createRepeater({
-      name: "Powell River APRS Digipeater",
+      name: "APRS Digipeater",
       frequency: 144.39,
       offset: 0,
       tone: "No Tone",
       status: "operational",
-      location: "Powell River",
-      latitude: 49.8352,
-      longitude: -124.5247,
-      coverage: "Powell River, Texada Island, parts of Vancouver Island",
+      location: "Central Location, BC",
+      latitude: 49.2600,
+      longitude: -123.1100,
+      coverage: "Regional APRS coverage",
       notes: "APRS digipeater and I-Gate. Connected to APRS-IS network. Good for position reporting and messaging."
     });
     
     await this.createRepeater({
-      name: "Malaspina D-STAR",
+      name: "D-STAR Digital Repeater",
       frequency: 145.13,
       offset: -0.6,
       tone: "D-STAR",
       status: "operational",
-      location: "Malaspina Substation",
-      latitude: 49.7742, 
-      longitude: -124.3652,
-      coverage: "Powell River to Saltery Bay, Texada Island",
+      location: "Regional Hub, BC",
+      latitude: 49.2000, 
+      longitude: -123.2000,
+      coverage: "Regional D-STAR coverage",
       notes: "D-STAR digital voice and data system. Gateway connected. Supports callsign routing worldwide."
     });
     
     await this.createRepeater({
-      name: "Powell River Winlink RMS",
+      name: "Winlink RMS Gateway",
       frequency: 145.05,
       offset: 0,
       tone: "No Tone",
       status: "operational",
-      location: "Powell River",
-      latitude: 49.8352,
-      longitude: -124.5247,
-      coverage: "Powell River area",
+      location: "Gateway Site, BC",
+      latitude: 49.2700,
+      longitude: -123.1300,
+      coverage: "Regional Winlink coverage",
       notes: "Winlink email system node for email over radio. Operates packet at 1200 baud. Useful for emergency communications when internet is down."
     });
     
@@ -620,7 +620,7 @@ export class DatabaseStorage implements IStorage {
     await this.createReferenceItem({
       category: "Emergency Protocols",
       title: "Power Outage Procedure",
-      description: "1. Switch to battery backup\n2. Tune to 146.840 MHz (PRARC repeater)\n3. Check in with net control if active\n4. Reduce transmit power to conserve battery\n5. Report outages and critical situations\n6. Maintain communication every 30 minutes",
+      description: "1. Switch to battery backup\n2. Tune to local repeater or 146.520 MHz simplex\n3. Check in with net control if active\n4. Reduce transmit power to conserve battery\n5. Report outages and critical situations\n6. Maintain communication every 30 minutes",
       sortOrder: 1
     });
     
@@ -646,16 +646,16 @@ export class DatabaseStorage implements IStorage {
     });
     
     await this.createReferenceItem({
-      category: "Powell River Amateur Radio Club",
-      title: "Club Information",
-      description: "Meeting Location: Powell River Recreation Complex\nMeeting Time: First Tuesday of each month at 7:00 PM\nClub Callsign: VE7PRN\nWebsite: https://powellriverarc.ca\nMailing Address: P.O. Box 85, Powell River, BC V8A 4Z5",
+      category: "Amateur Radio Clubs",
+      title: "Finding a Local Club",
+      description: "Benefits of Joining a Club:\n- Mentorship from experienced operators\n- Access to club equipment and stations\n- Exam preparation assistance\n- Regular nets and events\n- Community support\n\nFinding Clubs:\n- Search online for clubs in your area\n- Check provincial ham radio association websites\n- Visit repeater directories for net information\n- Attend hamfests and radio events",
       sortOrder: 1
     });
     
     await this.createReferenceItem({
-      category: "Powell River Amateur Radio Club",
-      title: "Club Nets",
-      description: "Weekly Net: Thursday 7:00 PM on 146.840 MHz\nEmergency Net: First Sunday of each month at 1:00 PM on 146.840 MHz",
+      category: "Amateur Radio Clubs",
+      title: "Club Activities",
+      description: "Common Club Activities:\n- Weekly nets on local repeaters\n- Emergency preparedness drills\n- Field Day events\n- Technical workshops and presentations\n- Social events and hamfests\n- Public service communications",
       sortOrder: 2
     });
     
@@ -714,7 +714,7 @@ export class DatabaseStorage implements IStorage {
     await this.createReferenceItem({
       category: "Emergency Protocols",
       title: "Emergency Frequencies",
-      description: "Local Emergency Frequencies:\n- 146.840 MHz: Powell River primary emergency repeater\n- 147.200 MHz: Texada Island backup repeater\n\nCalling Frequencies:\n- 146.520 MHz: VHF National Simplex Calling\n- 446.000 MHz: UHF National Simplex Calling\n\nProvincial Emergency Frequencies:\n- 3.730 MHz: BC/Yukon Emergency Traffic\n- 7.060 MHz: BC/Yukon Emergency Traffic (alternate)\n\nMaritime Mobile Service:\n- Channel 16 (156.800 MHz): Marine distress and calling\n\nWeather Information:\n- 162.400-162.550 MHz: Environment Canada Weather",
+      description: "National Calling Frequencies:\n- 146.520 MHz: VHF National Simplex Calling\n- 446.000 MHz: UHF National Simplex Calling\n\nProvincial Emergency Frequencies:\n- 3.730 MHz: BC/Yukon Emergency Traffic\n- 7.060 MHz: BC/Yukon Emergency Traffic (alternate)\n- Check your local club for regional emergency frequencies\n\nMaritime Mobile Service:\n- Channel 16 (156.800 MHz): Marine distress and calling\n\nWeather Information:\n- 162.400-162.550 MHz: Environment Canada Weather",
       sortOrder: 4
     });
     
@@ -751,13 +751,13 @@ export class DatabaseStorage implements IStorage {
     await this.createReferenceItem({
       category: "Fun Activities",
       title: "ARISS School Contacts",
-      description: "Amateur Radio on the International Space Station:\n\n1. Educational Opportunity:\n- Students talk directly with ISS astronauts\n- 10-minute contact during ISS pass\n- Questions prepared in advance\n\n2. How to Participate:\n- School/educational organization applies\n- Application windows announced by ARISS\n- Technical team required for setup\n- Apply at ariss.org\n\n3. Equipment Needed:\n- 2m band capability for voice contacts\n- Tracking antennas with elevation control\n- Backup power and audio systems\n\n4. Local Expertise:\n- Powell River ARC can provide assistance\n- Contact club for volunteer technical support",
+      description: "Amateur Radio on the International Space Station:\n\n1. Educational Opportunity:\n- Students talk directly with ISS astronauts\n- 10-minute contact during ISS pass\n- Questions prepared in advance\n\n2. How to Participate:\n- School/educational organization applies\n- Application windows announced by ARISS\n- Technical team required for setup\n- Apply at ariss.org\n\n3. Equipment Needed:\n- 2m band capability for voice contacts\n- Tracking antennas with elevation control\n- Backup power and audio systems\n\n4. Local Expertise:\n- Contact your local amateur radio club for assistance\n- Clubs often provide volunteer technical support",
       sortOrder: 3
     });
     
     // Add initial weather data
     await this.updateWeatherCache({
-      location: "Powell River, BC",
+      location: "Your Location, BC",
       temperature: 12,
       condition: "Partly Cloudy",
       windSpeed: 5,
@@ -776,7 +776,7 @@ export class DatabaseStorage implements IStorage {
       frequency: 146.84,
       callSign: "VE7ABC",
       operatorName: "John Smith",
-      location: "Texada Island",
+      location: "Victoria, BC",
       signalReport: "59",
       notes: "Clear conversation about upcoming field day event. Good signal strength throughout. Discussed equipment setup suggestions for new operators.",
     });
@@ -786,9 +786,9 @@ export class DatabaseStorage implements IStorage {
       frequency: 147.2,
       callSign: "VA7XYZ",
       operatorName: "Jane Doe",
-      location: "Savary Island",
+      location: "Vancouver, BC",
       signalReport: "57",
-      notes: "Discussed marine conditions and ferry schedules. Some static interference. They're using a marine mobile setup with a Shakespeare antenna.",
+      notes: "Discussed propagation conditions. Some static interference. Using mobile setup with dual-band antenna.",
     });
     
     await this.createLogEntry({
@@ -816,9 +816,9 @@ export class DatabaseStorage implements IStorage {
       frequency: 146.52,
       callSign: "VE7KFM",
       operatorName: "Susan Williams",
-      location: "Lang Bay, BC",
+      location: "Kelowna, BC",
       signalReport: "59",
-      notes: "Simplex contact while hiking. They were using a handheld at Mount Washington. Discussed backcountry communications techniques and battery saving tips.",
+      notes: "Simplex contact while hiking. Using a handheld radio on a mountain trail. Discussed backcountry communications techniques and battery saving tips.",
     });
     
     await this.createLogEntry({
@@ -828,7 +828,7 @@ export class DatabaseStorage implements IStorage {
       operatorName: "Robert Chen",
       location: "Courtenay, BC",
       signalReport: "58",
-      notes: "Contact via IRLP node 1540. Robert was connected through node 2190 in Courtenay. Discussed upcoming Texada Island hamfest event.",
+      notes: "Contact via IRLP node. Discussed upcoming regional hamfest event and digital modes.",
     });
     
     await this.createLogEntry({

@@ -500,17 +500,12 @@ const EXAM_RESOURCES = [
   }
 ];
 
-// Local exam sessions
+// Local exam sessions - Find your local club
 const LOCAL_EXAMS = [
   {
-    title: "Powell River Amateur Radio Club Exam Session",
-    schedule: "Second Wednesday monthly, 7:00pm",
-    location: "Powell River Recreation Complex, Room 3"
-  },
-  {
-    title: "Vancouver Island Amateur Radio Society",
-    schedule: "First Saturday bimonthly, 1:00pm",
-    location: "Nanaimo, BC (120km south of Powell River, via ferry)"
+    title: "Find Local Exam Sessions",
+    schedule: "Search for accredited examiners",
+    location: "Use the ISED examiner directory"
   }
 ];
 
@@ -1116,22 +1111,14 @@ export default function LearningPage() {
               <div className="bg-gradient-to-r from-red-900 to-red-800 px-3 py-1.5 border-b border-gray-700">
                 <h3 className="text-sm font-medium text-white flex items-center">
                   <Radio className="h-3.5 w-3.5 mr-1.5 text-red-300" />
-                  Local Exam Sessions
+                  Find Exam Sessions
                 </h3>
               </div>
               <div className="p-2">
+                <p className="text-xs text-gray-300 mb-2">
+                  Search for accredited examiners in your area
+                </p>
                 <div className="space-y-1">
-                  <Link href="/local-info">
-                    <div className="px-2 py-1 bg-gray-900 rounded-sm hover:bg-gray-800 transition-colors cursor-pointer">
-                      <div className="flex items-center justify-between">
-                        <div>
-                          <div className="text-[10px] font-medium text-red-300">Powell River Amateur Radio Club</div>
-                          <div className="text-[9px] text-gray-400">Next: Second Wednesday, 7:00pm</div>
-                        </div>
-                        <div className="radio-led red h-2 w-2 animate-pulse"></div>
-                      </div>
-                    </div>
-                  </Link>
                   <a 
                     href="https://ised-isde.canada.ca/site/amateur-radio-operator-certificate-services/en/accredited-examiners" 
                     target="_blank" 
@@ -1139,7 +1126,18 @@ export default function LearningPage() {
                     className="block px-2 py-1 bg-gray-900 rounded-sm text-[10px] text-red-300 hover:bg-gray-800 hover:text-red-200 transition-colors"
                   >
                     <div className="flex items-center justify-between">
-                      <span>Find Accredited Examiners</span>
+                      <span>ISED Accredited Examiners Directory</span>
+                      <ExternalLink size={10} />
+                    </div>
+                  </a>
+                  <a 
+                    href="https://hamstudy.org/canadaBasic" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="block px-2 py-1 bg-gray-900 rounded-sm text-[10px] text-red-300 hover:bg-gray-800 hover:text-red-200 transition-colors"
+                  >
+                    <div className="flex items-center justify-between">
+                      <span>Practice Online Tests</span>
                       <ExternalLink size={10} />
                     </div>
                   </a>
