@@ -108,22 +108,19 @@ function Router() {
         {/* Antenna - moved below button */}
         <div className="antenna"></div>
         
-        {/* Top status bar with time and signal */}
+        {/* Top status bar with time and connection status */}
         <div className="flex justify-between items-center mb-2 px-2">
           <div className="text-gray-400 font-mono text-xs flex items-center gap-2">
             <Power size={12} className={isOnline ? "text-green-500" : "text-red-500"} />
             <span>{currentTime}</span>
           </div>
           
-          <div className="flex items-center gap-2">
-            <div className="flex">
-              {[1, 2, 3, 4].map(bar => (
-                <div 
-                  key={bar} 
-                  className={`signal-bar ${isOnline && bar <= 3 ? 'active' : ''}`}
-                ></div>
-              ))}
-            </div>
+          <div className={`text-xs font-mono px-2 py-0.5 rounded ${
+            isOnline 
+              ? 'bg-green-900 bg-opacity-30 text-green-400 border border-green-700' 
+              : 'bg-red-900 bg-opacity-30 text-red-400 border border-red-700'
+          }`}>
+            {isOnline ? 'Online' : 'Offline'}
           </div>
         </div>
         
