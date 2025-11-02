@@ -108,7 +108,7 @@ function Router() {
         {/* Antenna - moved below button */}
         <div className="antenna"></div>
         
-        {/* Top status bar with time and battery */}
+        {/* Top status bar with time and signal */}
         <div className="flex justify-between items-center mb-2 px-2">
           <div className="text-gray-400 font-mono text-xs flex items-center gap-2">
             <Power size={12} className={isOnline ? "text-green-500" : "text-red-500"} />
@@ -123,10 +123,6 @@ function Router() {
                   className={`signal-bar ${isOnline && bar <= 3 ? 'active' : ''}`}
                 ></div>
               ))}
-            </div>
-            <div className="flex items-center text-gray-400 text-xs font-mono">
-              <Battery size={12} className="mr-1" />
-              <span>{batteryLevel}%</span>
             </div>
           </div>
         </div>
