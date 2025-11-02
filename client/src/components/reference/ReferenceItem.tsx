@@ -69,7 +69,10 @@ const ReferenceItem: React.FC<ReferenceItemProps> = ({
 
       {/* Modal dialog (styled for radio theme) */}
       <Dialog open={isDetailsOpen} onOpenChange={setIsDetailsOpen}>
-        <DialogContent className="bg-gray-800 border border-gray-700 text-gray-100 sm:max-w-md">
+        <DialogContent 
+          className="bg-gray-800 border border-gray-700 text-gray-100 sm:max-w-md"
+          onInteractOutside={(e) => e.preventDefault()}
+        >
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2 text-base border-b border-gray-700 pb-2">
               {isEmergency ? (

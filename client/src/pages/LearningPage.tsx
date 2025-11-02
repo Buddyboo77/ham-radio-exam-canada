@@ -1092,17 +1092,6 @@ export default function LearningPage() {
                     <li>Take practice tests regularly</li>
                   </ul>
                 </div>
-                <div className="mt-2 bg-gray-900 rounded-sm p-2">
-                  <div className="text-[10px] font-medium text-cyan-300 mb-1">Keyboard Shortcuts</div>
-                  <div className="flex justify-between text-[9px] text-gray-400 mb-1">
-                    <span>Home:</span>
-                    <span className="font-mono px-1 bg-gray-800 rounded">H</span>
-                  </div>
-                  <div className="flex justify-between text-[9px] text-gray-400">
-                    <span>Learning Center:</span>
-                    <span className="font-mono px-1 bg-gray-800 rounded">L</span>
-                  </div>
-                </div>
               </div>
             </div>
             
