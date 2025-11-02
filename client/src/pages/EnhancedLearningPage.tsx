@@ -307,7 +307,7 @@ export default function EnhancedLearningPage() {
     }
   }, [location]);
 
-  // Fetch questions for quiz (only when starting a quiz)
+  // Fetch questions for quiz (only when starting a quiz) with offline support
   const { data: quizQuestions, isLoading: isLoadingQuestions, error: questionsError } = useQuery<DatabaseQuestion[]>({
     queryKey: ['/api/exam-questions', 'quiz', activeCategory, questionsCount],
     queryFn: async () => {
@@ -317,18 +317,44 @@ export default function EnhancedLearningPage() {
       }
       params.append('count', questionsCount.toString());
       
-      const response = await fetch(`/api/exam-questions?${params}`);
-      if (!response.ok) {
-        throw new Error('Failed to fetch questions');
+      try {
+        const response = await fetch(`/api/exam-questions?${params}`);
+        if (!response.ok) {
+          throw new Error('Failed to fetch questions');
+        }
+        const questions = await response.json();
+        
+        // Cache questions in localStorage for offline use
+        localStorage.setItem('cached-exam-questions', JSON.stringify(questions));
+        localStorage.setItem('cached-questions-timestamp', new Date().toISOString());
+        
+        return questions;
+      } catch (error) {
+        // If offline, try to use cached questions
+        const cachedQuestions = localStorage.getItem('cached-exam-questions');
+        if (cachedQuestions) {
+          const allCached = JSON.parse(cachedQuestions);
+          
+          // Filter by category if needed
+          let filtered = allCached;
+          if (activeCategory !== 'all') {
+            filtered = allCached.filter((q: DatabaseQuestion) => 
+              q.category.toLowerCase() === activeCategory.toLowerCase()
+            );
+          }
+          
+          // Return requested count
+          return filtered.slice(0, questionsCount);
+        }
+        throw error;
       }
-      return response.json();
     },
     staleTime: 2 * 60 * 1000, // 2 minutes
     retry: 1,
     enabled: !showQuizConfig // Only fetch when starting quiz
   });
 
-  // Fetch category counts for dashboard (lightweight)
+  // Fetch category counts for dashboard (lightweight) with offline support
   const { data: categoryCounts } = useQuery<Record<string, number>>({
     queryKey: ['/api/exam-questions', 'counts'],
     queryFn: async () => {
@@ -336,21 +362,39 @@ export default function EnhancedLearningPage() {
       const categories = ['regulations', 'operating', 'technical', 'antenna', 'safety', 'digital', 'emergency'];
       const counts: Record<string, number> = {};
       
-      // Get total count
-      const totalResponse = await fetch('/api/exam-questions');
-      if (totalResponse.ok) {
-        const allQuestions = await totalResponse.json();
-        counts['all'] = allQuestions.length;
+      try {
+        // Get total count
+        const totalResponse = await fetch('/api/exam-questions');
+        if (totalResponse.ok) {
+          const allQuestions = await totalResponse.json();
+          counts['all'] = allQuestions.length;
+          
+          // Count by category
+          categories.forEach(cat => {
+            counts[cat] = allQuestions.filter((q: DatabaseQuestion) => 
+              q.category.toLowerCase() === cat.toLowerCase()
+            ).length;
+          });
+        }
         
-        // Count by category
-        categories.forEach(cat => {
-          counts[cat] = allQuestions.filter((q: DatabaseQuestion) => 
-            q.category.toLowerCase() === cat.toLowerCase()
-          ).length;
-        });
+        return counts;
+      } catch (error) {
+        // If offline, use cached questions to calculate counts
+        const cachedQuestions = localStorage.getItem('cached-exam-questions');
+        if (cachedQuestions) {
+          const allQuestions = JSON.parse(cachedQuestions);
+          counts['all'] = allQuestions.length;
+          
+          categories.forEach(cat => {
+            counts[cat] = allQuestions.filter((q: DatabaseQuestion) => 
+              q.category.toLowerCase() === cat.toLowerCase()
+            ).length;
+          });
+          
+          return counts;
+        }
+        throw error;
       }
-      
-      return counts;
     },
     staleTime: 10 * 60 * 1000, // 10 minutes - counts don't change often
     retry: 1,
