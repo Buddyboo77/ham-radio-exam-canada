@@ -1,5 +1,5 @@
-// Service Worker for Powell River Amateur Radio App
-const CACHE_NAME = 'prarc-app-cache-v1';
+// Service Worker for SignalAce Canada
+const CACHE_NAME = 'signalace-cache-v1';
 
 // Resources to cache initially
 const INITIAL_CACHED_RESOURCES = [
@@ -13,6 +13,7 @@ const INITIAL_CACHED_RESOURCES = [
 
 // Essential API routes to cache for offline use
 const API_ROUTES_TO_CACHE = [
+  '/api/exam-questions',
   '/api/frequencies',
   '/api/repeaters',
   '/api/reference'
