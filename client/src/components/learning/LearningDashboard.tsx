@@ -383,9 +383,9 @@ export default function LearningDashboard() {
             <Button 
               variant="outline" 
               className="bg-gray-800 text-gray-300 border-gray-700 hover:bg-gray-700 flex items-center gap-2"
-              onClick={() => window.open("https://rac.ca/amateur-radio-links/", "_blank")}
+              onClick={() => window.open("https://ised-isde.canada.ca/site/amateur-radio-operator-certificate-services/en/amateur-radio-exam-generator", "_blank")}
             >
-              <span>View More Resources</span>
+              <span>Official ISED Study Resources</span>
               <span className="text-blue-400 text-xs">↗</span>
             </Button>
           </div>

@@ -479,12 +479,12 @@ const QUIZ_QUESTIONS = [
 // External resources for Canadian Amateur Radio exams
 const EXAM_RESOURCES = [
   {
-    title: "Industry Canada Study Guide (IC-2828)",
-    url: "https://www.ic.gc.ca/eic/site/025.nsf/eng/h_00004.html"
+    title: "ISED Canada Official Exam Generator (Practice Tests)",
+    url: "https://ised-isde.canada.ca/site/amateur-radio-operator-certificate-services/en/amateur-radio-exam-generator"
   },
   {
-    title: "Radio Amateurs of Canada (RAC) Resources",
-    url: "https://www.rac.ca/beginners/"
+    title: "ISED Canada Question Bank (Complete PDF)",
+    url: "https://apc-cap.ic.gc.ca/datafiles/amateur_basic_questions_en.pdf"
   },
   {
     title: "Coax Publications - Canadian Amateur Radio Basic Qualification",
@@ -495,8 +495,8 @@ const EXAM_RESOURCES = [
     url: "https://hamstudy.org/canadaBasic"
   },
   {
-    title: "Powell River Amateur Radio Club Resources",
-    url: "#"
+    title: "Find Accredited Examiners",
+    url: "https://ised-isde.canada.ca/site/amateur-radio-operator-certificate-services/en/accredited-examiners"
   }
 ];
 
@@ -1045,24 +1045,24 @@ export default function LearningPage() {
                 </p>
                 <div className="space-y-1">
                   <a 
-                    href="https://www.ic.gc.ca/eic/site/025.nsf/eng/h_00004.html" 
+                    href="https://ised-isde.canada.ca/site/amateur-radio-operator-certificate-services/en/amateur-radio-exam-generator" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="block px-2 py-1 bg-gray-900 rounded-sm text-[10px] text-amber-300 hover:bg-gray-800 hover:text-amber-200 transition-colors"
                   >
                     <div className="flex items-center justify-between">
-                      <span>Canadian Amateur Radio Basic Qualification</span>
+                      <span>ISED Official Exam Practice Generator</span>
                       <ExternalLink size={10} />
                     </div>
                   </a>
                   <a 
-                    href="https://www.rac.ca/amateur-radio-courses/" 
+                    href="https://apc-cap.ic.gc.ca/datafiles/amateur_basic_questions_en.pdf" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="block px-2 py-1 bg-gray-900 rounded-sm text-[10px] text-amber-300 hover:bg-gray-800 hover:text-amber-200 transition-colors"
                   >
                     <div className="flex items-center justify-between">
-                      <span>Radio Amateurs of Canada Courses</span>
+                      <span>Complete Question Bank PDF</span>
                       <ExternalLink size={10} />
                     </div>
                   </a>
@@ -1133,13 +1133,13 @@ export default function LearningPage() {
                     </div>
                   </Link>
                   <a 
-                    href="https://www.rac.ca/amateur-radio-courses/" 
+                    href="https://ised-isde.canada.ca/site/amateur-radio-operator-certificate-services/en/accredited-examiners" 
                     target="_blank" 
                     rel="noopener noreferrer"
                     className="block px-2 py-1 bg-gray-900 rounded-sm text-[10px] text-red-300 hover:bg-gray-800 hover:text-red-200 transition-colors"
                   >
                     <div className="flex items-center justify-between">
-                      <span>Find Exam Sessions Nationwide</span>
+                      <span>Find Accredited Examiners</span>
                       <ExternalLink size={10} />
                     </div>
                   </a>

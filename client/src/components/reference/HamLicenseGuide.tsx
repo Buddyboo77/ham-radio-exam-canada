@@ -248,18 +248,18 @@ const HamLicenseGuide: React.FC = () => {
               </div>
               
               <div className="bg-gray-900 p-3 rounded-md border border-gray-800">
-                <h4 className="text-sm font-medium text-gray-200 mb-1">Radio Amateurs of Canada (RAC)</h4>
+                <h4 className="text-sm font-medium text-gray-200 mb-1">Official Exam Practice Generator</h4>
                 <p className="text-xs text-gray-400 mb-2">
-                  The national association for amateur radio in Canada provides study guides and resources.
+                  ISED Canada provides the official exam question bank and practice generator with all questions used on the actual exam.
                 </p>
                 <a 
-                  href="https://www.rac.ca/amateur-radio-resources/" 
+                  href="https://ised-isde.canada.ca/site/amateur-radio-operator-certificate-services/en/amateur-radio-exam-generator" 
                   target="_blank"
                   rel="noopener noreferrer" 
                   className="text-xs text-blue-400 hover:text-blue-300 flex items-center gap-1"
                 >
                   <Info className="h-3 w-3" />
-                  Find resources and guides on RAC website
+                  Practice with official ISED exam questions
                 </a>
               </div>
               

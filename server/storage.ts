@@ -722,7 +722,7 @@ export class DatabaseStorage implements IStorage {
     await this.createReferenceItem({
       category: "Testing & Certification",
       title: "Canadian License Exam Preparation",
-      description: "Study Resources:\n\n1. Official Study Guides:\n- Basic Qualification Guide (RAC)\n- Advanced Qualification Guide (RAC)\n\n2. Online Resources:\n- Industry Canada Question Bank\n- https://www.ic.gc.ca/eic/site/025.nsf/eng/home\n- https://www.rac.ca/\n- Practice tests: https://www.hamexam.ca/\n\n3. Mobile Apps:\n- ExHAMiner (Android/iOS)\n\nFinding an Exam Session:\n- Contact local clubs (Powell River Amateur Radio Club)\n- Radio Amateurs of Canada (RAC) accredited examiners\n- Check https://www.rac.ca/examiners/ for examiner lookup",
+      description: "Study Resources:\n\n1. Official Government Resources:\n- ISED Canada Exam Generator (official practice tests)\n- https://ised-isde.canada.ca/site/amateur-radio-operator-certificate-services/en/amateur-radio-exam-generator\n- Complete question bank with answers\n- Free practice exams by category\n\n2. Additional Online Resources:\n- Ham Study Online: https://hamstudy.org/canadaBasic\n- Practice tests: https://www.hamexam.ca/\n\n3. Mobile Apps:\n- ExHAMiner (Android/iOS)\n\nFinding an Exam Session:\n- Contact local amateur radio clubs\n- Find accredited examiners at ISED Canada website\n- https://ised-isde.canada.ca/site/amateur-radio-operator-certificate-services/en/accredited-examiners",
       sortOrder: 1
     });
     
