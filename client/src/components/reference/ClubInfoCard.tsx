@@ -13,41 +13,30 @@ import {
 const ClubInfoCard = () => {
   return (
     <div className="w-full text-gray-300 text-sm">
-      {/* Club header with call sign */}
+      {/* Amateur Radio Club Info */}
       <div className="mb-3 flex items-center justify-between">
         <div className="flex items-center">
           <div className="radio-led green mr-2"></div>
-          <h3 className="text-blue-300 font-mono text-xs">VA7HAM</h3>
+          <h3 className="text-blue-300 font-mono text-xs">Amateur Radio Clubs</h3>
         </div>
         <div className="bg-blue-900 px-2 py-0.5 rounded-sm text-xs text-blue-100">
-          Since 1972
+          Find Local
         </div>
       </div>
       
       {/* Club info sections */}
       <div className="space-y-3">
-        {/* Meeting details */}
+        {/* Finding clubs */}
         <div className="bg-gray-900 bg-opacity-40 rounded-md p-2 border border-gray-700">
           <div className="flex items-center gap-2 mb-1 text-blue-300 border-b border-gray-700 pb-1">
-            <CalendarDays className="h-4 w-4" />
-            <span className="text-xs font-medium">CLUB MEETINGS</span>
+            <MapPin className="h-4 w-4" />
+            <span className="text-xs font-medium">FIND A CLUB</span>
           </div>
           <p className="text-xs text-gray-300">
-            Sept-June on the second Wednesday at 7:00pm
+            Search for amateur radio clubs in your area to connect with local operators
           </p>
           <p className="text-xs text-gray-400 mt-1">
-            Call repeater or 604-485-6916 for access
-          </p>
-        </div>
-        
-        {/* Coffee meetup */}
-        <div className="bg-gray-900 bg-opacity-40 rounded-md p-2 border border-gray-700">
-          <div className="flex items-center gap-2 mb-1 text-amber-300 border-b border-gray-700 pb-1">
-            <Coffee className="h-4 w-4" />
-            <span className="text-xs font-medium">COFFEE MEETUPS</span>
-          </div>
-          <p className="text-xs text-gray-300">
-            Saturday mornings at 10am at local A&W
+            Visit Radio Amateurs of Canada (RAC) or local websites to find clubs near you
           </p>
         </div>
         

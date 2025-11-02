@@ -247,22 +247,24 @@ const ReferencePage = () => {
               <h3 className="text-sm font-semibold text-red-300 mb-2">When All Else Fails: Ham Radio Works</h3>
               <p className="text-xs text-gray-300 mb-3">
                 During emergencies when conventional communications infrastructure may be compromised, 
-                amateur radio operators play a crucial role in maintaining communications. The Powell River 
-                Amateur Radio Club regularly practices emergency communication protocols to stay prepared.
+                amateur radio operators play a crucial role in maintaining communications. Canadian amateur 
+                radio operators regularly practice emergency communication protocols to stay prepared.
               </p>
-              <div className="grid grid-cols-1 sm:grid-cols-3 gap-2 text-xs">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
                 <div className="p-2 bg-gray-800 rounded border border-gray-700">
-                  <h4 className="font-medium text-red-400 mb-1">Emergency Frequency</h4>
-                  <p className="text-gray-300">146.52 MHz (National Calling)</p>
+                  <h4 className="font-medium text-red-400 mb-1">VHF National Calling</h4>
+                  <p className="text-gray-300">146.52 MHz Simplex</p>
+                  <p className="text-[10px] text-gray-400 mt-1">Monitor during emergencies</p>
                 </div>
                 <div className="p-2 bg-gray-800 rounded border border-gray-700">
-                  <h4 className="font-medium text-red-400 mb-1">Emergency Contact</h4>
-                  <p className="text-gray-300">Club Repeater or 604-485-6916</p>
+                  <h4 className="font-medium text-red-400 mb-1">UHF National Calling</h4>
+                  <p className="text-gray-300">446.00 MHz Simplex</p>
+                  <p className="text-[10px] text-gray-400 mt-1">Alternative calling frequency</p>
                 </div>
-                <div className="p-2 bg-gray-800 rounded border border-gray-700">
-                  <h4 className="font-medium text-red-400 mb-1">Priority Traffic</h4>
-                  <p className="text-gray-300">Use "emergency" for life-threatening situations</p>
-                </div>
+              </div>
+              <div className="mt-2 p-2 bg-gray-800 rounded border border-gray-700 text-xs">
+                <h4 className="font-medium text-red-400 mb-1">Emergency Traffic Priority</h4>
+                <p className="text-gray-300">Use the word "emergency" for life-threatening situations requiring immediate assistance</p>
               </div>
             </div>
           </div>
