@@ -307,6 +307,26 @@ export default function EnhancedLearningPage() {
     }
   }, [location]);
 
+  // Prefetch all questions on first load for offline access
+  useEffect(() => {
+    const prefetchQuestions = async () => {
+      const cached = localStorage.getItem('cached-exam-questions');
+      if (!cached) {
+        try {
+          const response = await fetch('/api/exam-questions');
+          if (response.ok) {
+            const allQuestions = await response.json();
+            localStorage.setItem('cached-exam-questions', JSON.stringify(allQuestions));
+            localStorage.setItem('cached-questions-timestamp', new Date().toISOString());
+          }
+        } catch (error) {
+          console.log('Unable to prefetch questions, will fetch on demand');
+        }
+      }
+    };
+    prefetchQuestions();
+  }, []);
+
   // Fetch questions for quiz (only when starting a quiz) with offline support
   const { data: quizQuestions, isLoading: isLoadingQuestions, error: questionsError } = useQuery<DatabaseQuestion[]>({
     queryKey: ['/api/exam-questions', 'quiz', activeCategory, questionsCount],
