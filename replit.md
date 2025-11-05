@@ -12,6 +12,29 @@ Preferred communication style: Simple, everyday language.
 
 ## Recent Changes
 
+### Official Question Bank Import Attempt (Nov 5, 2025)
+**IMPORTANT - PDF Parsing Challenge:**
+- Attempted to import the official ISED Canada question bank (984 questions) from PDF
+- The PDF uses a complex multi-column table layout that doesn't parse cleanly with automated tools
+- Initial import corrupted question text and answer options due to table structure
+- **Database restored** with 4,031 validated template questions for testing
+- Template questions are well-formatted and cover all required topics
+
+**Next Steps for Official Question Import:**
+- The official PDF (official_basic_questions.pdf) contains all 984 questions with correct answer indicators
+- Recommended approach: Convert PDF to structured data (CSV/JSON) using:
+  - PDF table extraction tools (e.g., Tabula, Adobe Acrobat Export)
+  - Manual data entry with quality validation
+  - OCR-based parsing with human review
+- Once structured data is available, import script can be updated to use CSV/JSON format
+- **Data integrity validation** must be added before any future imports to prevent corruption
+
+**Current State:**
+- App is fully functional with template questions
+- All 984 official question IDs and correct answers were successfully identified in PDF
+- Schema updated to support official questions (explanation field now nullable)
+- Import infrastructure ready once structured data is available
+
 ### Critical Stability Fixes (Nov 5, 2025)
 Fixed exam disappearing issues that could impact paying customers:
 
@@ -128,4 +151,4 @@ The app is designed as a Progressive Web App with:
 ### Monetization
 - **Google AdSense**: Ad integration for free tier (requires user approval and publisher ID replacement)
 
-The application uses the official ISED Canada exam question bank and supports offline functionality through service worker caching and localStorage.
+The application currently uses comprehensive template questions for testing. Official ISED Canada question bank import is pending structured data conversion. The app supports offline functionality through service worker caching and localStorage.
