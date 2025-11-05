@@ -1,0 +1,47 @@
+B-001-007-010,An amateur radio operator may be engaged in communications including the transmission of:,Radiocommunication in support of industrial/business/professional activities,Commercially recorded material,Q codes,Broadcast programming,C
+B-001-007-011,In the amateur radio service, business communications:,Are not permitted under any circumstance,Are permitted on some bands,Are permitted for safety of life/property,Are not prohibited by regulation,A
+B-001-008-005,Minimum qualifications to install an amateur radio club station:,Basic,Basic with Honours,Basic and Advanced,Basic, Advanced and Morse code,C
+B-001-008-006,Minimum qualifications to operate a transmitter or RF amplifier not professionally designed or manufactured:,Basic, Advanced and Morse code,Basic and Advanced,Basic with Honours,Basic and Morse code,B
+B-001-008-001,Where may holders of an Amateur Radio Operator Certificate operate a station in Canada?:,Only during emergencies,Only at address on record,Only within province or territory,Anywhere in Canada,D
+B-001-008-007,Minimum qualifications to operate cross-band repeaters:,Basic with Honours,Basic and Morse code,Basic and Advanced,Basic,D
+B-001-008-002,Which type of station may transmit one-way communications?:,Repeater station,HF station,VHF station,Beacon station,D
+B-001-008-008,Minimum qualifications to remotely operate a transmitter (change frequency, mode, power):,Basic,Basic with Honours,Basic and Morse code,Basic and Advanced,C
+B-001-008-003,Minimum qualifications to assemble commercially available transmitter kits of professional design:,Basic and Morse code,Basic with Honours,Basic,Basic and Advanced,D
+B-001-008-004,Minimum qualifications to install a repeater operating on a single band in voice mode:,Basic and Morse code,Basic with Honours,Basic,Basic and Advanced,D
+B-001-009-001,Who is responsible for the operation of an amateur radio station?:,Both control operator and station owner,Only station owner,Person who owns equipment,Only control operator,A
+B-001-009-002,If you transmit from another amateur station, who is responsible?:,Station owner,Both of you,You,Station owner unless logbook shows you as control operator,B
+B-001-009-006,When transmitting, where must the control operator be?:,At station entrance,Within 50 km of station,At control point,Anywhere in same building,C
+B-001-009-003,What is your responsibility as a station owner?:,Be present during operation,Notify ISED if another operator acts as control operator,Ensure operation complies with regulations,Allow others to operate on request,C
+B-001-009-007,Why can't unqualified family members transmit alone using your station?:,Must know correct frequencies and modes,Must hold suitable qualifications,Must have permission,Must know abbreviations and Q signals,B
+B-001-009-004,Who may be the control operator of an amateur station?:,Any person over 21,Any qualified amateur chosen by owner,Any person over 21 with Basic,Any person over 21 with Basic and Morse code,B
+B-001-009-008,What may the station owner permit?:,Anyone to use station without restrictions,Anyone to use station and take part in communications,Any person to operate under supervision and presence of certificate holder,Only with written permission from ISED,C
+B-001-009-005,When must a station have a control operator?:,Not needed,Whenever receiver is operated,Only during training,Whenever transmitting,D
+B-001-009-009,When can a person without a certificate operate a station?:,Under supervision and presence of qualified operator,Briefed by phone by qualified operator,Enrolled in amateur course,Holds licence in other service,A
+B-001-010-004,What rule applies if two operators want to use the same frequency?:,Equal right to operate,Lower qualification must yield,Higher power must yield,Region 1/3 must yield to Region 2,A
+B-001-010-001,What is a transmission that disturbs other communications called?:,Unidentified transmissions,Harmful interference,Interrupted CW,Transponder signals,B
+B-001-010-005,What is interference that degrades or obstructs a service called?:,Disruptive interference,Harmful interference,Intentional interference,Adjacent interference,B
+B-001-010-002,When may you deliberately interfere with another station?:,In crowded band conditions,Never acceptable,If station is illegal,If station transmits on your frequency,C
+B-001-010-006,What can the Minister do if a station causes harmful interference?:,Delegate to CRTC,Convene compromise,Order operation to cease or change,Revoke certificate without notice,C
+B-001-010-003,What does it mean if amateur service is secondary on a band?:,Allowed only if no interference to primary users,All users have equal rights,Only allowed during emergencies,Only for brief testing,A
+B-001-010-007,Amateur operation must not interfere with which band?:,430.0–450.0 MHz,7.0–7.1 MHz,144.0–148.0 MHz,14.0–14.2 MHz,A
+B-001-010-008,Amateur operations are NOT protected from interference in which band?:,144–148 MHz,222–225 MHz,50–54 MHz,902–928 MHz,D
+B-001-011-002,During disaster relief, when may you use non-amateur frequencies?:,When messages go to agencies without amateur support,When normal systems are overloaded/damaged,Not permitted,When relaying for government agencies,B
+B-001-010-009,When may you conduct test transmissions?:,If no interference to amateur or other services,In designated sub-bands,Only midnight to 8 AM,After warning other stations,A
+B-001-011-003,If you hear a distress signal on a band you're not authorized for:,May not respond,May respond and assist,May respond using Morse only,May respond after ISED permission,B
+B-001-010-010,Which amateur band may be heavily occupied by licence-exempt devices?:,3.5–4.0 MHz,430–450 MHz,135.7–137.8 kHz,902–928 MHz,D
+B-001-011-004,In amateur service, what may be broadcast?:,Commercial material,Broadcast programming,Communications for safety of life/property,Music picked up by mic,C
+B-001-011-001,Who may amateur stations communicate with?:,Non-amateur stations,Stations in real/simulated emergency,Only other amateur stations,Anyone using Morse code,C
+B-001-011-005,In distress, what may an amateur operator use?:,Any means but only on emergency channels,Only Morse on emergency channels,Any means of radiocommunication,Only authorized bands,C
+B-001-011-006,During a disaster, when may a station transmit to assist relief?:,When normal systems are overloaded/damaged,Only official emergency stations may transmit,Systems working but not convenient,Only when local emergency net is activated,A
+B-001-011-010,When are you permitted to interfere with another station’s transmissions?:,When both want same contact,When other station interferes with you,When your station is in distress,When other station violates regulations,C
+B-001-012-001,What kind of payment is allowed for third-party messages?:,Any agreed amount,None,Donation of equipment,Donation of repairs,B
+B-001-011-007,What transmitter power limits apply in distress?:,2250 watts PEP,750 watts carrier,1000 watts DC input,None,D
+B-001-012-002,What is expected of amateur operators during emergencies?:,Cooperate fully with emergency services,Transmit only on VHF,Use only Morse code,Contact ISED immediately,A
+B-001-012-003,What is the purpose of the amateur radio service?:,Entertainment,Commercial communication,Self-training, intercommunication, technical investigations,Emergency broadcasting,C
+B-001-012-004,What is the maximum DC input power below 30 MHz?:,250 watts,500 watts,750 watts,1000 watts,C
+B-001-012-005,What is the maximum DC input power above 30 MHz?:,100 watts,250 watts,500 watts,750 watts,B
+B-001-012-006,What is the maximum bandwidth permitted below 30 MHz?:,3 kHz,6 kHz,10 kHz,20 kHz,B
+B-001-012-007,What is the maximum bandwidth permitted above 30 MHz?:,6 kHz,10 kHz,15 kHz,20 kHz,D
+B-001-012-008,What is the maximum output power on the 2200 metre band?:,1 watt EIRP,5 watts EIRP,100 watts ERP,200 watts PEP,A
+B-001-012-009,What is the maximum output power on the 630 metre band?:,1 watt EIRP,5 watts EIRP,100 watts ERP,200 watts PEP,B
+B-001-012-010,What is
