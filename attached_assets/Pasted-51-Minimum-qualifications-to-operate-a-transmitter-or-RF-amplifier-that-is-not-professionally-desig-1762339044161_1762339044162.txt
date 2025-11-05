@@ -1,0 +1,50 @@
+51. Minimum qualifications to operate a transmitter or RF amplifier that is not professionally designed or manufactured? Answer: Basic and Advanced
+52. Where may holders of an Amateur Radio Operator Certificate operate a station in Canada? Answer: Anywhere in Canada
+53. Which type of station may transmit one-way communications? Answer: Beacon station
+54. Minimum qualifications to operate cross-band repeaters? Answer: Basic and Advanced
+55. Minimum qualifications to remotely operate a transmitter? Answer: Basic and Morse code
+56. Minimum qualifications to assemble transmitter kits of professional design? Answer: Basic and Advanced
+57. Minimum qualifications to install a repeater operating on a single band in voice mode? Answer: Basic and Advanced
+58. Who is responsible for the operation of an amateur radio station? Answer: Both the control operator and the station owner
+59. If you transmit from another amateur station, who is responsible? Answer: Both of you
+60. When transmitting, where must the control operator be? Answer: At the station's control point
+61. What is your responsibility as a station owner? Answer: Responsible for operation in accordance with regulations
+62. Why can't unqualified family members transmit alone using your station? Answer: They must hold suitable amateur qualifications
+63. Who may be the control operator of an amateur station? Answer: Any qualified amateur chosen by the station owner
+64. What may the station owner permit? Answer: Operation under supervision and presence of a certificate holder
+65. When must a station have a control operator? Answer: Whenever the station is transmitting
+66. When can a person without a certificate operate a station? Answer: When under supervision and in presence of a qualified operator
+67. What rule applies if two operators want to use the same frequency? Answer: Both have equal right to operate
+68. What is a transmission that disturbs other communications called? Answer: Harmful interference
+69. What is interference that degrades or obstructs a service called? Answer: Harmful interference
+70. When may you deliberately interfere with another station? Answer: Only if the station is operating illegally
+71. What can the Minister do if a station causes harmful interference? Answer: Order the station's operation to cease or change
+72. What does it mean if amateur service is secondary on a band? Answer: Must not interfere with primary users
+73. Amateur operation must not interfere with which band? Answer: 430.0 MHz to 450.0 MHz
+74. Amateur operations are NOT protected from interference in which band? Answer: 902 MHz to 928 MHz
+75. During disaster relief, when may you use non-amateur frequencies? Answer: When normal systems are overloaded or disrupted
+76. When may you conduct test transmissions? Answer: When they do not cause interference
+77. If you hear a distress signal on a band you’re not authorized for: Answer: You may respond and offer assistance
+78. Which amateur band may be heavily occupied by licence-exempt devices? Answer: 902 MHz to 928 MHz
+79. In amateur service, what may be broadcast? Answer: Communications required for safety of life and property
+80. Who may amateur stations communicate with? Answer: Only other amateur radio stations
+81. In distress, what may an amateur operator use? Answer: Any means of radiocommunication
+82. During a disaster, when may a station transmit to assist relief? Answer: When normal systems are overloaded or disrupted
+83. When are you permitted to interfere with another station’s transmissions? Answer: When your station is directly involved in a distress situation
+84. What kind of payment is allowed for third-party messages? Answer: No payment of any kind is allowed
+85. What transmitter power limits apply in distress? Answer: No limitations
+86. What is expected of amateur operators during emergencies? Answer: Cooperate fully with emergency services
+87. What is the purpose of the amateur radio service? Answer: Self-training, intercommunication, and technical investigations
+88. What is the maximum DC input power to the final stage of a transmitter below 30 MHz? Answer: 750 watts
+89. What is the maximum DC input power to the final stage of a transmitter above 30 MHz? Answer: 250 watts
+90. What is the maximum bandwidth permitted below 30 MHz? Answer: 6 kHz
+91. What is the maximum bandwidth permitted above 30 MHz? Answer: 20 kHz
+92. What is the maximum output power allowed on the 2200 metre band? Answer: 1 watt EIRP
+93. What is the maximum output power allowed on the 630 metre band? Answer: 5 watts EIRP
+94. What is the maximum output power allowed on the 60 metre band? Answer: 100 watts ERP
+95. What is the maximum output power allowed on the 30 metre band? Answer: 200 watts PEP
+96. What is the maximum output power allowed on the 20 metre band? Answer: 750 watts PEP
+97. What is the maximum output power allowed on the 2 metre band? Answer: 250 watts DC input
+98. What is the maximum output power allowed on the 70 centimetre band? Answer: 250 watts DC input
+99. What is the maximum output power allowed on the 33 centimetre band? Answer: 250 watts DC input
+100. What is the maximum output power allowed on the 23 centimetre band? Answer: 250 watts DC input
