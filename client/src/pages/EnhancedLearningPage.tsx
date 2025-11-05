@@ -308,26 +308,6 @@ export default function EnhancedLearningPage() {
   // Learning progress
   const { recordQuizCompletion } = useLearningProgress();
 
-  // Track previous location to detect real navigation changes
-  const prevLocationRef = useRef(location);
-  
-  // Reset to dashboard view ONLY when actually navigating to home route (not on re-renders)
-  useEffect(() => {
-    // Only reset if location actually changed AND we're moving to '/'
-    if (location === '/' && prevLocationRef.current !== '/') {
-      setActiveView('dashboard');
-      setShowQuizConfig(true);
-      setQuizCompleted(false);
-      setCurrentQuestion(0);
-      setSelectedAnswer(null);
-      setUserAnswers([]);
-      setQuestionsToUse([]);
-      setTimeLeft(null);
-    }
-    // Update the ref for next comparison
-    prevLocationRef.current = location;
-  }, [location]);
-
   // Prefetch all questions on first load for offline access
   useEffect(() => {
     const prefetchQuestions = async () => {
