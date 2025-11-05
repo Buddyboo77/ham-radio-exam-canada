@@ -603,11 +603,18 @@ export default function EnhancedLearningPage() {
       {/* Fixed Home Button at bottom - only show when not on dashboard and not actively taking quiz */}
       {activeView !== 'dashboard' && (showQuizConfig || quizCompleted) && (
         <div className="fixed bottom-4 right-4 z-50">
-          <Link href="/">
-            <button className="bg-green-600 hover:bg-green-500 p-3 rounded-full shadow-lg border-2 border-green-400 shadow-glow-green">
-              <HomeIcon size={24} className="text-white" />
-            </button>
-          </Link>
+          <button 
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              if (window.confirm('Are you sure you want to go home? Any in-progress training or exam will be lost.')) {
+                setLocation('/');
+              }
+            }}
+            className="bg-green-600 hover:bg-green-500 p-3 rounded-full shadow-lg border-2 border-green-400 shadow-glow-green"
+          >
+            <HomeIcon size={24} className="text-white" />
+          </button>
         </div>
       )}
       
@@ -635,14 +642,18 @@ export default function EnhancedLearningPage() {
               </button>
             )}
             {activeView !== 'dashboard' && (showQuizConfig || quizCompleted) && (
-              <Link href="/">
-                <button 
-                  className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1"
-                  onClick={() => {}}
-                >
-                  <HomeIcon size={10} /> HOME
-                </button>
-              </Link>
+              <button 
+                className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1"
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  if (window.confirm('Are you sure you want to go home? Any in-progress training or exam will be lost.')) {
+                    setLocation('/');
+                  }
+                }}
+              >
+                <HomeIcon size={10} /> HOME
+              </button>
             )}
           </div>
         </div>
