@@ -1,0 +1,41 @@
+B-001-020-001,What is the purpose of a fuse in an electrical circuit?,To protect against overcurrent,To increase voltage,To store energy,To amplify current,A
+B-001-020-002,What is the purpose of a circuit breaker?,To interrupt current in an overload,To increase current,To store voltage,To amplify power,A
+B-001-020-003,What is the purpose of a ground fault interrupter?,To protect against electric shock,To increase voltage,To store energy,To amplify current,A
+B-001-020-004,What is the purpose of a power supply?,To convert AC to DC,To increase voltage,To store energy,To amplify current,A
+B-001-020-005,What is the purpose of a transformer?,To change voltage levels,To store energy,To amplify current,To convert DC to AC,A
+B-001-020-006,What is the purpose of a rectifier?,To convert AC to DC,To convert DC to AC,To store energy,To amplify current,A
+B-001-020-007,What is the purpose of a filter capacitor?,To smooth rectified voltage,To increase voltage,To store energy,To amplify current,A
+B-001-020-008,What is the purpose of a voltage regulator?,To maintain constant voltage,To increase current,To store energy,To amplify voltage,A
+B-001-020-009,What is the purpose of a battery?,To store electrical energy,To increase voltage,To amplify current,To convert AC to DC,A
+B-001-020-010,What is the purpose of a solar panel?,To convert sunlight to electricity,To store energy,To amplify voltage,To convert electricity to heat,A
+B-001-020-011,What is the purpose of a generator?,To convert mechanical to electrical energy,To store energy,To amplify voltage,To convert AC to DC,A
+B-001-020-012,What is the purpose of an inverter?,To convert DC to AC,To convert AC to DC,To store energy,To amplify current,A
+B-001-020-013,What is the purpose of a charge controller?,To regulate battery charging,To increase voltage,To store energy,To amplify current,A
+B-001-020-014,What is the purpose of a power inverter?,To convert DC to AC,To convert AC to DC,To store energy,To amplify voltage,A
+B-001-020-015,What is the purpose of a UPS (uninterruptible power supply)?,To provide backup power,To increase voltage,To store energy,To amplify current,A
+B-001-020-016,What is the purpose of a power strip with surge protection?,To protect equipment from voltage spikes,To increase voltage,To store energy,To amplify current,A
+B-001-020-017,What is the purpose of a circuit tester?,To check for voltage presence,To increase voltage,To store energy,To amplify current,A
+B-001-020-018,What is the purpose of a continuity tester?,To check for closed circuits,To increase voltage,To store energy,To amplify current,A
+B-001-020-019,What is the purpose of a clamp meter?,To measure current without breaking the circuit,To increase voltage,To store energy,To amplify current,A
+B-001-020-020,What is the purpose of a test light?,To indicate voltage presence,To increase voltage,To store energy,To amplify current,A
+B-001-020-021,What is the purpose of a load tester?,To test battery capacity,To increase voltage,To store energy,To amplify current,A
+B-001-020-022,What is the purpose of a battery hydrometer?,To measure electrolyte specific gravity,To increase voltage,To store energy,To amplify current,A
+B-001-020-023,What is the purpose of a battery charger?,To restore battery charge,To increase voltage,To store energy,To amplify current,A
+B-001-020-024,What is the purpose of a trickle charger?,To maintain battery charge,To increase voltage,To store energy,To amplify current,A
+B-001-020-025,What is the purpose of a deep cycle battery?,To provide long-term power,To increase voltage,To store energy,To amplify current,A
+B-001-020-026,What is the purpose of a sealed lead-acid battery?,To prevent electrolyte leakage,To increase voltage,To store energy,To amplify current,A
+B-001-020-027,What is the purpose of a lithium-ion battery?,To provide high energy density,To increase voltage,To store energy,To amplify current,A
+B-001-020-028,What is the purpose of a battery management system?,To monitor and protect battery cells,To increase voltage,To store energy,To amplify current,A
+B-001-020-029,What is the purpose of a battery disconnect switch?,To isolate battery from circuit,To increase voltage,To store energy,To amplify current,A
+B-001-020-030,What is the purpose of a battery fuse?,To protect battery from overcurrent,To increase voltage,To store energy,To amplify current,A
+B-001-020-031,What is the purpose of a battery enclosure?,To protect battery from environment,To increase voltage,To store energy,To amplify current,A
+B-001-020-032,What is the purpose of a battery monitor?,To measure battery voltage and current,To increase voltage,To store energy,To amplify current,A
+B-001-020-033,What is the purpose of a battery equalizer?,To balance charge among cells,To increase voltage,To store energy,To amplify current,A
+B-001-020-034,What is the purpose of a battery desulfator?,To remove sulfate buildup,To increase voltage,To store energy,To amplify current,A
+B-001-020-035,What is the purpose of a battery vent?,To release gas buildup,To increase voltage,To store energy,To amplify current,A
+B-001-020-036,What is the purpose of a battery terminal cleaner?,To remove corrosion,To increase voltage,To store energy,To amplify current,A
+B-001-020-037,What is the purpose of a battery terminal protector?,To prevent corrosion,To increase voltage,To store energy,To amplify current,A
+B-001-020-038,What is the purpose of a battery cable?,To connect battery to circuit,To increase voltage,To store energy,To amplify current,A
+B-001-020-039,What is the purpose of a battery lug?,To connect cable to terminal,To increase voltage,To store energy,To amplify current,A
+B-001-020-040,What is the purpose of a battery clamp?,To secure cable to terminal,To increase voltage,To store energy,To amplify current,A
+...
