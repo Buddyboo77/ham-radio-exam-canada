@@ -134,7 +134,7 @@ export const examQuestions = pgTable("exam_questions", {
   optionC: text("option_c").notNull(),
   optionD: text("option_d").notNull(),
   correctAnswer: integer("correct_answer").notNull(), // 0=A, 1=B, 2=C, 3=D
-  explanation: text("explanation").notNull(),
+  explanation: text("explanation"), // Optional - official ISED questions don't include explanations
   category: text("category").notNull(), // "regulations", "operating", "technical", "antenna", "safety", "digital", "emergency"
   subcategory: text("subcategory"), // More specific categorization
   difficulty: text("difficulty").default("basic"), // "basic", "intermediate", "advanced"
