@@ -1,0 +1,50 @@
+B-001-013-051,What is the function of a keypad in a transceiver?,To enter commands and frequencies,To store commands,To amplify signals,To measure frequencies,A
+B-001-013-052,What is the function of a memory channel?,To store frequency and mode settings,To amplify stored signals,To measure stored frequencies,To convert stored settings,A
+B-001-013-053,What is the function of a scan function?,To search for active signals,To store active signals,To amplify active signals,To measure active signals,A
+B-001-013-054,What is the function of a dual-watch feature?,To monitor two frequencies,To store two frequencies,To amplify two frequencies,To measure two frequencies,A
+B-001-013-055,What is the function of a repeater?,To retransmit signals to extend range,To store signals,To amplify signals,To measure signals,A
+B-001-013-056,What is the function of a duplexer?,To separate transmit and receive paths,To store transmit paths,To amplify receive paths,To measure transmit paths,A
+B-001-013-057,What is the function of a tone encoder?,To send subaudible tones,To store tones,To amplify tones,To measure tones,A
+B-001-013-058,What is the function of a tone decoder?,To detect subaudible tones,To store tones,To amplify tones,To measure tones,A
+B-001-013-059,What is the function of a CTCSS system?,To reduce interference on shared channels,To store channel settings,To amplify shared signals,To measure channel usage,A
+B-001-013-060,What is the function of a DTMF keypad?,To send numeric tones,To store numeric tones,To amplify numeric tones,To measure numeric tones,A
+B-001-013-061,What is the function of a packet radio TNC?,To encode and decode digital data,To store digital data,To amplify digital data,To measure digital data,A
+B-001-013-062,What is the function of APRS?,To transmit location and telemetry data,To store location data,To amplify telemetry data,To measure location data,A
+B-001-013-063,What is the function of a satellite transponder?,To relay signals between Earth stations,To store signals,To amplify signals,To measure signals,A
+B-001-013-064,What is the function of a Doppler shift compensator?,To adjust for frequency changes,To store frequency changes,To amplify frequency changes,To measure frequency changes,A
+B-001-013-065,What is the function of a beacon station?,To transmit identification signals,To store identification signals,To amplify identification signals,To measure identification signals,A
+B-001-013-066,What is the function of a telemetry transmitter?,To send sensor data,To store sensor data,To amplify sensor data,To measure sensor data,A
+B-001-013-067,What is the function of a control operator?,To ensure legal operation of a station,To store station settings,To amplify station signals,To measure station output,A
+B-001-013-068,What is the function of a station log?,To record operating activity,To store operating activity,To amplify operating activity,To measure operating activity,A
+B-001-013-069,What is the function of a QSL card?,To confirm a contact,To store a contact,To amplify a contact,To measure a contact,A
+B-001-013-070,What is the function of a contest exchange?,To provide required contest information,To store contest information,To amplify contest information,To measure contest information,A
+B-001-013-071,What is the function of a net control station?,To manage group communications,To store group communications,To amplify group communications,To measure group communications,A
+B-001-013-072,What is the function of an emergency net?,To coordinate disaster response,To store disaster data,To amplify emergency signals,To measure emergency traffic,A
+B-001-013-073,What is the function of a traffic net?,To relay formal messages,To store formal messages,To amplify formal messages,To measure formal messages,A
+B-001-013-074,What is the function of a public service event net?,To support event communications,To store event communications,To amplify event communications,To measure event communications,A
+B-001-013-075,What is the function of a simplex frequency?,To transmit and receive on the same frequency,To store frequency,To amplify frequency,To measure frequency,A
+B-001-013-076,What is the function of a duplex frequency?,To transmit and receive on different frequencies,To store frequencies,To amplify frequencies,To measure frequencies,A
+B-001-013-077,What is the function of a calling frequency?,To initiate contact,To store contact,To amplify contact,To measure contact,A
+B-001-013-078,What is the function of a control point?,To operate a station remotely,To store station settings,To amplify station signals,To measure station output,A
+B-001-013-079,What is the function of a remote base?,To extend station access,To store station access,To amplify station access,To measure station access,A
+B-001-013-080,What is the function of a cross-band repeater?,To link different frequency bands,To store frequency bands,To amplify frequency bands,To measure frequency bands,A
+B-001-013-081,What is the function of a digipeater?,To relay digital signals,To store digital signals,To amplify digital signals,To measure digital signals,A
+B-001-013-082,What is the function of a gateway station?,To connect radio and internet,To store internet data,To amplify internet signals,To measure internet traffic,A
+B-001-013-083,What is the function of an Echolink node?,To enable VoIP radio connections,To store VoIP data,To amplify VoIP signals,To measure VoIP traffic,A
+B-001-013-084,What is the function of an IRLP node?,To link repeaters via internet,To store repeater data,To amplify repeater signals,To measure repeater traffic,A
+B-001-013-085,What is the function of a reflector server?,To host multi-user VoIP sessions,To store VoIP sessions,To amplify VoIP sessions,To measure VoIP sessions,A
+B-001-013-086,What is the function of a hotspot device?,To provide personal digital access,To store digital access,To amplify digital access,To measure digital access,A
+B-001-013-087,What is the function of a code plug?,To store radio configuration data,To amplify configuration data,To measure configuration data,To convert configuration data,A
+B-001-013-088,What is the function of a firmware update?,To improve radio performance,To store radio performance,To amplify radio performance,To measure radio performance,A
+B-001-013-089,What is the function of a software-defined radio?,To process signals using software,To store signals,To amplify signals,To measure signals,A
+B-001-013-090,What is the function of a waterfall display?,To visualize signal activity,To store signal activity,To amplify signal activity,To measure signal activity,A
+B-001-013-091,What is the function of a spectrum analyzer?,To measure signal frequencies,To store signal frequencies,To amplify signal frequencies,To convert signal frequencies,A
+B-001-013-092,What is the function of a signal generator?,To produce test signals,To store test signals,To amplify test signals,To measure test signals,A
+B-001-013-093,What is the function of an SWR meter?,To measure standing wave ratio,To store wave ratio,To amplify wave ratio,To convert wave ratio,A
+B-001-013-094,What is the function of a wattmeter?,To measure power output,To store power output,To amplify power output,To convert power output,A
+B-001-013-095,What is the function of a dummy load?,To safely test transmitters,To store transmitter data,To amplify transmitter signals,To measure transmitter output,A
+B-001-013-096,What is the function of a frequency counter?,To measure signal frequency,To store signal frequency,To amplify signal frequency,To convert signal frequency,A
+B-001-013-097,What is the function of a multimeter?,To measure voltage, current, and resistance,To store voltage, current, and resistance,To amplify voltage, current, and resistance,To convert voltage, current, and resistance,A
+B-001-013-098,What is the function of a voltmeter?,To measure voltage,To store voltage,To amplify voltage,To convert voltage,A
+B-001-013-099,What is the function of an ammeter?,To measure current,To store current,To amplify current,To convert current,A
+B-001-013-100,What is the function of an ohmmeter?,To measure resistance,To store resistance,To amplify resistance,To convert resistance,A
