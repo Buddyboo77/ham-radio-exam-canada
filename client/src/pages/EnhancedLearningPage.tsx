@@ -478,17 +478,27 @@ export default function EnhancedLearningPage() {
     }
   }, [quizQuestions, isLoadingQuestions, showQuizConfig, questionsCount, questionsError]);
 
-  // Timer effect for simulation mode
+  // Timer effect for simulation mode with warnings
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
     
     if (examMode === 'simulation' && timeLeft !== null && timeLeft > 0 && !quizCompleted && !showQuizConfig) {
+      // Warn when 5 minutes left
+      if (timeLeft === 300) {
+        alert('⏰ TIME WARNING: Only 5 minutes remaining!');
+      }
+      // Warn when 1 minute left
+      if (timeLeft === 60) {
+        alert('⏰ TIME WARNING: Only 1 minute remaining!');
+      }
+      
       timer = setInterval(() => {
         setTimeLeft(prevTime => {
           if (prevTime && prevTime > 1) {
             return prevTime - 1;
           } else {
             // Auto-submit the exam when time runs out
+            alert('⏰ TIME EXPIRED! Your exam has been automatically submitted.');
             setQuizCompleted(true);
             return 0;
           }
@@ -501,7 +511,7 @@ export default function EnhancedLearningPage() {
         clearInterval(timer);
       }
     };
-  }, [examMode, quizCompleted, showQuizConfig]); // Removed timeLeft from dependencies
+  }, [examMode, quizCompleted, showQuizConfig, timeLeft]);
   
   // Handle selecting an answer
   const selectAnswer = (answerIndex: number) => {
@@ -909,7 +919,13 @@ export default function EnhancedLearningPage() {
                         {questionsToUse[currentQuestion].category} Section
                       </Badge>
                   {examMode === 'simulation' && timeLeft && (
-                    <Badge variant="default" className="bg-red-800 text-red-100 text-xs">
+                    <Badge variant="default" className={`text-xs ${
+                      timeLeft <= 60 
+                        ? 'bg-red-600 text-white animate-pulse' 
+                        : timeLeft <= 300 
+                          ? 'bg-orange-700 text-orange-100' 
+                          : 'bg-red-800 text-red-100'
+                    }`}>
                       <Clock className="h-3 w-3 mr-1" />
                       {Math.floor(timeLeft / 60)}:{(timeLeft % 60).toString().padStart(2, '0')}
                     </Badge>
