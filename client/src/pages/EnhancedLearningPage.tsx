@@ -450,8 +450,21 @@ export default function EnhancedLearningPage() {
     
     // Set timer for simulation mode (time in seconds)
     if (examMode === 'simulation') {
-      // For official exam simulation: 3 hours for 100 questions = 108 seconds per question
-      const examTime = questionsCount === 100 ? 10800 : Math.max(questionsCount * 108, 300);
+      // Official Canadian ISED exam times:
+      // Basic Qualification: 3 hours for 100 questions
+      // For practice tests: 1.5 minutes per question (90 seconds)
+      let examTime: number;
+      if (questionsCount === 100) {
+        examTime = 10800; // 180 minutes = 3 hours (official exam time)
+      } else if (questionsCount === 75) {
+        examTime = 6750; // 112.5 minutes
+      } else if (questionsCount === 50) {
+        examTime = 4500; // 75 minutes
+      } else if (questionsCount === 25) {
+        examTime = 2250; // 37.5 minutes
+      } else {
+        examTime = questionsCount * 90; // 1.5 minutes per question
+      }
       setTimeLeft(examTime);
     } else {
       // No timer for practice mode
