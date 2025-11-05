@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
@@ -308,9 +308,13 @@ export default function EnhancedLearningPage() {
   // Learning progress
   const { recordQuizCompletion } = useLearningProgress();
 
-  // Reset to dashboard view when navigating to home route
+  // Track previous location to detect real navigation changes
+  const prevLocationRef = useRef(location);
+  
+  // Reset to dashboard view ONLY when actually navigating to home route (not on re-renders)
   useEffect(() => {
-    if (location === '/') {
+    // Only reset if location actually changed AND we're moving to '/'
+    if (location === '/' && prevLocationRef.current !== '/') {
       setActiveView('dashboard');
       setShowQuizConfig(true);
       setQuizCompleted(false);
@@ -320,6 +324,8 @@ export default function EnhancedLearningPage() {
       setQuestionsToUse([]);
       setTimeLeft(null);
     }
+    // Update the ref for next comparison
+    prevLocationRef.current = location;
   }, [location]);
 
   // Prefetch all questions on first load for offline access
