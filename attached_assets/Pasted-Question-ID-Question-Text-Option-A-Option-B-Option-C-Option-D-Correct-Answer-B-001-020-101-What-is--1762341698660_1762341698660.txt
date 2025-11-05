@@ -1,0 +1,27 @@
+Question ID,Question Text,Option A,Option B,Option C,Option D,Correct Answer
+B-001-020-101,What is the function of a diode?,To allow current in one direction,To store energy,To amplify signals,To convert AC to DC,A
+B-001-020-102,What is the function of a resistor?,To limit current flow,To store energy,To amplify signals,To convert voltage,A
+B-001-020-103,What is the function of a capacitor?,To store electrical charge,To limit current,To amplify signals,To convert voltage,A
+B-001-020-104,What is the function of an inductor?,To store energy in a magnetic field,To limit voltage,To amplify signals,To convert current,A
+B-001-020-105,What is the function of a transistor?,To amplify or switch signals,To store energy,To convert voltage,To limit current,A
+B-001-020-106,What is the function of a relay?,To switch circuits using electromagnetism,To store energy,To amplify signals,To convert voltage,A
+B-001-020-107,What is the function of a transformer?,To change voltage levels,To store energy,To amplify signals,To convert current,A
+B-001-020-108,What is the function of a fuse?,To protect against overcurrent,To store energy,To amplify signals,To convert voltage,A
+B-001-020-109,What is the function of a circuit breaker?,To interrupt current in an overload,To store energy,To amplify signals,To convert voltage,A
+B-001-020-110,What is the function of a switch?,To open or close a circuit,To store energy,To amplify signals,To convert voltage,A
+B-001-020-111,What is the function of a potentiometer?,To vary resistance,To store energy,To amplify signals,To convert voltage,A
+B-001-020-112,What is the function of a thermistor?,To vary resistance with temperature,To store energy,To amplify signals,To convert voltage,A
+B-001-020-113,What is the function of a photoresistor?,To vary resistance with light,To store energy,To amplify signals,To convert voltage,A
+B-001-020-114,What is the function of a voltage divider?,To produce a reduced voltage,To store energy,To amplify signals,To convert current,A
+B-001-020-115,What is the function of a rectifier?,To convert AC to DC,To store energy,To amplify signals,To convert voltage,A
+B-001-020-116,What is the function of a filter?,To smooth DC voltage,To store energy,To amplify signals,To convert current,A
+B-001-020-117,What is the function of a regulator?,To maintain constant voltage,To store energy,To amplify signals,To convert current,A
+B-001-020-118,What is the function of a heat sink?,To dissipate heat,To store energy,To amplify signals,To convert voltage,A
+B-001-020-119,What is the function of a fan?,To cool components,To store energy,To amplify signals,To convert voltage,A
+B-001-020-120,What is the function of a chassis?,To support and protect components,To store energy,To amplify signals,To convert voltage,A
+B-001-020-121,What is the function of a PCB (printed circuit board)?,To connect components electrically and mechanically,To store energy,To amplify signals,To convert voltage,A
+B-001-020-122,What is the function of a solder joint?,To connect components permanently,To store energy,To amplify signals,To convert voltage,A
+B-001-020-123,What is the function of a wire?,To conduct electricity,To store energy,To amplify signals,To convert voltage,A
+B-001-020-124,What is the function of a cable?,To conduct electricity over distance,To store energy,To amplify signals,To convert voltage,A
+B-001-020-125,What is the function of a connector?,To join circuits,To store energy,To amplify signals,To convert voltage,A
+B-001-020-126,What is the function of a terminal?,To provide a connection point,To store energy,To amplify signals,To convert voltage
