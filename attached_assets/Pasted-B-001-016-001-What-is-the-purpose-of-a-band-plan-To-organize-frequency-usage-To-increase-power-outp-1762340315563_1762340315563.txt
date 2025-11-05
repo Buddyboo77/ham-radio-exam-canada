@@ -1,0 +1,50 @@
+B-001-016-001,What is the purpose of a band plan?,To organize frequency usage,To increase power output,To reduce modulation distortion,To amplify signals,A
+B-001-016-002,Who develops amateur radio band plans?,Amateur radio organizations,Innovation, Science and Economic Development Canada,International Telecommunication Union,Commercial broadcasters,A
+B-001-016-003,Are band plans legally binding?,No, they are voluntary guidelines,Yes, they are regulations,Only during contests,Only for digital modes,A
+B-001-016-004,Why should amateurs follow band plans?,To reduce interference and promote cooperation,To increase power output,To reduce modulation distortion,To amplify signals,A
+B-001-016-005,What is the purpose of a calling frequency?,To initiate contact,To store contact,To amplify contact,To measure contact,A
+B-001-016-006,What is the purpose of a contest?,To make as many contacts as possible,To increase power output,To reduce modulation distortion,To amplify signals,A
+B-001-016-007,What is the purpose of a net?,To coordinate group communications,To store group communications,To amplify group communications,To measure group communications,A
+B-001-016-008,What is the purpose of a traffic net?,To relay formal messages,To store formal messages,To amplify formal messages,To measure formal messages,A
+B-001-016-009,What is the purpose of an emergency net?,To coordinate disaster response,To store disaster data,To amplify emergency signals,To measure emergency traffic,A
+B-001-016-010,What is the purpose of a public service net?,To support event communications,To store event communications,To amplify event communications,To measure event communications,A
+B-001-016-011,What is the purpose of a simplex frequency?,To transmit and receive on the same frequency,To store frequency,To amplify frequency,To measure frequency,A
+B-001-016-012,What is the purpose of a duplex frequency?,To transmit and receive on different frequencies,To store frequencies,To amplify frequencies,To measure frequencies,A
+B-001-016-013,What is the purpose of a repeater?,To retransmit signals to extend range,To store signals,To amplify signals,To measure signals,A
+B-001-016-014,What is the purpose of a control operator?,To ensure legal operation of a station,To store station settings,To amplify station signals,To measure station output,A
+B-001-016-015,What is the purpose of a station log?,To record operating activity,To store operating activity,To amplify operating activity,To measure operating activity,A
+B-001-016-016,What is the purpose of a QSL card?,To confirm a contact,To store a contact,To amplify a contact,To measure a contact,A
+B-001-016-017,What is the purpose of a contest exchange?,To provide required contest information,To store contest information,To amplify contest information,To measure contest information,A
+B-001-016-018,What is the purpose of a net control station?,To manage group communications,To store group communications,To amplify group communications,To measure group communications,A
+B-001-016-019,What is the purpose of a control point?,To operate a station remotely,To store station settings,To amplify station signals,To measure station output,A
+B-001-016-020,What is the purpose of a remote base?,To extend station access,To store station access,To amplify station access,To measure station access,A
+B-001-016-021,What is the purpose of a cross-band repeater?,To link different frequency bands,To store frequency bands,To amplify frequency bands,To measure frequency bands,A
+B-001-016-022,What is the purpose of a digipeater?,To relay digital signals,To store digital signals,To amplify digital signals,To measure digital signals,A
+B-001-016-023,What is the purpose of a gateway station?,To connect radio and internet,To store internet data,To amplify internet signals,To measure internet traffic,A
+B-001-016-024,What is the purpose of an Echolink node?,To enable VoIP radio connections,To store VoIP data,To amplify VoIP signals,To measure VoIP traffic,A
+B-001-016-025,What is the purpose of an IRLP node?,To link repeaters via internet,To store repeater data,To amplify repeater signals,To measure repeater traffic,A
+B-001-016-026,What is the purpose of a reflector server?,To host multi-user VoIP sessions,To store VoIP sessions,To amplify VoIP sessions,To measure VoIP sessions,A
+B-001-016-027,What is the purpose of a hotspot device?,To provide personal digital access,To store digital access,To amplify digital access,To measure digital access,A
+B-001-016-028,What is the purpose of a code plug?,To store radio configuration data,To amplify configuration data,To measure configuration data,To convert configuration data,A
+B-001-016-029,What is the purpose of a firmware update?,To improve radio performance,To store radio performance,To amplify radio performance,To measure radio performance,A
+B-001-016-030,What is the purpose of a software-defined radio?,To process signals using software,To store signals,To amplify signals,To measure signals,A
+B-001-016-031,What is the purpose of a waterfall display?,To visualize signal activity,To store signal activity,To amplify signal activity,To measure signal activity,A
+B-001-016-032,What is the purpose of a spectrum analyzer?,To measure signal frequencies,To store signal frequencies,To amplify signal frequencies,To convert signal frequencies,A
+B-001-016-033,What is the purpose of a signal generator?,To produce test signals,To store test signals,To amplify test signals,To measure test signals,A
+B-001-016-034,What is the purpose of an SWR meter?,To measure standing wave ratio,To store wave ratio,To amplify wave ratio,To convert wave ratio,A
+B-001-016-035,What is the purpose of a wattmeter?,To measure power output,To store power output,To amplify power output,To convert power output,A
+B-001-016-036,What is the purpose of a dummy load?,To safely test transmitters,To store transmitter data,To amplify transmitter signals,To measure transmitter output,A
+B-001-016-037,What is the purpose of a frequency counter?,To measure signal frequency,To store signal frequency,To amplify signal frequency,To convert signal frequency,A
+B-001-016-038,What is the purpose of a multimeter?,To measure voltage, current, and resistance,To store voltage, current, and resistance,To amplify voltage, current, and resistance,To convert voltage, current, and resistance,A
+B-001-016-039,What is the purpose of a voltmeter?,To measure voltage,To store voltage,To amplify voltage,To convert voltage,A
+B-001-016-040,What is the purpose of an ammeter?,To measure current,To store current,To amplify current,To convert current,A
+B-001-016-041,What is the purpose of an ohmmeter?,To measure resistance,To store resistance,To amplify resistance,To convert resistance,A
+B-001-016-042,What is the purpose of a signal generator?,To produce test signals,To store test signals,To amplify test signals,To measure test signals,A
+B-001-016-043,What is the purpose of a spectrum analyzer?,To measure signal frequencies,To store signal frequencies,To amplify signal frequencies,To convert signal frequencies,A
+B-001-016-044,What is the purpose of a noise figure meter?,To measure receiver sensitivity,To store receiver sensitivity,To amplify receiver sensitivity,To convert receiver sensitivity,A
+B-001-016-045,What is the purpose of a modulation meter?,To measure modulation percentage,To store modulation percentage,To amplify modulation percentage,To convert modulation percentage,A
+B-001-016-046,What is the purpose of a deviation meter?,To measure FM deviation,To store FM deviation,To amplify FM deviation,To convert FM deviation,A
+B-001-016-047,What is the purpose of a field strength meter?,To measure signal strength in the field,To store signal strength,To amplify signal strength,To convert signal strength,A
+B-001-016-048,What is the purpose of a grid dip meter?,To measure resonant frequency,To store resonant frequency,To amplify resonant frequency,To convert resonant frequency,A
+B-001-016-049,What is the purpose of a logic probe?,To test digital circuits,To store digital signals,To amplify digital signals,To convert digital signals,A
+B-001-016-050,What is the purpose of an oscilloscope?,To visualize waveforms,To store waveforms,To amplify waveforms,To convert waveforms,A
