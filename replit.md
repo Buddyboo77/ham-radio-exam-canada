@@ -10,6 +10,29 @@ The app targets Canadian amateur radio license exam candidates, providing educat
 
 Preferred communication style: Simple, everyday language.
 
+## Recent Changes
+
+### Critical Stability Fixes (Nov 5, 2025)
+Fixed exam disappearing issues that could impact paying customers:
+
+**Practice Exam Page (EnhancedLearningPage):**
+- Hidden HOME and RETURN navigation buttons during active quiz to prevent accidental exits
+- Added confirmation dialog to Exit button: "Are you sure you want to exit? Your progress will be lost."
+- Added timer warnings for timed exams: alerts at 5 minutes, 1 minute, and when time expires
+- Timer changes color (orange at 5 min, red pulsing at 1 min) for visual warning
+- Buttons only appear during quiz setup and after completion, not during active testing
+
+**Morse Code Page:**
+- Added confirmation dialog to HOME button: "Are you sure you want to go home? Any in-progress training or exam will be lost."
+- Prevents accidental navigation away during Morse code training or exams
+
+**Exam Question Randomization:**
+- Fixed critical bug where correct answer was always option A
+- Implemented Fisher-Yates shuffle algorithm to randomize answer positions
+- Correct answers now appear randomly at positions A, B, C, or D
+
+These fixes ensure exam stability for the $8.88 Pro version - users won't lose progress accidentally.
+
 ## System Architecture
 
 ### Frontend Architecture

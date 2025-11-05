@@ -17,14 +17,18 @@ const MorseCodePage = () => {
               Morse Code Training
             </h2>
           </div>
-          <Link href="/">
-            <button 
-              className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1"
-              data-testid="button-home"
-            >
-              <Home size={10} /> HOME
-            </button>
-          </Link>
+          <button 
+            className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1"
+            data-testid="button-home"
+            onClick={(e) => {
+              e.preventDefault();
+              if (window.confirm('Are you sure you want to go home? Any in-progress training or exam will be lost.')) {
+                window.location.href = '/';
+              }
+            }}
+          >
+            <Home size={10} /> HOME
+          </button>
         </div>
       </div>
       
