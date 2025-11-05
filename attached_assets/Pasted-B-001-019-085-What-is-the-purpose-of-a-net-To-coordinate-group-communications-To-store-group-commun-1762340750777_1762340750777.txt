@@ -1,0 +1,20 @@
+B-001-019-085,What is the purpose of a net?,To coordinate group communications,To store group communications,To amplify group communications,To measure group communications,A
+B-001-019-086,What is the purpose of a public service event net?,To support event communications,To store event communications,To amplify event communications,To measure event communications,A
+B-001-019-087,What is the purpose of a traffic net?,To relay formal messages,To store formal messages,To amplify formal messages,To measure formal messages,A
+B-001-019-088,What is the purpose of an emergency net?,To coordinate disaster response,To store disaster data,To amplify emergency signals,To measure emergency traffic,A
+B-001-019-089,What is the purpose of a contest?,To make as many contacts as possible,To increase power output,To reduce modulation distortion,To amplify signals,A
+B-001-019-090,What is the purpose of a calling frequency?,To initiate contact,To store contact,To amplify contact,To measure contact,A
+B-001-019-091,What is the purpose of a control point?,To operate a station remotely,To store station settings,To amplify station signals,To measure station output,A
+B-001-019-092,What is the purpose of a remote base?,To extend station access,To store station access,To amplify station access,To measure station access,A
+B-001-019-093,What is the purpose of a cross-band repeater?,To link different frequency bands,To store frequency bands,To amplify frequency bands,To measure frequency bands,A
+B-001-019-094,What is the purpose of a digipeater?,To relay digital signals,To store digital signals,To amplify digital signals,To measure digital signals,A
+B-001-019-095,What is the purpose of a gateway station?,To connect radio and internet,To store internet data,To amplify internet signals,To measure internet traffic,A
+B-001-019-096,What is the purpose of an Echolink node?,To enable VoIP radio connections,To store VoIP data,To amplify VoIP signals,To measure VoIP traffic,A
+B-001-019-097,What is the purpose of an IRLP node?,To link repeaters via internet,To store repeater data,To amplify repeater signals,To measure repeater traffic,A
+B-001-019-098,What is the purpose of a reflector server?,To host multi-user VoIP sessions,To store VoIP sessions,To amplify VoIP sessions,To measure VoIP sessions,A
+B-001-019-099,What is the purpose of a hotspot device?,To provide personal digital access,To store digital access,To amplify digital access,To measure digital access,A
+B-001-019-100,What is the purpose of a code plug?,To store radio configuration data,To amplify configuration data,To measure configuration data,To convert configuration data,A
+B-001-019-101,What is the purpose of a firmware update?,To improve radio performance,To store radio performance,To amplify radio performance,To measure radio performance,A
+B-001-019-102,What is the purpose of a software-defined radio?,To process signals using software,To store signals,To amplify signals,To measure signals,A
+B-001-019-103,What is the purpose of a waterfall display?,To visualize signal activity,To store signal activity,To amplify signal activity,To measure signal activity,A
+B-001-019-104,What is the purpose of a band plan?,To organize frequency usage,To increase power output,To reduce modulation distortion,To amplify signals,A
