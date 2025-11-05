@@ -272,11 +272,6 @@ export default function EnhancedLearningPage() {
   // Navigation state
   const [location, setLocation] = useLocation();
   
-  // DEBUG: Log location changes to catch route-triggered remounts
-  useEffect(() => {
-    console.log('📍 EnhancedLearningPage sees location:', location, 'at', new Date().toISOString());
-  }, [location]);
-  
   // Progress tracking
   const { progress } = useLearningProgress();
   
@@ -317,15 +312,7 @@ export default function EnhancedLearningPage() {
   // Learning progress
   const { recordQuizCompletion } = useLearningProgress();
   
-  // CRITICAL DEBUG: Log component mount/unmount to catch the bug
-  useEffect(() => {
-    console.log('🟢 EnhancedLearningPage MOUNTED at', new Date().toISOString());
-    return () => {
-      console.log('🔴 EnhancedLearningPage UNMOUNTED at', new Date().toISOString());
-    };
-  }, []);
-  
-  // CRITICAL: Block browser navigation during active quiz
+  // Block browser navigation during active quiz
   useEffect(() => {
     const isActiveQuiz = activeView === 'quiz' && !showQuizConfig && !quizCompleted && questionsToUse.length > 0;
     
@@ -352,12 +339,9 @@ export default function EnhancedLearningPage() {
     // Push a dummy state to history so back button doesn't immediately leave
     window.history.pushState(null, '', window.location.href);
     
-    console.log('🔒 Navigation BLOCKED - quiz in progress');
-    
     return () => {
       window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('popstate', handlePopState);
-      console.log('🔓 Navigation UNBLOCKED - quiz ended');
     };
   }, [activeView, showQuizConfig, quizCompleted, questionsToUse.length]);
 
@@ -637,7 +621,6 @@ export default function EnhancedLearningPage() {
   
   // Return to dashboard
   const returnToDashboard = () => {
-    console.trace('returnToDashboard stack trace');
     isResettingRef.current = true; // Set guard before reset
     setActiveView('dashboard');
     resetQuiz();

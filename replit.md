@@ -15,6 +15,18 @@ Preferred communication style: Simple, everyday language.
 ### Critical Stability Fixes (Nov 5, 2025)
 Fixed exam disappearing issues that could impact paying customers:
 
+**ROOT CAUSE FIX - ProtectedRoute Component:**
+- **CRITICAL BUG FIXED**: ProtectedRoute was creating new component functions on every parent re-render
+- The App.tsx clock timer (updating every 60 seconds) triggered React to unmount/remount all protected routes
+- This destroyed all exam state every 60 seconds, causing questions to disappear mid-test
+- **SOLUTION**: Changed from inline `component={() => ...}` to stable children pattern
+- Exams now remain stable indefinitely - no more 60-second unmount cycle
+
+**Browser Navigation Protection:**
+- Added beforeunload and popstate event handlers to block accidental navigation during active quiz
+- Prevents browser back/forward buttons from destroying exam in progress
+- Shows confirmation dialog if user attempts to leave page during exam
+
 **Practice Exam Page (EnhancedLearningPage):**
 - Hidden HOME and RETURN navigation buttons during active quiz to prevent accidental exits
 - Added confirmation dialog to Exit button: "Are you sure you want to exit? Your progress will be lost."
@@ -31,7 +43,7 @@ Fixed exam disappearing issues that could impact paying customers:
 - Implemented Fisher-Yates shuffle algorithm to randomize answer positions
 - Correct answers now appear randomly at positions A, B, C, or D
 
-These fixes ensure exam stability for the $8.88 Pro version - users won't lose progress accidentally.
+These fixes ensure production-grade stability for the $8.88 Pro version - users won't lose progress accidentally.
 
 ## System Architecture
 
