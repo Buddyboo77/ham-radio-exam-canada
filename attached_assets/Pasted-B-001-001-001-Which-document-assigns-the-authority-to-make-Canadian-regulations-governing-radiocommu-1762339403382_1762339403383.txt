@@ -1,0 +1,46 @@
+B-001-001-001,Which document assigns the authority to make Canadian regulations governing radiocommunications?,The Radiocommunication Act,The Broadcasting Act,The Standards for the Operation of Radio Stations in the Amateur Radio Service,The International Telecommunication Union's Radio Regulations,A
+B-001-002-002,An Amateur Radio Operator Certificate is valid for:,Three years,One year,Life,Five years,A
+B-001-002-003,Whenever a change of address is made:,Notify ISED within 14 days,Do not operate until card is sent,No need to notify within same province,Notify ISED within 30 days,D
+B-001-001-002,Which document assigns the authority to publish Standards for the Operation of Radio Stations in the Amateur Radio Service in Canada?,The Radiocommunication Regulations,The Broadcasting Act,ITU Radio Regulations,The Radiocommunication Act,D
+B-001-001-003,Which department is responsible for the administration of the Radiocommunication Act?,ISED,Transport Canada,Communications Security Establishment Canada,National Defence,A
+B-001-002-004,The Amateur Radio Operator Certificate:,Must be kept in a safe place,Must be kept on the person,Must be retained at the station,Must be put on file,A
+B-001-001-004,Which document defines the Canadian "amateur radio service"?,The Radiocommunication Regulations,The Radiocommunication Act,The Standards for the Operation of Radio Stations in the Amateur Radio Service,The Radio Systems Policies,A
+B-001-002-005,A radio inspector asks to see your Amateur Radio Operator Certificate. How many hours do you have to comply?,48,12,24,72,A
+B-001-002-001,What must you do within 30 days of a mailing address change?,Inform RAC,Inform ISED,Inform your local club,Inform an accredited examiner,B
+B-001-002-006,What is the fee for a first Amateur Radio Operator Certificate?,$10,$24,Free,$32,C
+B-001-002-007,The Amateur Radio Operator Certificate should be:,Retained at the address provided to ISED,Retained in a safety deposit box,Retained on the holder's person,Retained in the holder's vehicle,A
+B-001-003-003,Transmitting a false or fraudulent distress signal or message is prohibited. What is the penalty?,A fine not exceeding $5,000,A fine of $10,000,A prison term of two years,A fine not exceeding $1,000,A
+B-001-002-008,What is the fee to issue a replacement call sign with a new prefix due to a change in address to a new province or territory?,$40,$60,Free,$25,B
+B-001-003-004,Which government document states the offences and penalties relating to radiocommunications?,The Radio Systems Policies,The Radiocommunication Act,The Broadcasting Act,The Radiocommunications Regulations,B
+B-001-002-009,What is the fee for changing an existing call sign (including changing to a two-letter call sign)?,$55,$30,Free,$60,A
+B-001-003-001,Transmissions outside of amateur radio bands:,Are prohibited and penalties may apply,Must be identified with your call sign,Are permitted when using less than 1 watt,Are permitted for short tests only,A
+B-001-003-002,What is the term used when an amateur falsely transmits "MAYDAY" without an emergency?,A false or fraudulent message,An encrypted message,An emergency test transmission,A privileged communication,A
+B-001-003-006,Which of the following statements is NOT correct?,The person responsible for a dwelling must provide requested info,A radio inspector may enter a dwelling without consent,A radio inspector may obtain a warrant,A radio inspector shall not use force unless authorized,B
+B-001-003-007,When is an amateur radio operator permitted to transmit false information?,To play a practical joke,To conceal identity,To exaggerate an emergency,Never,D
+B-001-004-003,Holders of which certificate may be issued an Amateur Radio Operator Certificate?,ROC-M,ROC-MC,ROC-A,RGMC,D
+B-001-003-008,Interfering with or obstructing radio communication without lawful cause is prohibited. What is the penalty?,A fine not exceeding $5,000,A fine of $10,000,A prison term of two years,A fine not exceeding $1,000,B
+B-001-004-004,After passing Basic Qualification, what is the order for additional qualifications?,Advanced after Morse code,Any order,Morse after Advanced,Morse after Basic with Honours,B
+B-001-004-001,Minimum age to hold an Amateur Radio Operator Certificate with Basic Qualification?,18 years,14 years,No age limit,70 years,C
+B-001-004-005,What sending/receiving speed is required for Morse code qualification?,7 wpm,15 wpm,5 wpm,12 wpm,C
+B-001-004-002,Which exam must be passed before an Amateur Radio Operator Certificate is issued?,Practical test,Morse code,Advanced Qualification,Basic Qualification,D
+B-001-004-006,With Advanced Qualification, what other service may you operate in?,Land mobile service,No other service,Aeronautical service,Maritime service,B
+B-001-004-007,What conditions must candidates for amateur radio certification meet?,Be a Canadian citizen,Be a citizen or permanent resident,Be 14+ and a citizen/resident,Have a valid address in Canada,D
+B-001-005-004,When may a Basic + Morse qualified operator install a station for another person?,Only if the other person holds a certificate,Only if power input <100W,Only if VHF band,Only if DC input <200W,A
+B-001-005-001,When may an Advanced operator install/modify radio apparatus for another person?,Pending commercial authorization,Pending Basic certificate,Pending crystal control authorization,If the other person holds authorization,D
+B-001-005-005,What requirement allows you to repair a transmitter for another person?,Only the other person must hold a certificate,Only you must hold a certificate,Other person must be enrolled,Both must hold certificates,D
+B-001-005-006,What requirement allows you to place a transmitter in service for another person?,Both must hold certificates,Only the other person must hold a certificate,Only you must hold a certificate,Other person must be enrolled,A
+B-001-005-002,When may you reprogram a land mobile transmitter for use on 2 metres?,Only if other person holds certificate,Only if Advanced operator modifies it,Only if other person has Advanced,Only if other person has Honours,A
+B-001-006-001,A station with 2 watts output:,Is exempt from regulation,Must be supervised by certificate holder,Need not be authorized by ISED,Need not be authorized in isolated areas,B
+B-001-005-003,What requirement allows you to install a transmitter for another person?,Other person must be enrolled,Both must hold certificates,Only other person must hold certificate,Only you must hold certificate,B
+B-001-006-002,An amateur station may communicate with:,Stations under similar authorizations,Stations identified for contests,Armed Forces stations,Any station in amateur bands,A
+B-001-006-005,Which statement is NOT correct about operating amateur apparatus?,Except for amplifying licence-exempt gear,On aero/marine/mobile frequencies,Only if complying with standards,Only if maintained to ISED standards,B
+B-001-006-003,When may you use an amplifier with a licence-exempt transmitter?,Only for short tests,When no interference,Not permitted,When emissions are outside amateur bands,C
+B-001-006-006,When may amateur gear transmit outside amateur bands?,When operator has Advanced,When operator owns licensed gear,When limited to licence-exempt frequencies,Never,D
+B-001-007-001,Which topic is prohibited on an amateur radio club net?,Emergency planning,Business planning,Recreation planning,Code practice,B
+B-001-007-002,When may an amateur operator broadcast to the general public?,Never,Only if paid,Only if <1 hour,Only if of public interest,A
+B-001-007-003,Which statement is NOT correct?,May conduct occasional business,Does not transmit unnecessary signals,Refrains from offensive language,Does not obscure meaning,A
+B-001-007-007,What are the restrictions on abbreviations or procedural signals?,Not permitted if obscure meaning,Only "10 codes" permitted,May be used if not secret,No restrictions,C
+B-001-007-004,Which one-way communication may NOT be transmitted?,Broadcasts to public,Radio control to model craft,Brief test transmissions,Morse code practice,A
+B-001-007-008,How to prevent retransmitting music from non-amateur stations?,Adjust noise blanker,Turn down background audio,Turn up transmitter volume,Speak closer to mic,B
+B-001-007-009,May an operator transmit a secret code?,Not permitted,Permitted for contests,Must be approved by ISED,Permitted for third-party traffic,A
+B-001-007-005,
