@@ -311,30 +311,6 @@ export default function EnhancedLearningPage() {
   
   // Learning progress
   const { recordQuizCompletion } = useLearningProgress();
-  
-  // Block browser back/forward buttons during active quiz
-  useEffect(() => {
-    const isActiveQuiz = activeView === 'quiz' && !showQuizConfig && !quizCompleted && questionsToUse.length > 0;
-    
-    if (!isActiveQuiz) return;
-    
-    // Block browser navigation
-    const handlePopState = (e: PopStateEvent) => {
-      if (!window.confirm('Your exam is in progress. Are you sure you want to leave? All progress will be lost.')) {
-        e.preventDefault();
-        window.history.pushState(null, '', window.location.href);
-      }
-    };
-    
-    window.addEventListener('popstate', handlePopState);
-    
-    // Push a dummy state to history so back button doesn't immediately leave
-    window.history.pushState(null, '', window.location.href);
-    
-    return () => {
-      window.removeEventListener('popstate', handlePopState);
-    };
-  }, [activeView, showQuizConfig, quizCompleted, questionsToUse.length]);
 
   // Prefetch all questions on first load for offline access
   useEffect(() => {
@@ -623,13 +599,7 @@ export default function EnhancedLearningPage() {
       {activeView !== 'dashboard' && (showQuizConfig || quizCompleted) && (
         <div className="fixed bottom-4 right-4 z-50">
           <button 
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (window.confirm('Are you sure you want to go home? Any in-progress training or exam will be lost.')) {
-                setLocation('/');
-              }
-            }}
+            onClick={() => setLocation('/')}
             className="bg-green-600 hover:bg-green-500 p-3 rounded-full shadow-lg border-2 border-green-400 shadow-glow-green"
           >
             <HomeIcon size={24} className="text-white" />
@@ -663,13 +633,7 @@ export default function EnhancedLearningPage() {
             {activeView !== 'dashboard' && (showQuizConfig || quizCompleted) && (
               <button 
                 className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  if (window.confirm('Are you sure you want to go home? Any in-progress training or exam will be lost.')) {
-                    setLocation('/');
-                  }
-                }}
+                onClick={() => setLocation('/')}
               >
                 <HomeIcon size={10} /> HOME
               </button>
@@ -1044,13 +1008,7 @@ export default function EnhancedLearningPage() {
               
               <div className="flex justify-between mt-4">
                 <Button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    if (window.confirm('Are you sure you want to exit? Your progress will be lost.')) {
-                      exitQuiz();
-                    }
-                  }}
+                  onClick={exitQuiz}
                   size="sm"
                   variant="outline"
                   className="px-3 py-0 h-7 text-xs font-medium border-gray-700 text-gray-300 hover:bg-gray-700">
