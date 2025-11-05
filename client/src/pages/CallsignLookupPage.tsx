@@ -45,7 +45,7 @@ export default function CallsignLookupPage() {
             <div className="bg-blue-900/30 rounded-md p-3 border border-blue-800">
               <h4 className="text-blue-300 font-medium mb-1">How to Use</h4>
               <p className="text-sm text-white">
-                Enter a callsign above (e.g., VA7HAM) and click search. View operator details, location, and license information.
+                Enter a callsign above (e.g., VE3ABC) and click search. View operator details, location, and license information.
               </p>
             </div>
             <div className="bg-purple-900/30 rounded-md p-3 border border-purple-800">

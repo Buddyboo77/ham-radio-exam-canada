@@ -247,7 +247,7 @@ export default function EnhancedLogEntryForm({
                   <FormControl>
                     <Input {...field} 
                       onChange={(e) => field.onChange(e.target.value.toUpperCase())} 
-                      placeholder="e.g. VA7HAM"
+                      placeholder="e.g. VE3ABC"
                     />
                   </FormControl>
                   <FormMessage />

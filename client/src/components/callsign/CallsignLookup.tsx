@@ -47,21 +47,21 @@ export default function CallsignLookup() {
         
         // For demo purposes, generate a response based on callsign
         // In a real app, this would be an API call to a callsign database
-        if (searchCallsign.toUpperCase() === 'VA7HAM') {
+        if (searchCallsign.toUpperCase() === 'VE3ABC') {
           return {
-            call: 'VA7HAM',
-            name: 'Powell River Amateur Radio',
-            addr1: '123 Radio Ave',
-            addr2: 'Powell River',
-            state: 'BC',
+            call: 'VE3ABC',
+            name: 'Example Amateur Radio Operator',
+            addr1: '123 Example Street',
+            addr2: 'Toronto',
+            state: 'ON',
             country: 'Canada',
-            latitude: 49.8352,
-            longitude: -124.5248,
-            grid: 'CN89sm',
+            latitude: 43.6532,
+            longitude: -79.3832,
+            grid: 'FN03jo',
             license_class: 'Advanced',
             expires: '2028-06-30',
             status: 'Active',
-            email: 'info@powellriverarc.ca'
+            email: 'example@example.com'
           } as CallsignData;
         }
         
@@ -109,7 +109,7 @@ export default function CallsignLookup() {
       <form onSubmit={handleSubmit} className="flex gap-2">
         <Input
           type="text"
-          placeholder="Enter callsign (e.g., VA7HAM)"
+          placeholder="Enter callsign (e.g., VE3ABC)"
           value={callsign}
           onChange={(e) => setCallsign(e.target.value)}
           className="bg-gray-800 border-gray-700"
@@ -305,7 +305,7 @@ export default function CallsignLookup() {
       {/* Help text */}
       {!searchCallsign && !isLoading && (
         <div className="text-center p-3 bg-gray-800/40 rounded-md border border-gray-700 text-gray-400 text-sm">
-          Enter a callsign above to look up operator details. For this demo, try using "VA7HAM".
+          Enter a callsign above to look up operator details. For this demo, try using "VE3ABC".
         </div>
       )}
     </div>

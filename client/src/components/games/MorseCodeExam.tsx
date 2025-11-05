@@ -64,8 +64,8 @@ const sampleWords = [
 
 // Sample callsigns for testing
 const sampleCallsigns = [
-  "VA7HAM", "VE3XYZ", "VE7ABC", "VA3DEF", "VE5GHI", "VA6JKL", 
-  "VE2MNO", "VA1PQR", "VE4STU", "VE9VWX", "VE8YZ", "VA2BC"
+  "VE3XYZ", "VE7ABC", "VA3DEF", "VE5GHI", "VA6JKL", "VE2MNO",
+  "VA1PQR", "VE4STU", "VE9VWX", "VE8YZ", "VA2BC", "VE3MNO"
 ];
 
 // Exam levels

@@ -26,18 +26,18 @@ export default function AuthPage() {
         <div className="flex justify-center mb-2">
           <Radio className="h-12 w-12 text-blue-500" />
         </div>
-        <h1 className="text-xl font-bold text-blue-300 mb-1">Powell River Amateur Radio</h1>
-        <p className="text-gray-400 text-sm mb-4">Your complete ham radio companion app</p>
+        <h1 className="text-xl font-bold text-blue-300 mb-1">SignalAce Canada</h1>
+        <p className="text-gray-400 text-sm mb-4">Canadian Ham Radio License Exam Prep</p>
         
         <div className="bg-gray-800 p-4 rounded-lg border border-gray-700 shadow-md mb-4">
           <div className="flex items-center justify-center mb-3">
             <RadioTower className="h-6 w-6 text-green-500 mr-2" />
-            <span className="text-lg font-medium text-green-300">VA7HAM</span>
+            <span className="text-lg font-medium text-green-300">Study & Practice</span>
           </div>
           <p className="text-gray-300 text-sm mb-3">
-            Welcome to the Powell River Amateur Radio Companion app. 
-            Click the button below to access essential resources, maps,
-            frequency listings, and community information.
+            Welcome to SignalAce Canada. 
+            Click the button below to access practice exams, Morse code training, 
+            and study guides for your Canadian amateur radio license.
           </p>
           <Button 
             onClick={handleLogin}
@@ -48,8 +48,8 @@ export default function AuthPage() {
         </div>
         
         <div className="text-xs text-gray-500">
-          <p>Powell River Amateur Radio Club</p>
-          <p>British Columbia, Canada</p>
+          <p>Canadian Amateur Radio Exam Preparation</p>
+          <p>Basic & Advanced Qualification</p>
         </div>
       </div>
     </div>

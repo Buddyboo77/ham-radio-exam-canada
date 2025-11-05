@@ -204,7 +204,7 @@ function Router() {
           {/* Radio station identifier - simplified, no quick access buttons */}
           <div className={`flex justify-center items-center mt-2 transition-all duration-300 ${!isMenuOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none absolute'}`}>
             <div className="radio-frequency-display flex-1 text-center">
-              Ham Radio License Exam Prep <Radio className="inline-block ml-1 mr-1" size={14} /> VA7HAM
+              <Radio className="inline-block mr-1" size={14} /> Ham Radio License Exam Prep
             </div>
           </div>
         </div>
