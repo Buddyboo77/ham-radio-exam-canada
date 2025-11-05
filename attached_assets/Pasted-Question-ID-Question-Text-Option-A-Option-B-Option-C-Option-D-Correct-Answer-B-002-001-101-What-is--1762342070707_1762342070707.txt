@@ -1,0 +1,40 @@
+Question ID,Question Text,Option A,Option B,Option C,Option D,Correct Answer
+B-002-001-101,What is the international phonetic word for the letter “K”?,Kilo,Kent,Kite,Kansas,A
+B-002-001-102,What is the international phonetic word for the letter “L”?,Lima,Larry,Lion,London,A
+B-002-001-103,What is the international phonetic word for the letter “M”?,Mike,Mother,Monkey,Mexico,A
+B-002-001-104,What is the international phonetic word for the letter “N”?,November,Nancy,Nile,Norway,A
+B-002-001-105,What is the international phonetic word for the letter “O”?,Oscar,Orange,Ocean,Omaha,A
+B-002-001-106,What is the international phonetic word for the letter “P”?,Papa,Peter,Penguin,Paris,A
+B-002-001-107,What is the international phonetic word for the letter “Q”?,Quebec,Queen,Quail,Qatar,A
+B-002-001-108,What is the international phonetic word for the letter “R”?,Romeo,Robert,Rabbit,Russia,A
+B-002-001-109,What is the international phonetic word for the letter “S”?,Sierra,Sam,Snake,Spain,A
+B-002-001-110,What is the international phonetic word for the letter “T”?,Tango,Tom,Tiger,Turkey,A
+B-002-001-111,What is the international phonetic word for the letter “U”?,Uniform,Uncle,Umbrella,Uganda,A
+B-002-001-112,What is the international phonetic word for the letter “V”?,Victor,Vincent,Vulture,Vienna,A
+B-002-001-113,What is the international phonetic word for the letter “W”?,Whiskey,William,Whale,Washington,A
+B-002-001-114,What is the international phonetic word for the letter “X”?,X-ray,Xenon,Xylophone,Xavier,A
+B-002-001-115,What is the international phonetic word for the letter “Y”?,Yankee,Yellow,Yeti,Yemen,A
+B-002-001-116,What is the international phonetic word for the letter “Z”?,Zulu,Zebra,Zinc,Zanzibar,A
+B-003-001-001,What does a resistor do in a circuit?,Limits current flow,Stores energy,Amplifies signals,Converts voltage,A
+B-003-001-002,What does a capacitor do?,Stores electrical charge,Limits current,Amplifies signals,Converts voltage,A
+B-003-001-003,What does an inductor do?,Stores energy in a magnetic field,Limits voltage,Amplifies signals,Converts current,A
+B-003-001-004,What does a diode do?,Allows current in one direction,Stores energy,Amplifies signals,Converts AC to DC,A
+...
+B-004-001-001,What is Ohm’s Law?,V = I × R,V = R ÷ I,V = I ÷ R,V = R × I,A
+B-004-001-002,What is the unit of resistance?,Ohm,Volt,Ampere,Watt,A
+B-004-001-003,What is the unit of current?,Ampere,Volt,Ohm,Watt,A
+B-004-001-004,What is the unit of voltage?,Volt,Ampere,Ohm,Watt,A
+...
+B-005-001-001,What is the function of a battery?,Stores electrical energy,Amplifies signals,Converts voltage,Limits current,A
+B-005-001-002,What is the function of a solar panel?,Converts sunlight to electricity,Stores energy,Amplifies voltage,Converts electricity to heat,A
+...
+B-006-001-001,What causes radio wave propagation?,Electromagnetic radiation,Sound waves,Gravity,Magnetism,A
+B-006-001-002,What is ground wave propagation?,Radio waves follow the Earth's surface,Radio waves bounce off satellites,Radio waves reflect off the ionosphere,Radio waves travel in straight lines,A
+...
+B-007-001-001,What is the function of an antenna?,Radiates or receives RF signals,Stores energy,Amplifies signals,Converts voltage,A
+B-007-001-002,What is the function of a feedline?,Carries RF signals between radio and antenna,Stores energy,Amplifies signals,Converts voltage,A
+...
+B-008-001-001,What is RF exposure?,Exposure to radio frequency electromagnetic fields,Exposure to sound waves,Exposure to visible light,Exposure to magnetic fields,A
+B-008-001-002,What is the purpose of RF safety guidelines?,To limit human exposure to RF energy,To increase signal strength,To store RF energy,To amplify RF signals,A
+B-008-001-003,What is the best way to reduce RF exposure?,Increase distance from antenna,Increase transmitter power,Use higher frequencies,Use longer coax,A
+...
