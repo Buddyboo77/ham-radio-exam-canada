@@ -1,0 +1,50 @@
+B-001-013-001,What is the purpose of a fuse in an electrical circuit?,To protect the circuit from excessive current,To increase voltage,To store energy,To amplify signals,A
+B-001-013-002,What is the unit of electrical resistance?,Ohm,Ampere,Volt,Watt,A
+B-001-013-003,What is the unit of electrical current?,Ampere,Volt,Ohm,Watt,A
+B-001-013-004,What is the unit of electrical voltage?,Volt,Ampere,Ohm,Watt,A
+B-001-013-005,What is the unit of electrical power?,Watt,Volt,Ampere,Ohm,A
+B-001-013-006,What is the formula for calculating electrical power?,Power = Voltage × Current,Power = Current ÷ Voltage,Power = Voltage ÷ Resistance,Power = Resistance × Current,A
+B-001-013-007,What is the formula for calculating resistance using Ohm’s Law?,Resistance = Voltage ÷ Current,Resistance = Current ÷ Voltage,Resistance = Voltage × Current,Resistance = Power ÷ Voltage,A
+B-001-013-008,What is the formula for calculating current using Ohm’s Law?,Current = Voltage ÷ Resistance,Current = Resistance ÷ Voltage,Current = Voltage × Resistance,Current = Power ÷ Voltage,A
+B-001-013-009,What is the formula for calculating voltage using Ohm’s Law?,Voltage = Current × Resistance,Voltage = Resistance ÷ Current,Voltage = Current ÷ Resistance,Voltage = Power ÷ Current,A
+B-001-013-010,What is the function of a capacitor?,To store electrical energy,To amplify signals,To convert AC to DC,To measure voltage,A
+B-001-013-011,What is the function of an inductor?,To oppose changes in current,To store voltage,To amplify current,To convert DC to AC,A
+B-001-013-012,What is the function of a diode?,To allow current to flow in one direction only,To store energy,To measure resistance,To amplify voltage,A
+B-001-013-013,What is the function of a transistor?,To amplify or switch electronic signals,To store charge,To measure current,To convert AC to DC,A
+B-001-013-014,What is the function of a resistor?,To limit current flow,To store energy,To amplify voltage,To convert signals,A
+B-001-013-015,What is the function of a transformer?,To change voltage levels,To store current,To measure resistance,To amplify signals,A
+B-001-013-016,What is the function of a relay?,To control a circuit using an electromagnet,To store energy,To amplify signals,To measure voltage,A
+B-001-013-017,What is the function of a switch?,To open or close a circuit,To store charge,To amplify current,To measure resistance,A
+B-001-013-018,What is the function of a ground connection?,To provide a safe path for fault current,To amplify voltage,To store energy,To measure current,A
+B-001-013-019,What is the function of a battery?,To store and supply electrical energy,To amplify signals,To measure voltage,To convert AC to DC,A
+B-001-013-020,What is the function of an antenna?,To transmit or receive radio signals,To store charge,To amplify current,To measure resistance,A
+B-001-013-021,What is the function of a microphone?,To convert sound into electrical signals,To amplify sound,To store sound,To measure sound,A
+B-001-013-022,What is the function of a speaker?,To convert electrical signals into sound,To store sound,To amplify sound,To measure sound,A
+B-001-013-023,What is the function of a transmitter?,To generate and send radio signals,To receive signals,To store signals,To measure signals,A
+B-001-013-024,What is the function of a receiver?,To detect and decode radio signals,To transmit signals,To store signals,To amplify signals,A
+B-001-013-025,What is the function of a transceiver?,To transmit and receive radio signals,To store and amplify signals,To measure and decode signals,To convert AC to DC,A
+B-001-013-026,What is the function of a feedline?,To carry RF signals between equipment and antenna,To store RF signals,To amplify RF signals,To measure RF signals,A
+B-001-013-027,What is the function of a balun?,To match balanced and unbalanced lines,To amplify signals,To store signals,To measure signals,A
+B-001-013-028,What is the function of a coaxial cable?,To carry RF signals with shielding,To store RF signals,To amplify RF signals,To measure RF signals,A
+B-001-013-029,What is the function of a waveguide?,To guide microwave signals,To store microwave signals,To amplify microwave signals,To measure microwave signals,A
+B-001-013-030,What is the function of a low-pass filter?,To block high-frequency signals,To block low-frequency signals,To allow all signals,To amplify signals,A
+B-001-013-031,What is the function of a high-pass filter?,To block low-frequency signals,To block high-frequency signals,To allow all signals,To amplify signals,A
+B-001-013-032,What is the function of a band-pass filter?,To allow a specific range of frequencies,To block all frequencies,To amplify all frequencies,To store frequencies,A
+B-001-013-033,What is the function of a band-stop filter?,To block a specific range of frequencies,To allow all frequencies,To amplify all frequencies,To store frequencies,A
+B-001-013-034,What is the function of a mixer in a receiver?,To convert frequencies,To store frequencies,To amplify frequencies,To measure frequencies,A
+B-001-013-035,What is the function of a local oscillator?,To generate a reference frequency,To store frequency,To amplify frequency,To measure frequency,A
+B-001-013-036,What is the function of an IF amplifier?,To amplify intermediate frequency signals,To store intermediate frequency signals,To measure intermediate frequency signals,To convert intermediate frequency signals,A
+B-001-013-037,What is the function of a detector in a receiver?,To recover audio or data from RF,To store RF,To amplify RF,To measure RF,A
+B-001-013-038,What is the function of an AGC circuit?,To maintain constant output level,To store output level,To amplify output level,To measure output level,A
+B-001-013-039,What is the function of a squelch circuit?,To mute audio when no signal is present,To amplify audio,To store audio,To measure audio,A
+B-001-013-040,What is the function of a modulation circuit?,To vary a carrier signal,To store a carrier signal,To amplify a carrier signal,To measure a carrier signal,A
+B-001-013-041,What is the function of an RF amplifier?,To boost radio frequency signals,To store RF signals,To measure RF signals,To convert RF signals,A
+B-001-013-042,What is the function of a power amplifier?,To increase transmitter output,To store transmitter output,To measure transmitter output,To convert transmitter output,A
+B-001-013-043,What is the function of a preamplifier?,To boost weak signals before processing,To store weak signals,To measure weak signals,To convert weak signals,A
+B-001-013-044,What is the function of a frequency synthesizer?,To generate stable RF signals,To store RF signals,To measure RF signals,To convert RF signals,A
+B-001-013-045,What is the function of a PLL circuit?,To lock onto a specific frequency,To store frequency,To measure frequency,To convert frequency,A
+B-001-013-046,What is the function of a VFO?,To vary operating frequency,To store operating frequency,To measure operating frequency,To convert operating frequency,A
+B-001-013-047,What is the function of a crystal oscillator?,To generate a stable frequency,To store frequency,To measure frequency,To convert frequency,A
+B-001-013-048,What is the function of a digital signal processor?,To process signals using software,To store signals,To measure signals,To convert signals,A
+B-001-013-049,What is the function of a microcontroller in radio equipment?,To manage control functions,To store control functions,To measure control functions,To convert control functions,A
+B-001-013-050,What is the function of a display in a transceiver?,To show frequency and settings,To store frequency and settings,To measure frequency and settings,To convert frequency and settings,A
