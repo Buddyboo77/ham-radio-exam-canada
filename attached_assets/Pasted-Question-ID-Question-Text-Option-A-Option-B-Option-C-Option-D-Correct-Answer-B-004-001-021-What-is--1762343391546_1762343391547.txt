@@ -1,0 +1,36 @@
+Question ID,Question Text,Option A,Option B,Option C,Option D,Correct Answer
+B-004-001-021,What is the effect of placing resistors in series?,Total resistance increases,Total resistance decreases,Voltage remains constant,Current increases,A
+B-004-001-022,What is the effect of placing resistors in parallel?,Total resistance decreases,Total resistance increases,Voltage increases,Current decreases,A
+B-004-001-023,What is the effect of placing capacitors in series?,Total capacitance decreases,Total capacitance increases,Voltage decreases,Current increases,A
+B-004-001-024,What is the effect of placing capacitors in parallel?,Total capacitance increases,Total capacitance decreases,Voltage increases,Current decreases,A
+B-004-001-025,What is the effect of placing inductors in series?,Total inductance increases,Total inductance decreases,Voltage decreases,Current increases,A
+B-004-001-026,What is the effect of placing inductors in parallel?,Total inductance decreases,Total inductance increases,Voltage increases,Current decreases,A
+B-004-001-027,What is the unit of inductance?,Henry,Farad,Ohm,Watt,A
+B-004-001-028,What is the unit of capacitance?,Farad,Henry,Ohm,Watt,A
+B-004-001-029,What is the unit of frequency?,Hertz,Watt,Volt,Ohm,A
+B-004-001-030,What is the unit of impedance?,Ohm,Watt,Hertz,Farad,A
+B-005-001-011,What is the function of a battery disconnect switch?,Isolates battery from circuit,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-012,What is the function of a battery fuse?,Protects battery from overcurrent,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-013,What is the function of a battery enclosure?,Protects battery from environment,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-014,What is the function of a battery monitor?,Measures battery voltage and current,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-015,What is the function of a battery equalizer?,Balances charge among cells,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-016,What is the function of a battery desulfator?,Removes sulfate buildup,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-017,What is the function of a battery vent?,Releases gas buildup,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-018,What is the function of a battery terminal cleaner?,Removes corrosion,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-019,What is the function of a battery terminal protector?,Prevents corrosion,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-020,What is the function of a battery cable?,Connects battery to circuit,Increases voltage,Stores energy,Amplifies current,A
+B-006-001-011,What is the D layer’s effect on HF signals during the day?,Absorbs lower frequencies,Reflects higher frequencies,Amplifies signals,Blocks all signals,A
+B-006-001-012,What is the F layer’s role in propagation?,Reflects HF signals over long distances,Absorbs VHF signals,Blocks UHF signals,Amplifies LF signals,A
+B-006-001-013,What is NVIS propagation?,Near-vertical incidence skywave,Non-variable ionospheric signal,Neutral voltage interference system,Negative voltage ion suppression,A
+B-006-001-014,What is the MUF?,Maximum usable frequency,Minimum usable frequency,Medium utility frequency,Maximum unit flux,A
+B-006-001-015,What is the LUF?,Lowest usable frequency,Light utility frequency,Long unit flux,Lowest unit factor,A
+B-007-001-011,What is the effect of antenna height on radiation angle?,Higher antennas lower radiation angle,Lower antennas increase radiation angle,Height has no effect,Height increases impedance,A
+B-007-001-012,What is the function of a directional antenna?,Focuses RF energy in one direction,Radiates equally in all directions,Blocks unwanted signals,Amplifies received signals,A
+B-007-001-013,What is the function of a reflector element?,Redirects RF energy,Absorbs RF energy,Amplifies RF energy,Stores RF energy,A
+B-007-001-014,What is the function of a director element?,Focuses RF energy forward,Redirects RF energy backward,Absorbs RF energy,Stores RF energy,A
+B-007-001-015,What is antenna gain?,Increase in effective radiated power,Increase in voltage,Decrease in impedance,Decrease in SWR,A
+B-008-001-011,What is the purpose of a safety ground?,Protects against electrical shock,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-012,What is the purpose of a ground fault interrupter?,Interrupts current during fault,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-013,What is the purpose of a fire extinguisher in a radio shack?,Suppresses electrical fires,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-014,What is the purpose of a first aid kit in a radio shack?,Provides emergency medical supplies,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-015,What is the purpose of RF exposure limits?,Protects human health,Amplifies signals,Stores energy,Converts voltage,A
