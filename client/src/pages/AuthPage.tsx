@@ -17,7 +17,7 @@ export default function AuthPage() {
 
   const handleLogin = () => {
     login();
-    setLocation('/frequencies');
+    setLocation('/learning');
   };
 
   return (
