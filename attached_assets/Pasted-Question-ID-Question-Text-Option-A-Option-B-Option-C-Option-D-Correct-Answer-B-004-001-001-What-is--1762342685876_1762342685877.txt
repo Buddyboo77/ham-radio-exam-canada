@@ -1,0 +1,31 @@
+Question ID,Question Text,Option A,Option B,Option C,Option D,Correct Answer
+B-004-001-001,What is Ohm’s Law?,V = I × R,V = R ÷ I,V = I ÷ R,V = R × I,A
+B-004-001-002,What is the unit of resistance?,Ohm,Volt,Ampere,Watt,A
+B-004-001-003,What is the unit of current?,Ampere,Volt,Ohm,Watt,A
+B-004-001-004,What is the unit of voltage?,Volt,Ampere,Ohm,Watt,A
+B-004-001-005,What is the unit of power?,Watt,Volt,Ampere,Ohm,A
+B-004-001-006,What is the formula for power?,P = V × I,P = V ÷ I,P = I ÷ V,P = V × R,A
+B-004-001-007,What is the function of a capacitor?,Stores electrical charge,Limits current,Amplifies signals,Converts voltage,A
+B-004-001-008,What is the function of an inductor?,Stores energy in a magnetic field,Limits voltage,Amplifies signals,Converts current,A
+B-004-001-009,What is the function of a resistor?,Limits current flow,Stores energy,Amplifies signals,Converts voltage,A
+B-004-001-010,What is the function of a diode?,Allows current in one direction,Stores energy,Amplifies signals,Converts AC to DC,A
+B-005-001-001,What is the function of a battery?,Stores electrical energy,Amplifies signals,Converts voltage,Limits current,A
+B-005-001-002,What is the function of a solar panel?,Converts sunlight to electricity,Stores energy,Amplifies voltage,Converts electricity to heat,A
+B-005-001-003,What is the function of a generator?,Converts mechanical to electrical energy,Stores energy,Amplifies voltage,Converts AC to DC,A
+B-005-001-004,What is the function of a power supply?,Converts AC to DC,Stores energy,Amplifies RF,Converts sound to electricity,A
+B-005-001-005,What is the function of a rectifier?,Converts AC to DC,Converts DC to AC,Stores energy,Amplifies current,A
+B-006-001-001,What causes radio wave propagation?,Electromagnetic radiation,Sound waves,Gravity,Magnetism,A
+B-006-001-002,What is ground wave propagation?,Radio waves follow the Earth's surface,Radio waves bounce off satellites,Radio waves reflect off the ionosphere,Radio waves travel in straight lines,A
+B-006-001-003,What is sky wave propagation?,Radio waves reflect off the ionosphere,Radio waves follow the Earth's surface,Radio waves bounce off satellites,Radio waves travel in straight lines,A
+B-006-001-004,What is line-of-sight propagation?,Radio waves travel directly between antennas,Radio waves reflect off the ionosphere,Radio waves follow the Earth's surface,Radio waves bounce off satellites,A
+B-006-001-005,What affects radio wave propagation?,Time of day and frequency,Color and shape,Humidity and temperature,Voltage and current,A
+B-007-001-001,What is the function of an antenna?,Radiates or receives RF signals,Stores energy,Amplifies signals,Converts voltage,A
+B-007-001-002,What is the function of a feedline?,Carries RF signals between radio and antenna,Stores energy,Amplifies signals,Converts voltage,A
+B-007-001-003,What is SWR?,Standing Wave Ratio,Signal Wave Resistance,Short Wave Radiation,Sound Wave Reflection,A
+B-007-001-004,What is a good SWR reading?,1:1,3:1,5:1,10:1,A
+B-007-001-005,What does a high SWR indicate?,Poor impedance match,Strong signal,Low power output,Good antenna efficiency,A
+B-008-001-001,What is RF exposure?,Exposure to radio frequency electromagnetic fields,Exposure to sound waves,Exposure to visible light,Exposure to magnetic fields,A
+B-008-001-002,What is the purpose of RF safety guidelines?,To limit human exposure to RF energy,To increase signal strength,To store RF energy,To amplify RF signals,A
+B-008-001-003,What is the best way to reduce RF exposure?,Increase distance from antenna,Increase transmitter power,Use higher frequencies,Use longer coax,A
+B-008-001-004,What is the function of a ground system?,To reduce RF exposure and improve safety,To amplify signals,To store energy,To convert voltage,A
+B-008-001-005,What is the purpose of bonding?,To connect metal parts to reduce shock hazard,To amplify signals,To store energy,To convert voltage,A

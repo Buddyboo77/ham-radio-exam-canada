@@ -1,0 +1,51 @@
+Question ID,Question Text,Option A,Option B,Option C,Option D,Correct Answer
+B-003-001-001,A low pass filter in an HF station is most effective when connected:,As close as possible to the transceiver output,As close as possible to the antenna,As close as possible to the power supply,As close as possible to the microphone,A
+B-003-001-002,A low pass filter in an HF station is most effective when connected:,As close as possible to the linear amplifier output,As close as possible to the antenna tuner,As close as possible to the power supply,As close as possible to the microphone,A
+B-003-001-003,In designing an HF station, which component would you use to reduce the effects of harmonic radiation?,Low pass filter,High pass filter,Band pass filter,Notch filter,A
+B-003-001-004,Which component in an HF station is the most useful for determining the effectiveness of the antenna system?,SWR bridge,Power supply,Microphone,Low pass filter,A
+B-003-001-005,Which component would normally be connected closest to the antenna, antenna tuner and dummy load?,Antenna switch,Microphone,Power supply,Low pass filter,A
+B-003-001-006,Which component would be used to match impedances between the transceiver and antenna?,Antenna tuner,Low pass filter,Microphone,Power amplifier,A
+B-003-001-007,Which component is temporarily connected in the tuning process or for adjustments to the transmitter?,Dummy load,Microphone,Power supply,Low pass filter,A
+B-003-001-008,The antenna tuner is usually used for matching the transceiver with:,Most antennas when operating below 14 MHz,Only dipole antennas,Only vertical antennas,Only directional antennas,A
+B-003-001-009,The antenna tuner is commonly used:,With most antennas when operating below 14 MHz,Only with directional antennas,Only with dummy loads,Only with microphones,A
+B-003-001-010,What is the function of a dummy load?,To absorb RF energy without radiating it,To amplify signals,To store energy,To convert AC to DC,A
+B-003-001-011,What is the function of a low pass filter?,To suppress harmonics,To amplify signals,To store energy,To convert AC to DC,A
+B-003-001-012,What is the function of an SWR bridge?,To measure standing wave ratio,To amplify signals,To store energy,To convert AC to DC,A
+B-003-001-013,What is the function of a power amplifier?,To increase RF output power,To store energy,To convert AC to DC,To measure voltage,A
+B-003-001-014,What is the function of a microphone?,To convert sound into electrical signals,To store energy,To amplify RF,To convert AC to DC,A
+B-003-001-015,What is the function of a speaker?,To convert electrical signals into sound,To store energy,To amplify RF,To convert AC to DC,A
+B-003-001-016,What is the function of a power supply?,To convert AC to DC,To store energy,To amplify RF,To convert sound to electricity,A
+B-003-001-017,What is the function of a capacitor?,To store electrical charge,To amplify signals,To convert AC to DC,To measure voltage,A
+B-003-001-018,What is the function of a resistor?,To limit current flow,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-019,What is the function of an inductor?,To store energy in a magnetic field,To amplify signals,To convert AC to DC,To measure voltage,A
+B-003-001-020,What is the function of a diode?,To allow current in one direction,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-021,What is the function of a transistor?,To amplify or switch signals,To store energy,To convert AC to DC,To measure voltage,A
+B-003-001-022,What is the function of a transformer?,To change voltage levels,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-023,What is the function of a fuse?,To protect against overcurrent,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-024,What is the function of a circuit breaker?,To interrupt current in an overload,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-025,What is the function of a switch?,To open or close a circuit,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-026,What is the function of a potentiometer?,To vary resistance,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-027,What is the function of a thermistor?,To vary resistance with temperature,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-028,What is the function of a photoresistor?,To vary resistance with light,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-029,What is the function of a voltage divider?,To produce a reduced voltage,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-030,What is the function of a rectifier?,To convert AC to DC,To store energy,To amplify signals,To convert DC to AC,A
+B-003-001-031,What is the function of a filter?,To smooth DC voltage,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-032,What is the function of a regulator?,To maintain constant voltage,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-033,What is the function of a heat sink?,To dissipate heat,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-034,What is the function of a fan?,To cool components,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-035,What is the function of a chassis?,To support and protect components,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-036,What is the function of a PCB?,To connect components electrically and mechanically,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-037,What is the function of a solder joint?,To connect components permanently,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-038,What is the function of a wire?,To conduct electricity,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-039,What is the function of a cable?,To conduct electricity over distance,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-040,What is the function of a connector?,To join circuits,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-041,What is the function of a terminal?,To provide a connection point,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-042,What is the function of a bus?,To distribute power or signals,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-043,What is the function of a ground?,To provide a reference point for voltage,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-044,What is the function of a shield?,To block electromagnetic interference,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-045,What is the function of an enclosure?,To protect components,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-046,What is the function of a balun?,To match impedance between balanced and unbalanced lines,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-047,What is the function of a dipole antenna?,To radiate RF energy,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-048,What is the function of a Yagi antenna?,To provide directional gain,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-049,What is the function of a vertical antenna?,To provide omnidirectional coverage,To store energy,To amplify signals,To convert AC to DC,A
+B-003-001-050,What is the function of a loop antenna?,To receive signals with low noise,To store energy,To amplify signals,To convert AC
