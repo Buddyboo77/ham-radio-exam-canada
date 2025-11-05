@@ -1,0 +1,50 @@
+B-001-015-001,What is the function of a decibel?,To express ratios of power or intensity,To measure voltage directly,To store signal strength,To amplify signals,A
+B-001-015-002,What is the reference power level for 0 dBm?,1 milliwatt,1 watt,10 milliwatts,100 milliwatts,A
+B-001-015-003,What does SWR stand for?,Standing Wave Ratio,Signal Wave Ratio,Station Wave Ratio,Standard Wave Ratio,A
+B-001-015-004,What is a good SWR reading?,1:1,2:1,3:1,5:1,A
+B-001-015-005,What causes high SWR?,Impedance mismatch,Low transmitter power,High modulation,Short antenna,A
+B-001-015-006,What is the effect of high SWR?,Reduced power transfer,Increased modulation,Improved signal clarity,Increased antenna gain,A
+B-001-015-007,What is the typical impedance of amateur radio equipment?,50 ohms,75 ohms,100 ohms,300 ohms,A
+B-001-015-008,What is the purpose of a dummy load?,To safely test transmitters without radiating,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-015-009,What is the purpose of a wattmeter?,To measure power output,To store power output,To amplify power output,To convert power output,A
+B-001-015-010,What is the purpose of an SWR meter?,To measure standing wave ratio,To store wave ratio,To amplify wave ratio,To convert wave ratio,A
+B-001-015-011,What is the purpose of a frequency counter?,To measure signal frequency,To store signal frequency,To amplify signal frequency,To convert signal frequency,A
+B-001-015-012,What is the purpose of a multimeter?,To measure voltage, current, and resistance,To store voltage, current, and resistance,To amplify voltage, current, and resistance,To convert voltage, current, and resistance,A
+B-001-015-013,What is the purpose of a voltmeter?,To measure voltage,To store voltage,To amplify voltage,To convert voltage,A
+B-001-015-014,What is the purpose of an ammeter?,To measure current,To store current,To amplify current,To convert current,A
+B-001-015-015,What is the purpose of an ohmmeter?,To measure resistance,To store resistance,To amplify resistance,To convert resistance,A
+B-001-015-016,What is the purpose of a signal generator?,To produce test signals,To store test signals,To amplify test signals,To measure test signals,A
+B-001-015-017,What is the purpose of a spectrum analyzer?,To measure signal frequencies,To store signal frequencies,To amplify signal frequencies,To convert signal frequencies,A
+B-001-015-018,What is the purpose of a noise figure meter?,To measure receiver sensitivity,To store receiver sensitivity,To amplify receiver sensitivity,To convert receiver sensitivity,A
+B-001-015-019,What is the purpose of a modulation meter?,To measure modulation percentage,To store modulation percentage,To amplify modulation percentage,To convert modulation percentage,A
+B-001-015-020,What is the purpose of a deviation meter?,To measure FM deviation,To store FM deviation,To amplify FM deviation,To convert FM deviation,A
+B-001-015-021,What is the purpose of a field strength meter?,To measure signal strength in the field,To store signal strength,To amplify signal strength,To convert signal strength,A
+B-001-015-022,What is the purpose of a grid dip meter?,To measure resonant frequency,To store resonant frequency,To amplify resonant frequency,To convert resonant frequency,A
+B-001-015-023,What is the purpose of a logic probe?,To test digital circuits,To store digital signals,To amplify digital signals,To convert digital signals,A
+B-001-015-024,What is the purpose of an oscilloscope?,To visualize waveforms,To store waveforms,To amplify waveforms,To convert waveforms,A
+B-001-015-025,What is the purpose of a function generator?,To produce various waveforms,To store waveforms,To amplify waveforms,To convert waveforms,A
+B-001-015-026,What is the purpose of a frequency synthesizer?,To generate stable RF signals,To store RF signals,To amplify RF signals,To convert RF signals,A
+B-001-015-027,What is the purpose of a PLL circuit?,To lock onto a specific frequency,To store frequency,To amplify frequency,To convert frequency,A
+B-001-015-028,What is the purpose of a VFO?,To vary operating frequency,To store operating frequency,To amplify operating frequency,To convert operating frequency,A
+B-001-015-029,What is the purpose of a crystal oscillator?,To generate a stable frequency,To store frequency,To amplify frequency,To convert frequency,A
+B-001-015-030,What is the purpose of a digital signal processor?,To process signals using software,To store signals,To amplify signals,To convert signals,A
+B-001-015-031,What is the purpose of a microcontroller in radio equipment?,To manage control functions,To store control functions,To amplify control functions,To convert control functions,A
+B-001-015-032,What is the purpose of a display in a transceiver?,To show frequency and settings,To store frequency and settings,To amplify frequency and settings,To convert frequency and settings,A
+B-001-015-033,What is the purpose of a keypad in a transceiver?,To enter commands and frequencies,To store commands,To amplify signals,To measure frequencies,A
+B-001-015-034,What is the purpose of a memory channel?,To store frequency and mode settings,To amplify stored signals,To measure stored frequencies,To convert stored settings,A
+B-001-015-035,What is the purpose of a scan function?,To search for active signals,To store active signals,To amplify active signals,To measure active signals,A
+B-001-015-036,What is the purpose of a dual-watch feature?,To monitor two frequencies,To store two frequencies,To amplify two frequencies,To measure two frequencies,A
+B-001-015-037,What is the purpose of a repeater?,To retransmit signals to extend range,To store signals,To amplify signals,To measure signals,A
+B-001-015-038,What is the purpose of a duplexer?,To separate transmit and receive paths,To store transmit paths,To amplify receive paths,To measure transmit paths,A
+B-001-015-039,What is the purpose of a tone encoder?,To send subaudible tones,To store tones,To amplify tones,To measure tones,A
+B-001-015-040,What is the purpose of a tone decoder?,To detect subaudible tones,To store tones,To amplify tones,To measure tones,A
+B-001-015-041,What is the purpose of a CTCSS system?,To reduce interference on shared channels,To store channel settings,To amplify shared signals,To measure channel usage,A
+B-001-015-042,What is the purpose of a DTMF keypad?,To send numeric tones,To store numeric tones,To amplify numeric tones,To measure numeric tones,A
+B-001-015-043,What is the purpose of a packet radio TNC?,To encode and decode digital data,To store digital data,To amplify digital data,To measure digital data,A
+B-001-015-044,What is the purpose of APRS?,To transmit location and telemetry data,To store location data,To amplify telemetry data,To measure location data,A
+B-001-015-045,What is the purpose of a satellite transponder?,To relay signals between Earth stations,To store signals,To amplify signals,To measure signals,A
+B-001-015-046,What is the purpose of a Doppler shift compensator?,To adjust for frequency changes,To store frequency changes,To amplify frequency changes,To measure frequency changes,A
+B-001-015-047,What is the purpose of a beacon station?,To transmit identification signals,To store identification signals,To amplify identification signals,To measure identification signals,A
+B-001-015-048,What is the purpose of a telemetry transmitter?,To send sensor data,To store sensor data,To amplify sensor data,To measure sensor data,A
+B-001-015-049,What is the purpose of a control operator?,To ensure legal operation of a station,To store station settings,To amplify station signals,To measure station output,A
+B-001-015-050,What is the purpose of a station log?,To record operating activity,To store operating activity,To amplify operating activity,To measure operating activity,A
