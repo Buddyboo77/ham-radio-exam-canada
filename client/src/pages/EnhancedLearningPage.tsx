@@ -996,7 +996,7 @@ export default function EnhancedLearningPage() {
                 ))}
               </div>
               
-              {showExplanation && (
+              {showExplanation && displayQuestions[currentQuestion].explanation && (
                 <div className="mt-4 bg-gray-900 p-3 rounded-md border border-gray-700">
                   <div className="flex items-center gap-2 mb-2">
                     <AlertCircle className="h-4 w-4 text-blue-400" />
