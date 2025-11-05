@@ -549,8 +549,20 @@ export default function EnhancedLearningPage() {
     setQuizCompleted(false);
   };
   
-  // Reset all quiz state
+  // Guard to prevent accidental quiz resets
+  const isResettingRef = useRef(false);
+  
+  // Reset all quiz state - PROTECTED: Only call from explicit user actions
   const resetQuiz = () => {
+    console.trace('🔴 RESETQUIZ CALLED - Stack trace:');
+    console.log('🔴 resetQuiz called, isResettingRef:', isResettingRef.current);
+    
+    // Prevent accidental resets during active quiz
+    if (!isResettingRef.current && !showQuizConfig && questionsToUse.length > 0 && !quizCompleted) {
+      console.error('🚨 BLOCKED: Attempted to reset quiz during active session without explicit user action!');
+      return;
+    }
+    
     setShowQuizConfig(true);
     setQuestionsToUse([]);
     setCurrentQuestion(0);
@@ -559,11 +571,13 @@ export default function EnhancedLearningPage() {
     setUserAnswers([]);
     setQuizCompleted(false);
     setShowExplanation(false);
+    isResettingRef.current = false;
   };
   
   // Return to dashboard
   const returnToDashboard = () => {
     console.trace('returnToDashboard stack trace');
+    isResettingRef.current = true; // Set guard before reset
     setActiveView('dashboard');
     resetQuiz();
   };
