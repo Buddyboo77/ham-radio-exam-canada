@@ -370,9 +370,13 @@ export default function EnhancedLearningPage() {
         throw error;
       }
     },
-    staleTime: 2 * 60 * 1000, // 2 minutes
+    staleTime: Infinity, // Never consider data stale during quiz
+    gcTime: Infinity, // Never garbage collect during quiz
     retry: 1,
-    enabled: !showQuizConfig // Only fetch when starting quiz
+    enabled: !showQuizConfig, // Only fetch when starting quiz
+    refetchOnWindowFocus: false, // CRITICAL: Don't refetch when window gains focus
+    refetchOnMount: false, // CRITICAL: Don't refetch on component remount
+    refetchOnReconnect: false // CRITICAL: Don't refetch on network reconnect
   });
 
   // Fetch category counts for dashboard (lightweight) with offline support
