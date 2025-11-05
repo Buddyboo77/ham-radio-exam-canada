@@ -462,12 +462,24 @@ export default function EnhancedLearningPage() {
     if (quizQuestions && quizQuestions.length > 0 && !showQuizConfig) {
       const convertedQuestions = quizQuestions.map(convertDatabaseQuestion);
       setQuestionsToUse(convertedQuestions);
+      questionsRef.current = convertedQuestions; // SAVE TO REF - immune to re-renders
+      console.log('✅ Questions loaded and saved to ref:', convertedQuestions.length);
     } else if (!quizQuestions && !isLoadingQuestions && !showQuizConfig && questionsError) {
       // Fallback to sample questions if API fails
       const fallbackQuestions = FALLBACK_QUIZ_QUESTIONS.slice(0, Math.min(questionsCount, FALLBACK_QUIZ_QUESTIONS.length));
       setQuestionsToUse(fallbackQuestions);
+      questionsRef.current = fallbackQuestions; // SAVE TO REF
+      console.log('✅ Fallback questions loaded:', fallbackQuestions.length);
     }
   }, [quizQuestions, showQuizConfig]); // REMOVED: isLoadingQuestions, questionsCount, questionsError - they cause re-runs during quiz
+  
+  // CRITICAL PROTECTION: If questionsToUse gets cleared, restore from ref
+  useEffect(() => {
+    if (!showQuizConfig && !quizCompleted && questionsToUse.length === 0 && questionsRef.current.length > 0) {
+      console.warn('⚠️ RECOVERING: questionsToUse was cleared, restoring from ref');
+      setQuestionsToUse(questionsRef.current);
+    }
+  }, [questionsToUse, showQuizConfig, quizCompleted]);
 
   // Timer effect for simulation mode with warnings
   useEffect(() => {
@@ -552,6 +564,9 @@ export default function EnhancedLearningPage() {
   // Guard to prevent accidental quiz resets
   const isResettingRef = useRef(false);
   
+  // CRITICAL: Store questions in a ref so they can't disappear during re-renders
+  const questionsRef = useRef<QuizQuestion[]>([]);
+  
   // Reset all quiz state - PROTECTED: Only call from explicit user actions
   const resetQuiz = () => {
     console.trace('🔴 RESETQUIZ CALLED - Stack trace:');
@@ -565,6 +580,7 @@ export default function EnhancedLearningPage() {
     
     setShowQuizConfig(true);
     setQuestionsToUse([]);
+    questionsRef.current = []; // Clear the ref too
     setCurrentQuestion(0);
     setSelectedAnswer(null);
     setScore(0);
