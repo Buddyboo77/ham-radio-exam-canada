@@ -1,0 +1,95 @@
+1. Which document assigns the authority to make Canadian regulations governing radiocommunications? Answer: The Radiocommunication Act
+2. Which document assigns the authority to publish Standards for the Operation of Radio Stations in the Amateur Radio Service in Canada? Answer: The Radiocommunication Regulations
+3. Which department is responsible for the administration of the Radiocommunication Act? Answer: Innovation, Science and Economic Development Canada
+4. Which document defines the Canadian "amateur radio service"? Answer: The Radiocommunication Regulations
+5. What must you do within 30 days of a mailing address change? Answer: Inform Radio Amateurs of Canada (RAC)
+6. An Amateur Radio Operator Certificate is valid for: Answer: Three years
+7. Whenever a change of address is made: Answer: You must notify Innovation, Science and Economic Development Canada within 14 days of operation at the new address
+8. The Amateur Radio Operator Certificate: Answer: Must be kept in a safe place
+9. A radio inspector asks to see your Amateur Radio Operator Certificate, or a copy thereof. Per the regulations, how many hours are you given to comply? Answer: 48
+10. What is the fee for a first Amateur Radio Operator Certificate? Answer: $10
+11. Which document assigns the authority to publish the Broadcasting Act? Answer: The Broadcasting Act
+12. Which department is responsible for Transport Canada regulations? Answer: Transport Canada
+13. Which document defines offences and penalties related to radiocommunications? Answer: The Radiocommunication Act
+14. What must you do when moving within the same province? Answer: Inform Innovation, Science and Economic Development Canada
+15. How long is an Amateur Radio Operator Certificate valid? Answer: One year
+16. What must you do before operating after a change of address? Answer: You must not operate until a change of address card is forwarded to Innovation, Science and Economic Development Canada
+17. Where must the Amateur Radio Operator Certificate be kept? Answer: Must be kept on the person to whom it is issued
+18. How many hours are you given to comply with a certificate request? Answer: 12
+19. What is the fee for a replacement certificate? Answer: $24
+20. Which document defines standards for amateur radio station operation? Answer: The Standards for the Operation of Radio Stations in the Amateur Radio Service
+21. Which international body publishes radio regulations? Answer: The International Telecommunication Union's Radio Regulations
+22. Which Canadian agency handles communications security? Answer: Communications Security Establishment Canada
+23. What must you do when moving to a new province? Answer: Inform your local amateur radio club
+24. How long is an Amateur Radio Operator Certificate valid? Answer: Life
+25. What must you do when moving within the same province? Answer: You do not need to notify Innovation, Science and Economic Development Canada
+26. Where must the certificate be kept? Answer: Must be retained at the station
+27. How many hours are you given to comply with a certificate request? Answer: 24
+28. What is the fee for a certificate replacement within the same province? Answer: Free
+29. Which document defines international radio regulations? Answer: The International Telecommunication Union's Radio Regulations
+30. Which document defines Canadian radiocommunication law? Answer: The Radiocommunication Act
+31. Which department handles national defence radio systems? Answer: National Defence
+32. Which document defines radio system policies? Answer: The Radio Systems Policies
+33. Who must you inform about a change of address? Answer: Inform an accredited examiner
+34. How long is an Amateur Radio Operator Certificate valid? Answer: Five years
+35. What must you do within 30 days of a mailing address change? Answer: You must notify Innovation, Science and Economic Development Canada
+36. Where must the certificate be kept? Answer: Must be put on file
+37. How many hours are you given to comply with a certificate request? Answer: 72
+38. What is the fee for a certificate replacement across provinces? Answer: $32
+39. Where must the certificate be retained? Answer: Retained at the address provided to Innovation, Science and Economic Development Canada
+40. What is the fee for a replacement call sign with a new prefix? Answer: $40
+41. What is the fee for changing an existing call sign? Answer: $55
+42. Are transmissions outside amateur bands permitted? Answer: Are prohibited and penalties could be assessed to the control operator
+43. What is the term for falsely transmitting "MAYDAY"? Answer: A false or fraudulent message
+44. What is the penalty for transmitting a false distress signal? Answer: A fine, not exceeding $5,000, or a prison term not exceeding one year, or both
+45. Which document defines offences and penalties? Answer: The Radiocommunication Act
+46. When may the Minister suspend a certificate? Answer: Where the holder has failed to comply with a request to pay fees or interest due
+47. What must a person do when a radio inspector enters a dwelling? Answer: Provide the inspector the requested information
+48. Where must the certificate be kept? Answer: Retained in a safety deposit box
+49. What is the fee for a replacement certificate? Answer: $60
+50. What is the fee for a call sign change? Answer: $30
+51. Are transmissions outside amateur bands permitted? Answer: Must be identified with your call sign
+52. What is the term for encrypted messages? Answer: An encrypted message
+53. What is the penalty for encrypted transmissions? Answer: A fine of $10,000
+54. Which document defines radiocommunication law? Answer: The Radiocommunication Act
+55. When may the Minister suspend a certificate? Answer: Where the holder has contravened the Radiocommunication Act, its regulations, or the terms and conditions of the certificate
+56. What happens if entry is refused to a radio inspector? Answer: A radio inspector may obtain a warrant
+57. Where must the certificate be kept? Answer: Retained in the holder's vehicle
+58. What is the fee for a certificate replacement? Answer: $25
+59. What is the fee for a call sign change? Answer: $60
+60. Are transmissions outside amateur bands permitted? Answer: Are permitted for short tests only
+61. What is the term for privileged messages? Answer: A privileged communication
+62. What is the penalty for interference? Answer: A fine not exceeding $1,000
+63. Which document defines regulations? Answer: The Radiocommunications Regulations
+64. When may the Minister suspend a certificate? Answer: Where the certificate was obtained through misrepresentation
+65. When may a radio inspector use force? Answer: Only if accompanied by a peace officer, and force is authorized
+66. Where should the certificate be kept? Answer: Retained on the holder's person
+67. What is the fee for a certificate replacement? Answer: Free
+68. What is the fee for a call sign change? Answer: Free
+69. Are transmissions outside amateur bands permitted? Answer: Are permitted when using less than 1 watt
+70. What is the term for emergency test transmissions? Answer: An emergency test transmission
+71. What is the penalty for interference? Answer: A prison term of two years
+72. Which document defines broadcasting law? Answer: The Broadcasting Act
+73. When may the Minister suspend a certificate? Answer: Where the holder has contravened the Radiocommunication Act
+74. When may a radio inspector enter a dwelling? Answer: Where entry is refused and necessary to perform duties under the Act
+75. Where must the certificate be kept? Answer: Retained in the holder's vehicle
+76. What is the fee for a certificate replacement? Answer: $25
+77. What is the fee for a call sign change? Answer: $60
+78. Are transmissions outside amateur bands permitted? Answer: Are permitted for short tests only
+79. What is the term for privileged messages? Answer: A privileged communication
+80. What is the penalty for interference? Answer: A fine not exceeding $1,000
+81. Which document defines regulations? Answer: The Radiocommunications Regulations
+82. When may the Minister suspend a certificate? Answer: Where the certificate was obtained through misrepresentation
+83. When may a radio inspector use force? Answer: Only if accompanied by a peace officer, and force is authorized
+84. Where should the certificate be kept? Answer: Retained on the holder's person
+85. What is the fee for a certificate replacement? Answer: Free
+86. What is the fee for a call sign change? Answer: Free
+87. Are transmissions outside amateur bands permitted? Answer: Are permitted when using less than 1 watt
+88. What is the term for emergency test transmissions? Answer: An emergency test transmission
+89. What is the penalty for interference? Answer: A prison term of two years
+90. Which document defines broadcasting law? Answer: The Broadcasting Act
+91. When may the Minister suspend a certificate? Answer: Where the holder has contravened the Radiocommunication Act
+92. When may a radio inspector enter a dwelling? Answer: Where entry is refused and necessary to perform duties under the Act
+93. Where must the certificate be kept? Answer: Retained in the holder's vehicle
+94. What is the fee for a certificate replacement? Answer: $25
+95. What is the fee for a
