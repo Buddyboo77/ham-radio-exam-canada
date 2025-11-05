@@ -312,18 +312,11 @@ export default function EnhancedLearningPage() {
   // Learning progress
   const { recordQuizCompletion } = useLearningProgress();
   
-  // Block browser navigation during active quiz
+  // Block browser back/forward buttons during active quiz
   useEffect(() => {
     const isActiveQuiz = activeView === 'quiz' && !showQuizConfig && !quizCompleted && questionsToUse.length > 0;
     
     if (!isActiveQuiz) return;
-    
-    // Block browser back/forward buttons
-    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
-      e.preventDefault();
-      e.returnValue = 'Your exam is in progress. Are you sure you want to leave?';
-      return e.returnValue;
-    };
     
     // Block browser navigation
     const handlePopState = (e: PopStateEvent) => {
@@ -333,14 +326,12 @@ export default function EnhancedLearningPage() {
       }
     };
     
-    window.addEventListener('beforeunload', handleBeforeUnload);
     window.addEventListener('popstate', handlePopState);
     
     // Push a dummy state to history so back button doesn't immediately leave
     window.history.pushState(null, '', window.location.href);
     
     return () => {
-      window.removeEventListener('beforeunload', handleBeforeUnload);
       window.removeEventListener('popstate', handlePopState);
     };
   }, [activeView, showQuizConfig, quizCompleted, questionsToUse.length]);
