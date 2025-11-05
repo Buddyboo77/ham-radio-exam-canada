@@ -1,0 +1,44 @@
+Question ID,Question Text,Option A,Option B,Option C,Option D,Correct Answer
+B-004-001-041,What is the effect of resonance in a series RLC circuit?,Impedance is minimum,Impedance is maximum,Voltage is zero,Current is zero,A
+B-004-001-042,What is the effect of resonance in a parallel RLC circuit?,Impedance is maximum,Impedance is minimum,Voltage is zero,Current is zero,A
+B-004-001-043,What is the condition for resonance?,Xl = Xc,Xl > Xc,Xl < Xc,R = Xl,A
+B-004-001-044,What happens to current at resonance in a series circuit?,It is maximum,It is minimum,It is zero,It is constant,A
+B-004-001-045,What happens to voltage across L and C at resonance?,They are equal and opposite,They are additive,They are zero,They are constant,A
+B-005-001-026,What is the function of a battery isolator?,Separates multiple battery banks,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-027,What is the function of a battery combiner?,Connects multiple battery banks when needed,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-028,What is the function of a battery shunt?,Measures current flow,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-029,What is the function of a battery inverter?,Converts DC to AC,Converts AC to DC,Stores energy,Amplifies current,A
+B-005-001-030,What is the function of a battery charger?,Restores battery charge,Increases voltage,Stores energy,Amplifies current,A
+B-006-001-021,What is the purpose of a propagation forecast?,Predicts radio conditions,Measures antenna gain,Calculates power output,Monitors modulation,A
+B-006-001-022,What is the purpose of a beacon station?,Monitors propagation paths,Amplifies signals,Stores energy,Converts voltage,A
+B-006-001-023,What is the purpose of a propagation chart?,Visualizes expected signal paths,Amplifies signals,Stores energy,Converts voltage,A
+B-006-001-024,What is the purpose of a grey line map?,Shows twilight zone for enhanced propagation,Shows antenna patterns,Shows voltage levels,Shows modulation depth,A
+B-006-001-025,What is the purpose of a solar cycle chart?,Tracks sunspot activity over time,Tracks antenna gain,Tracks voltage output,Tracks modulation levels,A
+B-007-001-021,What is the function of an antenna analyzer?,Measures SWR, impedance, and resonance,Amplifies RF signals,Stores energy,Converts AC to DC,A
+B-007-001-022,What is the function of a dummy load?,Absorbs RF energy without radiating,Amplifies RF signals,Stores energy,Converts AC to DC,A
+B-007-001-023,What is the function of an antenna switch?,Selects between multiple antennas,Amplifies RF signals,Stores energy,Converts AC to DC,A
+B-007-001-024,What is the function of a coax switch?,Selects between multiple feedlines,Amplifies RF signals,Stores energy,Converts AC to DC,A
+B-007-001-025,What is the function of a lightning arrestor?,Protects antenna system from surges,Amplifies RF signals,Stores energy,Converts AC to DC,A
+B-008-001-031,What is the purpose of a modulation meter?,Measures modulation percentage,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-032,What is the purpose of a noise figure meter?,Measures receiver sensitivity,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-033,What is the purpose of a logic probe?,Tests digital circuits,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-034,What is the purpose of an oscilloscope?,Visualizes waveforms,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-035,What is the purpose of a wattmeter?,Measures power output,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-036,What is the purpose of an SWR meter?,Measures standing wave ratio,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-037,What is the purpose of a field strength meter?,Measures signal strength in the field,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-038,What is the purpose of a frequency counter?,Measures signal frequency,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-039,What is the purpose of a deviation meter?,Measures FM deviation,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-040,What is the purpose of a modulation monitor?,Observes modulation characteristics,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-041,What is the purpose of a spectrum analyzer?,Displays signal spectrum,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-042,What is the purpose of a signal generator?,Produces test signals,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-043,What is the purpose of a tone generator?,Produces audio tones for testing,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-044,What is the purpose of a cable tester?,Checks continuity and faults,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-045,What is the purpose of a multimeter?,Measures voltage, current, and resistance,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-046,What is the purpose of a clamp meter?,Measures current without breaking circuit,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-047,What is the purpose of a continuity tester?,Checks for closed circuits,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-048,What is the purpose of a test light?,Indicates voltage presence,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-049,What is the purpose of a load tester?,Tests battery capacity,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-050,What is the purpose of a battery hydrometer?,Measures electrolyte specific gravity,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-051,What is the purpose of a trickle charger?,Maintains battery charge,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-052,What is the purpose of a deep cycle battery?,Provides long-term power,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-053,What is the purpose of a sealed lead-acid battery?,Prevents electrolyte leakage,Amplifies signals,Stores energy,Converts voltage,A
