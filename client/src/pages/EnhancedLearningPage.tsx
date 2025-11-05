@@ -272,6 +272,11 @@ export default function EnhancedLearningPage() {
   // Navigation state
   const [location, setLocation] = useLocation();
   
+  // DEBUG: Log location changes to catch route-triggered remounts
+  useEffect(() => {
+    console.log('📍 EnhancedLearningPage sees location:', location, 'at', new Date().toISOString());
+  }, [location]);
+  
   // Progress tracking
   const { progress } = useLearningProgress();
   
@@ -311,6 +316,50 @@ export default function EnhancedLearningPage() {
   
   // Learning progress
   const { recordQuizCompletion } = useLearningProgress();
+  
+  // CRITICAL DEBUG: Log component mount/unmount to catch the bug
+  useEffect(() => {
+    console.log('🟢 EnhancedLearningPage MOUNTED at', new Date().toISOString());
+    return () => {
+      console.log('🔴 EnhancedLearningPage UNMOUNTED at', new Date().toISOString());
+    };
+  }, []);
+  
+  // CRITICAL: Block browser navigation during active quiz
+  useEffect(() => {
+    const isActiveQuiz = activeView === 'quiz' && !showQuizConfig && !quizCompleted && questionsToUse.length > 0;
+    
+    if (!isActiveQuiz) return;
+    
+    // Block browser back/forward buttons
+    const handleBeforeUnload = (e: BeforeUnloadEvent) => {
+      e.preventDefault();
+      e.returnValue = 'Your exam is in progress. Are you sure you want to leave?';
+      return e.returnValue;
+    };
+    
+    // Block browser navigation
+    const handlePopState = (e: PopStateEvent) => {
+      if (!window.confirm('Your exam is in progress. Are you sure you want to leave? All progress will be lost.')) {
+        e.preventDefault();
+        window.history.pushState(null, '', window.location.href);
+      }
+    };
+    
+    window.addEventListener('beforeunload', handleBeforeUnload);
+    window.addEventListener('popstate', handlePopState);
+    
+    // Push a dummy state to history so back button doesn't immediately leave
+    window.history.pushState(null, '', window.location.href);
+    
+    console.log('🔒 Navigation BLOCKED - quiz in progress');
+    
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload);
+      window.removeEventListener('popstate', handlePopState);
+      console.log('🔓 Navigation UNBLOCKED - quiz ended');
+    };
+  }, [activeView, showQuizConfig, quizCompleted, questionsToUse.length]);
 
   // Prefetch all questions on first load for offline access
   useEffect(() => {
