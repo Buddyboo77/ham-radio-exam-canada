@@ -292,6 +292,10 @@ export default function EnhancedLearningPage() {
   const [showExplanation, setShowExplanation] = useState(false);
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
   
+  // Refs to prevent accidental quiz resets and preserve questions
+  const isResettingRef = useRef(false);
+  const questionsRef = useRef<QuizQuestion[]>([]);
+  
   // Debug state changes
   // useEffect(() => {
   //   console.log('activeView changed to:', activeView);
@@ -471,13 +475,13 @@ export default function EnhancedLearningPage() {
       questionsRef.current = fallbackQuestions; // SAVE TO REF
       console.log('✅ Fallback questions loaded and LOCKED:', fallbackQuestions.length);
     }
-    
-    // If quiz is active and ref has questions but state is empty, restore immediately
-    if (!showQuizConfig && !quizCompleted && questionsToUse.length === 0 && questionsRef.current.length > 0) {
-      console.warn('⚠️ EMERGENCY RECOVERY: Restoring questions from ref');
-      setQuestionsToUse(questionsRef.current);
-    }
-  }, [quizQuestions, showQuizConfig, isLoadingQuestions, questionsError, quizCompleted, questionsToUse, questionsCount]);
+  }, [quizQuestions, showQuizConfig, isLoadingQuestions, questionsError, questionsCount]);
+  
+  // RENDER-TIME PROTECTION: Use ref as source of truth during active quiz
+  // This ensures questions stay visible even if state gets cleared somehow
+  const displayQuestions = (!showQuizConfig && !quizCompleted && questionsRef.current.length > 0) 
+    ? questionsRef.current 
+    : questionsToUse;
 
   // Timer effect for simulation mode with warnings
   useEffect(() => {
@@ -520,7 +524,7 @@ export default function EnhancedLearningPage() {
     setShowExplanation(true);
     
     // Update score if correct
-    if (answerIndex === questionsToUse[currentQuestion].correctAnswer) {
+    if (answerIndex === displayQuestions[currentQuestion].correctAnswer) {
       setScore(prevScore => prevScore + 1);
     }
   };
@@ -536,7 +540,7 @@ export default function EnhancedLearningPage() {
     setUserAnswers(prev => [...prev, selectedAnswer]);
     
     // Move to next question or finish
-    if (currentQuestion < questionsToUse.length - 1) {
+    if (currentQuestion < displayQuestions.length - 1) {
       setCurrentQuestion(prev => prev + 1);
       setSelectedAnswer(null);
       setShowExplanation(false);
@@ -547,8 +551,8 @@ export default function EnhancedLearningPage() {
       // Record progress
       recordQuizCompletion(
         activeCategory, 
-        score + (selectedAnswer === questionsToUse[currentQuestion].correctAnswer ? 1 : 0), 
-        questionsToUse.length
+        score + (selectedAnswer === displayQuestions[currentQuestion].correctAnswer ? 1 : 0), 
+        displayQuestions.length
       );
     }
   };
@@ -558,12 +562,6 @@ export default function EnhancedLearningPage() {
     setShowQuizConfig(true);
     setQuizCompleted(false);
   };
-  
-  // Guard to prevent accidental quiz resets
-  const isResettingRef = useRef(false);
-  
-  // CRITICAL: Store questions in a ref so they can't disappear during re-renders
-  const questionsRef = useRef<QuizQuestion[]>([]);
   
   // Reset all quiz state - PROTECTED: Only call from explicit user actions
   const resetQuiz = () => {
@@ -905,7 +903,7 @@ export default function EnhancedLearningPage() {
                 Fetching {questionsCount} questions for {activeCategory === 'all' ? 'all categories' : activeCategory}
               </p>
             </div>
-          ) : questionsToUse.length === 0 ? (
+          ) : displayQuestions.length === 0 ? (
             <div className="text-center py-8">
               <AlertCircle className="w-12 h-12 text-yellow-400 mx-auto mb-4" />
               <p className="text-gray-300 mb-2">Questions not available</p>
@@ -920,13 +918,13 @@ export default function EnhancedLearningPage() {
           ) : !quizCompleted ? (
             (() => {
               
-              if (!questionsToUse[currentQuestion]) {
+              if (!displayQuestions[currentQuestion]) {
                 return (
                   <div className="text-center py-8">
                     <AlertCircle className="w-12 h-12 text-red-400 mx-auto mb-4" />
                     <p className="text-gray-300 mb-2">Question not found</p>
                     <p className="text-xs text-gray-400 mb-4">
-                      Trying to access question {currentQuestion + 1} but only {questionsToUse.length} questions loaded
+                      Trying to access question {currentQuestion + 1} but only {displayQuestions.length} questions loaded
                     </p>
                     <Button onClick={() => setShowQuizConfig(true)}>
                       <RotateCw className="w-4 h-4 mr-2" />
@@ -946,7 +944,7 @@ export default function EnhancedLearningPage() {
                           : 'bg-amber-800 text-amber-100'
                         }`}
                       >
-                        {questionsToUse[currentQuestion].category} Section
+                        {displayQuestions[currentQuestion].category} Section
                       </Badge>
                   {examMode === 'simulation' && timeLeft && (
                     <Badge variant="default" className={`text-xs ${
@@ -963,31 +961,31 @@ export default function EnhancedLearningPage() {
                 </div>
                 <div className="flex items-center gap-2">
                   <span className="text-xs text-gray-300 font-mono">
-                    Question {currentQuestion + 1} of {questionsToUse.length}
+                    Question {currentQuestion + 1} of {displayQuestions.length}
                   </span>
                   <Badge variant="secondary" className="text-xs bg-gray-700">
-                    {Math.floor((userAnswers.length / questionsToUse.length) * 100)}% complete
+                    {Math.floor((userAnswers.length / displayQuestions.length) * 100)}% complete
                   </Badge>
                 </div>
               </div>
               
               <Progress 
-                value={(userAnswers.length / questionsToUse.length) * 100} 
+                value={(userAnswers.length / displayQuestions.length) * 100} 
                 className="h-1.5 mb-4" 
               />
               
               <div className="bg-gradient-to-r from-gray-900 to-gray-850 p-4 rounded-md mb-4 border border-gray-700 shadow-sm">
-                <p className="text-sm text-gray-100 font-medium">{questionsToUse[currentQuestion].question}</p>
+                <p className="text-sm text-gray-100 font-medium">{displayQuestions[currentQuestion].question}</p>
               </div>
               
               <div className="space-y-3">
-                {questionsToUse[currentQuestion].options.map((option, idx) => (
+                {displayQuestions[currentQuestion].options.map((option, idx) => (
                   <button
                     key={idx}
                     className={`w-full text-left px-4 py-3 rounded-md border ${
                       selectedAnswer === idx
                         ? showExplanation
-                          ? idx === questionsToUse[currentQuestion].correctAnswer
+                          ? idx === displayQuestions[currentQuestion].correctAnswer
                             ? "bg-green-900 border-green-700 text-green-100"
                             : "bg-red-900 border-red-700 text-red-100"
                           : "bg-blue-900 border-blue-700 text-blue-100"
@@ -1002,7 +1000,7 @@ export default function EnhancedLearningPage() {
                       <div className="w-6 font-mono font-bold mr-2">{String.fromCharCode(65 + idx)})</div>
                       <div>{option}</div>
                     </div>
-                    {showExplanation && idx === questionsToUse[currentQuestion].correctAnswer && (
+                    {showExplanation && idx === displayQuestions[currentQuestion].correctAnswer && (
                       <div className="mt-2 text-xs text-green-300 border-t border-green-800 pt-2">
                         ✓ Correct Answer
                       </div>
@@ -1017,7 +1015,7 @@ export default function EnhancedLearningPage() {
                     <AlertCircle className="h-4 w-4 text-blue-400" />
                     <h4 className="text-sm font-medium text-gray-200">Explanation</h4>
                   </div>
-                  <p className="text-xs text-gray-300">{questionsToUse[currentQuestion].explanation}</p>
+                  <p className="text-xs text-gray-300">{displayQuestions[currentQuestion].explanation}</p>
                 </div>
               )}
               
@@ -1041,7 +1039,7 @@ export default function EnhancedLearningPage() {
                     onClick={handleNextQuestion}
                     size="sm"
                     className="px-3 py-0 h-7 text-xs font-medium w-28 bg-blue-800 hover:bg-blue-700">
-                    {currentQuestion < questionsToUse.length - 1 ? 'Next Question' : 'Finish Quiz'}
+                    {currentQuestion < displayQuestions.length - 1 ? 'Next Question' : 'Finish Quiz'}
                   </Button>
                 )}
               </div>
@@ -1056,7 +1054,7 @@ export default function EnhancedLearningPage() {
                 </h2>
                 <div className="text-4xl font-bold mb-2 flex items-center justify-center gap-2">
                   <span className={`${
-                    Math.round((score / questionsToUse.length) * 100) >= 80 
+                    Math.round((score / displayQuestions.length) * 100) >= 80 
                       ? 'text-green-400' 
                       : Math.round((score / questionsToUse.length) * 100) >= 70 
                         ? 'text-blue-400' 
@@ -1069,7 +1067,7 @@ export default function EnhancedLearningPage() {
                   )}
                 </div>
                 <p className="text-sm text-gray-300">
-                  You answered {score} out of {questionsToUse.length} questions correctly.
+                  You answered {score} out of {displayQuestions.length} questions correctly.
                 </p>
               </div>
               
@@ -1143,9 +1141,9 @@ export default function EnhancedLearningPage() {
                   </div>
                 ))}
                 
-                {questionsToUse.length > 5 && (
+                {displayQuestions.length > 5 && (
                   <div className="text-center text-xs text-gray-400">
-                    Showing 5 of {questionsToUse.length} questions
+                    Showing 5 of {displayQuestions.length} questions
                   </div>
                 )}
               </div>
