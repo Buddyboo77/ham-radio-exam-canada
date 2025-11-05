@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useLocation } from 'wouter';
+import { useLocation, Link } from 'wouter';
 import { Button } from '@/components/ui/button';
 import { Radio, RadioTower } from 'lucide-react';
 import { useAuth } from '@/hooks/use-auth';
@@ -47,9 +47,19 @@ export default function AuthPage() {
           </Button>
         </div>
         
-        <div className="text-xs text-gray-500">
+        <div className="text-xs text-gray-500 space-y-1">
           <p>Canadian Amateur Radio Exam Preparation</p>
           <p>Basic & Advanced Qualification</p>
+          
+          <div className="flex justify-center gap-3 mt-3 pt-2 border-t border-gray-700">
+            <Link href="/privacy">
+              <span className="text-blue-400 hover:text-blue-300 cursor-pointer">Privacy Policy</span>
+            </Link>
+            <span className="text-gray-600">•</span>
+            <Link href="/terms">
+              <span className="text-blue-400 hover:text-blue-300 cursor-pointer">Terms of Service</span>
+            </Link>
+          </div>
         </div>
       </div>
     </div>
