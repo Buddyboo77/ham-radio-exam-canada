@@ -1,0 +1,42 @@
+Question ID,Question Text,Option A,Option B,Option C,Option D,Correct Answer
+B-001-022-101,What is the function of a lightning arrestor?,To protect equipment from lightning surges,To amplify signals,To store energy,To convert voltage,A
+B-001-022-102,What is the purpose of a ground rod?,To provide a low-resistance path to earth,To amplify signals,To store energy,To convert voltage,A
+B-001-022-103,What is the purpose of bonding?,To connect metal parts to reduce shock hazard,To amplify signals,To store energy,To convert voltage,A
+B-001-022-104,What is the purpose of a ground strap?,To provide a low-impedance ground connection,To amplify signals,To store energy,To convert voltage,A
+B-001-022-105,What is the purpose of a surge protector?,To limit voltage spikes,To amplify signals,To store energy,To convert voltage,A
+B-001-022-106,What is the purpose of a ferrite bead?,To suppress high-frequency noise,To amplify signals,To store energy,To convert voltage,A
+B-001-022-107,What is the purpose of a low-pass filter?,To block high-frequency signals,To amplify signals,To store energy,To convert voltage,A
+B-001-022-108,What is the purpose of a high-pass filter?,To block low-frequency signals,To amplify signals,To store energy,To convert voltage,A
+B-001-022-109,What is the purpose of a band-pass filter?,To allow a specific range of frequencies,To amplify signals,To store energy,To convert voltage,A
+B-001-022-110,What is the purpose of a band-stop filter?,To block a specific range of frequencies,To amplify signals,To store energy,To convert voltage,A
+B-001-022-111,What is the purpose of a notch filter?,To reject a narrow band of frequencies,To amplify signals,To store energy,To convert voltage,A
+B-001-022-112,What is the purpose of a preselector?,To improve receiver selectivity,To amplify signals,To store energy,To convert voltage,A
+B-001-022-113,What is the purpose of a limiter circuit?,To prevent overmodulation,To amplify signals,To store energy,To convert voltage,A
+B-001-022-114,What is the purpose of a squelch circuit?,To mute audio when no signal is present,To amplify signals,To store energy,To convert voltage,A
+B-001-022-115,What is the purpose of an AGC circuit?,To maintain constant output level,To amplify signals,To store energy,To convert voltage,A
+B-001-022-116,What is the purpose of a noise blanker?,To reduce impulse noise,To amplify signals,To store energy,To convert voltage,A
+B-001-022-117,What is the purpose of a speech processor?,To increase average transmitted audio level,To amplify signals,To store energy,To convert voltage,A
+B-001-022-118,What is the purpose of a compressor in a transmitter?,To increase average audio level,To amplify signals,To store energy,To convert voltage,A
+B-001-022-119,What is the purpose of a de-emphasis circuit?,To reduce high-frequency audio response,To amplify signals,To store energy,To convert voltage,A
+B-001-022-120,What is the purpose of a modulation monitor?,To observe modulation characteristics,To amplify signals,To store energy,To convert voltage,A
+B-001-022-121,What is the purpose of a deviation meter?,To measure FM deviation,To amplify signals,To store energy,To convert voltage,A
+B-001-022-122,What is the purpose of a frequency counter?,To measure signal frequency,To amplify signals,To store energy,To convert voltage,A
+B-001-022-123,What is the purpose of a wattmeter?,To measure power output,To amplify signals,To store energy,To convert voltage,A
+B-001-022-124,What is the purpose of an SWR meter?,To measure standing wave ratio,To amplify signals,To store energy,To convert voltage,A
+B-001-022-125,What is the purpose of a dummy load?,To safely test transmitters without radiating,To amplify signals,To store energy,To convert voltage,A
+B-001-022-126,What is the purpose of a field strength meter?,To measure signal strength in the field,To amplify signals,To store energy,To convert voltage,A
+B-001-022-127,What is the purpose of a modulation meter?,To measure modulation percentage,To amplify signals,To store energy,To convert voltage,A
+B-001-022-128,What is the purpose of a noise figure meter?,To measure receiver sensitivity,To amplify signals,To store energy,To convert voltage,A
+B-001-022-129,What is the purpose of a logic probe?,To test digital circuits,To amplify signals,To store energy,To convert voltage,A
+B-001-022-130,What is the purpose of an oscilloscope?,To visualize waveforms,To amplify signals,To store energy,To convert voltage,A
+B-002-001-001,What is the international phonetic word for the letter “A”?,Alpha,America,Alfa,Adam,C
+B-002-001-002,What is the international phonetic word for the letter “B”?,Bravo,Boston,Baker,Beta,A
+B-002-001-003,What is the international phonetic word for the letter “C”?,Charlie,Canada,Charlie,Charles,A
+B-002-001-004,What is the international phonetic word for the letter “D”?,Delta,David,Dog,Denver,A
+B-002-001-005,What is the international phonetic word for the letter “E”?,Echo,Edward,Eagle,Europe,A
+B-002-001-006,What is the international phonetic word for the letter “F”?,Foxtrot,Frank,Fox,France,A
+B-002-001-007,What is the international phonetic word for the letter “G”?,Golf,George,Gamma,Germany,A
+B-002-001-008,What is the international phonetic word for the letter “H”?,Hotel,Henry,Hector,Holland,A
+B-002-001-009,What is the international phonetic word for the letter “I”?,India,Igloo,Italy,Indigo,A
+B-002-001-010,What is the international phonetic word for the letter “J”?,Juliett,Jack,Julian,Japan,A
+...
