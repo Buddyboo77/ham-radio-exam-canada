@@ -455,31 +455,29 @@ export default function EnhancedLearningPage() {
     }
   };
   
-  // Update questions when they arrive from the API - ONLY when quiz starts
+  // Update questions when they arrive from the API - ONLY ONCE when quiz starts
   useEffect(() => {
-    // CRITICAL: Only update questions when showQuizConfig changes from true to false (starting quiz)
-    // Do NOT update during an active quiz to prevent questions from disappearing
-    if (quizQuestions && quizQuestions.length > 0 && !showQuizConfig) {
+    // CRITICAL FIX: Only set questions ONCE when quiz starts
+    // Never clear or update them again until quiz ends
+    if (quizQuestions && quizQuestions.length > 0 && !showQuizConfig && questionsRef.current.length === 0) {
       const convertedQuestions = quizQuestions.map(convertDatabaseQuestion);
       setQuestionsToUse(convertedQuestions);
       questionsRef.current = convertedQuestions; // SAVE TO REF - immune to re-renders
-      console.log('✅ Questions loaded and saved to ref:', convertedQuestions.length);
-    } else if (!quizQuestions && !isLoadingQuestions && !showQuizConfig && questionsError) {
+      console.log('✅ Questions loaded and LOCKED for quiz:', convertedQuestions.length);
+    } else if (!quizQuestions && !isLoadingQuestions && !showQuizConfig && questionsError && questionsRef.current.length === 0) {
       // Fallback to sample questions if API fails
       const fallbackQuestions = FALLBACK_QUIZ_QUESTIONS.slice(0, Math.min(questionsCount, FALLBACK_QUIZ_QUESTIONS.length));
       setQuestionsToUse(fallbackQuestions);
       questionsRef.current = fallbackQuestions; // SAVE TO REF
-      console.log('✅ Fallback questions loaded:', fallbackQuestions.length);
+      console.log('✅ Fallback questions loaded and LOCKED:', fallbackQuestions.length);
     }
-  }, [quizQuestions, showQuizConfig]); // REMOVED: isLoadingQuestions, questionsCount, questionsError - they cause re-runs during quiz
-  
-  // CRITICAL PROTECTION: If questionsToUse gets cleared, restore from ref
-  useEffect(() => {
+    
+    // If quiz is active and ref has questions but state is empty, restore immediately
     if (!showQuizConfig && !quizCompleted && questionsToUse.length === 0 && questionsRef.current.length > 0) {
-      console.warn('⚠️ RECOVERING: questionsToUse was cleared, restoring from ref');
+      console.warn('⚠️ EMERGENCY RECOVERY: Restoring questions from ref');
       setQuestionsToUse(questionsRef.current);
     }
-  }, [questionsToUse, showQuizConfig, quizCompleted]);
+  }, [quizQuestions, showQuizConfig, isLoadingQuestions, questionsError, quizCompleted, questionsToUse, questionsCount]);
 
   // Timer effect for simulation mode with warnings
   useEffect(() => {
