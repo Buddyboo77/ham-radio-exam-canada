@@ -1,0 +1,50 @@
+B-001-014-001,What is the purpose of modulation in radio transmission?,To impress information on a carrier wave,To increase antenna efficiency,To reduce transmitter power,To eliminate interference,A
+B-001-014-002,Which type of modulation varies the amplitude of the carrier?,Amplitude modulation,Frequency modulation,Phase modulation,Pulse modulation,A
+B-001-014-003,Which type of modulation varies the frequency of the carrier?,Amplitude modulation,Frequency modulation,Phase modulation,Pulse modulation,B
+B-001-014-004,Which type of modulation varies the phase of the carrier?,Amplitude modulation,Frequency modulation,Phase modulation,Pulse modulation,C
+B-001-014-005,What is the typical bandwidth of an SSB signal?,3 kHz,6 kHz,10 kHz,20 kHz,A
+B-001-014-006,What is the typical bandwidth of an FM signal?,15 kHz,6 kHz,3 kHz,1 kHz,A
+B-001-014-007,What is the typical bandwidth of a CW signal?,500 Hz,1 kHz,3 kHz,6 kHz,A
+B-001-014-008,What is the typical bandwidth of a digital signal?,Varies with mode,Always 3 kHz,Always 6 kHz,Always 15 kHz,A
+B-001-014-009,What does PEP stand for?,Peak Envelope Power,Power Efficiency Percentage,Phase Envelope Peak,Pulse Energy Power,A
+B-001-014-010,What is the purpose of a balun in an antenna system?,To match balanced and unbalanced lines,To increase power output,To reduce modulation distortion,To amplify signals,A
+B-001-014-011,What is the typical impedance of a dipole antenna?,50 ohms,75 ohms,100 ohms,300 ohms,A
+B-001-014-012,What is the typical impedance of a quarter-wave vertical antenna?,50 ohms,75 ohms,100 ohms,300 ohms,A
+B-001-014-013,What is the typical impedance of a folded dipole antenna?,300 ohms,50 ohms,75 ohms,100 ohms,A
+B-001-014-014,What is the typical impedance of a Yagi antenna?,50 ohms,75 ohms,100 ohms,300 ohms,A
+B-001-014-015,What is the typical impedance of a loop antenna?,100 ohms,50 ohms,75 ohms,300 ohms,B
+B-001-014-016,What is the purpose of an antenna tuner?,To match antenna impedance to transmitter,To increase transmitter power,To reduce modulation distortion,To amplify signals,A
+B-001-014-017,What is the purpose of a dummy load?,To safely test transmitters without radiating,To increase antenna efficiency,To reduce transmitter power,To eliminate interference,A
+B-001-014-018,What is the purpose of a ground system in an antenna installation?,To provide a return path for RF currents,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-019,What is the purpose of a counterpoise?,To simulate a ground system,To increase antenna gain,To reduce transmitter power,To eliminate interference,A
+B-001-014-020,What is the purpose of a radial system?,To improve ground conductivity,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-021,What is the purpose of a choke balun?,To prevent RF currents on the feedline,To increase power output,To reduce modulation distortion,To amplify signals,A
+B-001-014-022,What is the purpose of a trap in a multiband antenna?,To isolate frequency bands,To increase antenna gain,To reduce transmitter power,To eliminate interference,A
+B-001-014-023,What is the purpose of a loading coil?,To electrically lengthen a short antenna,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-024,What is the purpose of a matching network?,To match impedance between components,To increase power output,To reduce modulation distortion,To amplify signals,A
+B-001-014-025,What is the purpose of a phasing line?,To control radiation pattern of antennas,To increase antenna gain,To reduce transmitter power,To eliminate interference,A
+B-001-014-026,What is the purpose of a reflector element in a Yagi?,To direct radiation pattern,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-027,What is the purpose of a director element in a Yagi?,To focus radiation pattern,To increase antenna gain,To reduce transmitter power,To eliminate interference,A
+B-001-014-028,What is the purpose of a driven element in a Yagi?,To feed RF energy into the antenna,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-029,What is the purpose of a gamma match?,To match impedance of Yagi to feedline,To increase power output,To reduce modulation distortion,To amplify signals,A
+B-001-014-030,What is the purpose of a hairpin match?,To match impedance of Yagi to feedline,To increase power output,To reduce modulation distortion,To amplify signals,A
+B-001-014-031,What is the purpose of a stub?,To provide impedance matching or filtering,To increase antenna gain,To reduce transmitter power,To eliminate interference,A
+B-001-014-032,What is the purpose of a quarter-wave stub?,To provide impedance matching or filtering,To increase antenna gain,To reduce transmitter power,To eliminate interference,A
+B-001-014-033,What is the purpose of a half-wave stub?,To provide impedance matching or filtering,To increase antenna gain,To reduce transmitter power,To eliminate interference,A
+B-001-014-034,What is the purpose of a coaxial stub?,To provide impedance matching or filtering,To increase antenna gain,To reduce transmitter power,To eliminate interference,A
+B-001-014-035,What is the purpose of a transmission line?,To carry RF energy between components,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-036,What is the purpose of a feedline?,To carry RF energy between transmitter and antenna,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-037,What is the purpose of a balun?,To match balanced and unbalanced lines,To increase power output,To reduce modulation distortion,To amplify signals,A
+B-001-014-038,What is the purpose of a coaxial cable?,To carry RF signals with shielding,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-039,What is the purpose of a twin-lead cable?,To carry RF signals with low loss,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-040,What is the purpose of a waveguide?,To guide microwave signals,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-041,What is the purpose of a heliax cable?,To carry RF signals with low loss and shielding,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-042,What is the purpose of a hardline?,To carry RF signals with minimal loss,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-043,What is the purpose of a flexible coax?,To carry RF signals with flexibility,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-044,What is the purpose of a connector?,To join transmission lines and equipment,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-045,What is the purpose of a PL-259 connector?,To connect coaxial cable to equipment,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-046,What is the purpose of a BNC connector?,To connect coaxial cable to equipment,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-047,What is the purpose of an N-type connector?,To connect coaxial cable to equipment,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-048,What is the purpose of an SMA connector?,To connect coaxial cable to equipment,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-049,What is the purpose of a TNC connector?,To connect coaxial cable to equipment,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
+B-001-014-050,What is the purpose of an adapter?,To connect incompatible connectors,To increase antenna gain,To reduce modulation distortion,To amplify signals,A
