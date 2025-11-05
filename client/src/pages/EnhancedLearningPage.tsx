@@ -579,8 +579,8 @@ export default function EnhancedLearningPage() {
   
   return (
     <div className="p-2">
-      {/* Fixed Home Button at bottom - only show when not on dashboard */}
-      {activeView !== 'dashboard' && (
+      {/* Fixed Home Button at bottom - only show when not on dashboard and not actively taking quiz */}
+      {activeView !== 'dashboard' && (showQuizConfig || quizCompleted) && (
         <div className="fixed bottom-4 right-4 z-50">
           <Link href="/">
             <button className="bg-green-600 hover:bg-green-500 p-3 rounded-full shadow-lg border-2 border-green-400 shadow-glow-green">
@@ -601,7 +601,7 @@ export default function EnhancedLearningPage() {
             </h2>
           </div>
           <div className="flex items-center gap-2">
-            {activeView !== 'dashboard' && (
+            {activeView !== 'dashboard' && (showQuizConfig || quizCompleted) && (
               <button 
                 className="text-xs text-blue-300 hover:text-blue-100 font-mono bg-blue-950 px-2 py-0.5 rounded border border-blue-800"
                 onClick={(e) => {
@@ -613,7 +613,7 @@ export default function EnhancedLearningPage() {
                 RETURN
               </button>
             )}
-            {activeView !== 'dashboard' && (
+            {activeView !== 'dashboard' && (showQuizConfig || quizCompleted) && (
               <Link href="/">
                 <button 
                   className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1"
