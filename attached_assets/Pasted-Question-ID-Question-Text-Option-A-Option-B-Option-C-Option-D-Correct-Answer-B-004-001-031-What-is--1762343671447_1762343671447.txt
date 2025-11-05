@@ -1,0 +1,41 @@
+Question ID,Question Text,Option A,Option B,Option C,Option D,Correct Answer
+B-004-001-031,What is the phase relationship between voltage and current in a purely resistive AC circuit?,They are in phase,Voltage leads current,Current leads voltage,They are 90 degrees out of phase,A
+B-004-001-032,What is the phase relationship in a purely capacitive AC circuit?,Current leads voltage by 90 degrees,Voltage leads current by 90 degrees,They are in phase,They are 180 degrees out of phase,A
+B-004-001-033,What is the phase relationship in a purely inductive AC circuit?,Voltage leads current by 90 degrees,Current leads voltage by 90 degrees,They are in phase,They are 180 degrees out of phase,A
+B-004-001-034,What is the formula for capacitive reactance?,Xc = 1 / (2πfC),Xc = 2πfC,Xc = f / (2πC),Xc = C / (2πf),A
+B-004-001-035,What is the formula for inductive reactance?,Xl = 2πfL,Xl = 1 / (2πfL),Xl = L / (2πf),Xl = f / (2πL),A
+B-004-001-036,What is the unit of reactance?,Ohm,Watt,Farad,Henry,A
+B-004-001-037,What is impedance?,Total opposition to AC,Total opposition to DC,Total voltage in a circuit,Total current in a circuit,A
+B-004-001-038,What is the unit of impedance?,Ohm,Watt,Farad,Henry,A
+B-004-001-039,What is the formula for impedance in a series RLC circuit?,Z = √(R² + (Xl - Xc)²),Z = R + Xl + Xc,Z = R × (Xl + Xc),Z = R² + Xl² + Xc²,A
+B-004-001-040,What is resonance in an RLC circuit?,Xl = Xc,Voltage equals current,Impedance is maximum,Resistance is zero,A
+B-005-001-021,What is the function of a battery lug?,Connects cable to terminal,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-022,What is the function of a battery clamp?,Secures cable to terminal,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-023,What is the function of a battery terminal?,Provides connection point,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-024,What is the function of a battery post?,Supports terminal connection,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-025,What is the function of a battery tray?,Holds battery securely,Increases voltage,Stores energy,Amplifies current,A
+B-006-001-016,What is the effect of solar activity on HF propagation?,Increases ionization and improves propagation,Decreases ionization and worsens propagation,No effect,Blocks all signals,A
+B-006-001-017,What is a sunspot?,A dark area on the sun indicating magnetic activity,A bright area on the sun,A solar flare,A type of antenna,A
+B-006-001-018,What is the solar flux index?,Measure of solar radiation affecting propagation,Measure of temperature,Measure of humidity,Measure of wind speed,A
+B-006-001-019,What is the K-index?,Measure of geomagnetic activity,Measure of solar radiation,Measure of ionospheric density,Measure of antenna gain,A
+B-006-001-020,What is the A-index?,Average geomagnetic activity over 24 hours,Average solar radiation,Average ionospheric density,Average antenna gain,A
+B-007-001-016,What is the function of a balun?,Matches impedance between balanced and unbalanced lines,Amplifies RF signals,Stores energy,Converts AC to DC,A
+B-007-001-017,What is the function of a coaxial cable?,Carries RF signals with shielding,Amplifies RF signals,Stores energy,Converts AC to DC,A
+B-007-001-018,What is the function of ladder line?,Carries balanced RF signals with low loss,Amplifies RF signals,Stores energy,Converts AC to DC,A
+B-007-001-019,What is the function of a feedpoint?,Connection between antenna and feedline,Connection between antenna and ground,Connection between antenna and power supply,Connection between antenna and tuner,A
+B-007-001-020,What is the function of a counterpoise?,Provides substitute ground plane,Amplifies RF signals,Stores energy,Converts AC to DC,A
+B-008-001-016,What is the purpose of a lightning arrestor?,Protects equipment from lightning surges,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-017,What is the purpose of a surge protector?,Limits voltage spikes,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-018,What is the purpose of a ferrite bead?,Suppresses high-frequency noise,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-019,What is the purpose of a low-pass filter?,Blocks high-frequency signals,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-020,What is the purpose of a high-pass filter?,Blocks low-frequency signals,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-021,What is the purpose of a band-pass filter?,Allows specific frequency range,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-022,What is the purpose of a band-stop filter?,Blocks specific frequency range,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-023,What is the purpose of a notch filter?,Rejects narrow frequency band,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-024,What is the purpose of a preselector?,Improves receiver selectivity,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-025,What is the purpose of a limiter circuit?,Prevents overmodulation,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-026,What is the purpose of a squelch circuit?,Mutes audio when no signal is present,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-027,What is the purpose of an AGC circuit?,Maintains constant output level,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-028,What is the purpose of a noise blanker?,Reduces impulse noise,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-029,What is the purpose of a speech processor?,Increases average transmitted audio level,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-030,What is the purpose of a modulation monitor?,Observes modulation characteristics,Amplifies signals,Stores energy,Converts voltage,A
