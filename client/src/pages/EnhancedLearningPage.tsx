@@ -451,9 +451,10 @@ export default function EnhancedLearningPage() {
     }
   };
   
-  // Update questions when they arrive from the API
+  // Update questions when they arrive from the API - ONLY when quiz starts
   useEffect(() => {
-    
+    // CRITICAL: Only update questions when showQuizConfig changes from true to false (starting quiz)
+    // Do NOT update during an active quiz to prevent questions from disappearing
     if (quizQuestions && quizQuestions.length > 0 && !showQuizConfig) {
       const convertedQuestions = quizQuestions.map(convertDatabaseQuestion);
       setQuestionsToUse(convertedQuestions);
@@ -462,7 +463,7 @@ export default function EnhancedLearningPage() {
       const fallbackQuestions = FALLBACK_QUIZ_QUESTIONS.slice(0, Math.min(questionsCount, FALLBACK_QUIZ_QUESTIONS.length));
       setQuestionsToUse(fallbackQuestions);
     }
-  }, [quizQuestions, isLoadingQuestions, showQuizConfig, questionsCount, questionsError]);
+  }, [quizQuestions, showQuizConfig]); // REMOVED: isLoadingQuestions, questionsCount, questionsError - they cause re-runs during quiz
 
   // Timer effect for simulation mode with warnings
   useEffect(() => {
