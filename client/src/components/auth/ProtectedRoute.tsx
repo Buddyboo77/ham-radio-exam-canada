@@ -11,15 +11,8 @@ export function ProtectedRoute({ path, children }: ProtectedRouteProps) {
   const { isAuthenticated } = useAuth();
 
   return (
-    <Route
-      path={path}
-      component={() =>
-        isAuthenticated ? (
-          <>{children}</>
-        ) : (
-          <Redirect to="/auth" />
-        )
-      }
-    />
+    <Route path={path}>
+      {isAuthenticated ? children : <Redirect to="/auth" />}
+    </Route>
   );
 }
