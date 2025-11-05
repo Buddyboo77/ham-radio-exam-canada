@@ -1,0 +1,31 @@
+Question ID,Question Text,Option A,Option B,Option C,Option D,Correct Answer
+B-004-001-011,What is the effect of increasing resistance in a circuit?,Decreases current,Increases voltage,Increases current,Decreases voltage,A
+B-004-001-012,What is the effect of increasing voltage in a circuit?,Increases current,Decreases resistance,Decreases current,Increases resistance,A
+B-004-001-013,What is the effect of decreasing resistance in a circuit?,Increases current,Decreases voltage,Decreases current,Increases voltage,A
+B-004-001-014,What is the effect of decreasing voltage in a circuit?,Decreases current,Increases resistance,Increases current,Decreases resistance,A
+B-004-001-015,What is the formula for calculating resistance?,R = V ÷ I,R = V × I,R = I ÷ V,R = I × V,A
+B-004-001-016,What is the formula for calculating current?,I = V ÷ R,I = V × R,I = R ÷ V,I = R × V,A
+B-004-001-017,What is the formula for calculating voltage?,V = I × R,V = R ÷ I,V = I ÷ R,V = R × I,A
+B-004-001-018,What is the formula for calculating power?,P = V × I,P = V ÷ I,P = I ÷ V,P = V × R,A
+B-004-001-019,What is the unit of electrical energy?,Joule,Watt,Ampere,Volt,A
+B-004-001-020,What is the unit of electrical charge?,Coulomb,Watt,Ampere,Volt,A
+B-005-001-006,What is the function of a charge controller?,Regulates battery charging,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-007,What is the function of a deep cycle battery?,Provides long-term power,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-008,What is the function of a sealed lead-acid battery?,Prevents electrolyte leakage,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-009,What is the function of a lithium-ion battery?,Provides high energy density,Increases voltage,Stores energy,Amplifies current,A
+B-005-001-010,What is the function of a battery management system?,Monitors and protects battery cells,Increases voltage,Stores energy,Amplifies current,A
+B-006-001-006,What is the ionosphere’s role in propagation?,Reflects HF signals back to Earth,Absorbs VHF signals,Blocks UHF signals,Amplifies LF signals,A
+B-006-001-007,What is the best time for HF propagation?,Nighttime for lower bands,Daytime for higher bands,Midday for all bands,Evening for VHF,A
+B-006-001-008,What causes fading in radio signals?,Changes in propagation conditions,Low transmitter power,High antenna gain,Short coax length,A
+B-006-001-009,What is sporadic E propagation?,Reflection from ionized patches in E layer,Reflection from satellites,Ground wave enhancement,Line-of-sight extension,A
+B-006-001-010,What is tropospheric ducting?,Trapping of VHF/UHF signals in weather layers,Reflection from ionosphere,Absorption by terrain,Amplification by antennas,A
+B-007-001-006,What is the effect of using a poor ground system with a vertical antenna?,Reduced efficiency and signal strength,Increased bandwidth,Improved radiation pattern,No effect,A
+B-007-001-007,What is the typical radiation pattern of a vertical antenna?,Omnidirectional in the horizontal plane,Figure-eight pattern,Directional toward the feedline,Bidirectional in the vertical plane,A
+B-007-001-008,What is the typical radiation pattern of a horizontal dipole?,Figure-eight broadside to the wire,Omnidirectional,Directional toward the ends,Bidirectional along the wire,A
+B-007-001-009,What is the effect of mounting a horizontal dipole close to the ground?,Higher radiation angle and reduced efficiency,Lower radiation angle and increased efficiency,No change in radiation pattern,Improved SWR,A
+B-007-001-010,What is the function of an antenna tuner?,Matches impedance between transceiver and antenna,Amplifies RF signals,Stores energy,Converts AC to DC,A
+B-008-001-006,What is the purpose of bonding?,Connects metal parts to reduce shock hazard,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-007,What is the purpose of a ground rod?,Provides low-resistance path to Earth,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-008,What is the purpose of a lightning arrestor?,Protects equipment from surges,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-009,What is the purpose of RF shielding?,Blocks electromagnetic interference,Amplifies signals,Stores energy,Converts voltage,A
+B-008-001-010,What is the purpose of a ferrite bead?,Suppresses high-frequency noise,Amplifies signals,Stores energy,Converts voltage,A
