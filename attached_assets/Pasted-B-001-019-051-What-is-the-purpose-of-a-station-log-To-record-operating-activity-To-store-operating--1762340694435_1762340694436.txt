@@ -1,0 +1,34 @@
+B-001-019-051,What is the purpose of a station log?,To record operating activity,To store operating activity,To amplify operating activity,To measure operating activity,A
+B-001-019-052,What is the purpose of a QSL card?,To confirm a contact,To store a contact,To amplify a contact,To measure a contact,A
+B-001-019-053,What is the purpose of a contest exchange?,To provide required contest information,To store contest information,To amplify contest information,To measure contest information,A
+B-001-019-054,What is the purpose of a net control station?,To manage group communications,To store group communications,To amplify group communications,To measure group communications,A
+B-001-019-055,What is the purpose of an emergency net?,To coordinate disaster response,To store disaster data,To amplify emergency signals,To measure emergency traffic,A
+B-001-019-056,What is the purpose of a traffic net?,To relay formal messages,To store formal messages,To amplify formal messages,To measure formal messages,A
+B-001-019-057,What is the purpose of a public service net?,To support event communications,To store event communications,To amplify event communications,To measure event communications,A
+B-001-019-058,What is the purpose of a simplex frequency?,To transmit and receive on the same frequency,To store frequency,To amplify frequency,To measure frequency,A
+B-001-019-059,What is the purpose of a duplex frequency?,To transmit and receive on different frequencies,To store frequencies,To amplify frequencies,To measure frequencies,A
+B-001-019-060,What is the purpose of a calling frequency?,To initiate contact,To store contact,To amplify contact,To measure contact,A
+B-001-019-061,What is the purpose of a control point?,To operate a station remotely,To store station settings,To amplify station signals,To measure station output,A
+B-001-019-062,What is the purpose of a remote base?,To extend station access,To store station access,To amplify station access,To measure station access,A
+B-001-019-063,What is the purpose of a cross-band repeater?,To link different frequency bands,To store frequency bands,To amplify frequency bands,To measure frequency bands,A
+B-001-019-064,What is the purpose of a digipeater?,To relay digital signals,To store digital signals,To amplify digital signals,To measure digital signals,A
+B-001-019-065,What is the purpose of a gateway station?,To connect radio and internet,To store internet data,To amplify internet signals,To measure internet traffic,A
+B-001-019-066,What is the purpose of an Echolink node?,To enable VoIP radio connections,To store VoIP data,To amplify VoIP signals,To measure VoIP traffic,A
+B-001-019-067,What is the purpose of an IRLP node?,To link repeaters via internet,To store repeater data,To amplify repeater signals,To measure repeater traffic,A
+B-001-019-068,What is the purpose of a reflector server?,To host multi-user VoIP sessions,To store VoIP sessions,To amplify VoIP sessions,To measure VoIP sessions,A
+B-001-019-069,What is the purpose of a hotspot device?,To provide personal digital access,To store digital access,To amplify digital access,To measure digital access,A
+B-001-019-070,What is the purpose of a code plug?,To store radio configuration data,To amplify configuration data,To measure configuration data,To convert configuration data,A
+B-001-019-071,What is the purpose of a firmware update?,To improve radio performance,To store radio performance,To amplify radio performance,To measure radio performance,A
+B-001-019-072,What is the purpose of a software-defined radio?,To process signals using software,To store signals,To amplify signals,To measure signals,A
+B-001-019-073,What is the purpose of a waterfall display?,To visualize signal activity,To store signal activity,To amplify signal activity,To measure signal activity,A
+B-001-019-074,What is the purpose of a band plan?,To organize frequency usage,To increase power output,To reduce modulation distortion,To amplify signals,A
+B-001-019-075,Who develops amateur radio band plans?,Amateur radio organizations,Innovation, Science and Economic Development Canada,International Telecommunication Union,Commercial broadcasters,A
+B-001-019-076,Are band plans legally binding?,No, they are voluntary guidelines,Yes, they are regulations,Only during contests,Only for digital modes,A
+B-001-019-077,Why should amateurs follow band plans?,To reduce interference and promote cooperation,To increase power output,To reduce modulation distortion,To amplify signals,A
+B-001-019-078,What is the purpose of a contest?,To make as many contacts as possible,To increase power output,To reduce modulation distortion,To amplify signals,A
+B-001-019-079,What is the purpose of a net?,To coordinate group communications,To store group communications,To amplify group communications,To measure group communications,A
+B-001-019-080,What is the purpose of a public service event net?,To support event communications,To store event communications,To amplify event communications,To measure event communications,A
+B-001-019-081,What is the purpose of a control operator?,To ensure legal operation of a station,To store station settings,To amplify station signals,To measure station output,A
+B-001-019-082,What is the purpose of a station log?,To record operating activity,To store operating activity,To amplify operating activity,To measure operating activity,A
+B-001-019-083,What is the purpose of a QSL card?,To confirm a contact,To store a contact,To amplify a contact,To measure a contact,A
+B-001-019-084,What is the purpose of a contest exchange?,To provide required contest information,To store contest information,To amplify contest information,To measure contest information,A
