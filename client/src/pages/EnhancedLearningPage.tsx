@@ -980,7 +980,9 @@ export default function EnhancedLearningPage() {
                   onClick={(e) => {
                     e.preventDefault();
                     e.stopPropagation();
-                    exitQuiz();
+                    if (window.confirm('Are you sure you want to exit? Your progress will be lost.')) {
+                      exitQuiz();
+                    }
                   }}
                   size="sm"
                   variant="outline"
