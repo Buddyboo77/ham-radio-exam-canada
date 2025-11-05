@@ -31,7 +31,13 @@ The complete official ISED Canada question bank (July 15, 2025 edition) has been
 - **Safety** (B-008): 62 questions
 
 **Import Method:**
-The official questions were manually transcribed from the PDF into structured CSV format and imported using the custom `scripts/importOfficialCSV.ts` import tool. The app now uses authentic ISED Canada exam questions, providing users with accurate preparation for their amateur radio license exams.
+The official questions were manually transcribed from the PDF into structured CSV format (26 batches over multiple sessions) and imported using the custom `scripts/importOfficialCSV.ts` import tool. The import script includes:
+- **Dollar Amount Protection**: Uses placeholder replacement (`$X,XXX` → `__DOLLAR_N__`) before comma-splitting to preserve monetary values
+- **CSV Parser**: Leverages `csv-parse` library for robust handling of quoted fields
+- **Auto-Detection**: Automatically detects pre-quoted vs. raw CSV format
+- **Data Validation**: Verifies question ID format, answer letter validity, and field completeness
+
+The app now uses authentic ISED Canada exam questions, providing users with accurate preparation for their amateur radio license exams.
 
 **Production Status:**
 - ✅ App ready for production use with official question bank
