@@ -1,0 +1,51 @@
+1. Which document assigns the authority to make Canadian regulations governing radiocommunications? Answer: The Radiocommunication Act
+2. An Amateur Radio Operator Certificate is valid for: Answer: Three years
+3. Whenever a change of address is made: Answer: You must notify Innovation, Science and Economic Development Canada within 30 days of a change of mailing address
+4. Which document assigns the authority to publish Standards for the Operation of Radio Stations in the Amateur Radio Service in Canada? Answer: The Radiocommunication Regulations
+5. Which department is responsible for the administration of the Radiocommunication Act? Answer: Innovation, Science and Economic Development Canada
+6. The Amateur Radio Operator Certificate: Answer: Must be kept in a safe place
+7. Which document defines the Canadian "amateur radio service"? Answer: The Radiocommunication Regulations
+8. A radio inspector asks to see your Amateur Radio Operator Certificate, or a copy thereof. Per the regulations, how many hours are you given to comply? Answer: 48
+9. What must you do within 30 days of a mailing address change? Answer: Inform Innovation, Science and Economic Development Canada
+10. What is the fee for a first Amateur Radio Operator Certificate? Answer: $10
+11. The Amateur Radio Operator Certificate should be: Answer: Retained at the address provided to Innovation, Science and Economic Development Canada
+12. Transmitting a false or fraudulent distress signal or message is prohibited. The person found guilty is liable to what penalty? Answer: A fine, not exceeding $5,000, or a prison term not exceeding one year, or both
+13. What is the fee to issue a replacement call sign with a new prefix, due to a change in address to a new province or territory? Answer: $60
+14. Which government document states the offences and penalties relating to radiocommunications? Answer: The Radiocommunication Act
+15. What is the fee for changing an existing call sign (including changing to a two-letter call sign)? Answer: $55
+16. Transmissions outside of amateur radio bands: Answer: Are prohibited and penalties could be assessed to the control operator
+17. What is the term in the regulations that defines if an amateur radio operator falsely transmits the word "MAYDAY" when there isn't an emergency? Answer: A false or fraudulent message
+18. Which of the following statements is NOT correct? A person responsible for a dwelling entered by a radio inspector shall provide the inspector the requested information. Answer: A radio inspector may enter a dwelling without the consent of the occupant and without a warrant
+19. When is an amateur radio operator permitted to transmit false information? Answer: Transmitting false information is never permitted
+20. Holders of which one of the following certificates may be issued an Amateur Radio Operator Certificate? Answer: Canadian Radiocommunication Operator General Certificate Maritime (RGMC)
+21. Interfering with, or obstructing any radio communication, without lawful cause, is prohibited. The person found guilty is liable to what penalty? Answer: A fine of $10,000
+22. After an Amateur Radio Operator Certificate with Basic Qualification is issued, the holder may be examined for additional qualifications in the following order: Answer: Any order
+23. How old must you be to hold an Amateur Radio Operator Certificate with Basic Qualification? Answer: There are no age limits
+24. What sending and receiving speed, in words per minute (wpm), must you achieve to be granted the Morse code Qualification? Answer: 5 wpm
+25. Which examination must be passed before an Amateur Radio Operator Certificate is issued? Answer: Basic Qualification
+26. You hold an Amateur Radio Operator Certificate with Advanced Qualification. Besides the amateur radio service, in what other service does this authorization allow you to operate a station? Answer: No other service
+27. What conditions must candidates for amateur radio certification meet? Answer: Have a valid address in Canada
+28. An amateur radio operator with Basic and Morse code qualifications may install an amateur radio station for another person: Answer: Only if the other person is the holder of a valid Amateur Radio Operator Certificate
+29. Under what circumstances can an amateur radio operator with an Advanced Qualification install, place in operation, modify or repair radio apparatus on behalf of another person? Answer: If the other person holds an authorization for this apparatus
+30. What regulatory requirement must be met to allow you to repair an amateur radio transmitter on behalf of another person? Answer: Both you and the other person must hold Amateur Radio Operator Certificates
+31. What regulatory requirement must be met to allow you to place an amateur radio transmitter in service on behalf of another person? Answer: Only the other person must hold an Amateur Radio Operator Certificate
+32. What regulatory requirement must be met to allow you to install an amateur radio transmitter on behalf of another person? Answer: Both you and the other person must hold Amateur Radio Operator Certificates
+33. Under what circumstances can an amateur radio operator reprogram a land mobile transmitter on behalf of another person for use on 2 metres? Answer: Only if the other person holds an Amateur Radio Operator Certificate
+34. An amateur radio station with a maximum power output of 2 watts: Answer: Must be under the supervision of a person holding an Amateur Radio Operator Certificate and call sign
+35. An amateur radio station may be used to communicate with: Answer: Stations operated under similar authorizations
+36. Under what circumstances is an amateur radio operator permitted to use an amplifier to amplify the output of a licence-exempt transmitter? Answer: This is not permitted
+37. When is it permissible to use amateur radio equipment, with or without modification, to transmit outside amateur radio bands? Answer: Never, amateur radio equipment is not certified for operation outside amateur radio bands
+38. Which of the following topics is prohibited on an amateur radio club net? Answer: Business planning
+39. When is an amateur radio operator allowed to broadcast information to the general public? Answer: An amateur radio operator may never broadcast to the general public
+40. Which of the following statements is NOT correct? Answer: A considerate amateur radio operator does not transmit unnecessary signals
+41. What are the restrictions on the use of abbreviations or procedural signals in the amateur radio service? Answer: They may be used if the signals or codes are not secret
+42. Which of the following one-way communications may NOT be transmitted in the amateur radio service? Answer: Broadcasts intended for the general public
+43. What should you do to keep your amateur radio station from retransmitting music or signals from a non-amateur radio station? Answer: Turn down the volume of background audio
+44. The transmission of a secret code by the operator of an amateur radio station: Answer: Is not permitted
+45. What regulatory requirement must be met to allow you to use a new digital encoding technique that you developed to transmit data over amateur radio bands? Answer: When it is published in the public domain
+46. When may an amateur radio station transmit an encoded message? Answer: Only when the encoding or cipher is not secret
+47. An amateur radio operator may be engaged in communications including the transmission of: Answer: Q codes
+48. In the amateur radio service, business communications: Answer: Are not permitted under any circumstance
+49. What minimum qualifications must an amateur radio operator hold to install an amateur radio club station? Answer: Basic and Advanced
+50. What minimum qualifications must an amateur radio operator hold to install or operate a transmitter or RF amplifier that is neither professionally designed nor commercially manufactured for use in the amateur radio service? Answer: Basic and Advanced
+... (continues up to 150)
