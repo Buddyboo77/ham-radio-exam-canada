@@ -21,22 +21,17 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center p-2">
-      <div className="text-center w-full">
-        <div className="flex justify-center mb-2">
-          <Radio className="h-10 w-10 text-blue-500" />
+    <div className="flex flex-col items-center justify-center p-2 min-h-screen">
+      <div className="text-center w-full max-w-sm">
+        <div className="flex justify-center mb-1">
+          <Radio className="h-8 w-8 text-blue-500" />
         </div>
-        <h1 className="text-lg font-bold text-blue-300 mb-1">SignalAce Canada</h1>
-        <p className="text-gray-400 text-xs mb-3">Canadian Ham Radio License Exam Prep</p>
+        <h1 className="text-base font-bold text-blue-300 mb-1">SignalAce Canada</h1>
+        <p className="text-gray-400 text-xs mb-2">Ham Radio License Exam Prep</p>
         
-        <div className="bg-gray-800 p-3 rounded-lg border border-gray-700 shadow-md mb-3">
-          <div className="flex items-center justify-center mb-2">
-            <RadioTower className="h-5 w-5 text-green-500 mr-2" />
-            <span className="text-sm font-medium text-green-300">Study & Practice</span>
-          </div>
-          <p className="text-gray-300 text-xs mb-3">
-            Practice exams, Morse code training, 
-            and study guides for your Canadian amateur radio license.
+        <div className="bg-gray-800 p-2 rounded border border-gray-700 mb-2">
+          <p className="text-gray-300 text-xs mb-2">
+            Practice exams, Morse code & study guides for Canadian amateur radio license.
           </p>
           <Button 
             onClick={handleLogin}
@@ -45,12 +40,8 @@ export default function AuthPage() {
             Enter Application
           </Button>
         </div>
-        
-        <div className="text-xs text-gray-500 mb-2">
-          <p>Canadian Amateur Radio Exam Preparation</p>
-        </div>
 
-        <div className="flex justify-center gap-3 py-2 border-t border-gray-700">
+        <div className="flex justify-center gap-3 py-2 border-t border-gray-700 mt-2">
           <Link href="/privacy">
             <span className="text-blue-400 hover:text-blue-300 cursor-pointer text-sm underline">Privacy</span>
           </Link>
