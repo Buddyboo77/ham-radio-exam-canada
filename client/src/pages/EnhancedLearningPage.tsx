@@ -60,14 +60,29 @@ interface DatabaseQuestion {
   createdAt: string;
 }
 
-// Convert database question to quiz question format
-const convertDatabaseQuestion = (dbQuestion: DatabaseQuestion): QuizQuestion => ({
-  question: dbQuestion.question,
-  options: [dbQuestion.optionA, dbQuestion.optionB, dbQuestion.optionC, dbQuestion.optionD],
-  correctAnswer: dbQuestion.correctAnswer,
-  explanation: dbQuestion.explanation,
-  category: dbQuestion.category
-});
+// Convert database question to quiz question format with shuffled options
+const convertDatabaseQuestion = (dbQuestion: DatabaseQuestion): QuizQuestion => {
+  const options = [dbQuestion.optionA, dbQuestion.optionB, dbQuestion.optionC, dbQuestion.optionD];
+  const correctOption = options[dbQuestion.correctAnswer];
+  
+  // Shuffle options using Fisher-Yates algorithm
+  const shuffledOptions = [...options];
+  for (let i = shuffledOptions.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [shuffledOptions[i], shuffledOptions[j]] = [shuffledOptions[j], shuffledOptions[i]];
+  }
+  
+  // Find new index of correct answer
+  const newCorrectAnswer = shuffledOptions.indexOf(correctOption);
+  
+  return {
+    question: dbQuestion.question,
+    options: shuffledOptions,
+    correctAnswer: newCorrectAnswer,
+    explanation: dbQuestion.explanation,
+    category: dbQuestion.category
+  };
+};
 
 // Fallback questions for when database is unavailable
 const FALLBACK_QUIZ_QUESTIONS = [
