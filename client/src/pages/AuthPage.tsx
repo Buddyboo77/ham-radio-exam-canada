@@ -21,45 +21,43 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center py-4">
-      <div className="text-center mb-4">
+    <div className="flex flex-col items-center justify-center p-2">
+      <div className="text-center w-full">
         <div className="flex justify-center mb-2">
-          <Radio className="h-12 w-12 text-blue-500" />
+          <Radio className="h-10 w-10 text-blue-500" />
         </div>
-        <h1 className="text-xl font-bold text-blue-300 mb-1">SignalAce Canada</h1>
-        <p className="text-gray-400 text-sm mb-4">Canadian Ham Radio License Exam Prep</p>
+        <h1 className="text-lg font-bold text-blue-300 mb-1">SignalAce Canada</h1>
+        <p className="text-gray-400 text-xs mb-3">Canadian Ham Radio License Exam Prep</p>
         
-        <div className="bg-gray-800 p-4 rounded-lg border border-gray-700 shadow-md mb-4">
-          <div className="flex items-center justify-center mb-3">
-            <RadioTower className="h-6 w-6 text-green-500 mr-2" />
-            <span className="text-lg font-medium text-green-300">Study & Practice</span>
+        <div className="bg-gray-800 p-3 rounded-lg border border-gray-700 shadow-md mb-3">
+          <div className="flex items-center justify-center mb-2">
+            <RadioTower className="h-5 w-5 text-green-500 mr-2" />
+            <span className="text-sm font-medium text-green-300">Study & Practice</span>
           </div>
-          <p className="text-gray-300 text-sm mb-3">
-            Welcome to SignalAce Canada. 
-            Click the button below to access practice exams, Morse code training, 
+          <p className="text-gray-300 text-xs mb-3">
+            Practice exams, Morse code training, 
             and study guides for your Canadian amateur radio license.
           </p>
           <Button 
             onClick={handleLogin}
-            className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white text-sm py-2"
           >
             Enter Application
           </Button>
         </div>
         
-        <div className="text-xs text-gray-500 space-y-1">
+        <div className="text-xs text-gray-500 mb-2">
           <p>Canadian Amateur Radio Exam Preparation</p>
-          <p>Basic & Advanced Qualification</p>
-          
-          <div className="flex justify-center gap-3 mt-3 pt-2 border-t border-gray-700">
-            <Link href="/privacy">
-              <span className="text-blue-400 hover:text-blue-300 cursor-pointer">Privacy Policy</span>
-            </Link>
-            <span className="text-gray-600">•</span>
-            <Link href="/terms">
-              <span className="text-blue-400 hover:text-blue-300 cursor-pointer">Terms of Service</span>
-            </Link>
-          </div>
+        </div>
+
+        <div className="flex justify-center gap-3 py-2 border-t border-gray-700">
+          <Link href="/privacy">
+            <span className="text-blue-400 hover:text-blue-300 cursor-pointer text-sm underline">Privacy</span>
+          </Link>
+          <span className="text-gray-600">•</span>
+          <Link href="/terms">
+            <span className="text-blue-400 hover:text-blue-300 cursor-pointer text-sm underline">Terms</span>
+          </Link>
         </div>
       </div>
     </div>
