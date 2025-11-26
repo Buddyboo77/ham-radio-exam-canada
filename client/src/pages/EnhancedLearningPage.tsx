@@ -658,10 +658,11 @@ export default function EnhancedLearningPage() {
       {/* Exam info banner */}
       <div className="bg-gradient-to-r from-blue-950 to-indigo-950 rounded-md p-3 mb-3 border border-blue-800">
         <div className="flex items-center gap-2 mb-2">
-          <GraduationCap className="text-blue-300" size={18} />
-          <h3 className="text-sm font-medium text-blue-100">Canadian Amateur Radio License Study</h3>
+          <Radio className="text-blue-300" size={18} />
+          <h3 className="text-sm font-medium text-blue-100">SignalAce Canada</h3>
+          <span className="text-xs bg-green-700 text-green-100 px-1.5 py-0.5 rounded">FREE</span>
         </div>
-        <p className="text-xs text-gray-300">Study for your Canadian amateur radio license exam with practice tests and Morse code training.</p>
+        <p className="text-xs text-gray-300">Canadian Amateur Radio License Exam Preparation - Practice tests, Morse code training, and study guides.</p>
       </div>
       
       {/* Main content area */}
