@@ -3,7 +3,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Star, TrendingUp, Award } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { celebrate } from '@/lib/celebrateUtils';
 
 interface LevelData {
   level: number;
@@ -66,7 +66,7 @@ export function LevelProgress() {
     const newLevel = calculateLevel(newTotalXP);
 
     if (newLevel > oldLevel) {
-      confetti({
+      celebrate({
         particleCount: 200,
         spread: 100,
         origin: { y: 0.4 }

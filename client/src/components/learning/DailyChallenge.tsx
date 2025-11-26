@@ -3,7 +3,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Trophy, Flame, Target, Zap } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { celebrate } from '@/lib/celebrateUtils';
 
 interface DailyChallenge {
   id: string;
@@ -81,7 +81,7 @@ export function DailyChallenge() {
   const completeChallenge = (challengeId: string) => {
     if (completedToday.includes(challengeId)) return;
 
-    confetti({
+    celebrate({
       particleCount: 100,
       spread: 70,
       origin: { y: 0.6 }

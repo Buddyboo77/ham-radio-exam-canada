@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { Button } from '@/components/ui/button';
 import { Progress } from '@/components/ui/progress';
 import { Radio, Target, Zap } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { celebrateHighScore } from '@/lib/celebrateUtils';
 
 interface GameTarget {
   id: number;
@@ -73,38 +73,10 @@ export default function RadioTargetGame() {
       
       // Celebration with confetti if it's a high score
       if (score > 10) {
-        // Fire multiple bursts for more celebration
-        const duration = 3000;
-        const animationEnd = Date.now() + duration;
-        
-        const randomInRange = (min: number, max: number) => {
-          return Math.random() * (max - min) + min;
-        };
-        
-        const firework = () => {
-          const timeLeft = animationEnd - Date.now();
-          
-          if (timeLeft <= 0) return;
-          
-          // Set a random position near the center
-          const position = {
-            x: 0.5,
-            y: 0.5
-          };
-          
-          confetti({
-            particleCount: 50,
-            spread: randomInRange(50, 100),
-            origin: position,
-            colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff']
-          });
-          
-          if (timeLeft > 0) {
-            requestAnimationFrame(firework);
-          }
-        };
-        
-        firework();
+        celebrateHighScore({
+          particleCount: 50,
+          colors: ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#00ffff', '#ff00ff']
+        });
       }
     }
   };

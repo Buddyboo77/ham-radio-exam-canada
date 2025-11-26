@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Gift, Coins, Star, Trophy } from 'lucide-react';
-import confetti from 'canvas-confetti';
+import { celebrate } from '@/lib/celebrateUtils';
 
 export function DailyLoginBonus() {
   const [showBonus, setShowBonus] = useState(false);
@@ -38,7 +38,7 @@ export function DailyLoginBonus() {
     const currentXP = parseInt(localStorage.getItem('user-xp') || '0');
     localStorage.setItem('user-xp', (currentXP + bonusXP).toString());
 
-    confetti({
+    celebrate({
       particleCount: 150,
       spread: 80,
       origin: { y: 0.5 }
