@@ -96,7 +96,7 @@ export default function PrivacyPolicyPage() {
             <p>If you have questions about this Privacy Policy or your data:</p>
             <div className="flex items-center gap-2 mt-1">
               <Mail size={14} className="text-blue-400" />
-              <span>Email: swatpuppies007@gmail.com</span>
+              <span>Email: privacy@signalace.app</span>
             </div>
           </div>
         </section>
