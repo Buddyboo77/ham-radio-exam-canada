@@ -35,10 +35,10 @@ export function ProUpgradeModal() {
         <DialogHeader>
           <DialogTitle className="text-center text-2xl flex items-center justify-center gap-2">
             <Crown className="h-6 w-6 text-yellow-400" />
-            Upgrade to Pro
+            Support Development
           </DialogTitle>
           <DialogDescription className="text-center text-gray-300">
-            Unlock the complete SignalAce experience
+            Help keep SignalAce Canada free and improving
           </DialogDescription>
         </DialogHeader>
         
@@ -50,20 +50,20 @@ export function ProUpgradeModal() {
             
             <div className="mb-4">
               <span className="text-5xl font-bold text-yellow-400">$8.88</span>
-              <p className="text-sm text-gray-400 mt-1">One-time upgrade • Remove all ads</p>
+              <p className="text-sm text-gray-400 mt-1">One-time payment • Support the app</p>
             </div>
           </div>
 
           <div className="space-y-3 bg-gray-800/50 rounded-lg p-4">
-            <h3 className="font-semibold text-sm text-gray-200 mb-3">What You Get:</h3>
+            <h3 className="font-semibold text-sm text-gray-200 mb-3">Why Support SignalAce?</h3>
             
             <div className="flex items-start gap-3">
               <div className="mt-0.5">
                 <Check className="h-5 w-5 text-green-400" />
               </div>
               <div>
-                <p className="font-medium text-sm">No Advertisements</p>
-                <p className="text-xs text-gray-400">Clean, distraction-free studying experience</p>
+                <p className="font-medium text-sm">Help Us Grow</p>
+                <p className="text-xs text-gray-400">Your support funds new features and improvements</p>
               </div>
             </div>
 
@@ -72,8 +72,8 @@ export function ProUpgradeModal() {
                 <Sparkles className="h-5 w-5 text-yellow-400" />
               </div>
               <div>
-                <p className="font-medium text-sm">Support Development</p>
-                <p className="text-xs text-gray-400">Help keep SignalAce improving and ad-free</p>
+                <p className="font-medium text-sm">Keep It Free</p>
+                <p className="text-xs text-gray-400">Help us maintain the app as completely ad-free</p>
               </div>
             </div>
 
@@ -82,8 +82,8 @@ export function ProUpgradeModal() {
                 <Award className="h-5 w-5 text-purple-400" />
               </div>
               <div>
-                <p className="font-medium text-sm">Future Premium Features</p>
-                <p className="text-xs text-gray-400">Get access to new Pro features as they're added</p>
+                <p className="font-medium text-sm">Premium Status</p>
+                <p className="text-xs text-gray-400">Get a Pro badge showing your support</p>
               </div>
             </div>
           </div>
