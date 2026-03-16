@@ -24,8 +24,6 @@ import TermsOfServicePage from "@/pages/TermsOfServicePage";
 import TestGamification from "@/pages/TestGamification";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
-import { ProUpgradeModal } from "@/components/ads/ProUpgradeModal";
-import { ProBadge } from "@/components/ads/ProBadge";
 
 import { useState, useEffect } from "react";
 import { 
@@ -99,12 +97,7 @@ function Router() {
       {/* Our QuickAccessMenu is now our main navigation */}
       
       <div className="radio-body relative overflow-hidden">
-        {/* Pro upgrade button at very top */}
-        <div className="flex justify-center mb-2 px-2 relative z-50">
-          <ProBadge />
-        </div>
-        
-        {/* Antenna - moved below button */}
+        {/* Antenna at top */}
         <div className="antenna"></div>
         
         {/* Top status bar with time and connection status */}
@@ -218,7 +211,6 @@ function App() {
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <ProUpgradeModal />
         <AuthProvider>
           <Router />
         </AuthProvider>
