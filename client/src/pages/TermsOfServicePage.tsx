@@ -158,7 +158,7 @@ export default function TermsOfServicePage() {
         <section>
           <h3 className="text-sm font-semibold text-gray-200 mb-2">Contact & Support</h3>
           <div className="text-gray-300 text-xs">
-            <p>For questions about these terms or app support, contact us at: <span className="text-blue-400">support@signalace.app</span></p>
+            <p>For questions about these terms or app support, contact us at: <span className="text-blue-400">swatpuppies007@gmail.com</span></p>
           </div>
         </section>
 
