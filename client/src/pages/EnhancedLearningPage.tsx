@@ -20,13 +20,21 @@ import {
   CheckCircle,
   Clock,
   Trophy,
-  Loader2
+  Loader2,
+  Target,
+  TrendingUp,
+  TrendingDown,
+  Minus,
+  FileText,
+  ChevronDown,
+  ChevronUp
 } from "lucide-react";
 import { Link, useLocation } from "wouter";
 import { useQuery } from "@tanstack/react-query";
 
 // Import hooks for progress tracking
 import { useLearningProgress } from '@/hooks/use-learning-progress';
+import { useExamHistory, FULL_EXAM_QUESTION_COUNT } from '@/hooks/use-exam-history';
 import { DailyChallenge } from "@/components/learning/DailyChallenge";
 import { LevelProgress } from "@/components/learning/LevelProgress";
 import { DailyLoginBonus } from "@/components/learning/DailyLoginBonus";
@@ -291,6 +299,16 @@ export default function EnhancedLearningPage() {
   const [showExplanation, setShowExplanation] = useState(false);
   const [userAnswers, setUserAnswers] = useState<number[]>([]);
   
+  // Full Exam mode flag
+  const [isFullExamMode, setIsFullExamMode] = useState(false);
+
+  // Time tracking for exam attempts
+  const startTimeRef = useRef<number | null>(null);
+  const [timeTakenSeconds, setTimeTakenSeconds] = useState(0);
+
+  // Show/hide full incorrect-answer review
+  const [showFullReview, setShowFullReview] = useState(false);
+
   // Refs to prevent accidental quiz resets and preserve questions
   const isResettingRef = useRef(false);
   const questionsRef = useRef<QuizQuestion[]>([]);
@@ -310,6 +328,9 @@ export default function EnhancedLearningPage() {
   
   // Learning progress
   const { recordQuizCompletion } = useLearningProgress();
+
+  // Exam history & readiness score
+  const { addExamAttempt, readiness } = useExamHistory();
 
   // Prefetch all questions on first load for offline access
   useEffect(() => {
@@ -435,10 +456,24 @@ export default function EnhancedLearningPage() {
   };
   
   // Start a quiz
-  const startQuiz = () => {
+  const startQuiz = (forceFullExam = false) => {
+    const runningFullExam = forceFullExam || isFullExamMode;
+
+    // For Full Exam, override category and question count
+    if (runningFullExam) {
+      setActiveCategory('all');
+      setQuestionsCount(FULL_EXAM_QUESTION_COUNT);
+      setIsFullExamMode(true);
+    }
+
+    // Start timing
+    startTimeRef.current = Date.now();
+    setTimeTakenSeconds(0);
+    setShowFullReview(false);
+
     // Questions will be fetched by the query when showQuizConfig becomes false
     setShowQuizConfig(false);
-    
+
     // Set up quiz state
     setCurrentQuestion(0);
     setScore(0);
@@ -446,27 +481,27 @@ export default function EnhancedLearningPage() {
     setQuizCompleted(false);
     setSelectedAnswer(null);
     setShowExplanation(false);
-    
+
     // Set timer for simulation mode (time in seconds)
+    // Official Canadian ISED exam times:
+    // Basic Qualification: 3 hours for 100 questions
+    // For practice tests: 1.5 minutes per question (90 seconds)
     if (examMode === 'simulation') {
-      // Official Canadian ISED exam times:
-      // Basic Qualification: 3 hours for 100 questions
-      // For practice tests: 1.5 minutes per question (90 seconds)
+      const qCount = runningFullExam ? FULL_EXAM_QUESTION_COUNT : questionsCount;
       let examTime: number;
-      if (questionsCount === 100) {
+      if (qCount === 100) {
         examTime = 10800; // 180 minutes = 3 hours (official exam time)
-      } else if (questionsCount === 75) {
+      } else if (qCount === 75) {
         examTime = 6750; // 112.5 minutes
-      } else if (questionsCount === 50) {
+      } else if (qCount === 50) {
         examTime = 4500; // 75 minutes
-      } else if (questionsCount === 25) {
+      } else if (qCount === 25) {
         examTime = 2250; // 37.5 minutes
       } else {
-        examTime = questionsCount * 90; // 1.5 minutes per question
+        examTime = qCount * 90; // 1.5 minutes per question
       }
       setTimeLeft(examTime);
     } else {
-      // No timer for practice mode
       setTimeLeft(null);
     }
   };
@@ -541,6 +576,17 @@ export default function EnhancedLearningPage() {
     }
   };
   
+  // Format seconds into a readable string e.g. "1h 23m" or "45m 10s"
+  const formatTime = (seconds: number): string => {
+    if (seconds <= 0) return '—';
+    const h = Math.floor(seconds / 3600);
+    const m = Math.floor((seconds % 3600) / 60);
+    const s = seconds % 60;
+    if (h > 0) return `${h}h ${m}m`;
+    if (m > 0) return `${m}m ${s}s`;
+    return `${s}s`;
+  };
+
   // Go to next question or finish quiz
   const handleNextQuestion = () => {
     
@@ -557,15 +603,44 @@ export default function EnhancedLearningPage() {
       setSelectedAnswer(null);
       setShowExplanation(false);
     } else {
-      // Quiz is complete
+      // Quiz is complete — calculate final values before state updates
+      const finalScore = score + (selectedAnswer === displayQuestions[currentQuestion].correctAnswer ? 1 : 0);
+      const totalQs = displayQuestions.length;
+      const percentage = Math.round((finalScore / totalQs) * 100);
+      const elapsed = startTimeRef.current ? Math.round((Date.now() - startTimeRef.current) / 1000) : 0;
+      setTimeTakenSeconds(elapsed);
+
+      // Tally correct/incorrect answers per category
+      const allAnswers = [...userAnswers, selectedAnswer];
+      const incorrectByCategory: Record<string, number> = {};
+      const correctByCategory: Record<string, number> = {};
+
+      displayQuestions.forEach((q, i) => {
+        const cat = q.category.toLowerCase();
+        if (allAnswers[i] === q.correctAnswer) {
+          correctByCategory[cat] = (correctByCategory[cat] || 0) + 1;
+        } else {
+          incorrectByCategory[cat] = (incorrectByCategory[cat] || 0) + 1;
+        }
+      });
+
+      // Save attempt to exam history (used for Readiness Score)
+      addExamAttempt({
+        score: finalScore,
+        totalQuestions: totalQs,
+        percentage,
+        category: activeCategory,
+        mode: isFullExamMode ? 'full-exam' : examMode,
+        timeTakenSeconds: elapsed,
+        incorrectByCategory,
+        correctByCategory,
+        isFullExam: isFullExamMode
+      });
+
+      // Also update the legacy progress tracker
+      recordQuizCompletion(activeCategory, finalScore, totalQs);
+
       setQuizCompleted(true);
-      
-      // Record progress
-      recordQuizCompletion(
-        activeCategory, 
-        score + (selectedAnswer === displayQuestions[currentQuestion].correctAnswer ? 1 : 0), 
-        displayQuestions.length
-      );
     }
   };
   
@@ -588,13 +663,17 @@ export default function EnhancedLearningPage() {
     
     setShowQuizConfig(true);
     setQuestionsToUse([]);
-    questionsRef.current = []; // Clear the ref too
+    questionsRef.current = [];
     setCurrentQuestion(0);
     setSelectedAnswer(null);
     setScore(0);
     setUserAnswers([]);
     setQuizCompleted(false);
     setShowExplanation(false);
+    setIsFullExamMode(false);
+    setTimeTakenSeconds(0);
+    setShowFullReview(false);
+    startTimeRef.current = null;
     isResettingRef.current = false;
   };
   
@@ -686,18 +765,33 @@ export default function EnhancedLearningPage() {
               Study for Your Ham Radio Exam
             </h3>
             
-            {/* Main practice exam button - featured prominently */}
+            {/* Main practice exam button */}
             <button 
-              className="w-full flex flex-col items-center justify-center p-6 bg-gradient-to-r from-blue-900 to-blue-800 rounded-md gap-3 border border-blue-700 hover:from-blue-800 hover:to-blue-700 transition-all mb-4"
-              onClick={() => setActiveView('quiz')}
+              className="w-full flex flex-col items-center justify-center p-5 bg-gradient-to-r from-blue-900 to-blue-800 rounded-md gap-3 border border-blue-700 hover:from-blue-800 hover:to-blue-700 transition-all mb-3"
+              onClick={() => { setIsFullExamMode(false); setActiveView('quiz'); }}
             >
               <div className="bg-blue-700 p-3 rounded-full">
-                <BookOpenCheck size={32} className="text-blue-100" />
+                <BookOpenCheck size={28} className="text-blue-100" />
               </div>
               <div className="text-center">
                 <div className="text-lg font-semibold text-blue-100 mb-1">Practice Exam</div>
-                <div className="text-sm text-blue-200">Take official Canadian amateur radio exam questions</div>
+                <div className="text-sm text-blue-200">Choose category, question count, and mode</div>
                 <div className="text-xs text-blue-300 mt-1">25, 50, or 100 questions • Practice or Timed Mode</div>
+              </div>
+            </button>
+
+            {/* Full Exam button */}
+            <button
+              className="w-full flex flex-col items-center justify-center p-5 bg-gradient-to-r from-indigo-900 to-purple-900 rounded-md gap-3 border border-indigo-700 hover:from-indigo-800 hover:to-purple-800 transition-all mb-4"
+              onClick={() => { setIsFullExamMode(true); setActiveView('quiz'); }}
+            >
+              <div className="bg-indigo-700 p-3 rounded-full">
+                <FileText size={28} className="text-indigo-100" />
+              </div>
+              <div className="text-center">
+                <div className="text-lg font-semibold text-indigo-100 mb-1">Full Exam</div>
+                <div className="text-sm text-indigo-200">All {FULL_EXAM_QUESTION_COUNT} questions across every topic</div>
+                <div className="text-xs text-indigo-300 mt-1">Counts toward Readiness Score • No repeated questions</div>
               </div>
             </button>
             
@@ -727,22 +821,83 @@ export default function EnhancedLearningPage() {
             </div>
           </div>
           
-          {/* Simple progress tracking */}
+          {/* Exam Readiness Score */}
+          <div className="bg-gray-800 bg-opacity-60 rounded-md p-4 border border-gray-700 mb-4">
+            <h4 className="text-sm font-medium text-gray-200 mb-3 flex items-center gap-2">
+              <Target size={16} className="text-green-400" />
+              Exam Readiness Score
+            </h4>
+            {readiness.examCount === 0 ? (
+              <div className="text-center py-2">
+                <p className="text-xs text-gray-400">Complete a Practice Exam or Full Exam to see your readiness score.</p>
+              </div>
+            ) : (
+              <>
+                <div className="flex items-end justify-between mb-2">
+                  <div>
+                    <span className={`text-4xl font-bold ${
+                      readiness.score >= 80 ? 'text-green-400' :
+                      readiness.score >= 70 ? 'text-blue-400' : 'text-amber-400'
+                    }`}>{readiness.score}%</span>
+                    <div className="text-xs text-gray-400 mt-0.5">
+                      Based on last {readiness.examCount} test{readiness.examCount > 1 ? 's' : ''}
+                    </div>
+                  </div>
+                  <div className="text-right">
+                    <div className="flex items-center gap-1 justify-end">
+                      {readiness.trend === 'improving' && <TrendingUp size={14} className="text-green-400" />}
+                      {readiness.trend === 'declining' && <TrendingDown size={14} className="text-red-400" />}
+                      {readiness.trend === 'stable' && <Minus size={14} className="text-gray-400" />}
+                      <span className={`text-xs ${
+                        readiness.trend === 'improving' ? 'text-green-400' :
+                        readiness.trend === 'declining' ? 'text-red-400' : 'text-gray-400'
+                      }`}>
+                        {readiness.trend === 'not-enough-data' ? '' : readiness.trend.charAt(0).toUpperCase() + readiness.trend.slice(1)}
+                      </span>
+                    </div>
+                    <div className="text-xs text-gray-300 mt-1">
+                      Pass probability: <span className={`font-medium ${
+                        readiness.passProbability >= 70 ? 'text-green-300' : 'text-amber-300'
+                      }`}>{readiness.passProbability}%</span>
+                    </div>
+                  </div>
+                </div>
+                <Progress 
+                  value={readiness.score} 
+                  className="h-2 mb-3" 
+                />
+                {readiness.weakTopics.length > 0 && (
+                  <div>
+                    <p className="text-xs text-gray-400 mb-1.5">Weak topics to review:</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {readiness.weakTopics.map(t => (
+                        <span key={t.category} className="text-xs bg-red-900 bg-opacity-60 text-red-200 px-2 py-0.5 rounded border border-red-800">
+                          {t.category} ({t.errorRate}% errors)
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                )}
+              </>
+            )}
+          </div>
+
+          {/* Simple stats row */}
           <div className="bg-gray-800 bg-opacity-50 rounded-md p-4 border border-gray-700">
             <h4 className="text-sm font-medium text-gray-200 mb-3 flex items-center gap-2">
-              <BarChart3 size={16} className="text-green-400" />
-              Your Progress
+              <BarChart3 size={16} className="text-blue-400" />
+              Overall Stats
             </h4>
             <div className="grid grid-cols-3 gap-4 text-center">
               <div>
                 <div className="text-lg font-bold text-blue-400">{progress?.completedQuizzes || 0}</div>
-                <div className="text-xs text-gray-400">Practice Exams</div>
+                <div className="text-xs text-gray-400">Exams Taken</div>
               </div>
               <div>
                 <div className="text-lg font-bold text-green-400">
                   {progress?.totalQuestions > 0 ? Math.round((progress.totalCorrect / progress.totalQuestions) * 100) : 0}%
                 </div>
-                <div className="text-xs text-gray-400">Accuracy</div>
+                <div className="text-xs text-gray-400">All-time Accuracy</div>
               </div>
               <div>
                 <div className="text-lg font-bold text-amber-400">{progress?.morseHighestWPM || 0}</div>
@@ -778,57 +933,92 @@ export default function EnhancedLearningPage() {
           ) : showQuizConfig ? (
             <div className="bg-gray-800 bg-opacity-70 rounded-md p-3 border border-gray-700">
               <div className="mb-4">
-                <h3 className="text-lg font-medium text-blue-200 mb-3 flex items-center gap-2">
-                  <GraduationCap className="h-5 w-5 text-blue-400" />
-                  Canadian Amateur Radio Exam Preparation
-                </h3>
-                
-                <div className="bg-blue-950 bg-opacity-40 rounded-md p-3 mb-4 border border-blue-900">
-                  <p className="text-xs text-blue-200">
-                    The Basic Qualification exam consists of 100 multiple-choice questions, drawn from the Basic Question Bank.
-                    You must score at least 70% to pass. Practice with different sections to build your knowledge.
-                  </p>
-                </div>
-                
-                <div className="mb-4">
-                  <div className="mb-2 text-xs text-gray-300 font-semibold">Select Exam Section:</div>
-                  <div className="grid grid-cols-2 gap-2">
-                    {['all', 'technical', 'regulations', 'operating'].map(category => (
-                      <div 
-                        key={category}
-                        className={`px-2 py-2 rounded-md text-xs cursor-pointer border ${
-                          activeCategory === category 
-                            ? "bg-blue-900 border-blue-600 text-blue-100" 
-                            : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
-                        } flex flex-col items-center justify-center`}
-                        onClick={() => setActiveCategory(category)}
-                      >
-                        <span className="font-medium">{category === 'all' ? 'Full Exam' : category.charAt(0).toUpperCase() + category.slice(1)}</span>
-                        <span className="text-[10px] mt-1">({getCategoryCount(category)} Questions)</span>
+                {isFullExamMode ? (
+                  <>
+                    <h3 className="text-lg font-medium text-indigo-200 mb-3 flex items-center gap-2">
+                      <FileText className="h-5 w-5 text-indigo-400" />
+                      Full Exam
+                    </h3>
+                    <div className="bg-indigo-950 bg-opacity-50 rounded-md p-3 mb-4 border border-indigo-900">
+                      <p className="text-xs text-indigo-200">
+                        The Full Exam pulls <strong>{FULL_EXAM_QUESTION_COUNT} random questions</strong> from the entire question bank
+                        across all topics — exactly like the real ISED Basic Qualification exam. No repeated questions.
+                        Results count toward your <strong>Exam Readiness Score</strong>.
+                      </p>
+                    </div>
+                    <div className="grid grid-cols-3 gap-2 text-center mb-4">
+                      <div className="bg-gray-900 rounded-md p-2 border border-gray-700">
+                        <div className="text-sm font-bold text-indigo-300">{FULL_EXAM_QUESTION_COUNT}</div>
+                        <div className="text-[10px] text-gray-400">Questions</div>
                       </div>
-                    ))}
-                  </div>
-                </div>
-                
-                <div className="mb-4">
-                  <div className="mb-2 text-xs text-gray-300 font-semibold">Number of Questions:</div>
-                  <div className="grid grid-cols-5 gap-2">
-                    {[10, 25, 50, 75, 100].map(count => (
-                      <div
-                        key={count}
-                        className={`px-2 py-2 rounded-md text-xs cursor-pointer text-center border ${
-                          questionsCount === count 
-                            ? "bg-blue-900 border-blue-600 text-blue-100" 
-                            : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
-                        }`}
-                        onClick={() => setQuestionsCount(count)}
-                      >
-                        {count}
-                        {count === 100 && <span className="ml-1 text-[10px] bg-green-700 px-1 rounded">Official</span>}
+                      <div className="bg-gray-900 rounded-md p-2 border border-gray-700">
+                        <div className="text-sm font-bold text-indigo-300">All Topics</div>
+                        <div className="text-[10px] text-gray-400">Categories</div>
                       </div>
-                    ))}
+                      <div className="bg-gray-900 rounded-md p-2 border border-gray-700">
+                        <div className="text-sm font-bold text-indigo-300">70% Pass</div>
+                        <div className="text-[10px] text-gray-400">Required Score</div>
+                      </div>
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <h3 className="text-lg font-medium text-blue-200 mb-3 flex items-center gap-2">
+                      <GraduationCap className="h-5 w-5 text-blue-400" />
+                      Canadian Amateur Radio Exam Preparation
+                    </h3>
+                    <div className="bg-blue-950 bg-opacity-40 rounded-md p-3 mb-4 border border-blue-900">
+                      <p className="text-xs text-blue-200">
+                        The Basic Qualification exam consists of 100 multiple-choice questions, drawn from the Basic Question Bank.
+                        You must score at least 70% to pass. Practice with different sections to build your knowledge.
+                      </p>
+                    </div>
+                  </>
+                )}
+                
+                {!isFullExamMode && (
+                  <div className="mb-4">
+                    <div className="mb-2 text-xs text-gray-300 font-semibold">Select Exam Section:</div>
+                    <div className="grid grid-cols-2 gap-2">
+                      {['all', 'technical', 'regulations', 'operating'].map(category => (
+                        <div 
+                          key={category}
+                          className={`px-2 py-2 rounded-md text-xs cursor-pointer border ${
+                            activeCategory === category 
+                              ? "bg-blue-900 border-blue-600 text-blue-100" 
+                              : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
+                          } flex flex-col items-center justify-center`}
+                          onClick={() => setActiveCategory(category)}
+                        >
+                          <span className="font-medium">{category === 'all' ? 'All Topics' : category.charAt(0).toUpperCase() + category.slice(1)}</span>
+                          <span className="text-[10px] mt-1">({getCategoryCount(category)} Questions)</span>
+                        </div>
+                      ))}
+                    </div>
                   </div>
-                </div>
+                )}
+
+                {!isFullExamMode && (
+                  <div className="mb-4">
+                    <div className="mb-2 text-xs text-gray-300 font-semibold">Number of Questions:</div>
+                    <div className="grid grid-cols-5 gap-2">
+                      {[10, 25, 50, 75, 100].map(count => (
+                        <div
+                          key={count}
+                          className={`px-2 py-2 rounded-md text-xs cursor-pointer text-center border ${
+                            questionsCount === count 
+                              ? "bg-blue-900 border-blue-600 text-blue-100" 
+                              : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
+                          }`}
+                          onClick={() => setQuestionsCount(count)}
+                        >
+                          {count}
+                          {count === 100 && <span className="ml-1 text-[10px] bg-green-700 px-1 rounded">Official</span>}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
                 
                 <div className="mb-4">
                   <div className="mb-2 text-xs text-gray-300 font-semibold">Exam Mode:</div>
@@ -867,20 +1057,26 @@ export default function EnhancedLearningPage() {
                 
                 <div className="flex justify-center">
                   <Button 
-                    onClick={startQuiz} 
+                    onClick={() => startQuiz(isFullExamMode)}
                     className={`text-sm w-full py-3 flex items-center justify-center gap-2 ${
-                      examMode === 'practice' 
-                        ? 'bg-green-800 hover:bg-green-700 text-white'
-                        : 'bg-amber-800 hover:bg-amber-700 text-white'
+                      isFullExamMode
+                        ? 'bg-indigo-700 hover:bg-indigo-600 text-white'
+                        : examMode === 'practice' 
+                          ? 'bg-green-800 hover:bg-green-700 text-white'
+                          : 'bg-amber-800 hover:bg-amber-700 text-white'
                     }`}
                   >
-                    {examMode === 'practice' 
-                      ? <BookOpenCheck className="h-4 w-4" />
-                      : <GraduationCap className="h-4 w-4" />
+                    {isFullExamMode
+                      ? <FileText className="h-4 w-4" />
+                      : examMode === 'practice' 
+                        ? <BookOpenCheck className="h-4 w-4" />
+                        : <GraduationCap className="h-4 w-4" />
                     }
-                    {examMode === 'practice' 
-                      ? `Start ${activeCategory !== "all" ? activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1) : "Full"} Practice Exam (${questionsCount} Q)` 
-                      : `Begin Official Exam Simulation (${questionsCount} Questions)`
+                    {isFullExamMode
+                      ? `Start Full Exam (${FULL_EXAM_QUESTION_COUNT} Questions — All Topics)`
+                      : examMode === 'practice' 
+                        ? `Start ${activeCategory !== "all" ? activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1) : "All Topics"} Practice (${questionsCount} Q)` 
+                        : `Begin Exam Simulation (${questionsCount} Questions)`
                     }
                   </Button>
                 </div>
@@ -1036,106 +1232,155 @@ export default function EnhancedLearningPage() {
             </div>
               );
             })()
-          ) : (
-            <div className="bg-gray-800 bg-opacity-70 rounded-md p-3 border border-gray-700">
-              <div className="text-center mb-4">
+          ) : (() => {
+              // Pre-compute results values for the results screen
+              const finalAnswers = [...userAnswers];
+              const totalQs = displayQuestions.length;
+              const pct = totalQs > 0 ? Math.round((score / totalQs) * 100) : 0;
+              const incorrectQuestions = displayQuestions
+                .map((q, i) => ({ q, i, isWrong: finalAnswers[i] !== q.correctAnswer }))
+                .filter(x => x.isWrong);
+
+              return (
+            <div className="bg-gray-800 bg-opacity-70 rounded-md p-3 border border-gray-700 space-y-4">
+
+              {/* Score header */}
+              <div className="text-center">
                 <h2 className="text-lg font-bold text-gray-200 mb-2">
-                  {examMode === 'simulation' ? 'Exam Results' : 'Practice Results'}
+                  {isFullExamMode ? 'Full Exam Results' : examMode === 'simulation' ? 'Exam Results' : 'Practice Results'}
                 </h2>
-                <div className="text-4xl font-bold mb-2 flex items-center justify-center gap-2">
-                  <span className={`${
-                    Math.round((score / displayQuestions.length) * 100) >= 80 
-                      ? 'text-green-400' 
-                      : Math.round((score / questionsToUse.length) * 100) >= 70 
-                        ? 'text-blue-400' 
-                        : 'text-red-400'
-                  }`}>
-                    {Math.round((score / questionsToUse.length) * 100)}%
+                <div className="text-5xl font-bold mb-2 flex items-center justify-center gap-2">
+                  <span className={pct >= 80 ? 'text-green-400' : pct >= 70 ? 'text-blue-400' : 'text-red-400'}>
+                    {pct}%
                   </span>
-                  {Math.round((score / questionsToUse.length) * 100) >= 80 && (
-                    <Badge className="bg-green-700 text-green-100">Honours</Badge>
-                  )}
+                  {pct >= 80 && <Badge className="bg-green-700 text-green-100">Honours</Badge>}
                 </div>
                 <p className="text-sm text-gray-300">
-                  You answered {score} out of {displayQuestions.length} questions correctly.
+                  {score} correct out of {totalQs} questions
                 </p>
-              </div>
-              
-              {Math.round((score / questionsToUse.length) * 100) >= 80 ? (
-                <div className="mb-4 p-3 bg-green-900 bg-opacity-30 rounded-md text-center border border-green-800">
-                  <GraduationCap className="h-6 w-6 text-green-400 mx-auto mb-2" />
-                  <p className="font-medium text-green-300 text-sm">Congratulations! You qualified for Basic with Honours.</p>
-                  <p className="text-xs text-green-400 mt-1">You would be granted HF privileges with this score (≥80%).</p>
-                </div>
-              ) : Math.round((score / questionsToUse.length) * 100) >= 70 ? (
-                <div className="mb-4 p-3 bg-blue-900 bg-opacity-30 rounded-md text-center border border-blue-800">
-                  <GraduationCap className="h-6 w-6 text-blue-400 mx-auto mb-2" />
-                  <p className="font-medium text-blue-300 text-sm">You passed the Basic Qualification!</p>
-                  <p className="text-xs text-blue-400 mt-1">Aim for 80% or higher to get HF privileges.</p>
-                </div>
-              ) : (
-                <div className="mb-4 p-3 bg-amber-900 bg-opacity-30 rounded-md text-center border border-amber-800">
-                  <RotateCw className="h-5 w-5 text-amber-400 mx-auto mb-2" />
-                  <p className="font-medium text-amber-300 text-sm">You're almost there! Try again to improve your score.</p>
-                  <p className="text-xs text-amber-400 mt-1">Aim for at least 70% to pass the Basic Qualification exam.</p>
-                </div>
-              )}
-              
-              <div className="mb-4">
-                <Button
-                  onClick={() => setShowQuizConfig(true)}
-                  className="bg-blue-800 hover:bg-blue-700 w-full"
-                >
-                  <RotateCw className="h-4 w-4 mr-2" />
-                  Try Another Quiz
-                </Button>
-              </div>
-              
-              {/* Question analysis */}
-              <div className="space-y-2 mb-4">
-                <h4 className="text-sm font-medium text-gray-200">Question Analysis</h4>
-                
-                {questionsToUse.slice(0, 5).map((question, idx) => (
-                  <div key={idx} className="bg-gray-900 p-2 rounded-md border-l-2 border-r-0 border-t-0 border-b-0 border-solid border-opacity-50 border-gray-700">
-                    <div className="flex justify-between items-start mb-1">
-                      <span className="text-xs font-medium text-gray-300">Question {idx + 1}</span>
-                      <Badge 
-                        variant="outline"
-                        className={
-                          userAnswers[idx] === question.correctAnswer 
-                            ? "border-green-700 text-green-300" 
-                            : "border-red-700 text-red-300"
-                        }
-                      >
-                        {userAnswers[idx] === question.correctAnswer ? "Correct" : "Incorrect"}
-                      </Badge>
-                    </div>
-                    <p className="text-xs text-gray-300 mb-1">{question.question}</p>
-                    <div className="text-[10px] text-gray-400">
-                      {userAnswers[idx] !== undefined && (
-                        <p>Your answer: <span className={
-                          userAnswers[idx] === question.correctAnswer ? "text-green-300" : "text-red-300"
-                        }>
-                          {question.options[userAnswers[idx]]}
-                        </span></p>
-                      )}
-                      {userAnswers[idx] !== question.correctAnswer && userAnswers[idx] !== undefined && (
-                        <p>Correct answer: <span className="text-green-300">
-                          {question.options[question.correctAnswer]}
-                        </span></p>
-                      )}
-                    </div>
-                  </div>
-                ))}
-                
-                {displayQuestions.length > 5 && (
-                  <div className="text-center text-xs text-gray-400">
-                    Showing 5 of {displayQuestions.length} questions
-                  </div>
+                {timeTakenSeconds > 0 && (
+                  <p className="text-xs text-gray-400 mt-1 flex items-center justify-center gap-1">
+                    <Clock size={12} /> Time taken: {formatTime(timeTakenSeconds)}
+                  </p>
                 )}
               </div>
+
+              {/* Pass / fail banner */}
+              {pct >= 80 ? (
+                <div className="p-3 bg-green-900 bg-opacity-30 rounded-md text-center border border-green-800">
+                  <GraduationCap className="h-6 w-6 text-green-400 mx-auto mb-1" />
+                  <p className="font-medium text-green-300 text-sm">Basic with Honours!</p>
+                  <p className="text-xs text-green-400 mt-1">You would be granted HF privileges with this score (≥80%).</p>
+                </div>
+              ) : pct >= 70 ? (
+                <div className="p-3 bg-blue-900 bg-opacity-30 rounded-md text-center border border-blue-800">
+                  <GraduationCap className="h-6 w-6 text-blue-400 mx-auto mb-1" />
+                  <p className="font-medium text-blue-300 text-sm">PASSED — Basic Qualification!</p>
+                  <p className="text-xs text-blue-400 mt-1">Aim for 80%+ to also get HF privileges.</p>
+                </div>
+              ) : (
+                <div className="p-3 bg-red-900 bg-opacity-30 rounded-md text-center border border-red-800">
+                  <RotateCw className="h-5 w-5 text-red-400 mx-auto mb-1" />
+                  <p className="font-medium text-red-300 text-sm">Not yet — need 70% to pass</p>
+                  <p className="text-xs text-red-400 mt-1">Study your weak topics below and try again!</p>
+                </div>
+              )}
+
+              {/* Readiness score impact */}
+              {readiness.examCount > 0 && (
+                <div className="p-3 bg-gray-900 rounded-md border border-gray-700">
+                  <div className="flex items-center gap-2 mb-2">
+                    <Target size={14} className="text-green-400" />
+                    <span className="text-xs font-medium text-gray-200">Updated Readiness Score</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <span className={`text-2xl font-bold ${
+                      readiness.score >= 80 ? 'text-green-400' :
+                      readiness.score >= 70 ? 'text-blue-400' : 'text-amber-400'
+                    }`}>{readiness.score}%</span>
+                    <div className="flex-1">
+                      <Progress value={readiness.score} className="h-1.5" />
+                      <p className="text-[10px] text-gray-400 mt-1">
+                        Pass probability: {readiness.passProbability}% · Based on last {readiness.examCount} test{readiness.examCount > 1 ? 's' : ''}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {/* Weak topics from this exam */}
+              {incorrectQuestions.length > 0 && (() => {
+                const catErrors: Record<string, number> = {};
+                incorrectQuestions.forEach(({ q }) => {
+                  const c = q.category;
+                  catErrors[c] = (catErrors[c] || 0) + 1;
+                });
+                const sorted = Object.entries(catErrors).sort((a,b) => b[1]-a[1]);
+                return (
+                  <div className="p-3 bg-gray-900 rounded-md border border-gray-700">
+                    <p className="text-xs font-medium text-gray-300 mb-2">Topics to focus on:</p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {sorted.map(([cat, count]) => (
+                        <span key={cat} className="text-xs bg-amber-900 bg-opacity-60 text-amber-200 px-2 py-0.5 rounded border border-amber-800">
+                          {cat} ({count} wrong)
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                );
+              })()}
+
+              {/* Action buttons */}
+              <Button onClick={() => { isResettingRef.current = true; setShowQuizConfig(true); setIsFullExamMode(false); questionsRef.current = []; setQuestionsToUse([]); }} className="bg-blue-800 hover:bg-blue-700 w-full">
+                <RotateCw className="h-4 w-4 mr-2" />
+                Try Another Exam
+              </Button>
+
+              {/* Incorrect answers review */}
+              {incorrectQuestions.length > 0 && (
+                <div>
+                  <button
+                    className="w-full flex items-center justify-between text-sm font-medium text-gray-200 py-2 border-t border-gray-700"
+                    onClick={() => setShowFullReview(v => !v)}
+                  >
+                    <span className="flex items-center gap-2">
+                      <AlertCircle size={14} className="text-red-400" />
+                      Review Incorrect Answers ({incorrectQuestions.length})
+                    </span>
+                    {showFullReview ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                  </button>
+
+                  {showFullReview && (
+                    <div className="space-y-2 mt-2">
+                      {incorrectQuestions.map(({ q, i }) => (
+                        <div key={i} className="bg-gray-900 p-3 rounded-md border-l-2 border-red-700">
+                          <div className="flex justify-between items-start mb-1">
+                            <span className="text-xs text-gray-400">Q{i + 1} · {q.category}</span>
+                            <Badge variant="outline" className="border-red-700 text-red-300 text-[10px]">Incorrect</Badge>
+                          </div>
+                          <p className="text-xs text-gray-200 mb-2">{q.question}</p>
+                          <div className="text-[10px] space-y-0.5">
+                            <p>Your answer: <span className="text-red-300">{finalAnswers[i] !== undefined ? q.options[finalAnswers[i]] : '(no answer)'}</span></p>
+                            <p>Correct answer: <span className="text-green-300">{q.options[q.correctAnswer]}</span></p>
+                            {q.explanation && (
+                              <p className="text-gray-400 mt-1 pt-1 border-t border-gray-800">{q.explanation}</p>
+                            )}
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {incorrectQuestions.length === 0 && (
+                <div className="text-center py-2 text-xs text-green-400">
+                  🎉 Perfect score — no incorrect answers to review!
+                </div>
+              )}
             </div>
-          )}
+              );
+            })()}
         </div>
       ) : null}
       
