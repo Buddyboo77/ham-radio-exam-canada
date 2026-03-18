@@ -277,7 +277,7 @@ const FALLBACK_QUIZ_QUESTIONS = [
 
 export default function EnhancedLearningPage() {
   // Navigation state
-  const [location, setLocation] = useLocation();
+  const [_location] = useLocation();
   
   // Progress tracking
   const { progress } = useLearningProgress();
@@ -685,61 +685,33 @@ export default function EnhancedLearningPage() {
   };
   
   return (
-    <div className="p-2">
-      {/* Fixed Home Button at bottom - only show when not on dashboard and not actively taking quiz */}
-      {activeView !== 'dashboard' && (showQuizConfig || quizCompleted) && (
-        <div className="fixed bottom-4 right-4 z-50">
-          <button 
-            onClick={() => setLocation('/')}
-            className="bg-green-600 hover:bg-green-500 p-3 rounded-full shadow-lg border-2 border-green-400 shadow-glow-green"
+    <div className="p-3">
+      {/* Page header — shows Back to Dashboard button when inside a quiz view */}
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2">
+          <div className="radio-led green"></div>
+          <h2 className="text-sm font-mono tracking-wide text-blue-100 uppercase">
+            {activeView === 'dashboard' ? 'Exam Practice' : activeView === 'quiz' ? 'Practice Exam' : activeView.toUpperCase()}
+          </h2>
+        </div>
+        {activeView !== 'dashboard' && (showQuizConfig || quizCompleted) && (
+          <button
+            className="flex items-center gap-1.5 text-xs text-blue-300 hover:text-white bg-blue-900 hover:bg-blue-800 px-3 py-1.5 rounded-md border border-blue-700 transition-colors"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              returnToDashboard();
+            }}
           >
-            <HomeIcon size={24} className="text-white" />
+            <HomeIcon size={12} /> Dashboard
           </button>
-        </div>
-      )}
-      
-      {/* Radio display header */}
-      <div className="bg-gradient-to-r from-blue-900 to-blue-950 rounded-md p-2 mb-3 border border-blue-800">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="radio-led green"></div>
-            <h2 className="text-sm font-mono tracking-wide text-blue-100 uppercase">
-              Learning Module
-              {activeView !== 'dashboard' && ` - ${activeView.toUpperCase()}`}
-            </h2>
-          </div>
-          <div className="flex items-center gap-2">
-            {activeView !== 'dashboard' && (showQuizConfig || quizCompleted) && (
-              <button 
-                className="text-xs text-blue-300 hover:text-blue-100 font-mono bg-blue-950 px-2 py-0.5 rounded border border-blue-800"
-                onClick={(e) => {
-                  e.preventDefault();
-                  e.stopPropagation();
-                  returnToDashboard();
-                }}
-              >
-                RETURN
-              </button>
-            )}
-            {activeView !== 'dashboard' && (showQuizConfig || quizCompleted) && (
-              <button 
-                className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1"
-                onClick={() => setLocation('/')}
-              >
-                <HomeIcon size={10} /> HOME
-              </button>
-            )}
-          </div>
-        </div>
+        )}
       </div>
       
-      {/* Exam info banner */}
-      <div className="bg-gradient-to-r from-blue-950 to-indigo-950 rounded-md p-3 mb-3 border border-blue-800">
-        <div className="flex items-center gap-2 mb-2">
-          <Radio className="text-blue-300" size={18} />
-          <h3 className="text-sm font-medium text-blue-100">Ham Radio Exam Canada</h3>
-        </div>
-        <p className="text-xs text-gray-300">Canadian Amateur Radio License Exam Preparation - Practice tests, Morse code training, and study guides.</p>
+      {/* Thin info strip */}
+      <div className="flex items-center gap-2 mb-3 px-1">
+        <Radio className="text-blue-400 shrink-0" size={13} />
+        <p className="text-[10px] text-gray-400">Canadian Amateur Radio License Exam Preparation — 630 official ISED questions</p>
       </div>
       
       {/* Main content area */}

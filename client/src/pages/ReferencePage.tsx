@@ -2,7 +2,7 @@ import { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Input } from "@/components/ui/input";
 import { Skeleton } from "@/components/ui/skeleton";
-import { Book, Radio, AlertTriangle, Search, Bookmark, Users, Shield, Music, GraduationCap, Home } from "lucide-react";
+import { Book, Radio, AlertTriangle, Search, Bookmark, Users, Shield, Music, GraduationCap } from "lucide-react";
 import ReferenceItem from "@/components/reference/ReferenceItem";
 import ClubInfoCard from "@/components/reference/ClubInfoCard";
 import EnhancedMorseCode from "@/components/reference/EnhancedMorseCode";
@@ -48,25 +48,13 @@ const ReferencePage = () => {
   });
 
   return (
-    <div className="p-2">
-      {/* Radio display readout for Reference mode */}
-      <div className="bg-gradient-to-r from-blue-900 to-blue-950 rounded-md p-2 mb-3 border border-blue-800">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="radio-led green"></div>
-            <h2 className="text-sm font-mono tracking-wide text-blue-100 uppercase">
-              Ham Radio Reference
-            </h2>
-          </div>
-          <Link href="/">
-            <button 
-              className="text-xs text-green-300 hover:text-green-100 font-mono bg-green-900 px-2 py-0.5 rounded border border-green-800 flex items-center gap-1"
-              data-testid="button-home"
-            >
-              <Home size={10} /> HOME
-            </button>
-          </Link>
-        </div>
+    <div className="p-3">
+      {/* Page header */}
+      <div className="flex items-center gap-2 mb-3">
+        <div className="radio-led green"></div>
+        <h2 className="text-sm font-mono tracking-wide text-blue-100 uppercase">
+          Study Guide
+        </h2>
       </div>
       
       {/* Tab Navigation as Radio Buttons */}

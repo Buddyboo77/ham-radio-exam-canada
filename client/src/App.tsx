@@ -4,204 +4,117 @@ import { QueryClientProvider } from "@tanstack/react-query";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
-import FrequenciesPage from "@/pages/FrequenciesPage";
-import ScannerPage from "@/pages/ScannerPage";
-import RepeatersPage from "@/pages/RepeatersPage";
-import LogbookPage from "@/pages/LogbookPage";
 import ReferencePage from "@/pages/ReferencePage";
-import LearningPage from "@/pages/LearningPage";
 import EnhancedLearningPage from "@/pages/EnhancedLearningPage";
-import CallsignLookupPage from "@/pages/CallsignLookupPage";
-import PropagationPage from "@/pages/PropagationPage";
-import DXClusterPage from "@/pages/DXClusterPage";
-import EnhancedMapPage from "@/pages/EnhancedMapPage";
-import ARViewPage from "@/pages/ARViewPage";
-import CommunicationPage from "@/pages/CommunicationPage";
 import MorseCodePage from "@/pages/MorseCodePage";
 import AuthPage from "@/pages/AuthPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import TermsOfServicePage from "@/pages/TermsOfServicePage";
-import TestGamification from "@/pages/TestGamification";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
 import { useState, useEffect } from "react";
-import { 
-  Radio, 
-  BookOpen, 
-  Layers, 
-  BarChart4, 
-  FileText, 
-  Map, 
-  Wifi, 
+import {
+  Radio,
+  BookOpen,
   BookOpenCheck,
-  Battery,
-  SignalHigh,
-  Menu,
   Power,
-  Users,
-  RadioTower,
   Home as HomeIcon,
-  User,
-  Sun,
-  Globe,
-  Compass,
-  MessageSquare
 } from "lucide-react";
 import { useOnlineStatus } from "@/hooks/use-online-status";
-import { QuickAccessMenu } from "@/components/layout/QuickAccessMenu";
-
-function formatTime() {
-  const now = new Date();
-  const hours = now.getHours().toString().padStart(2, '0');
-  const minutes = now.getMinutes().toString().padStart(2, '0');
-  return `${hours}:${minutes}`;
-}
 
 function Router() {
   const [location, setLocation] = useLocation();
-  const [currentTime, setCurrentTime] = useState(formatTime());
-  const [batteryLevel, setBatteryLevel] = useState(80);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const isOnline = useOnlineStatus();
-  
-  // Update the time every minute
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentTime(formatTime());
-    }, 60000);
-    return () => clearInterval(interval);
-  }, []);
-  
-  // Routes mapping - focusing only on learning modules
-  const routes = [
-    { path: "/learning", label: "Learning", icon: <BookOpenCheck size={18} /> },
-    { path: "/morse-code", label: "Morse Code", icon: <Radio size={18} /> },
-    { path: "/reference", label: "Reference", icon: <BookOpen size={18} /> },
-  ];
-  
-  // Auth-aware routing
   const { isAuthenticated, logout } = useAuth();
-  
-  // Redirect only unauthenticated users from root to auth page
+
   useEffect(() => {
     if (location === "/" && !isAuthenticated) {
       setLocation("/auth");
     }
   }, [location, setLocation, isAuthenticated]);
-  
-  const activeRoute = routes.find(route => route.path === location) || routes[0];
-  
+
+  const tabs = [
+    { path: "/learning", label: "Exams", icon: <BookOpenCheck size={20} /> },
+    { path: "/morse-code", label: "Morse", icon: <Radio size={20} /> },
+    { path: "/reference", label: "Study Guide", icon: <BookOpen size={20} /> },
+  ];
+
+  const isAuthPage = location === "/auth";
+
   return (
-    <div className="flex flex-col h-screen mx-auto pb-4 max-w-md relative pt-14">
-      {/* Our QuickAccessMenu is now our main navigation */}
-      
-      <div className="radio-body relative overflow-hidden">
-        {/* Antenna at top */}
-        <div className="antenna"></div>
-        
-        {/* Top status bar with time and connection status */}
-        <div className="flex justify-between items-center mb-2 px-2">
-          <div className="text-gray-400 font-mono text-xs flex items-center gap-2">
-            <Power size={12} className={isOnline ? "text-green-500" : "text-red-500"} />
-            <span>{currentTime}</span>
+    <div className="flex flex-col h-screen mx-auto max-w-md relative bg-gray-950">
+
+      {/* Top status bar */}
+      {!isAuthPage && (
+        <div className="flex justify-between items-center px-3 py-1.5 bg-gray-900 border-b border-gray-800 shrink-0">
+          <div className="flex items-center gap-1.5">
+            <Power size={11} className={isOnline ? "text-green-400" : "text-red-400"} />
+            <span className="text-gray-400 font-mono text-[10px]">
+              {isOnline ? "Online" : "Offline"}
+            </span>
           </div>
-          
-          <div className={`text-xs font-mono px-2 py-0.5 rounded ${
-            isOnline 
-              ? 'bg-green-900 bg-opacity-30 text-green-400 border border-green-700' 
-              : 'bg-red-900 bg-opacity-30 text-red-400 border border-red-700'
-          }`}>
-            {isOnline ? 'Online' : 'Offline'}
-          </div>
+          <span className="text-[10px] font-mono text-blue-300 tracking-widest">
+            HAM RADIO EXAM CANADA
+          </span>
+          <button
+            onClick={() => { logout(); setLocation("/auth"); }}
+            className="text-[10px] text-gray-500 hover:text-red-400 font-mono px-1"
+          >
+            LOGOUT
+          </button>
         </div>
-        
-        {/* Radio screen */}
-        <div className="radio-screen relative">
-          {/* Hidden display header - keeping blank space for layout consistency */}
-          <div className="p-1"></div>
-          
-          {/* Main content area */}
-          <div className="flex-1 overflow-y-auto max-h-[70vh]">
-            <Switch>
-              <Route path="/auth" component={AuthPage} />
-              
-              <ProtectedRoute path="/">
-                <EnhancedLearningPage />
-              </ProtectedRoute>
-              
-              <ProtectedRoute path="/learning">
-                <EnhancedLearningPage />
-              </ProtectedRoute>
-              
-              <ProtectedRoute path="/morse-code">
-                <MorseCodePage />
-              </ProtectedRoute>
-              
-              <ProtectedRoute path="/reference">
-                <ReferencePage />
-              </ProtectedRoute>
-              
-              <Route path="/privacy" component={PrivacyPolicyPage} />
-              <Route path="/terms" component={TermsOfServicePage} />
-              <Route path="/test-gamification" component={TestGamification} />
-              
-              <Route component={NotFound} />
-            </Switch>
-          </div>
-        </div>
-        
-        {/* Radio buttons/controls at bottom */}
-        <div className="mt-4">
-          {/* Menu toggle button */}
-          <div className="flex justify-center mb-4">
-            <button 
-              onClick={() => setIsMenuOpen(!isMenuOpen)} 
-              className="radio-button-large bg-gradient-to-b from-gray-700 to-gray-800"
-            >
-              <Menu size={22} className="text-blue-100" />
-            </button>
-          </div>
-          
-          {/* Navigation buttons */}
-          <div className={`grid grid-cols-3 gap-3 mt-1 transition-all duration-300 ${isMenuOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none absolute'}`}>
-            {routes.map(route => (
-              <Link 
-                key={route.path} 
-                href={route.path}
-                onClick={() => setIsMenuOpen(false)}
-              >
-                <div className={`radio-nav-button ${location === route.path ? 'active' : ''}`}>
-                  {route.icon}
-                  <span className="text-xs">{route.label}</span>
+      )}
+
+      {/* Main content — grows to fill space above the tab bar */}
+      <div className="flex-1 overflow-y-auto">
+        <Switch>
+          <Route path="/auth" component={AuthPage} />
+
+          <ProtectedRoute path="/">
+            <EnhancedLearningPage />
+          </ProtectedRoute>
+
+          <ProtectedRoute path="/learning">
+            <EnhancedLearningPage />
+          </ProtectedRoute>
+
+          <ProtectedRoute path="/morse-code">
+            <MorseCodePage />
+          </ProtectedRoute>
+
+          <ProtectedRoute path="/reference">
+            <ReferencePage />
+          </ProtectedRoute>
+
+          <Route path="/privacy" component={PrivacyPolicyPage} />
+          <Route path="/terms" component={TermsOfServicePage} />
+
+          <Route component={NotFound} />
+        </Switch>
+      </div>
+
+      {/* Persistent bottom tab bar — hidden on auth page */}
+      {!isAuthPage && (
+        <nav className="shrink-0 border-t border-gray-800 bg-gray-900 grid grid-cols-3">
+          {tabs.map(tab => {
+            const isActive = location === tab.path || (tab.path === "/learning" && location === "/");
+            return (
+              <Link key={tab.path} href={tab.path}>
+                <div className={`flex flex-col items-center justify-center py-2 gap-0.5 transition-colors ${
+                  isActive
+                    ? "text-blue-400 bg-blue-950 bg-opacity-40"
+                    : "text-gray-400 hover:text-gray-200"
+                }`}>
+                  {tab.icon}
+                  <span className="text-[10px] font-medium">{tab.label}</span>
+                  {isActive && <div className="w-4 h-0.5 bg-blue-400 rounded-full" />}
                 </div>
               </Link>
-            ))}
-            
-            {/* Logout button */}
-            <div 
-              onClick={() => {
-                logout();
-                setLocation('/auth');
-                setIsMenuOpen(false);
-              }}
-              className="radio-nav-button bg-red-900 hover:bg-red-800"
-            >
-              <Power size={18} />
-              <span className="text-xs">Logout</span>
-            </div>
-          </div>
-          
-          {/* No guidance message needed with simplified interface */}
-          
-          {/* Radio station identifier - simplified, no quick access buttons */}
-          <div className={`flex justify-center items-center mt-2 transition-all duration-300 ${!isMenuOpen ? 'opacity-100 scale-100' : 'opacity-0 scale-90 pointer-events-none absolute'}`}>
-            <div className="radio-frequency-display flex-1 text-center">
-              <Radio className="inline-block mr-1" size={14} /> Ham Radio License Exam Prep
-            </div>
-          </div>
-        </div>
-      </div>
+            );
+          })}
+        </nav>
+      )}
     </div>
   );
 }
