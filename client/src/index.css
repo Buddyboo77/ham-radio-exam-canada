@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Mobile full-screen foundation */
+html,
+body,
+#root {
+  height: 100%;
+  height: 100dvh; /* dynamic viewport — correct on mobile browsers */
+  background-color: #030712; /* matches gray-950 — no white flash on load */
+  overscroll-behavior: none; /* prevents pull-to-refresh on iOS/Android */
+  -webkit-tap-highlight-color: transparent; /* removes blue tap flash on Android */
+}
+
 @layer utilities {
   .shadow-glow-blue {
     box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
