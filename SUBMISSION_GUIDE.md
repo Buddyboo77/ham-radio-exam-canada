@@ -1,4 +1,4 @@
-# SignalAce Canada - App Store Submission Guide
+# Ham Radio Exam Canada – Morse - App Store Submission Guide
 
 ## Step 1: Take Screenshots
 
@@ -157,7 +157,7 @@ After launch, plan to:
 ## Contact Info for Store Submissions
 
 - **Support Email**: support@signalace.app
-- **Developer Name**: SignalAce
+- **Developer Name**: Ham Radio Exam Canada
 - **Website**: signalace.app (when ready)
 
 ---

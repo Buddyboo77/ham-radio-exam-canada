@@ -1,7 +1,7 @@
-# SignalAce Canada - App Store Listing
+# Ham Radio Exam Canada – Morse - App Store Listing
 
 ## App Title
-**SignalAce Canada - Ham Radio Exam Prep**
+**Ham Radio Exam Canada – Morse - Ham Radio Exam Prep**
 
 ## Subtitle (for app stores)
 FREE Canadian Amateur Radio License Exam Preparation - Study with 630+ Official ISED Questions
@@ -9,9 +9,9 @@ FREE Canadian Amateur Radio License Exam Preparation - Study with 630+ Official 
 ## Full Description
 
 ### For Users
-Master your Canadian amateur radio license exam with **SignalAce Canada** - the FREE, comprehensive study app featuring 630+ official ISED exam questions, Morse code training, and interactive learning tools.
+Master your Canadian amateur radio license exam with **Ham Radio Exam Canada – Morse** - the FREE, comprehensive study app featuring 630+ official ISED exam questions, Morse code training, and interactive learning tools.
 
-Whether you're preparing for your Basic Qualification exam or sharpening your radio skills, SignalAce Canada provides everything you need to succeed:
+Whether you're preparing for your Basic Qualification exam or sharpening your radio skills, Ham Radio Exam Canada – Morse provides everything you need to succeed:
 
 **📚 Official Exam Questions**
 - 630+ authentic ISED Canada exam questions (July 15, 2025 edition)
@@ -60,7 +60,7 @@ Perfect for:
 - Radio operators refreshing their knowledge
 - Anyone interested in emergency communications
 
-Start your journey to becoming a licensed ham radio operator today - completely free with SignalAce Canada!
+Start your journey to becoming a licensed ham radio operator today - completely free with Ham Radio Exam Canada – Morse!
 
 ---
 
@@ -123,7 +123,7 @@ https://signalace.app
 Education
 
 ## Developer
-SignalAce
+Ham Radio Exam Canada
 
 ## Contact Email
 support@signalace.app

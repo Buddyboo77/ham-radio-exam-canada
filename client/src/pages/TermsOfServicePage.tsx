@@ -20,7 +20,7 @@ export default function TermsOfServicePage() {
       {/* Content */}
       <div className="bg-gray-800 bg-opacity-70 rounded-md p-3 border border-gray-700 space-y-3 max-h-[65vh] overflow-y-auto">
         <div className="text-center mb-3">
-          <h2 className="text-lg font-bold text-gray-100 mb-1">SignalAce Canada</h2>
+          <h2 className="text-lg font-bold text-gray-100 mb-1">Ham Radio Exam Canada – Morse</h2>
           <p className="text-gray-400 text-xs">Last Updated: November 5, 2025</p>
         </div>
 

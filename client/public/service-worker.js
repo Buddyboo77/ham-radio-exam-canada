@@ -1,4 +1,4 @@
-// Service Worker for SignalAce Canada
+// Service Worker for Ham Radio Exam Canada
 const CACHE_NAME = 'signalace-cache-v1';
 
 // Resources to cache initially

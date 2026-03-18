@@ -26,7 +26,7 @@ export default function AuthPage() {
         <div className="flex justify-center mb-1">
           <Radio className="h-8 w-8 text-blue-500" />
         </div>
-        <h1 className="text-base font-bold text-blue-300 mb-1">SignalAce Canada</h1>
+        <h1 className="text-base font-bold text-blue-300 mb-1">Ham Radio Exam Canada</h1>
         <p className="text-gray-400 text-xs mb-2">Ham Radio License Exam Prep</p>
         
         <div className="bg-gray-800 p-2 rounded border border-gray-700 mb-2">

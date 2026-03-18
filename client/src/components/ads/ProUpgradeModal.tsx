@@ -38,7 +38,7 @@ export function ProUpgradeModal() {
             Support Development
           </DialogTitle>
           <DialogDescription className="text-center text-gray-300">
-            Help keep SignalAce Canada free and improving
+            Help keep Ham Radio Exam Canada free and improving
           </DialogDescription>
         </DialogHeader>
         
@@ -55,7 +55,7 @@ export function ProUpgradeModal() {
           </div>
 
           <div className="space-y-3 bg-gray-800/50 rounded-lg p-4">
-            <h3 className="font-semibold text-sm text-gray-200 mb-3">Why Support SignalAce?</h3>
+            <h3 className="font-semibold text-sm text-gray-200 mb-3">Why Support Ham Radio Exam Canada?</h3>
             
             <div className="flex items-start gap-3">
               <div className="mt-0.5">
@@ -115,7 +115,7 @@ export function ProUpgradeModal() {
         </div>
 
         <p className="text-xs text-center text-gray-500 mt-2">
-          Thank you for supporting SignalAce Canada! 🇨🇦
+          Thank you for supporting Ham Radio Exam Canada! 🇨🇦
         </p>
       </DialogContent>
     </Dialog>

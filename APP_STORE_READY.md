@@ -1,4 +1,4 @@
-# SignalAce Canada - App Store Ready Checklist
+# Ham Radio Exam Canada – Morse - App Store Ready Checklist
 
 ## ✅ PRODUCTION VERIFICATION COMPLETE
 
@@ -24,7 +24,7 @@
 - ✅ **Exam times correct** - Official Canadian ISED timing
 - ✅ **Navigation protection** - Prevents accidental quiz exits
 - ✅ **Question randomization** - Fisher-Yates shuffle algorithm
-- ✅ **Branding** - "SignalAce Canada" prominently displayed
+- ✅ **Branding** - "Ham Radio Exam Canada – Morse" prominently displayed
 - ✅ **UI/UX** - Professional radio-themed interface
 
 ### Privacy & Legal
@@ -39,7 +39,7 @@
 #### iOS (App Store)
 - **Min iOS Version**: 14.0 or higher
 - **Bundle ID**: ca.signalace.examprep
-- **Developer Name**: SignalAce
+- **Developer Name**: Ham Radio Exam Canada
 - **Support URL**: support@signalace.app
 - **Privacy Policy URL**: In-app page
 - **App Category**: Education
@@ -48,7 +48,7 @@
 #### Android (Google Play)
 - **Min Android Version**: Android 8 (API 26+)
 - **Package Name**: ca.signalace.examprep
-- **Developer Name**: SignalAce
+- **Developer Name**: Ham Radio Exam Canada
 - **Support Email**: support@signalace.app
 - **Content Rating**: Everyone
 - **App Category**: Education

@@ -19,7 +19,7 @@ const RANKS = [
   { level: 15, name: 'Advanced', xp: 3000 },
   { level: 20, name: 'Expert', xp: 5000 },
   { level: 25, name: 'Master', xp: 7500 },
-  { level: 30, name: 'SignalAce', xp: 10000 }
+  { level: 30, name: 'Ham Radio Expert', xp: 10000 }
 ];
 
 export function LevelProgress() {

@@ -737,7 +737,7 @@ export default function EnhancedLearningPage() {
       <div className="bg-gradient-to-r from-blue-950 to-indigo-950 rounded-md p-3 mb-3 border border-blue-800">
         <div className="flex items-center gap-2 mb-2">
           <Radio className="text-blue-300" size={18} />
-          <h3 className="text-sm font-medium text-blue-100">SignalAce Canada</h3>
+          <h3 className="text-sm font-medium text-blue-100">Ham Radio Exam Canada</h3>
         </div>
         <p className="text-xs text-gray-300">Canadian Amateur Radio License Exam Preparation - Practice tests, Morse code training, and study guides.</p>
       </div>

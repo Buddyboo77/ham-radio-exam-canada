@@ -17,7 +17,7 @@ export default function LogExporter({ logEntries }: LogExporterProps) {
     let adif = `Generated on ${new Date().toISOString()}\n`;
     adif += '<ADIF_VER:5>3.1.0\n';
     adif += '<CREATED_TIMESTAMP:20>' + new Date().toISOString() + '\n';
-    adif += '<PROGRAMID:15>SignalAce Canada\n';
+    adif += '<PROGRAMID:22>Ham Radio Exam Canada\n';
     adif += '<EOH>\n\n';
 
     entries.forEach(entry => {

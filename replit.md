@@ -1,8 +1,8 @@
-# SignalAce Canada
+# Ham Radio Exam Canada – Morse
 
 ## Overview
 
-SignalAce Canada is a comprehensive Canadian amateur radio license exam preparation Progressive Web App. This FREE app with an optional $8.88 Pro upgrade (removes ads) provides essential study tools including Practice Exams, Morse Code training, and Study Guides with gamification elements like daily challenges, XP/level system, and achievement badges. The application is built to work both online and offline, making it reliable for studying anywhere.
+Ham Radio Exam Canada – Morse is a comprehensive Canadian amateur radio license exam preparation Progressive Web App. This FREE app with an optional $8.88 Pro upgrade (removes ads) provides essential study tools including Practice Exams, Morse Code training, and Study Guides with gamification elements like daily challenges, XP/level system, and achievement badges. The application is built to work both online and offline, making it reliable for studying anywhere.
 
 The app targets Canadian amateur radio license exam candidates, providing educational resources for new operators preparing for their Basic or Advanced qualification exams. It combines practical exam preparation tools with learning features and progress tracking.
 
@@ -24,7 +24,7 @@ Preferred communication style: Simple, everyday language.
 - ✅ Removed all duplicate questions (was showing same questions 3-9 times to users)
 - ✅ Fixed exam time limits to official Canadian ISED standards
 - ✅ Added sound and vibration effects to all celebrations
-- ✅ Updated app branding to show "SignalAce Canada" prominently
+- ✅ Updated app branding to show "Ham Radio Exam Canada – Morse" prominently
 - ✅ Verified Morse code functionality
 - ✅ Verified gamification features (daily bonuses, level ups, achievements)
 
@@ -39,7 +39,7 @@ Preferred communication style: Simple, everyday language.
 ### Official Question Bank Successfully Imported (Nov 5, 2025)
 **Status: ✅ 100% COMPLETE - ALL 630 UNIQUE ISED QUESTIONS VERIFIED**
 
-The complete official ISED Canada question bank (July 15, 2025 edition) has been successfully imported into SignalAce Canada with all duplicates removed!
+The complete official ISED Canada question bank (July 15, 2025 edition) has been successfully imported into Ham Radio Exam Canada – Morse with all duplicates removed!
 
 **Import Summary:**
 - ✅ **630 official unique ISED Canada questions** 
