@@ -5,6 +5,42 @@ import { z } from "zod";
 import { insertFrequencySchema, insertLogEntrySchema, insertRepeaterSchema, insertExamQuestionSchema } from "@shared/schema";
 import axios from "axios";
 import { WebSocketServer, WebSocket } from 'ws';
+import { readFileSync } from "fs";
+import { join } from "path";
+
+// Load bundled questions as fallback when database is unavailable
+let BUNDLED_QUESTIONS: any[] = [];
+try {
+  // Try production path first, then dev path
+  let raw: string;
+  try {
+    raw = readFileSync(join(process.cwd(), "dist/public/questions.json"), "utf-8");
+  } catch {
+    raw = readFileSync(join(process.cwd(), "client/public/questions.json"), "utf-8");
+  }
+  const parsed = JSON.parse(raw);
+  // Convert from {question, options[], correctAnswer, explanation, category} to DB shape
+  BUNDLED_QUESTIONS = parsed.map((q: any, i: number) => ({
+    id: i + 1,
+    question: q.question,
+    optionA: q.options[0] ?? "",
+    optionB: q.options[1] ?? "",
+    optionC: q.options[2] ?? "",
+    optionD: q.options[3] ?? "",
+    correctAnswer: q.correctAnswer ?? 0,
+    explanation: q.explanation ?? "",
+    category: q.category ?? "general",
+    subcategory: null,
+    difficulty: "intermediate",
+    examType: "basic",
+    questionNumber: null,
+    isActive: true,
+    createdAt: new Date().toISOString(),
+  }));
+  console.log(`✅ Loaded ${BUNDLED_QUESTIONS.length} bundled questions as fallback`);
+} catch {
+  console.warn("⚠️ Could not load bundled questions fallback");
+}
 
 // Simple rate limiting store
 const rateLimitStore = new Map<string, { count: number; resetTime: number }>();
@@ -393,28 +429,48 @@ export async function registerRoutes(app: Express): Promise<Server> {
   app.get("/api/exam-questions", async (req, res) => {
     try {
       const { category, examType, difficulty, count } = req.query;
-      
-      if (count) {
-        // Get random questions
-        const questions = await storage.getRandomExamQuestions(
-          parseInt(count as string),
-          category as string,
-          examType as string
-        );
-        return res.json(questions);
+
+      let questions: any[];
+
+      try {
+        if (count) {
+          questions = await storage.getRandomExamQuestions(
+            parseInt(count as string),
+            category as string,
+            examType as string
+          );
+        } else if (category) {
+          questions = await storage.getExamQuestionsByCategory(category as string);
+        } else if (examType) {
+          questions = await storage.getExamQuestionsByType(examType as string);
+        } else if (difficulty) {
+          questions = await storage.getExamQuestionsByDifficulty(difficulty as string);
+        } else {
+          questions = await storage.getAllExamQuestions();
+        }
+      } catch (dbError) {
+        // Database unavailable — serve bundled questions as fallback
+        console.warn("⚠️ Database unavailable, serving bundled questions:", (dbError as Error).message);
+        let pool = BUNDLED_QUESTIONS;
+
+        if (category && category !== "all") {
+          pool = pool.filter(q => q.category.toLowerCase() === (category as string).toLowerCase());
+        }
+
+        if (count) {
+          const n = parseInt(count as string);
+          // Fisher-Yates shuffle then slice
+          const shuffled = [...pool];
+          for (let i = shuffled.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+          }
+          questions = shuffled.slice(0, n);
+        } else {
+          questions = pool;
+        }
       }
-      
-      let questions;
-      if (category) {
-        questions = await storage.getExamQuestionsByCategory(category as string);
-      } else if (examType) {
-        questions = await storage.getExamQuestionsByType(examType as string);
-      } else if (difficulty) {
-        questions = await storage.getExamQuestionsByDifficulty(difficulty as string);
-      } else {
-        questions = await storage.getAllExamQuestions();
-      }
-      
+
       res.json(questions);
     } catch (error) {
       console.error("Error fetching exam questions:", error);
