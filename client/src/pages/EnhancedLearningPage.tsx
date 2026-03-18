@@ -530,6 +530,18 @@ export default function EnhancedLearningPage() {
     ? questionsRef.current 
     : questionsToUse;
 
+  // Auto-adjust question count when category doesn't have enough questions
+  useEffect(() => {
+    if (!categoryCounts) return;
+    const max = categoryCounts[activeCategory] ?? 0;
+    if (max > 0 && questionsCount > max) {
+      // Pick the largest available count that fits
+      const options = [10, 25, 50, 75, 100];
+      const best = [...options].reverse().find(n => n <= max) ?? 10;
+      setQuestionsCount(best);
+    }
+  }, [activeCategory, categoryCounts]);
+
   // Timer effect for simulation mode with warnings
   useEffect(() => {
     let timer: NodeJS.Timeout | null = null;
@@ -691,7 +703,13 @@ export default function EnhancedLearningPage() {
         <div className="flex items-center gap-2">
           <div className="radio-led green"></div>
           <h2 className="text-sm font-mono tracking-wide text-blue-100 uppercase">
-            {activeView === 'dashboard' ? 'Exam Practice' : activeView === 'quiz' ? 'Practice Exam' : activeView.toUpperCase()}
+            {activeView === 'dashboard'
+              ? 'Exam Practice'
+              : quizCompleted
+              ? 'Results'
+              : showQuizConfig
+              ? isFullExamMode ? 'Full Exam Setup' : 'Exam Setup'
+              : 'Quiz In Progress'}
           </h2>
         </div>
         {activeView !== 'dashboard' && (showQuizConfig || quizCompleted) && (
@@ -711,7 +729,10 @@ export default function EnhancedLearningPage() {
       {/* Thin info strip */}
       <div className="flex items-center gap-2 mb-3 px-1">
         <Radio className="text-blue-400 shrink-0" size={13} />
-        <p className="text-[10px] text-gray-400">Canadian Amateur Radio License Exam Preparation — 630 official ISED questions</p>
+        <p className="text-[10px] text-gray-400">
+          Canadian Amateur Radio License Exam Preparation
+          {categoryCounts?.['all'] ? ` — ${categoryCounts['all']} official ISED questions` : ''}
+        </p>
       </div>
       
       {/* Main content area */}
@@ -974,21 +995,37 @@ export default function EnhancedLearningPage() {
                   <div className="mb-4">
                     <div className="mb-2 text-xs text-gray-300 font-semibold">Number of Questions:</div>
                     <div className="grid grid-cols-5 gap-2">
-                      {[10, 25, 50, 75, 100].map(count => (
-                        <div
-                          key={count}
-                          className={`px-2 py-2 rounded-md text-xs cursor-pointer text-center border ${
-                            questionsCount === count 
-                              ? "bg-blue-900 border-blue-600 text-blue-100" 
-                              : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
-                          }`}
-                          onClick={() => setQuestionsCount(count)}
-                        >
-                          {count}
-                          {count === 100 && <span className="ml-1 text-[10px] bg-green-700 px-1 rounded">Official</span>}
-                        </div>
-                      ))}
+                      {[10, 25, 50, 75, 100].map(count => {
+                        const categoryMax = getCategoryCount(activeCategory);
+                        const isDisabled = categoryMax > 0 && count > categoryMax;
+                        return (
+                          <div
+                            key={count}
+                            className={`px-2 py-2 rounded-md text-xs text-center border transition-colors ${
+                              isDisabled
+                                ? "opacity-30 cursor-not-allowed bg-gray-900 border-gray-800 text-gray-600"
+                                : questionsCount === count
+                                ? "bg-blue-900 border-blue-600 text-blue-100 cursor-pointer"
+                                : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700 cursor-pointer"
+                            }`}
+                            onClick={() => !isDisabled && setQuestionsCount(count)}
+                          >
+                            {count}
+                            {count === 100 && !isDisabled && (
+                              <span className="ml-1 text-[10px] bg-green-700 px-1 rounded">Official</span>
+                            )}
+                          </div>
+                        );
+                      })}
                     </div>
+                    {(() => {
+                      const max = getCategoryCount(activeCategory);
+                      return max > 0 && questionsCount > max ? (
+                        <p className="text-[10px] text-amber-400 mt-1">
+                          Only {max} questions available for this section — count adjusted automatically.
+                        </p>
+                      ) : null;
+                    })()}
                   </div>
                 )}
                 
