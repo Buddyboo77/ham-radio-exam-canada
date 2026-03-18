@@ -1,263 +1,172 @@
 import { useState } from "react";
-import { useQuery } from "@tanstack/react-query";
-import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
-import { Book, Radio, AlertTriangle, Search, Bookmark, Users, Shield, Music, GraduationCap } from "lucide-react";
-import ReferenceItem from "@/components/reference/ReferenceItem";
-import ClubInfoCard from "@/components/reference/ClubInfoCard";
-import EnhancedMorseCode from "@/components/reference/EnhancedMorseCode";
+import { AlertTriangle, GraduationCap, Shield } from "lucide-react";
 import HamLicenseGuide from "@/components/reference/HamLicenseGuide";
-import { ReferenceItem as ReferenceItemType } from "@shared/schema";
-import { Link } from "wouter";
+
+const EMERGENCY_FREQUENCIES = [
+  { label: "VHF National Calling", freq: "146.52 MHz", note: "Simplex — monitor during emergencies" },
+  { label: "UHF National Calling", freq: "446.00 MHz", note: "Alternative calling frequency" },
+  { label: "HF International Distress", freq: "14.300 MHz", note: "International SSB calling" },
+  { label: "Marine Channel 16", freq: "156.800 MHz", note: "International distress & calling" },
+];
+
+const PHONETIC_ALPHABET = [
+  ["A", "Alpha"], ["B", "Bravo"], ["C", "Charlie"], ["D", "Delta"],
+  ["E", "Echo"], ["F", "Foxtrot"], ["G", "Golf"], ["H", "Hotel"],
+  ["I", "India"], ["J", "Juliet"], ["K", "Kilo"], ["L", "Lima"],
+  ["M", "Mike"], ["N", "November"], ["O", "Oscar"], ["P", "Papa"],
+  ["Q", "Quebec"], ["R", "Romeo"], ["S", "Sierra"], ["T", "Tango"],
+  ["U", "Uniform"], ["V", "Victor"], ["W", "Whiskey"], ["X", "X-Ray"],
+  ["Y", "Yankee"], ["Z", "Zulu"],
+];
+
+const Q_CODES = [
+  { code: "QRZ", meaning: "Who is calling me?" },
+  { code: "QSO", meaning: "I can communicate with ___" },
+  { code: "QTH", meaning: "My location is ___" },
+  { code: "QSL", meaning: "I acknowledge receipt" },
+  { code: "QRM", meaning: "I am being interfered with" },
+  { code: "QRN", meaning: "I am troubled by static" },
+  { code: "QSY", meaning: "Change frequency to ___" },
+  { code: "QRX", meaning: "Wait / Stand by" },
+  { code: "QRT", meaning: "Stop transmitting" },
+  { code: "QRV", meaning: "I am ready to operate" },
+  { code: "QRO", meaning: "Increase transmitter power" },
+  { code: "QRP", meaning: "Reduce transmitter power" },
+  { code: "QST", meaning: "General call to all stations" },
+  { code: "QTR", meaning: "What is the correct time?" },
+];
+
+type Tab = "license" | "emergency" | "phonetic" | "qcodes";
+
+const tabs: { id: Tab; label: string; icon: React.ReactNode }[] = [
+  { id: "license", label: "License Guide", icon: <GraduationCap size={16} /> },
+  { id: "emergency", label: "Emergency", icon: <AlertTriangle size={16} /> },
+  { id: "phonetic", label: "Phonetic", icon: <span className="text-xs font-bold">A/B</span> },
+  { id: "qcodes", label: "Q Codes", icon: <span className="text-xs font-bold">Q?</span> },
+];
 
 const ReferencePage = () => {
-  const [activeTab, setActiveTab] = useState<string>("license");
-  const [searchTerm, setSearchTerm] = useState("");
-  
-  const { data: referenceItems = [], isLoading } = useQuery<ReferenceItemType[]>({
-    queryKey: ["/api/reference"],
-  });
-
-  const filterItems = (items: ReferenceItemType[]) => {
-    if (!items || !Array.isArray(items)) return [];
-    
-    return items.filter((item) => {
-      return searchTerm === "" || 
-        item.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.description.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        item.category.toLowerCase().includes(searchTerm.toLowerCase());
-    });
-  };
-
-  const filteredItems = filterItems(referenceItems);
-  
-  // Group items by category
-  const groupedItems = filteredItems.reduce((acc: Record<string, any[]>, item) => {
-    if (!acc[item.category]) {
-      acc[item.category] = [];
-    }
-    acc[item.category].push(item);
-    return acc;
-  }, {});
-  
-  // Sort categories with Emergency Protocols always first
-  const sortedCategories = Object.keys(groupedItems).sort((a, b) => {
-    if (a === "Emergency Protocols") return -1;
-    if (b === "Emergency Protocols") return 1;
-    return a.localeCompare(b);
-  });
+  const [activeTab, setActiveTab] = useState<Tab>("license");
 
   return (
-    <div className="p-3">
+    <div className="p-3 pb-4">
       {/* Page header */}
       <div className="flex items-center gap-2 mb-3">
         <div className="radio-led green"></div>
-        <h2 className="text-sm font-mono tracking-wide text-blue-100 uppercase">
-          Study Guide
-        </h2>
+        <h2 className="text-sm font-mono tracking-wide text-blue-100 uppercase">Study Guide</h2>
       </div>
-      
-      {/* Tab Navigation as Radio Buttons */}
-      <div className="grid grid-cols-4 gap-2 mb-3">
-        <button
-          className={`radio-channel ${activeTab === 'license' ? 'active' : ''}`}
-          onClick={() => setActiveTab('license')}
-        >
-          <GraduationCap size={12} className="mr-1" /> License Guide
-        </button>
-        <button
-          className={`radio-channel ${activeTab === 'morse' ? 'active' : ''}`}
-          onClick={() => setActiveTab('morse')}
-        >
-          <Music size={12} className="mr-1" /> Morse Code
-        </button>
-        <button
-          className={`radio-channel ${activeTab === 'reference' ? 'active' : ''}`}
-          onClick={() => setActiveTab('reference')}
-        >
-          <Book size={12} className="mr-1" /> References
-        </button>
-        <button
-          className={`radio-channel ${activeTab === 'emergency' ? 'active' : ''}`}
-          onClick={() => setActiveTab('emergency')}
-        >
-          <AlertTriangle size={12} className="mr-1" /> Emergency
-        </button>
+
+      {/* Tab buttons — 2×2 grid for easy tapping on mobile */}
+      <div className="grid grid-cols-2 gap-2 mb-3">
+        {tabs.map(tab => (
+          <button
+            key={tab.id}
+            className={`flex items-center justify-center gap-2 rounded-lg py-3 text-sm font-medium border transition-all ${
+              activeTab === tab.id
+                ? "bg-blue-700 border-blue-500 text-white"
+                : "bg-gray-800 border-gray-700 text-gray-300 hover:bg-gray-700"
+            }`}
+            onClick={() => setActiveTab(tab.id)}
+          >
+            {tab.icon}
+            {tab.label}
+          </button>
+        ))}
       </div>
-      
-      {/* Content area with radio screen styling */}
-      <div className="bg-gray-800 bg-opacity-50 rounded-md p-2 border border-gray-700">
-        {/* Search bar styled like a frequency input */}
-        <div className="relative mb-3">
-          <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-gray-500" />
-          <Input 
-            type="text" 
-            placeholder="Search reference materials..." 
-            className="pl-8 bg-gray-800 border-gray-700 text-gray-200"
-            value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
-          />
-        </div>
-        
-        {/* Reference Materials Tab */}
-        {activeTab === 'reference' && (
-          <div className="space-y-3">
-            {isLoading ? (
-              <div className="space-y-3">
-                {[1, 2, 3, 4].map(i => (
-                  <div key={i}>
-                    <Skeleton className="h-8 w-full mb-2 rounded bg-gray-700" />
-                    <Skeleton className="h-20 w-full rounded bg-gray-700" />
+
+      {/* License Guide */}
+      {activeTab === "license" && <HamLicenseGuide />}
+
+      {/* Emergency Tab */}
+      {activeTab === "emergency" && (
+        <div className="space-y-3">
+          <div className="bg-red-950 bg-opacity-40 rounded-lg p-3 border border-red-800">
+            <div className="flex items-center gap-2 mb-2">
+              <Shield size={15} className="text-red-400" />
+              <h3 className="text-sm font-semibold text-red-300">Emergency Communications</h3>
+            </div>
+            <p className="text-xs text-gray-300">
+              When conventional infrastructure fails, amateur radio operators play a critical role.
+              Use <span className="text-red-300 font-medium">"MAYDAY"</span> for life-threatening emergencies,
+              <span className="text-amber-300 font-medium"> "PAN PAN"</span> for urgent situations.
+            </p>
+          </div>
+
+          <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+            <div className="px-3 py-2 border-b border-gray-700 bg-gray-900">
+              <span className="text-xs font-semibold text-gray-300 uppercase tracking-wide">Key Frequencies</span>
+            </div>
+            <div className="divide-y divide-gray-700">
+              {EMERGENCY_FREQUENCIES.map(f => (
+                <div key={f.label} className="px-3 py-2.5">
+                  <div className="flex items-center justify-between mb-0.5">
+                    <span className="text-xs font-medium text-gray-200">{f.label}</span>
+                    <span className="text-sm font-bold text-green-400 font-mono">{f.freq}</span>
                   </div>
-                ))}
-              </div>
-            ) : filteredItems.length > 0 ? (
-              <div className="space-y-5">
-                {sortedCategories.map(category => (
-                  category !== "Powell River Amateur Radio Club" && (
-                    <div key={category} className="bg-gray-800 rounded-md p-3 border border-gray-700">
-                      <h2 className="text-base font-bold mb-3 pb-1 border-b border-gray-600 text-blue-300 flex items-center">
-                        <Bookmark size={14} className="mr-2" /> {category}
-                      </h2>
-                      <div className="space-y-3">
-                        {groupedItems[category].map(item => (
-                          <ReferenceItem 
-                            key={item.id} 
-                            item={item} 
-                            isEmergency={category === "Emergency Protocols"} 
-                          />
-                        ))}
-                      </div>
-                    </div>
-                  )
-                ))}
-              </div>
-            ) : (
-              <div className="text-center py-8 bg-gray-800 rounded-lg border border-gray-700">
-                <h3 className="font-medium text-gray-300">No reference items found</h3>
-                <p className="mt-1 text-gray-500 text-sm">
-                  {searchTerm ? "Try different search terms" : "No matching references available"}
-                </p>
-              </div>
-            )}
-          </div>
-        )}
-        
-        {/* Club Info Tab */}
-        {activeTab === 'club' && (
-          <div className="bg-gray-800 rounded-md p-3 border border-gray-700">
-            <div className="flex items-center mb-3 pb-1 border-b border-gray-600">
-              <Radio size={15} className="mr-2 text-blue-400" />
-              <h2 className="text-base font-bold text-blue-300">Powell River Amateur Radio Club</h2>
-            </div>
-            
-            <ClubInfoCard />
-            
-            <div className="mt-4 space-y-3">
-              <div className="p-3 bg-blue-900 bg-opacity-30 rounded-md border border-blue-800">
-                <h3 className="text-sm font-medium text-blue-300 mb-2">Why Join The Club?</h3>
-                <p className="text-xs text-gray-300">
-                  The Powell River Amateur Radio Club is a vibrant community of radio enthusiasts who share knowledge, 
-                  participate in events, and support each other in the exciting world of amateur radio. 
-                  Whether you're a beginner or an experienced operator, you'll find valuable resources and 
-                  friendly faces at our meetings and activities.
-                </p>
-                <p className="text-xs font-medium text-gray-100 mt-2">
-                  New members are always welcome! Join us at our next meeting or coffee meetup.
-                </p>
-              </div>
-              
-              <div className="p-3 bg-amber-900 bg-opacity-20 rounded-md border border-amber-800">
-                <h3 className="text-sm font-medium text-amber-300 mb-2">Stay Connected</h3>
-                <p className="text-xs text-gray-300">
-                  If you're a fan of amateur radio or looking to get involved in the Powell River area, 
-                  you'll be happy to know that the Powell River Amateur Radio Club is buzzing with activity. 
-                  From community events to educational programs, there's always something happening.
-                </p>
-                <div className="mt-2 p-2 bg-gray-800 rounded-md border border-gray-700">
-                  <h4 className="font-medium text-amber-400 text-xs mb-1">Social Gatherings</h4>
-                  <p className="text-xs text-gray-300">
-                    Join us for coffee on Saturday mornings at 10am at the local A&W. 
-                    It's a great chance to relax, have fun, and strengthen bonds outside of the radio shack.
-                  </p>
+                  <span className="text-[10px] text-gray-400">{f.note}</span>
                 </div>
-              </div>
+              ))}
             </div>
           </div>
-        )}
-        
-        {/* License Guide Tab */}
-        {activeTab === 'license' && (
-          <HamLicenseGuide />
-        )}
-        
-        {/* Morse Code Tab */}
-        {activeTab === 'morse' && (
-          <EnhancedMorseCode />
-        )}
-        
-        {/* Emergency Info Tab */}
-        {activeTab === 'emergency' && (
-          <div className="space-y-3">
-            <div className="bg-gray-800 rounded-md p-3 border border-gray-700">
-              <div className="flex items-center mb-3 pb-1 border-b border-gray-600">
-                <Shield size={15} className="mr-2 text-red-500" />
-                <h2 className="text-base font-bold text-red-300">Emergency Communications</h2>
-              </div>
-              
-              {isLoading ? (
-                <div className="space-y-3">
-                  {[1, 2].map(i => (
-                    <div key={i}>
-                      <Skeleton className="h-8 w-full mb-2 rounded bg-gray-700" />
-                      <Skeleton className="h-20 w-full rounded bg-gray-700" />
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="space-y-3">
-                  {/* Filter and display only emergency protocols */}
-                  {referenceItems
-                    .filter(item => item.category === "Emergency Protocols")
-                    .map(item => (
-                      <ReferenceItem 
-                        key={item.id} 
-                        item={item} 
-                        isEmergency={true} 
-                      />
-                    ))
-                  }
-                </div>
-              )}
+
+          <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+            <div className="px-3 py-2 border-b border-gray-700 bg-gray-900">
+              <span className="text-xs font-semibold text-gray-300 uppercase tracking-wide">Emergency Traffic Priority</span>
             </div>
-            
-            <div className="p-3 bg-red-900 bg-opacity-20 rounded-md border border-red-800">
-              <h3 className="text-sm font-semibold text-red-300 mb-2">When All Else Fails: Ham Radio Works</h3>
-              <p className="text-xs text-gray-300 mb-3">
-                During emergencies when conventional communications infrastructure may be compromised, 
-                amateur radio operators play a crucial role in maintaining communications. Canadian amateur 
-                radio operators regularly practice emergency communication protocols to stay prepared.
-              </p>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs">
-                <div className="p-2 bg-gray-800 rounded border border-gray-700">
-                  <h4 className="font-medium text-red-400 mb-1">VHF National Calling</h4>
-                  <p className="text-gray-300">146.52 MHz Simplex</p>
-                  <p className="text-[10px] text-gray-400 mt-1">Monitor during emergencies</p>
-                </div>
-                <div className="p-2 bg-gray-800 rounded border border-gray-700">
-                  <h4 className="font-medium text-red-400 mb-1">UHF National Calling</h4>
-                  <p className="text-gray-300">446.00 MHz Simplex</p>
-                  <p className="text-[10px] text-gray-400 mt-1">Alternative calling frequency</p>
-                </div>
-              </div>
-              <div className="mt-2 p-2 bg-gray-800 rounded border border-gray-700 text-xs">
-                <h4 className="font-medium text-red-400 mb-1">Emergency Traffic Priority</h4>
-                <p className="text-gray-300">Use the word "emergency" for life-threatening situations requiring immediate assistance</p>
-              </div>
+            <div className="px-3 py-3 space-y-2 text-xs text-gray-300">
+              <p>• <span className="text-red-300 font-medium">MAYDAY</span> — immediate danger to life (3× repeated)</p>
+              <p>• <span className="text-amber-300 font-medium">PAN PAN</span> — urgent, no immediate danger to life</p>
+              <p>• <span className="text-blue-300 font-medium">SECURITE</span> — safety message (navigation hazard)</p>
+              <p>• Stand by on calling frequency until directed to working frequency</p>
+              <p>• Log all emergency traffic with time and callsigns</p>
             </div>
           </div>
-        )}
-      </div>
+        </div>
+      )}
+
+      {/* Phonetic Alphabet */}
+      {activeTab === "phonetic" && (
+        <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+          <div className="px-3 py-2 border-b border-gray-700 bg-gray-900">
+            <span className="text-xs font-semibold text-gray-300 uppercase tracking-wide">NATO Phonetic Alphabet</span>
+          </div>
+          <div className="grid grid-cols-2 divide-x divide-gray-700">
+            <div className="divide-y divide-gray-700">
+              {PHONETIC_ALPHABET.slice(0, 13).map(([letter, word]) => (
+                <div key={letter} className="flex items-center gap-3 px-3 py-2">
+                  <span className="text-blue-400 font-bold font-mono w-4 text-sm">{letter}</span>
+                  <span className="text-gray-200 text-xs">{word}</span>
+                </div>
+              ))}
+            </div>
+            <div className="divide-y divide-gray-700">
+              {PHONETIC_ALPHABET.slice(13).map(([letter, word]) => (
+                <div key={letter} className="flex items-center gap-3 px-3 py-2">
+                  <span className="text-blue-400 font-bold font-mono w-4 text-sm">{letter}</span>
+                  <span className="text-gray-200 text-xs">{word}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Q Codes */}
+      {activeTab === "qcodes" && (
+        <div className="bg-gray-800 rounded-lg border border-gray-700 overflow-hidden">
+          <div className="px-3 py-2 border-b border-gray-700 bg-gray-900">
+            <span className="text-xs font-semibold text-gray-300 uppercase tracking-wide">Common Q Codes</span>
+          </div>
+          <div className="divide-y divide-gray-700">
+            {Q_CODES.map(({ code, meaning }) => (
+              <div key={code} className="flex items-start gap-3 px-3 py-2.5">
+                <span className="text-green-400 font-bold font-mono text-sm w-10 shrink-0">{code}</span>
+                <span className="text-gray-300 text-xs leading-relaxed">{meaning}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -19,21 +19,21 @@ const MorseCodePage = () => {
       <div className="bg-gray-800 bg-opacity-50 rounded-md p-2 border border-gray-700">
         <Tabs defaultValue="exam" className="space-y-2">
           <TabsList className="grid grid-cols-3 h-auto p-1 bg-gray-900">
-            <TabsTrigger value="exam" className="text-xs py-1 h-auto data-[state=active]:bg-blue-900">
-              <div className="flex flex-col items-center gap-0.5">
-                <CheckCircle className="h-3 w-3" />
+            <TabsTrigger value="exam" className="text-xs py-2.5 h-auto data-[state=active]:bg-blue-900">
+              <div className="flex flex-col items-center gap-1">
+                <CheckCircle className="h-4 w-4" />
                 <span>Official Exam</span>
               </div>
             </TabsTrigger>
-            <TabsTrigger value="game" className="text-xs py-1 h-auto data-[state=active]:bg-green-900">
-              <div className="flex flex-col items-center gap-0.5">
-                <Headphones className="h-3 w-3" />
+            <TabsTrigger value="game" className="text-xs py-2.5 h-auto data-[state=active]:bg-green-900">
+              <div className="flex flex-col items-center gap-1">
+                <Headphones className="h-4 w-4" />
                 <span>Training</span>
               </div>
             </TabsTrigger>
-            <TabsTrigger value="reference" className="text-xs py-1 h-auto data-[state=active]:bg-purple-900">
-              <div className="flex flex-col items-center gap-0.5">
-                <Music className="h-3 w-3" />
+            <TabsTrigger value="reference" className="text-xs py-2.5 h-auto data-[state=active]:bg-purple-900">
+              <div className="flex flex-col items-center gap-1">
+                <Music className="h-4 w-4" />
                 <span>Reference</span>
               </div>
             </TabsTrigger>
