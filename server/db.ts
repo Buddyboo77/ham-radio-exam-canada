@@ -4,11 +4,17 @@ import * as schema from "@shared/schema";
 
 const { Pool } = pkg;
 
-if (!process.env.DATABASE_URL) {
+// Prefer REPLIT_DATABASE_URL (Replit's built-in PostgreSQL) over the legacy
+// DATABASE_URL which may point to an expired external Neon database.
+const connectionString =
+  process.env.REPLIT_DATABASE_URL ||
+  process.env.DATABASE_URL;
+
+if (!connectionString) {
   throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
+    "No database connection string found. Ensure the database is provisioned.",
   );
 }
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+export const pool = new Pool({ connectionString });
 export const db = drizzle(pool, { schema });
