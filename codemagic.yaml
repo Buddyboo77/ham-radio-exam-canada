@@ -7,9 +7,6 @@ workflows:
     environment:
       groups:
         - ios-credentials
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: ca.hamradioexam.canada
       node: 20.x
       xcode: latest
       cocoapods: default
@@ -29,6 +26,21 @@ workflows:
           cd ios/App
           pod install
 
+      - name: Set up keychain
+        script: keychain initialize
+
+      - name: Fetch signing files from App Store Connect
+        script: |
+          app-store-connect fetch-signing-files \
+            --bundle-identifier ca.hamradioexam.canada \
+            --platform IOS \
+            --type IOS_APP_STORE \
+            --create
+          keychain add-certificates
+
+      - name: Set up code signing settings
+        script: xcode-project use-profiles
+
       - name: Set build number
         script: |
           BUILD_NUMBER=$(date +%Y%m%d%H%M)
@@ -36,7 +48,6 @@ workflows:
 
       - name: Build and sign iOS app
         script: |
-          xcode-project use-profiles
           xcode-project build-ipa \
             --workspace ios/App/App.xcworkspace \
             --scheme App \
