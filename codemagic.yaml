@@ -61,9 +61,4 @@ workflows:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
 
-    publishing:
-      app_store_connect:
-        submit_to_testflight: true
-        beta_groups:
-          - External Testers
-        submit_to_app_store: false  # Set to true when ready for full release
+
