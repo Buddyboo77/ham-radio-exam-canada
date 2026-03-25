@@ -1,0 +1,70 @@
+workflows:
+  ios-app-store:
+    name: Ham Radio Exam Canada – iOS App Store
+    max_build_duration: 60
+    instance_type: mac_mini_m2
+
+    environment:
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: ca.hamradioexam.canada
+      vars:
+        APP_STORE_CONNECT_ISSUER_ID: Encrypted(...)   # Add in Codemagic UI
+        APP_STORE_CONNECT_KEY_IDENTIFIER: Encrypted(...) # Add in Codemagic UI
+        APP_STORE_CONNECT_PRIVATE_KEY: Encrypted(...)  # Add in Codemagic UI
+        APPLE_TEAM_ID: Encrypted(...)                  # Add in Codemagic UI
+      node: 20.x
+      xcode: latest
+      cocoapods: default
+
+    scripts:
+      - name: Install dependencies
+        script: npm ci
+
+      - name: Set app version
+        script: |
+          BUILD_NUMBER=$(($(app-store-connect get-latest-build-number "$APP_APPLE_ID") + 1))
+          xcrun agvtool new-version -all $BUILD_NUMBER
+          xcrun agvtool new-marketing-version 1.0.$BUILD_NUMBER
+
+      - name: Build web app
+        script: npm run build
+
+      - name: Sync Capacitor
+        script: npx cap sync ios
+
+      - name: Install CocoaPods
+        script: |
+          cd ios/App
+          pod install
+
+      - name: Build and sign iOS app
+        script: |
+          xcode-project use-profiles
+          cd ios/App
+          xcodebuild \
+            -workspace App.xcworkspace \
+            -scheme App \
+            -configuration Release \
+            -archivePath "$CM_BUILD_DIR/App.xcarchive" \
+            archive \
+            CODE_SIGN_STYLE=Manual \
+            DEVELOPMENT_TEAM="$APPLE_TEAM_ID"
+
+      - name: Export IPA
+        script: |
+          xcode-project build-ipa \
+            --workspace ios/App/App.xcworkspace \
+            --scheme App
+
+    artifacts:
+      - build/ios/ipa/*.ipa
+      - /tmp/xcodebuild_logs/*.log
+
+    publishing:
+      app_store_connect:
+        auth: integration
+        submit_to_testflight: true
+        beta_groups:
+          - External Testers
+        submit_to_app_store: false  # Set to true when ready for full release
