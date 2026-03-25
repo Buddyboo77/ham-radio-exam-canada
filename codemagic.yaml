@@ -5,14 +5,11 @@ workflows:
     instance_type: mac_mini_m2
 
     environment:
+      groups:
+        - ios-credentials
       ios_signing:
         distribution_type: app_store
         bundle_identifier: ca.hamradioexam.canada
-      vars:
-        APP_STORE_CONNECT_ISSUER_ID: Encrypted(...)   # Add in Codemagic UI
-        APP_STORE_CONNECT_KEY_IDENTIFIER: Encrypted(...) # Add in Codemagic UI
-        APP_STORE_CONNECT_PRIVATE_KEY: Encrypted(...)  # Add in Codemagic UI
-        APPLE_TEAM_ID: Encrypted(...)                  # Add in Codemagic UI
       node: 20.x
       xcode: latest
       cocoapods: default
@@ -20,12 +17,6 @@ workflows:
     scripts:
       - name: Install dependencies
         script: npm ci
-
-      - name: Set app version
-        script: |
-          BUILD_NUMBER=$(($(app-store-connect get-latest-build-number "$APP_APPLE_ID") + 1))
-          xcrun agvtool new-version -all $BUILD_NUMBER
-          xcrun agvtool new-marketing-version 1.0.$BUILD_NUMBER
 
       - name: Build web app
         script: npm run build
@@ -38,27 +29,27 @@ workflows:
           cd ios/App
           pod install
 
+      - name: Set build number
+        script: |
+          BUILD_NUMBER=$(date +%Y%m%d%H%M)
+          xcrun agvtool new-version -all $BUILD_NUMBER
+
       - name: Build and sign iOS app
         script: |
           xcode-project use-profiles
-          cd ios/App
-          xcodebuild \
-            -workspace App.xcworkspace \
-            -scheme App \
-            -configuration Release \
-            -archivePath "$CM_BUILD_DIR/App.xcarchive" \
-            archive \
-            CODE_SIGN_STYLE=Manual \
-            DEVELOPMENT_TEAM="$APPLE_TEAM_ID"
-
-      - name: Export IPA
-        script: |
           xcode-project build-ipa \
             --workspace ios/App/App.xcworkspace \
-            --scheme App
+            --scheme App \
+            --config Release
 
     artifacts:
       - build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
 
-
+    publishing:
+      app_store_connect:
+        api_key: $APP_STORE_CONNECT_PRIVATE_KEY
+        key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
+        issuer_id: $APP_STORE_CONNECT_ISSUER_ID
+        submit_to_testflight: true
+        submit_to_app_store: false
