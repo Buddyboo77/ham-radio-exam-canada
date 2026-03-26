@@ -10,6 +10,9 @@ workflows:
       node: 20.17.0
       xcode: latest
       cocoapods: default
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: ca.hamradioexam.canada
 
     scripts:
       - name: Install dependencies
@@ -25,20 +28,6 @@ workflows:
         script: |
           cd ios/App
           pod install
-
-      - name: Set up keychain
-        script: keychain initialize
-
-      - name: Fetch signing files from App Store Connect
-        script: |
-          app-store-connect fetch-signing-files \
-            ca.hamradioexam.canada \
-            --platform IOS \
-            --type IOS_APP_STORE \
-            --private-key @env:CERTIFICATE_PRIVATE_KEY \
-            --create
-
-          keychain add-certificates
 
       - name: Set up code signing settings
         script: xcode-project use-profiles
