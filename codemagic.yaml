@@ -18,6 +18,10 @@ workflows:
       - name: Build web app
         script: npm run build
 
+      - name: Generate app icons
+        script: |
+          npx @capacitor/assets generate --ios
+
       - name: Sync Capacitor
         script: npx cap sync ios
 
@@ -43,7 +47,7 @@ workflows:
 
       - name: Set build number
         script: |
-          perl -i -pe 's/CURRENT_PROJECT_VERSION = \d+/CURRENT_PROJECT_VERSION = 3/g' ios/App/App.xcodeproj/project.pbxproj
+          perl -i -pe 's/CURRENT_PROJECT_VERSION = \d+/CURRENT_PROJECT_VERSION = 4/g' ios/App/App.xcodeproj/project.pbxproj
           grep CURRENT_PROJECT_VERSION ios/App/App.xcodeproj/project.pbxproj
 
       - name: Build and sign iOS app
@@ -62,5 +66,5 @@ workflows:
         api_key: $APP_STORE_CONNECT_PRIVATE_KEY
         key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
-        submit_to_testflight: true
+        submit_to_testflight: false
         submit_to_app_store: false
