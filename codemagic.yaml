@@ -35,7 +35,9 @@ workflows:
             ca.hamradioexam.canada \
             --platform IOS \
             --type IOS_APP_STORE \
+            --certificate-key=$CERTIFICATE_PRIVATE_KEY \
             --create
+
           keychain add-certificates
 
       - name: Set up code signing settings
