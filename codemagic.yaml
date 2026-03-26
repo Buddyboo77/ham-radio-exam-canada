@@ -7,7 +7,7 @@ workflows:
     environment:
       groups:
         - ios-credentials
-      node: 20.x
+      node: 20.17.0
       xcode: latest
       cocoapods: default
 
