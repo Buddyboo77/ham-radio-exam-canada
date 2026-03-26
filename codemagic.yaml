@@ -35,7 +35,7 @@ workflows:
             ca.hamradioexam.canada \
             --platform IOS \
             --type IOS_APP_STORE \
-            --certificate-key=$CERTIFICATE_PRIVATE_KEY \
+            --private-key @env:CERTIFICATE_PRIVATE_KEY \
             --create
 
           keychain add-certificates
