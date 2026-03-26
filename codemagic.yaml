@@ -41,12 +41,10 @@ workflows:
       - name: Set up code signing settings
         script: xcode-project use-profiles
 
-            - name: Set build number
+      - name: Set build number
         script: |
-          sed -i '' 's/CURRENT_PROJECT_VERSION = [0-9]*/CURRENT_PROJECT_VERSION = 3/g' ios/App/App.xcodeproj/project.pbxproj
+          perl -i -pe 's/CURRENT_PROJECT_VERSION = \d+/CURRENT_PROJECT_VERSION = 3/g' ios/App/App.xcodeproj/project.pbxproj
           grep CURRENT_PROJECT_VERSION ios/App/App.xcodeproj/project.pbxproj
-    
-  
 
       - name: Build and sign iOS app
         script: |
