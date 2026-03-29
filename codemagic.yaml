@@ -26,12 +26,14 @@ workflows:
           cd ios/App
           pod install
 
-      - name: Fix API key format
+      - name: Write API key to file
         script: |
-          python3 << 'PYEOF'
+          python3 -c "
           import os, re
           key = os.environ.get('APP_STORE_CONNECT_PRIVATE_KEY', '')
           key = key.replace('\r', '')
+          if not key.strip():
+              raise SystemExit('ERROR: APP_STORE_CONNECT_PRIVATE_KEY is empty!')
           if key.count('\n') < 3:
               m = re.match(r'(-----BEGIN [^-]+-----)\s*(.*?)\s*(-----END [^-]+-----)', key, re.DOTALL)
               if m:
@@ -41,11 +43,8 @@ workflows:
                   key = header + '\n' + '\n'.join(chunks) + '\n' + footer + '\n'
           with open('/tmp/asc_key.p8', 'w') as f:
               f.write(key)
-          print('Key written. Lines:', key.count('\n'))
-          PYEOF
-          echo "APP_STORE_CONNECT_PRIVATE_KEY<<HEREDOC" >> $CM_ENV
-          cat /tmp/asc_key.p8 >> $CM_ENV
-          echo "HEREDOC" >> $CM_ENV
+          print('Key written successfully. Lines:', key.count('\n'))
+          "
 
       - name: Set up keychain
         script: keychain initialize
@@ -56,6 +55,9 @@ workflows:
             ca.hamradioexam.canada \
             --platform IOS \
             --type IOS_APP_STORE \
+            --private-key /tmp/asc_key.p8 \
+            --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
+            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
             --create
           keychain add-certificates
 
@@ -64,9 +66,14 @@ workflows:
 
       - name: Set build number
         script: |
-          LATEST=$(app-store-connect get-latest-testflight-build-number 6761153301 --platform IOS 2>/dev/null || echo "1")
+          LATEST=$(app-store-connect get-latest-testflight-build-number 6761153301 \
+            --platform IOS \
+            --private-key /tmp/asc_key.p8 \
+            --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
+            --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
+            2>/dev/null || echo "1")
           NEXT=$((LATEST + 1))
-          echo "Setting build number to $NEXT (latest was $LATEST)"
+          echo "Setting build number to $NEXT"
           cd ios/App
           xcrun agvtool new-version -all $NEXT
 
