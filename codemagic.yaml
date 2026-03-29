@@ -98,5 +98,5 @@ workflows:
         key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
         submit_to_testflight: true
-                beta_app_description: "Canadian amateur radio license exam prep app with 630 official ISED questions and Morse code training."
+        beta_app_description: "Canadian amateur radio license exam prep app with 630 official ISED questions and Morse code training."
         submit_to_app_store: false
