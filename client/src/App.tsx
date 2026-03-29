@@ -10,6 +10,7 @@ import MorseCodePage from "@/pages/MorseCodePage";
 import AuthPage from "@/pages/AuthPage";
 import PrivacyPolicyPage from "@/pages/PrivacyPolicyPage";
 import TermsOfServicePage from "@/pages/TermsOfServicePage";
+import SupportPage from "@/pages/SupportPage";
 import { AuthProvider, useAuth } from "@/hooks/use-auth";
 import { ProtectedRoute } from "@/components/auth/ProtectedRoute";
 
@@ -37,102 +38,149 @@ function Router() {
   const isAuthPage = location === "/auth";
 
   return (
-    /*
-     * Layout uses dynamic viewport height (dvh) so the app fills the screen
-     * correctly on mobile browsers where the address bar collapses/expands.
-     * Falls back to 100vh for older browsers.
-     * Safe-area insets handle iPhone notch/Dynamic Island and home indicator,
-     * and Android gesture/button navigation bars.
-     */
     <div
-      className="flex flex-col mx-auto max-w-md relative bg-gray-950 overflow-hidden"
+      className="flex bg-gray-950 overflow-hidden w-full"
       style={{ height: '100dvh' }}
     >
-      {/* Top bar — padded for iPhone notch / Dynamic Island */}
+      {/* iPad/tablet sidebar navigation */}
       {!isAuthPage && (
-        <div
-          className="flex justify-between items-center px-3 bg-gray-900 border-b border-gray-800 shrink-0"
-          style={{ paddingTop: 'max(env(safe-area-inset-top), 6px)', paddingBottom: '6px' }}
+        <aside className="hidden md:flex flex-col shrink-0 w-52 bg-gray-900 border-r border-gray-800"
+          style={{ paddingTop: 'max(env(safe-area-inset-top), 0px)', paddingBottom: 'env(safe-area-inset-bottom)' }}
         >
-          <div className="flex items-center gap-1.5">
-            <Power size={11} className={isOnline ? "text-green-400" : "text-red-400"} />
-            <span className="text-gray-400 font-mono text-[10px]">
-              {isOnline ? "Online" : "Offline"}
+          <div className="px-4 py-5 border-b border-gray-800">
+            <div className="flex items-center gap-2 mb-1">
+              <Power size={12} className={isOnline ? "text-green-400" : "text-red-400"} />
+              <span className="text-gray-400 font-mono text-[10px]">
+                {isOnline ? "Online" : "Offline"}
+              </span>
+            </div>
+            <span className="text-[11px] font-mono text-blue-300 tracking-widest leading-tight block">
+              HAM RADIO EXAM CANADA
             </span>
           </div>
-          <span className="text-[10px] font-mono text-blue-300 tracking-widest">
-            HAM RADIO EXAM CANADA
-          </span>
-          <button
-            onClick={() => { logout(); setLocation("/auth"); }}
-            className="text-[10px] text-gray-500 hover:text-red-400 font-mono px-1"
+
+          <nav className="flex-1 px-2 py-4 flex flex-col gap-1">
+            {tabs.map(tab => {
+              const isActive =
+                location === tab.path || (tab.path === "/learning" && location === "/");
+              return (
+                <Link key={tab.path} href={tab.path}>
+                  <div
+                    className={`flex items-center gap-3 px-3 py-3 rounded-lg transition-colors ${
+                      isActive
+                        ? "text-blue-400 bg-blue-950 bg-opacity-60"
+                        : "text-gray-400 hover:text-gray-200 hover:bg-gray-800"
+                    }`}
+                  >
+                    {tab.icon}
+                    <span className="text-sm font-medium">{tab.label}</span>
+                    {isActive && (
+                      <div className="ml-auto w-1.5 h-1.5 rounded-full bg-blue-400" />
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </nav>
+
+          <div className="px-4 py-4 border-t border-gray-800">
+            <button
+              onClick={() => { logout(); setLocation("/auth"); }}
+              className="text-[11px] text-gray-500 hover:text-red-400 font-mono w-full text-left"
+            >
+              LOGOUT
+            </button>
+          </div>
+        </aside>
+      )}
+
+      {/* Main content column */}
+      <div
+        className={`flex flex-col flex-1 overflow-hidden ${!isAuthPage ? 'md:max-w-none max-w-md mx-auto w-full' : 'w-full'}`}
+      >
+        {/* Top bar — phone only */}
+        {!isAuthPage && (
+          <div
+            className="md:hidden flex justify-between items-center px-3 bg-gray-900 border-b border-gray-800 shrink-0"
+            style={{ paddingTop: 'max(env(safe-area-inset-top), 6px)', paddingBottom: '6px' }}
           >
-            LOGOUT
-          </button>
+            <div className="flex items-center gap-1.5">
+              <Power size={11} className={isOnline ? "text-green-400" : "text-red-400"} />
+              <span className="text-gray-400 font-mono text-[10px]">
+                {isOnline ? "Online" : "Offline"}
+              </span>
+            </div>
+            <span className="text-[10px] font-mono text-blue-300 tracking-widest">
+              HAM RADIO EXAM CANADA
+            </span>
+            <button
+              onClick={() => { logout(); setLocation("/auth"); }}
+              className="text-[10px] text-gray-500 hover:text-red-400 font-mono px-1"
+            >
+              LOGOUT
+            </button>
+          </div>
+        )}
+
+        {/* Main scrollable content */}
+        <div className="flex-1 overflow-y-auto">
+          <Switch>
+            <Route path="/auth" component={AuthPage} />
+
+            <ProtectedRoute path="/">
+              <EnhancedLearningPage />
+            </ProtectedRoute>
+
+            <ProtectedRoute path="/learning">
+              <EnhancedLearningPage />
+            </ProtectedRoute>
+
+            <ProtectedRoute path="/morse-code">
+              <MorseCodePage />
+            </ProtectedRoute>
+
+            <ProtectedRoute path="/reference">
+              <ReferencePage />
+            </ProtectedRoute>
+
+            <Route path="/privacy" component={PrivacyPolicyPage} />
+            <Route path="/terms" component={TermsOfServicePage} />
+            <Route path="/support" component={SupportPage} />
+
+            <Route component={NotFound} />
+          </Switch>
         </div>
-      )}
 
-      {/* Main scrollable content */}
-      <div className="flex-1 overflow-y-auto">
-        <Switch>
-          <Route path="/auth" component={AuthPage} />
-
-          <ProtectedRoute path="/">
-            <EnhancedLearningPage />
-          </ProtectedRoute>
-
-          <ProtectedRoute path="/learning">
-            <EnhancedLearningPage />
-          </ProtectedRoute>
-
-          <ProtectedRoute path="/morse-code">
-            <MorseCodePage />
-          </ProtectedRoute>
-
-          <ProtectedRoute path="/reference">
-            <ReferencePage />
-          </ProtectedRoute>
-
-          <Route path="/privacy" component={PrivacyPolicyPage} />
-          <Route path="/terms" component={TermsOfServicePage} />
-
-          <Route component={NotFound} />
-        </Switch>
+        {/* Bottom tab bar — phone only */}
+        {!isAuthPage && (
+          <nav
+            className="md:hidden shrink-0 border-t border-gray-800 bg-gray-900 grid grid-cols-3"
+            style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
+          >
+            {tabs.map(tab => {
+              const isActive =
+                location === tab.path || (tab.path === "/learning" && location === "/");
+              return (
+                <Link key={tab.path} href={tab.path}>
+                  <div
+                    className={`flex flex-col items-center justify-center py-2.5 gap-0.5 transition-colors ${
+                      isActive
+                        ? "text-blue-400 bg-blue-950 bg-opacity-40"
+                        : "text-gray-400 hover:text-gray-200"
+                    }`}
+                  >
+                    {tab.icon}
+                    <span className="text-[11px] font-medium">{tab.label}</span>
+                    {isActive && (
+                      <div className="w-5 h-0.5 bg-blue-400 rounded-full" />
+                    )}
+                  </div>
+                </Link>
+              );
+            })}
+          </nav>
+        )}
       </div>
-
-      {/*
-       * Bottom tab bar — padded for iPhone home indicator and Android nav bar.
-       * env(safe-area-inset-bottom) is 0 on devices without a home indicator
-       * so this is safe to apply everywhere.
-       */}
-      {!isAuthPage && (
-        <nav
-          className="shrink-0 border-t border-gray-800 bg-gray-900 grid grid-cols-3"
-          style={{ paddingBottom: 'env(safe-area-inset-bottom)' }}
-        >
-          {tabs.map(tab => {
-            const isActive =
-              location === tab.path || (tab.path === "/learning" && location === "/");
-            return (
-              <Link key={tab.path} href={tab.path}>
-                <div
-                  className={`flex flex-col items-center justify-center py-2.5 gap-0.5 transition-colors ${
-                    isActive
-                      ? "text-blue-400 bg-blue-950 bg-opacity-40"
-                      : "text-gray-400 hover:text-gray-200"
-                  }`}
-                >
-                  {tab.icon}
-                  <span className="text-[11px] font-medium">{tab.label}</span>
-                  {isActive && (
-                    <div className="w-5 h-0.5 bg-blue-400 rounded-full" />
-                  )}
-                </div>
-              </Link>
-            );
-          })}
-        </nav>
-      )}
     </div>
   );
 }
