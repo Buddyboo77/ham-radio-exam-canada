@@ -26,12 +26,7 @@ workflows:
           cd ios/App
           pod install
 
-      - name: Decode API key
-        script: |
-          echo "$APP_STORE_CONNECT_PRIVATE_KEY" | base64 --decode > /tmp/asc_key.p8
-          echo "APP_STORE_CONNECT_PRIVATE_KEY<<HEREDOC" >> $CM_ENV
-          cat /tmp/asc_key.p8 >> $CM_ENV
-          echo "HEREDOC" >> $CM_ENV
+      
 
       - name: Set up keychain
         script: keychain initialize
