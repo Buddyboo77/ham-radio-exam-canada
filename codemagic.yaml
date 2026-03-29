@@ -45,6 +45,10 @@ workflows:
               f.write(key)
           print('Key written successfully. Lines:', key.count('\n'))
           "
+          echo "--- Key file preview (first line) ---"
+          head -1 /tmp/asc_key.p8
+          echo "--- Key file line count ---"
+          wc -l /tmp/asc_key.p8
 
       - name: Set up keychain
         script: keychain initialize
@@ -55,7 +59,7 @@ workflows:
             ca.hamradioexam.canada \
             --platform IOS \
             --type IOS_APP_STORE \
-            --private-key /tmp/asc_key.p8 \
+            --private-key "$(cat /tmp/asc_key.p8)" \
             --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
             --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
             --create
@@ -68,7 +72,7 @@ workflows:
         script: |
           LATEST=$(app-store-connect get-latest-testflight-build-number 6761153301 \
             --platform IOS \
-            --private-key /tmp/asc_key.p8 \
+            --private-key "$(cat /tmp/asc_key.p8)" \
             --key-id "$APP_STORE_CONNECT_KEY_IDENTIFIER" \
             --issuer-id "$APP_STORE_CONNECT_ISSUER_ID" \
             2>/dev/null || echo "1")
