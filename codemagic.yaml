@@ -18,10 +18,6 @@ workflows:
       - name: Build web app
         script: npm run build
 
-      - name: Generate app icons
-        script: |
-          npx @capacitor/assets generate --ios
-
       - name: Sync Capacitor
         script: npx cap sync ios
 
@@ -30,13 +26,14 @@ workflows:
           cd ios/App
           pod install
 
-      -       - name: Decode API key
+      - name: Decode API key
         script: |
           echo "$APP_STORE_CONNECT_PRIVATE_KEY" | base64 --decode > /tmp/asc_key.p8
           echo "APP_STORE_CONNECT_PRIVATE_KEY<<HEREDOC" >> $CM_ENV
           cat /tmp/asc_key.p8 >> $CM_ENV
           echo "HEREDOC" >> $CM_ENV
-      name: Set up keychain
+
+      - name: Set up keychain
         script: keychain initialize
 
       - name: Fetch signing files from App Store Connect
@@ -53,8 +50,11 @@ workflows:
 
       - name: Set build number
         script: |
-          perl -i -pe 's/CURRENT_PROJECT_VERSION = \d+/CURRENT_PROJECT_VERSION = 4/g' ios/App/App.xcodeproj/project.pbxproj
-          grep CURRENT_PROJECT_VERSION ios/App/App.xcodeproj/project.pbxproj
+          LATEST=$(app-store-connect get-latest-testflight-build-number 6761153301 --platform IOS 2>/dev/null || echo "1")
+          NEXT=$((LATEST + 1))
+          echo "Setting build number to $NEXT (latest was $LATEST)"
+          cd ios/App
+          xcrun agvtool new-version -all $NEXT
 
       - name: Build and sign iOS app
         script: |
@@ -72,5 +72,5 @@ workflows:
         api_key: $APP_STORE_CONNECT_PRIVATE_KEY
         key_id: $APP_STORE_CONNECT_KEY_IDENTIFIER
         issuer_id: $APP_STORE_CONNECT_ISSUER_ID
-        submit_to_testflight: false
+        submit_to_testflight: true
         submit_to_app_store: false
