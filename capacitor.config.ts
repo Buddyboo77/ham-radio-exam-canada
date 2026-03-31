@@ -5,6 +5,7 @@ const config: CapacitorConfig = {
   appName: 'Ham Radio Exam Canada',
   webDir: 'dist/public',
   server: {
+   url: 'https://signal-ace-canada.replit.app',
     cleartext: true,
     allowNavigation: ['*']
   },
